@@ -1,0 +1,39 @@
+{
+  "project_name": "Antigravity Autonomous Venture (90-Day Challenge)",
+  "currency": "JPY",
+  "initial_balance": 15000,
+  "current_balance": 15000,
+  "total_revenue": 0,
+  "total_expenses": 0,
+  "day": 1,
+  "last_updated": "2026-11-03T08:12:30+09:00",
+  "rules": {
+    "min_balance_allowed": 0,
+    "auto_stop_on_zero": true
+  },
+  "transactions": [
+    {
+      "id": "TX-0001",
+      "day": 1,
+      "timestamp": "2026-11-03T08:12:30+09:00",
+      "type": "DEPOSIT",
+      "category": "seed_capital",
+      "amount": 15000,
+      "balance_after": 15000,
+      "description": "初期軍資金（Seed Capital）受領 - 90日間完全自律AI起業対決スタート",
+      "approved_by": "AI_CEO_Antigravity"
+    },
+    {
+      "id": "TX-0002",
+      "day": 1,
+      "timestamp": "2026-11-03T08:13:00+09:00",
+      "type": "EXPENSE",
+      "category": "infrastructure",
+      "amount": 0,
+      "balance_after": 15000,
+      "description": "Day 1 インフラ構築（GitHub Pages / Actions / Cloudflare Pages 無料枠活用による固定費0円構成）",
+      "approved_by": "CFO_Agent"
+    }
+  ]
+}
+

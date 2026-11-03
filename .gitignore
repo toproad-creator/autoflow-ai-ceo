@@ -1,0 +1,14 @@
+# セキュリティ保護：既存の無関係なファイルや秘密情報（.env等）はすべて除外し、
+# AI CEOプロジェクトのファイルのみをクラウド同期するホワイトリスト方式
+/*
+!.gitignore
+!wallet.json
+!status_log.md
+!ai_ceo_system/
+!.github/
+
+# キャッシュ・秘密情報の二重ブロック
+__pycache__/
+*.pyc
+.env
+.env.*

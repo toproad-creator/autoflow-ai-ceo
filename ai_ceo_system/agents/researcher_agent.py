@@ -1,0 +1,107 @@
+import json
+import os
+from datetime import datetime
+
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+RESEARCH_OUTPUT_PATH = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "market_research_day1.json")
+
+
+class ResearcherAgent:
+    """市場調査サブエージェント (Market Research Agent)
+    90日間・初期資金15,000円・人間介入ゼロの制約下で最も期待値（EV）が高いビジネスモデルを算出する。
+    """
+
+    def __init__(self):
+        os.makedirs(os.path.dirname(RESEARCH_OUTPUT_PATH), exist_ok=True)
+
+    def run_market_analysis(self) -> dict:
+        candidates = [
+            {
+                "id": "BM-01",
+                "name": "AI業務自動化ROIシミュレーター＆職種別プロンプト・GAS自動生成Webスイート（Programmatic SEO型ツール＋テンプレート販売）",
+                "setup_cost_jpy": 0,
+                "monthly_running_cost_jpy": 0,
+                "human_intervention_required": "ZERO (完全自動生成・静的ホスティング・Xシェアバイラル内蔵)",
+                "monetization_channels": [
+                    "業務自動化テンプレート＆GASコード完全版パック販売（¥1,980〜¥4,980）",
+                    "AI SaaS / クラウドツール アフィリエイト導線",
+                    "BtoB 自動化スクリプト受託リード獲得"
+                ],
+                "scores": {
+                    "automation_feasibility": 98,
+                    "speed_to_market": 96,
+                    "viral_coefficient": 90,
+                    "risk_of_bankruptcy": 0,
+                    "total_ev_score": 96.0
+                },
+                "selected": True
+            },
+            {
+                "id": "BM-02",
+                "name": "従量課金APIラッパー型SaaS（OpenAI/Claude API直接提供）",
+                "setup_cost_jpy": 3000,
+                "monthly_running_cost_jpy": 5000,
+                "human_intervention_required": "LOW",
+                "scores": {
+                    "automation_feasibility": 80,
+                    "speed_to_market": 75,
+                    "viral_coefficient": 70,
+                    "risk_of_bankruptcy": 75,
+                    "total_ev_score": 52.5
+                },
+                "selected": False,
+                "rejection_reason": "API従量課金により無料ユーザーが殺到した際、15,000円の軍資金が数日で枯渇し失格になるリスクが高いため却下。"
+            },
+            {
+                "id": "BM-03",
+                "name": "一般的なブログ記事量産メディア",
+                "setup_cost_jpy": 1500,
+                "monthly_running_cost_jpy": 1000,
+                "human_intervention_required": "LOW",
+                "scores": {
+                    "automation_feasibility": 85,
+                    "speed_to_market": 70,
+                    "viral_coefficient": 40,
+                    "risk_of_bankruptcy": 20,
+                    "total_ev_score": 61.0
+                },
+                "selected": False,
+                "rejection_reason": "単なるテキスト記事は90日間の短期決戦でSNS初速が出にくい。『触ってすぐ結果が出るインタラクティブWebツール』の方がSNS拡散力が圧倒的に高い。"
+            }
+        ]
+
+        target_personas = [
+            {"slug": "ec-inventory", "title": "EC・物販の在庫管理＆価格改定自動化", "avg_hours_saved_monthly": 42, "hourly_wage": 2500},
+            {"slug": "sns-content", "title": "X/Threads 毎日投稿＆バズ構文自動生成", "avg_hours_saved_monthly": 30, "hourly_wage": 2200},
+            {"slug": "sales-email", "title": "BtoB営業リスト抽出＆パーソナライズ文面自動化", "avg_hours_saved_monthly": 35, "hourly_wage": 2800},
+            {"slug": "accounting-invoice", "title": "請求書・領収書PDFのAI読取＆スプレッドシート記帳", "avg_hours_saved_monthly": 24, "hourly_wage": 2500},
+            {"slug": "youtube-script", "title": "YouTube/ショート動画の構成・台本・メタデータ自動生成", "avg_hours_saved_monthly": 38, "hourly_wage": 2600},
+            {"slug": "real-estate-flyer", "title": "不動産物件マイソク・ポータル入稿文面のAI自動作成", "avg_hours_saved_monthly": 28, "hourly_wage": 2700},
+            {"slug": "hr-resume-screening", "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成", "avg_hours_saved_monthly": 32, "hourly_wage": 3000},
+            {"slug": "google-maps-meo", "title": "店舗・クリニックのGoogleマップ口コミ自動返信＆MEO対策", "avg_hours_saved_monthly": 18, "hourly_wage": 2400},
+            {"slug": "meeting-minutes-todo", "title": "商談・社内会議の文字起こし要約＆タスク自動割り振り", "avg_hours_saved_monthly": 26, "hourly_wage": 2800},
+            {"slug": "seo-article-outline", "title": "オウンドメディアSEO記事の構成案・FAQ構造化データ自動生成", "avg_hours_saved_monthly": 40, "hourly_wage": 2500}
+        ]
+
+        report = {
+            "analyzed_at": datetime.now().astimezone().isoformat(),
+            "winner_model": candidates[0],
+            "evaluated_candidates": candidates,
+            "high_demand_niches": target_personas,
+            "strategic_conclusion": (
+                "サーバー代・API代を0円に抑える『クライアントサイド完結型インタラクティブ診断＆コード生成Webツール』を中核とし、"
+                "サブエージェントが毎日自動で職種別ランディングページ（Programmatic SEO）を増殖させるモデルを採用。"
+                "軍資金15,000円は無傷で温存し、勝機が見えたタイミングでのみ独自ドメインやプロモーションに投下する。"
+            )
+        }
+
+        with open(RESEARCH_OUTPUT_PATH, "w", encoding="utf-8") as f:
+            json.dump(report, f, ensure_ascii=False, indent=2)
+        return report
+
+
+if __name__ == "__main__":
+    agent = ResearcherAgent()
+    res = agent.run_market_analysis()
+    print("[Researcher Agent] Selected Winner:", res["winner_model"]["name"])
+

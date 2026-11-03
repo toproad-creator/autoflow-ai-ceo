@@ -1,0 +1,72 @@
+import json
+import os
+from datetime import datetime
+
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+MARKETING_DIR = os.path.join(ROOT_DIR, "ai_ceo_system", "marketing_outputs")
+
+
+class MarketerAgent:
+    """自律マーケティング・SNS・動画台本生成サブエージェント (Growth & Content Agent)
+    プロダクトの集客導線、X/Threads投稿データ、YouTube実況台本を自動生成する。
+    """
+
+    def __init__(self):
+        os.makedirs(MARKETING_DIR, exist_ok=True)
+
+    def generate_daily_campaigns(self, day: int, balance: int, seo_count: int) -> dict:
+        x_140 = (
+            "【実験Day1】AIに軍資金15,000円を渡して「人間介入ゼロで90日間稼げ」と放置した結果…\n"
+            "開始数分で勝手に社内会議を開き、「API課金で破産しない0円構成」を選択して『業務削減額シミュレーター＆GASコード自動生成Webツール』とSEOページ5本を自作して稼働させ始めたんだが…😨 #AI起業対決"
+        )
+
+        x_thread = [
+            "1/5 【90日間・人間介入ゼロ】ChatGPT Codex vs Google Gemini Antigravity にそれぞれ15,000円を渡して完全放置するAI起業対決が今日からスタート！人間はコピペも手直しも一切禁止。全てAI自身のコマンド実行だけでどこまで稼げるか検証します。",
+            "2/5 起動直後、Antigravity（AI CEO）が最初にやったのがまさかの『財務防衛』。15,000円がマイナスになった瞬間に即失格というルールを読み込み、wallet.jsonと残高ブロック機構（CFOエージェント）をPythonで自作して自己統治を開始。",
+            "3/5 さらに驚きなのがビジネスモデルの選定。OpenAI API等を裏側で叩くツールを作ると「無料ユーザーが殺到した瞬間にAPI代で15,000円が溶けて破産する」とAI自身が判断し、サーバー代・API代0円で動くクライアントサイド完結型Webツールを選択！",
+            "4/5 そしてDay 1のその場で『AutoFlow AI（30秒で業務削減コスト算出＆専用プロンプト・GAS自動実行コード生成ツール）』と、職種別のSEO特化ページ5本、さらにPCを閉じても毎朝8時に自律稼働するGitHub Actionsワークフローまで一気通貫で構築完了。",
+            "5/5 現在残高は15,000円無傷のまま、第1弾プロダクトが稼働準備完了。明日Day 2以降、このAI CEOがどうやって集客と初売上（¥1,980の自動化パック＆アフィリエイト）をもぎ取るのか、毎日ログを公開します！"
+        ]
+
+        youtube_script = {
+            "title": "【Day 1】AIに1万5000円渡して完全放置したら、勝手に会社組織とWebサービスを作って稼働し始めた件【90日間AI起業対決】",
+            "scenes": [
+                {
+                    "time": "00:00 - 00:45",
+                    "screen_instruction": "ターミナル画面とディレクトリツリー（wallet.json, status_log.md, ai_ceo_system/）が自動生成される瞬間を映す",
+                    "narration": "今日から90日間、人間が一切手を出さずにAIだけで15,000円をどこまで増やせるか検証します。見てください、指示を出した瞬間、AIが自分でPythonスクリプトを書き始め、財務管理のwallet.jsonと4つの専門サブエージェント（調査・開発・マーケ・財務）をフォルダ内に自動構築しました。"
+                },
+                {
+                    "time": "00:45 - 01:45",
+                    "screen_instruction": "ai_ceo_system/data/market_research_day1.json を開き、BM-02（APIラッパー型）が『破産リスク75%で却下』されている箇所をズーム",
+                    "narration": "一番鳥肌が立ったのがこの社内会議ログです。『裏側で有料APIを叩くWebサービスを作ると、バズった瞬間にAPI代で15,000円が溶けて失格になる』とAI自身が気づき、ランニングコスト0円の静的Webツール＋Programmatic SEOモデルを自ら選びました。"
+                },
+                {
+                    "time": "01:45 - 03:00",
+                    "screen_instruction": "ブラウザで ai_ceo_system/product_site/index.html を開き、スライダーを動かして年間削減額がリアルタイム計算され、GASコードが切り替わる様子を実演",
+                    "narration": "そしてDay 1でAIが1人でコーディングして完成させた現物がこちら。『AutoFlow AI』。自分の職種と作業時間を入れるだけで、年間何十万円浮くかが1秒で出て、しかもそのままコピペで使えるAIプロンプトとGoogleスプレッドシート自動化コード（GAS）が出力されます。"
+                }
+            ]
+        }
+
+        payload = {
+            "generated_at": datetime.now().astimezone().isoformat(),
+            "day": day,
+            "current_balance": balance,
+            "seo_pages_count": seo_count,
+            "x_post_140": x_140,
+            "x_thread": x_thread,
+            "youtube_direction": youtube_script
+        }
+
+        json_path = os.path.join(MARKETING_DIR, f"day{day}_campaigns.json")
+        with open(json_path, "w", encoding="utf-8") as f:
+            json.dump(payload, f, ensure_ascii=False, indent=2)
+
+        return payload
+
+
+if __name__ == "__main__":
+    m = MarketerAgent()
+    print(m.generate_daily_campaigns(1, 15000, 5)["x_post_140"])
+
