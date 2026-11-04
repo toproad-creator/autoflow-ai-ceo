@@ -303,9 +303,13 @@ class DeveloperAgent:
         return created
 
     def _build_sitemap(self, niches: list) -> str:
-        urls = ["https://autoflow-ai-lab.pages.dev/index.html"]
+        base_url = "https://toproad-creator.github.io/autoflow-ai-ceo"
+        urls = [
+            f"{base_url}/index.html",
+            f"{base_url}/pro-pack.html"
+        ]
         for item in niches:
-            urls.append(f"https://autoflow-ai-lab.pages.dev/usecases/{item['slug']}.html")
+            urls.append(f"{base_url}/usecases/{item['slug']}.html")
         xml_items = "\n".join([f"  <url><loc>{u}</loc></url>" for u in urls])
         xml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
