@@ -35,11 +35,12 @@ jobs:
         run: python ai_ceo_system/agents/ceo_orchestrator.py --cloud-cron
 
       - name: Auto-Commit & Push Daily Growth Artifacts
+        if: github.event_name != 'push'
         run: |
           git config user.name "Antigravity AI CEO"
           git config user.email "ai-ceo@users.noreply.github.com"
           git add wallet.json status_log.md ai_ceo_system/
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(autonomous): daily AI CEO build & metrics update" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(autonomous): daily AI CEO build & metrics update [skip ci]" && git push) || true
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
