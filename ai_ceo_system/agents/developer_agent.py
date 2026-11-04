@@ -136,9 +136,14 @@ class DeveloperAgent:
             <h4 class="font-bold text-sm mt-1">コピペで動く「全職種対応50種GAS＆Python自動化テンプレート集」</h4>
             <p class="text-xs text-slate-400 mt-0.5">スプレッドシート連携・Slack/LINE通知・エラー自動復旧付きの完全版パッケージ</p>
           </div>
-          <a href="pro-pack.html" onclick="recordConversionClick()" class="shrink-0 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-4 py-2.5 rounded-lg shadow">
-            詳細を見る (¥1,980) →
-          </a>
+          <div class="flex flex-col sm:flex-row gap-2 shrink-0">
+            <a href="pro-pack.html" onclick="recordConversionClick()" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-100 font-bold text-xs px-3 py-2.5 rounded-lg text-center">
+              収録内容を見る
+            </a>
+            <a href="https://note.com/toproad_1989/n/n5d0e28a74f91" target="_blank" rel="noopener" onclick="recordConversionClick()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-4 py-2.5 rounded-lg shadow text-center">
+              noteで入手 (¥1,980) →
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -289,9 +294,14 @@ class DeveloperAgent:
       定型的なデータ転記・整形・一次下書き作成は、構造化プロンプトとGASの定期トリガーを組み合わせることで90%以上自動化可能です。
       メインページではあなたの実労働時間にあわせた専用コードを0秒で出力できます。
     </p>
-    <a href="../index.html" class="inline-block mt-4 bg-sky-500 text-slate-950 font-bold px-5 py-2.5 rounded-lg text-sm">
-      今すぐ専用プロンプト＆GASコードを無料生成する →
-    </a>
+    <div class="flex flex-wrap gap-3 mt-5">
+      <a href="../index.html" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg text-sm">
+        無料シミュレーターで専用コードを生成する →
+      </a>
+      <a href="https://note.com/toproad_1989/n/n5d0e28a74f91" target="_blank" rel="noopener" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-5 py-2.5 rounded-lg text-sm">
+        ⚡ 全50種プロンプト＆GAS完全版パック (¥1,980) →
+      </a>
+    </div>
   </div>
 </body>
 </html>

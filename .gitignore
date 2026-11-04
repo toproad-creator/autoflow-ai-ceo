@@ -7,9 +7,12 @@
 !ai_ceo_system/
 !.github/
 
-# キャッシュ・秘密情報の二重ブロック
+# キャッシュ・秘密情報・有料商品本編データの公開リポジトリ除外
 __pycache__/
 *.pyc
 .env
 .env.*
+ai_ceo_system/product_site/downloads/
+ai_ceo_system/data/autoflow_pro_50_templates.json
+ai_ceo_system/marketing_outputs/note_paid_article_1980yen.txt
 

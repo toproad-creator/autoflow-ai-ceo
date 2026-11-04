@@ -9,7 +9,7 @@
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen">
   <header class="border-b border-slate-800 py-4 px-6 max-w-5xl mx-auto flex justify-between items-center">
     <a href="index.html" class="text-sky-400 text-sm font-bold hover:underline">← 無料シミュレーターに戻る</a>
-    <span class="text-xs text-amber-400 font-bold">即時ダウンロード可能・買い切り ¥1,980</span>
+    <span class="text-xs text-amber-400 font-bold">note決済対応（クレカ・PayPay・キャリア決済）・買い切り ¥1,980</span>
   </header>
 
   <main class="max-w-5xl mx-auto px-6 py-12">
@@ -101,27 +101,23 @@
             </div>
             
       </div>
-      <p class="text-center text-xs text-slate-400 mt-4">…ほか全10カテゴリ・計50種類のプロンプト＆GASコードをJSON/Markdown形式で即時提供</p>
+      <p class="text-center text-xs text-slate-400 mt-4">…ほか全10カテゴリ・計50種類のプロンプト＆GASコードをnote有料エリアにて即時提供</p>
     </div>
 
     <!-- Checkout CTA Box -->
     <div class="bg-gradient-to-br from-slate-900 to-indigo-950 border-2 border-amber-400/60 rounded-2xl p-8 text-center max-w-2xl mx-auto shadow-2xl">
-      <div class="text-xs text-amber-300 font-bold uppercase tracking-wider">Day 1 特別リリース価格</div>
+      <div class="text-xs text-amber-300 font-bold uppercase tracking-wider">特別リリース価格（買い切り）</div>
       <div class="text-4xl font-black my-2">¥1,980 <span class="text-sm font-normal text-slate-400">(税込・追加費用ゼロ)</span></div>
-      <p class="text-xs text-slate-300 mb-6">購入後すぐに全50種類のテンプレートファイル（JSON/テキスト）をダウンロードいただけます。</p>
-      <button onclick="triggerCheckout()" class="w-full sm:w-auto bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-8 py-4 rounded-xl text-base shadow-lg transition">
-        ⚡ 今すぐ完全版パックを入手する (¥1,980)
-      </button>
-      <div id="checkoutStatus" class="hidden mt-4 p-4 bg-slate-950/90 border border-sky-500/40 rounded-lg text-xs text-left text-slate-200"></div>
+      <p class="text-xs text-slate-300 mb-6">noteにて決済後、その場で全50種類のプロンプト＆GASコードをすべて閲覧・コピーいただけます。</p>
+      <a href="https://note.com/toproad_1989/n/n5d0e28a74f91" target="_blank" rel="noopener" onclick="triggerCheckout()" class="inline-block w-full sm:w-auto bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-8 py-4 rounded-xl text-base shadow-lg transition">
+        ⚡ noteで今すぐ完全版パックを入手する (¥1,980) →
+      </a>
     </div>
   </main>
 
   <script>
     function triggerCheckout() {
       fetch('/api/track?event=checkout_intent', { method: 'POST' }).catch(() => {});
-      const box = document.getElementById('checkoutStatus');
-      box.classList.remove('hidden');
-      box.innerHTML = '<strong>✅ 購入リクエスト（コンバージョン計測）を記録しました！</strong><br/>現在、先行体験版として収録データのプレビューファイル（<a href="downloads/autoflow_pro_50_templates.json" target="_blank" class="text-sky-400 underline font-bold">autoflow_pro_50_templates.json</a>）を即時閲覧・ダウンロードいただけます。';
     }
   </script>
 </body>

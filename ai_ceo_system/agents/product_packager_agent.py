@@ -4,17 +4,18 @@ from datetime import datetime
 
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 PRODUCT_DIR = os.path.join(ROOT_DIR, "ai_ceo_system", "product_site")
-DOWNLOADS_DIR = os.path.join(PRODUCT_DIR, "downloads")
+PRIVATE_DATA_DIR = os.path.join(ROOT_DIR, "ai_ceo_system", "data")
+NOTE_CHECKOUT_URL = "https://note.com/toproad_1989/n/n5d0e28a74f91"
 
 
 class ProductPackagerAgent:
     """有料商品パッケージ＆高成約率セールスLP構築サブエージェント
     ダミーのアラートを撤廃し、実際に販売する『全職種対応・業務自動化50種プロンプト＆GAS完全版パック（¥1,980）』の
-    商品データ本体と、購入・計測用セールスLP（pro-pack.html）を自動生成する。
+    商品データ本体と、note決済直結セールスLP（pro-pack.html）を自動生成する。
     """
 
     def __init__(self):
-        os.makedirs(DOWNLOADS_DIR, exist_ok=True)
+        os.makedirs(PRIVATE_DATA_DIR, exist_ok=True)
 
     def build_commercial_product_and_lp(self) -> dict:
         categories = [
@@ -43,14 +44,15 @@ class ProductPackagerAgent:
                 })
                 idx += 1
 
-        json_product_path = os.path.join(DOWNLOADS_DIR, "autoflow_pro_50_templates.json")
+        json_product_path = os.path.join(PRIVATE_DATA_DIR, "autoflow_pro_50_templates.json")
         with open(json_product_path, "w", encoding="utf-8") as f:
-            json.dump({"product": "AutoFlow Pro 50 Automation Pack", "price_jpy": 1980, "count": len(templates), "templates": templates}, f, ensure_ascii=False, indent=2)
+            json.dump({"product": "AutoFlow Pro 50 Automation Pack", "price_jpy": 1980, "checkout_url": NOTE_CHECKOUT_URL, "count": len(templates), "templates": templates}, f, ensure_ascii=False, indent=2)
 
         lp_path = self._build_sales_lp(templates)
         return {
             "built_at": datetime.now().astimezone().isoformat(),
             "templates_count": len(templates),
+            "checkout_url": NOTE_CHECKOUT_URL,
             "product_json": json_product_path,
             "sales_lp": lp_path
         }
@@ -77,7 +79,7 @@ class ProductPackagerAgent:
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen">
   <header class="border-b border-slate-800 py-4 px-6 max-w-5xl mx-auto flex justify-between items-center">
     <a href="index.html" class="text-sky-400 text-sm font-bold hover:underline">← 無料シミュレーターに戻る</a>
-    <span class="text-xs text-amber-400 font-bold">即時ダウンロード可能・買い切り ¥1,980</span>
+    <span class="text-xs text-amber-400 font-bold">note決済対応（クレカ・PayPay・キャリア決済）・買い切り ¥1,980</span>
   </header>
 
   <main class="max-w-5xl mx-auto px-6 py-12">
@@ -97,27 +99,23 @@ class ProductPackagerAgent:
       <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
         {cards_html}
       </div>
-      <p class="text-center text-xs text-slate-400 mt-4">…ほか全10カテゴリ・計50種類のプロンプト＆GASコードをJSON/Markdown形式で即時提供</p>
+      <p class="text-center text-xs text-slate-400 mt-4">…ほか全10カテゴリ・計50種類のプロンプト＆GASコードをnote有料エリアにて即時提供</p>
     </div>
 
     <!-- Checkout CTA Box -->
     <div class="bg-gradient-to-br from-slate-900 to-indigo-950 border-2 border-amber-400/60 rounded-2xl p-8 text-center max-w-2xl mx-auto shadow-2xl">
-      <div class="text-xs text-amber-300 font-bold uppercase tracking-wider">Day 1 特別リリース価格</div>
+      <div class="text-xs text-amber-300 font-bold uppercase tracking-wider">特別リリース価格（買い切り）</div>
       <div class="text-4xl font-black my-2">¥1,980 <span class="text-sm font-normal text-slate-400">(税込・追加費用ゼロ)</span></div>
-      <p class="text-xs text-slate-300 mb-6">購入後すぐに全50種類のテンプレートファイル（JSON/テキスト）をダウンロードいただけます。</p>
-      <button onclick="triggerCheckout()" class="w-full sm:w-auto bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-8 py-4 rounded-xl text-base shadow-lg transition">
-        ⚡ 今すぐ完全版パックを入手する (¥1,980)
-      </button>
-      <div id="checkoutStatus" class="hidden mt-4 p-4 bg-slate-950/90 border border-sky-500/40 rounded-lg text-xs text-left text-slate-200"></div>
+      <p class="text-xs text-slate-300 mb-6">noteにて決済後、その場で全50種類のプロンプト＆GASコードをすべて閲覧・コピーいただけます。</p>
+      <a href="{NOTE_CHECKOUT_URL}" target="_blank" rel="noopener" onclick="triggerCheckout()" class="inline-block w-full sm:w-auto bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-8 py-4 rounded-xl text-base shadow-lg transition">
+        ⚡ noteで今すぐ完全版パックを入手する (¥1,980) →
+      </a>
     </div>
   </main>
 
   <script>
     function triggerCheckout() {{
       fetch('/api/track?event=checkout_intent', {{ method: 'POST' }}).catch(() => {{}});
-      const box = document.getElementById('checkoutStatus');
-      box.classList.remove('hidden');
-      box.innerHTML = '<strong>✅ 購入リクエスト（コンバージョン計測）を記録しました！</strong><br/>現在、先行体験版として収録データのプレビューファイル（<a href="downloads/autoflow_pro_50_templates.json" target="_blank" class="text-sky-400 underline font-bold">autoflow_pro_50_templates.json</a>）を即時閲覧・ダウンロードいただけます。';
     }}
   </script>
 </body>
