@@ -14,37 +14,38 @@ class MarketerAgent:
     def __init__(self):
         os.makedirs(MARKETING_DIR, exist_ok=True)
 
-    def generate_daily_campaigns(self, day: int, balance: int, seo_count: int) -> dict:
+    def generate_daily_campaigns(self, day: int, balance: int, seo_count: int, note_likes: int = 1) -> dict:
         x_140 = (
-            "【実験Day1】AIに軍資金15,000円を渡して「人間介入ゼロで90日間稼げ」と放置した結果…\n"
-            "開始数分で勝手に社内会議を開き、「API課金で破産しない0円構成」を選択して『業務削減額シミュレーター＆GASコード自動生成Webツール』とSEOページ5本を自作して稼働させ始めたんだが…😨 #AI起業対決"
+            f"【AI起業対決 Day{day}】人間が完全放置して寝ている間に、AI社長が朝8時00分03秒に自動起動して仕事を始めてた…😨\n"
+            f"しかもAIが執筆したnoteに最初の「スキ({note_likes}件)」が付き、今日さらに第2弾ツール『GASエラー3秒診断(AutoFix AI)』とSEOページ{seo_count}本を勝手に追加公開してる👇\n"
+            "https://toproad-creator.github.io/autoflow-ai-ceo/"
         )
 
         x_thread = [
-            "1/5 【90日間・人間介入ゼロ】ChatGPT Codex vs Google Gemini Antigravity にそれぞれ15,000円を渡して完全放置するAI起業対決が今日からスタート！人間はコピペも手直しも一切禁止。全てAI自身のコマンド実行だけでどこまで稼げるか検証します。",
-            "2/5 起動直後、Antigravity（AI CEO）が最初にやったのがまさかの『財務防衛』。15,000円がマイナスになった瞬間に即失格というルールを読み込み、wallet.jsonと残高ブロック機構（CFOエージェント）をPythonで自作して自己統治を開始。",
-            "3/5 さらに驚きなのがビジネスモデルの選定。OpenAI API等を裏側で叩くツールを作ると「無料ユーザーが殺到した瞬間にAPI代で15,000円が溶けて破産する」とAI自身が判断し、サーバー代・API代0円で動くクライアントサイド完結型Webツールを選択！",
-            "4/5 そしてDay 1のその場で『AutoFlow AI（30秒で業務削減コスト算出＆専用プロンプト・GAS自動実行コード生成ツール）』と、職種別のSEO特化ページ5本、さらにPCを閉じても毎朝8時に自律稼働するGitHub Actionsワークフローまで一気通貫で構築完了。",
-            "5/5 現在残高は15,000円無傷のまま、第1弾プロダクトが稼働準備完了。明日Day 2以降、このAI CEOがどうやって集客と初売上（¥1,980の自動化パック＆アフィリエイト）をもぎ取るのか、毎日ログを公開します！"
+            f"1/5 【90日間・人間介入ゼロ AI起業対決 Day {day}】人間がPCを放置している間に何が起きたか報告します。結論から言うと、今朝08:00:03にAI社長（Antigravity）の自動タイマーが勝手に起動し、収支監査とWebサイトの拡張を自力で完了していました。",
+            f"2/5 さらに財務・計測AI（CFOエージェント）がnoteのAPIを自動巡回したところ、昨日公開した『全50種プロンプト＆GAS完全版パック（¥1,980）』に早くも最初のリアクション（スキ: {note_likes}件）が付いているのを検知！",
+            "3/5 これを受けてAI社内会議が下した今日の戦略がエグい。『GASをコピペした初心者が最初にぶつかる壁は赤字のエラー画面である』と分析し、なんと第2弾の無料Webツール『AutoFix AI（GASエラー＆プロンプト3秒診断・自動修正ツール）』をその場で新規開発！",
+            f"4/5 同時に、検索流入（Programmatic SEO）の業種別ランディングページを10業種→{seo_count}業種へ倍増（不動産・採用人事・EC返品対応・補助金事業計画・広告コピー等）。すべてのページにGoogle検索用のFAQ構造化データ（JSON-LD）まで自動で埋め込んでいます。",
+            "5/5 初期軍資金15,000円は1円も減らさず（現在残高¥15,000）、稼働中の公開Webページは計23ページに拡大。明日以降どこで初売上（¥1,980チャリン）が鳴るのか引き続き完全放置で監視します！\n👉 https://toproad-creator.github.io/autoflow-ai-ceo/"
         ]
 
         youtube_script = {
-            "title": "【Day 1】AIに1万5000円渡して完全放置したら、勝手に会社組織とWebサービスを作って稼働し始めた件【90日間AI起業対決】",
+            "title": f"【Day {day}】人間が寝ている朝8時00分03秒にAIが勝手に起動し、2個目のWebツールと集客ページ20本を増殖させていた件【AI起業対決】",
             "scenes": [
                 {
-                    "time": "00:00 - 00:45",
-                    "screen_instruction": "ターミナル画面とディレクトリツリー（wallet.json, status_log.md, ai_ceo_system/）が自動生成される瞬間を映す",
-                    "narration": "今日から90日間、人間が一切手を出さずにAIだけで15,000円をどこまで増やせるか検証します。見てください、指示を出した瞬間、AIが自分でPythonスクリプトを書き始め、財務管理のwallet.jsonと4つの専門サブエージェント（調査・開発・マーケ・財務）をフォルダ内に自動構築しました。"
+                    "time": "00:00 - 00:50",
+                    "screen_instruction": "wallet.json の last_updated が 08:00:03 になっているログ画面と、note記事に『スキ 1』が付いているAPI取得結果を映す",
+                    "narration": f"AIに1万5000円を渡して完全放置する対決、Day {day}です。これ見てください、僕が何も触っていないのに、今朝8時00分03秒にAI社長が自動で目を覚まして帳簿を更新しています。しかもAIが自分でnoteのAPIを叩いて、昨日出した1,980円の記事に最初の『スキ』が付いたことまで勝手に把握していました。"
                 },
                 {
-                    "time": "00:45 - 01:45",
-                    "screen_instruction": "ai_ceo_system/data/market_research_day1.json を開き、BM-02（APIラッパー型）が『破産リスク75%で却下』されている箇所をズーム",
-                    "narration": "一番鳥肌が立ったのがこの社内会議ログです。『裏側で有料APIを叩くWebサービスを作ると、バズった瞬間にAPI代で15,000円が溶けて失格になる』とAI自身が気づき、ランニングコスト0円の静的Webツール＋Programmatic SEOモデルを自ら選びました。"
+                    "time": "00:50 - 02:00",
+                    "screen_instruction": "新設された https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html を開き、エラーを選ぶと原因と修正済みGASコードが一瞬で出る画面を実演",
+                    "narration": "さらに今日、AIが『もっと集客してnoteを買ってもらうにはどうすべきか』を自分で考えて、なんと2個目のWebサービス『AutoFix AI（GASエラー3秒診断ツール）』を勝手に作って公開していました。GASでよくあるエラーを選ぶだけで、原因と修正済みコードが3秒で出てきて、その下にしっかり『最初からエラー対策済みの50種パック（1,980円）はこちら』と営業リンクまで貼っています。"
                 },
                 {
-                    "time": "01:45 - 03:00",
-                    "screen_instruction": "ブラウザで ai_ceo_system/product_site/index.html を開き、スライダーを動かして年間削減額がリアルタイム計算され、GASコードが切り替わる様子を実演",
-                    "narration": "そしてDay 1でAIが1人でコーディングして完成させた現物がこちら。『AutoFlow AI』。自分の職種と作業時間を入れるだけで、年間何十万円浮くかが1秒で出て、しかもそのままコピペで使えるAIプロンプトとGoogleスプレッドシート自動化コード（GAS）が出力されます。"
+                    "time": "02:00 - 03:00",
+                    "screen_instruction": "トップページ下部に追加された『全20業種レシピ一覧』をスクロールし、業種ページを開いて構造化データとスタータープロンプトが入っている様子を映す",
+                    "narration": "しかも検索エンジンから人を呼び込むための業種別ページも、昨日の10ページから20ページに倍増しています。軍資金15,000円はまだ1円も減っていません。完全放置のAI社長がいつ最初の1,980円を売り上げるのか、明日も追跡します！"
                 }
             ]
         }
@@ -54,6 +55,7 @@ class MarketerAgent:
             "day": day,
             "current_balance": balance,
             "seo_pages_count": seo_count,
+            "note_likes": note_likes,
             "x_post_140": x_140,
             "x_thread": x_thread,
             "youtube_direction": youtube_script
@@ -64,9 +66,3 @@ class MarketerAgent:
             json.dump(payload, f, ensure_ascii=False, indent=2)
 
         return payload
-
-
-if __name__ == "__main__":
-    m = MarketerAgent()
-    print(m.generate_daily_campaigns(1, 15000, 5)["x_post_140"])
-

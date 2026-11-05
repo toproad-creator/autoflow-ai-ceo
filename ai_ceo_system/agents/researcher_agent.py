@@ -80,7 +80,17 @@ class ResearcherAgent:
             {"slug": "hr-resume-screening", "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成", "avg_hours_saved_monthly": 32, "hourly_wage": 3000},
             {"slug": "google-maps-meo", "title": "店舗・クリニックのGoogleマップ口コミ自動返信＆MEO対策", "avg_hours_saved_monthly": 18, "hourly_wage": 2400},
             {"slug": "meeting-minutes-todo", "title": "商談・社内会議の文字起こし要約＆タスク自動割り振り", "avg_hours_saved_monthly": 26, "hourly_wage": 2800},
-            {"slug": "seo-article-outline", "title": "オウンドメディアSEO記事の構成案・FAQ構造化データ自動生成", "avg_hours_saved_monthly": 40, "hourly_wage": 2500}
+            {"slug": "seo-article-outline", "title": "オウンドメディアSEO記事の構成案・FAQ構造化データ自動生成", "avg_hours_saved_monthly": 40, "hourly_wage": 2500},
+            {"slug": "ec-customer-support", "title": "ECショップの発送連絡・返品問い合わせAI自動一次返信", "avg_hours_saved_monthly": 29, "hourly_wage": 2200},
+            {"slug": "amazon-rakuten-review", "title": "Amazon・楽天の競合商品レビュー分析＆改善アイデア抽出", "avg_hours_saved_monthly": 22, "hourly_wage": 2600},
+            {"slug": "line-step-delivery", "title": "LINE公式アカウントの友だち追加後ステップ配信シナリオ生成", "avg_hours_saved_monthly": 25, "hourly_wage": 2700},
+            {"slug": "instagram-reels-script", "title": "Instagramリール・TikTok縦型ショート動画のバズ台本量産", "avg_hours_saved_monthly": 34, "hourly_wage": 2300},
+            {"slug": "subsidy-business-plan", "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成", "avg_hours_saved_monthly": 45, "hourly_wage": 3500},
+            {"slug": "contract-risk-check", "title": "業務委託契約書・NDAの不利条項チェック＆修正案プロンプト", "avg_hours_saved_monthly": 16, "hourly_wage": 4000},
+            {"slug": "shift-schedule-gas", "title": "アルバイト・スタッフの希望シフト回収＆スプレッドシート自動編成", "avg_hours_saved_monthly": 20, "hourly_wage": 2400},
+            {"slug": "competitor-lp-analysis", "title": "競合ランディングページ(LP)の訴求軸分解＆ABテスト案生成", "avg_hours_saved_monthly": 27, "hourly_wage": 3000},
+            {"slug": "google-meta-ads-copy", "title": "Google広告・Meta広告の検索見出し15本＆説明文一括ジェネレーター", "avg_hours_saved_monthly": 21, "hourly_wage": 2900},
+            {"slug": "weekly-kpi-slack-bot", "title": "スプレッドシート週次売上KPIの自動集計＆Slack/Chatwork毎朝通知", "avg_hours_saved_monthly": 19, "hourly_wage": 2800}
         ]
 
         report = {

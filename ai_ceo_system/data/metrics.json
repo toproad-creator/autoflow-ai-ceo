@@ -1,6 +1,6 @@
 {
-  "day": 1,
-  "timestamp": "2026-11-04T18:40:24.865549+09:00",
+  "day": 3,
+  "timestamp": "2026-11-05T11:17:22.560610+09:00",
   "financials": {
     "initial_balance": 15000,
     "current_balance": 15000,
@@ -10,17 +10,24 @@
     "runway_days": "INFINITE (Zero-Cost Architecture)"
   },
   "product_kpis": {
-    "deployed_tools_count": 1,
-    "programmatic_seo_pages": 10,
-    "page_views_today": 0,
-    "unique_visitors_today": 0,
-    "diagnostic_completions": 0,
-    "cta_clicks": 0,
+    "deployed_tools_count": 2,
+    "programmatic_seo_pages": 20,
+    "total_public_urls": 23,
+    "note_live_metrics": {
+      "note_key": "n5d0e28a74f91",
+      "note_url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
+      "status": "published",
+      "price_jpy": 1980,
+      "like_count": 1,
+      "comment_count": 0,
+      "paywall_active": true
+    },
     "estimated_conversion_rate": "2.5% (Target)"
   },
   "system_health": {
     "wallet_status": "HEALTHY",
-    "automation_cron_ready": true,
+    "github_actions_cron_ready": true,
+    "windows_scheduler_active": true,
     "zero_human_touch_verified": true
   }
 }

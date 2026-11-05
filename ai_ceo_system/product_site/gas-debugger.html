@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoFix AI | Google Apps Script(GAS)エラー＆AIプロンプト3秒診断・自動修正ツール</title>
+  <meta name="description" content="GAS（Googleスプレッドシート自動化）で頻発するTypeErrorや6分実行制限エラー、AIプロンプトの出力崩れを3秒で診断し、エラー回避済みの 안전한コードテンプレートを即時生成します。" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col">
+  <header class="border-b border-slate-800 py-4 px-6 max-w-5xl mx-auto w-full flex flex-wrap justify-between items-center gap-4">
+    <a href="index.html" class="text-sky-400 text-sm font-bold hover:underline">← AutoFlow AI トップへ戻る</a>
+    <a href="https://note.com/toproad_1989/n/n5d0e28a74f91" target="_blank" rel="noopener" class="bg-amber-400 text-slate-950 font-black text-xs px-3.5 py-2 rounded-lg">⚡ エラー対策済み全50種パック (¥1,980)</a>
+  </header>
+
+  <main class="max-w-5xl mx-auto w-full px-6 py-10 flex-1">
+    <div class="text-center mb-10">
+      <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-bold px-3 py-1 rounded-full">Day 3 新機能リリース・完全無料</span>
+      <h1 class="text-3xl md:text-4xl font-extrabold mt-4 mb-3">🛠️ GASエラー＆AIプロンプト 3秒診断・自動修正ツール</h1>
+      <p class="text-slate-400 text-sm max-w-2xl mx-auto">
+        「AIが書いたGASコードを貼ったら赤字のエラーで止まった…」を0秒で解決。発生している症状を選ぶだけで、原因の特定と<strong>「エラー自動回避（try-catch＆安全チェック）付きの修正コード」</strong>を出力します。
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-12 gap-8">
+      <div class="md:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <label class="block text-xs text-slate-400 mb-2 font-bold">発生しているエラー・症状を選択してください</label>
+        <select id="errorType" onchange="diagnoseError()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-3 text-sm mb-4">
+          <option value="null_sheet">TypeError: Cannot read properties of null (reading 'getDataRange')</option>
+          <option value="undefined_val">TypeError: Cannot read properties of undefined (reading '0')</option>
+          <option value="timeout">Exceeded maximum execution time（GASの6分制限で途中停止する）</option>
+          <option value="permission">Exception: You do not have permission to call MailApp / DriveApp</option>
+          <option value="json_break">AIの出力が毎回ズレてスプレッドシートに綺麗に貼れない</option>
+        </select>
+
+        <div id="causeBox" class="bg-slate-950 border border-emerald-500/30 rounded-xl p-4 text-xs text-slate-300 leading-relaxed"></div>
+      </div>
+
+      <div class="md:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div class="flex justify-between items-center mb-3">
+          <span class="text-xs font-bold text-emerald-400">✅ そのまま貼り替えられる修正済み安全コード</span>
+          <button onclick="copyFixed()" id="copyFixBtn" class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-1 rounded border border-slate-600">📋 コピー</button>
+        </div>
+        <pre id="fixedCode" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-slate-200 overflow-x-auto whitespace-pre-wrap h-64"></pre>
+
+        <div class="mt-6 bg-indigo-950/80 border border-amber-400/50 rounded-xl p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div>
+            <div class="text-xs font-bold text-amber-300">最初からエラー対策済みの完成品を使いたい方へ</div>
+            <p class="text-xs text-slate-300 mt-1">全10業種・50種類の動作確認済みGAS＆構造化プロンプト集をnoteで公開中</p>
+          </div>
+          <a href="https://note.com/toproad_1989/n/n5d0e28a74f91" target="_blank" rel="noopener" class="shrink-0 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-4 py-2.5 rounded-lg">
+            全50種パックを見る (¥1,980) →
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const ERRORS = {
+      null_sheet: {
+        cause: "【原因】getSheetByName('シート名') で指定したシート名が実際のタブ名と1文字でも違っているか、全角・半角スペースが混入しています。\n【解決策】シートが見つからない場合に自動でアクティブシートへフォールバックするか、初期作成する安全コードに置き換えます。",
+        code: `function safeGetSheet(sheetName) {\n  const ss = SpreadsheetApp.getActiveSpreadsheet();\n  let sheet = ss.getSheetByName(sheetName);\n  if (!sheet) {\n    // シートが存在しない場合はエラーで止めずに自動作成または先頭シートを使用\n    sheet = ss.getActiveSheet();\n    Logger.log('[AutoFix] 指定シートが見つからないため現在のシートを使用します: ' + sheet.getName());\n  }\n  return sheet;\n}`
+      },
+      undefined_val: {
+        cause: "【原因】スプレッドシートの空行を読み込んだ際や、フォーム送信イベント(e)をエディタの「実行」ボタンから直接押した際に undefined が発生しています。\n【解決策】空行スキップ判定と安全な初期値ガードを追加します。",
+        code: `function safeProcessRows() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  const rows = sheet.getDataRange().getValues();\n  for (let i = 1; i < rows.length; i++) {\n    const row = rows[i] || [];\n    const [id, title, status] = row;\n    if (!id || status === 'DONE') continue; // 空行と処理済み行を安全にスキップ\n    Logger.log('Processing: ' + id + ' / ' + (title || '名称未設定'));\n  }\n}`
+      },
+      timeout: {
+        cause: "【原因】Google Apps Scriptには「1回の実行あたり最大6分」の制限があります。1行ずつ setValue() を呼ぶと通信が遅くなりタイムアウトします。\n【解決策】開始時刻を監視して5分経過時点で安全に一時保存し、次回トリガーに引き継ぐバッチ処理構文にします。",
+        code: `function batchProcessWithoutTimeout() {\n  const startTime = Date.now();\n  const MAX_EXEC_MS = 4.5 * 60 * 1000; // 4分30秒で安全停止\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  const rows = sheet.getDataRange().getValues();\n  for (let i = 1; i < rows.length; i++) {\n    if (Date.now() - startTime > MAX_EXEC_MS) {\n      Logger.log('時間制限に近づいたため安全に中断しました。次回トリガーで再開します。');\n      break;\n    }\n    if (rows[i][2] !== 'DONE') {\n      sheet.getRange(i + 1, 3).setValue('DONE');\n    }\n  }\n}`
+      },
+      permission: {
+        cause: "【原因】カスタム関数（セル内に =myFunc() と書く方式）の中から MailApp や DriveApp を呼ぶことはGoogleの仕様で禁止されています。\n【解決策】メニューボタンまたは「時計アイコン（時間主導型トリガー）」から実行する標準関数に変更します。",
+        code: `// スプレッドシートを開いた時に上部メニューへ「⚡自動実行」ボタンを追加するコード\nfunction onOpen() {\n  SpreadsheetApp.getUi()\n    .createMenu('⚡AI自動化メニュー')\n    .addItem('今すぐ自動処理を実行', 'runMainAutomation')\n    .addToUi();\n}\n\nfunction runMainAutomation() {\n  MailApp.sendEmail(Session.getActiveUser().getEmail(), 'テスト通知', '正常に権限が承認されました！');\n}`
+      },
+      json_break: {
+        cause: "【原因】AIへの指示（プロンプト）で出力形式を固定していないため、前置き挨拶やマークダウン記号が混ざっています。\n【解決策】前置き挨拶を完全禁止し、タブ区切り(TSV)または純粋なJSONのみを強制出力させる構造化プロンプトを使用します。",
+        code: `# 出力形式強制プロンプト（コピペ用）\n以下の入力データを処理し、スプレッドシートへそのまま貼り付け可能な【タブ区切り(TSV)】のみを出力してください。\n\n【絶対遵守ルール】\n1. 「承知しました」「以下が出力です」等の前置き・後書きは一切出力しないこと\n2. 1行目は必ずヘッダー行（項目名）とすること\n3. 欠損値がある場合は空欄ではなく「N/A」を出力すること`
+      }
+    };
+
+    function diagnoseError() {
+      const key = document.getElementById('errorType').value;
+      document.getElementById('causeBox').innerText = ERRORS[key].cause;
+      document.getElementById('fixedCode').textContent = ERRORS[key].code;
+    }
+
+    function copyFixed() {
+      navigator.clipboard.writeText(document.getElementById('fixedCode').textContent);
+      const btn = document.getElementById('copyFixBtn');
+      btn.textContent = '✅ コピー完了!';
+      setTimeout(() => { btn.textContent = '📋 コピー'; }, 2000);
+    }
+
+    diagnoseError();
+  </script>
+</body>
+</html>

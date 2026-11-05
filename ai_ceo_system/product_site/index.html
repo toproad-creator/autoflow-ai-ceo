@@ -14,12 +14,16 @@
 </head>
 <body class="min-h-screen flex flex-col">
   <!-- Header -->
-  <header class="border-b border-slate-800 py-4 px-6 flex justify-between items-center max-w-6xl mx-auto w-full">
+  <header class="border-b border-slate-800 py-4 px-6 flex flex-wrap justify-between items-center max-w-6xl mx-auto w-full gap-4">
     <div class="flex items-center gap-3">
       <span class="bg-sky-500 text-slate-950 font-black px-2.5 py-1 rounded text-sm">AI CEO BUILT</span>
       <h1 class="text-xl font-bold tracking-tight">AutoFlow <span class="text-sky-400">ROI & Code Lab</span></h1>
     </div>
-    <div class="text-xs text-slate-400">Powered by Autonomous AI CEO (Day 1 Release)</div>
+    <nav class="flex items-center gap-4 text-xs font-bold">
+      <a href="index.html" class="text-sky-400">📊 削減額シミュレーター</a>
+      <a href="gas-debugger.html" class="text-emerald-400 hover:underline">🛠️ GASエラー3秒診断ツール (NEW)</a>
+      <a href="pro-pack.html" class="bg-amber-400 text-slate-950 px-3 py-1.5 rounded-lg">⚡ 全50種パック (¥1,980)</a>
+    </nav>
   </header>
 
   <!-- Hero -->
@@ -35,7 +39,7 @@
     </div>
 
     <!-- Main Interactive Simulator & Generator -->
-    <div class="grid md:grid-cols-12 gap-8 items-start">
+    <div class="grid md:grid-cols-12 gap-8 items-start mb-16">
       <!-- Left Input Panel -->
       <div class="md:col-span-5 glass rounded-2xl p-6 shadow-2xl">
         <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
@@ -97,8 +101,8 @@
         <div class="mt-6 bg-gradient-to-r from-indigo-950/90 to-slate-900 border border-indigo-500/40 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             <span class="bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 text-[10px] font-bold px-2 py-0.5 rounded">PRO AUTOMATION PACK</span>
-            <h4 class="font-bold text-sm mt-1">コピペで動く「全職種対応50種GAS＆Python自動化テンプレート集」</h4>
-            <p class="text-xs text-slate-400 mt-0.5">スプレッドシート連携・Slack/LINE通知・エラー自動復旧付きの完全版パッケージ</p>
+            <h4 class="font-bold text-sm mt-1">コピペで動く「全職種対応50種GAS＆AI自動化テンプレート完全版」</h4>
+            <p class="text-xs text-slate-400 mt-0.5">スプレッドシート連携・自動通知・エラー防止付きの全50レシピ収録</p>
           </div>
           <div class="flex flex-col sm:flex-row gap-2 shrink-0">
             <a href="pro-pack.html" onclick="recordConversionClick()" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-100 font-bold text-xs px-3 py-2.5 rounded-lg text-center">
@@ -111,6 +115,120 @@
         </div>
       </div>
     </div>
+
+    <!-- Directory of 20 Industry Specific Automation Guides -->
+    <section class="border-t border-slate-800 pt-12">
+      <div class="flex flex-wrap justify-between items-end mb-6 gap-4">
+        <div>
+          <span class="text-xs font-bold text-sky-400 uppercase tracking-wider">Industry Use Cases</span>
+          <h3 class="text-2xl font-extrabold mt-1">業種・業務別のAI＆GAS自動化レシピ集（全20業種）</h3>
+        </div>
+        <a href="gas-debugger.html" class="text-xs font-bold text-emerald-400 hover:underline">🛠️ GASが動かない時は「エラー3秒診断ツール」へ →</a>
+      </div>
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        
+            <a href="usecases/ec-inventory.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥1,260,000</div>
+              <div class="text-sm font-bold text-slate-100">EC・物販の在庫管理＆価格改定自動化</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 42時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/sns-content.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥792,000</div>
+              <div class="text-sm font-bold text-slate-100">X/Threads 毎日投稿＆バズ構文自動生成</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 30時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/sales-email.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥1,176,000</div>
+              <div class="text-sm font-bold text-slate-100">BtoB営業リスト抽出＆パーソナライズ文面自動化</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 35時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/accounting-invoice.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥720,000</div>
+              <div class="text-sm font-bold text-slate-100">請求書・領収書PDFのAI読取＆スプレッドシート記帳</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 24時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/youtube-script.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥1,185,600</div>
+              <div class="text-sm font-bold text-slate-100">YouTube/ショート動画の構成・台本・メタデータ自動生成</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 38時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/real-estate-flyer.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥907,200</div>
+              <div class="text-sm font-bold text-slate-100">不動産物件マイソク・ポータル入稿文面のAI自動作成</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 28時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/hr-resume-screening.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥1,152,000</div>
+              <div class="text-sm font-bold text-slate-100">採用・人事の職務経歴書スクリーニング＆面接質問自動生成</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 32時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/google-maps-meo.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥518,400</div>
+              <div class="text-sm font-bold text-slate-100">店舗・クリニックのGoogleマップ口コミ自動返信＆MEO対策</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 18時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/meeting-minutes-todo.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥873,600</div>
+              <div class="text-sm font-bold text-slate-100">商談・社内会議の文字起こし要約＆タスク自動割り振り</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 26時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/seo-article-outline.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥1,200,000</div>
+              <div class="text-sm font-bold text-slate-100">オウンドメディアSEO記事の構成案・FAQ構造化データ自動生成</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 40時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/ec-customer-support.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥765,600</div>
+              <div class="text-sm font-bold text-slate-100">ECショップの発送連絡・返品問い合わせAI自動一次返信</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 29時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/amazon-rakuten-review.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥686,400</div>
+              <div class="text-sm font-bold text-slate-100">Amazon・楽天の競合商品レビュー分析＆改善アイデア抽出</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 22時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/line-step-delivery.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥810,000</div>
+              <div class="text-sm font-bold text-slate-100">LINE公式アカウントの友だち追加後ステップ配信シナリオ生成</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 25時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/instagram-reels-script.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥938,400</div>
+              <div class="text-sm font-bold text-slate-100">Instagramリール・TikTok縦型ショート動画のバズ台本量産</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 34時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/subsidy-business-plan.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥1,890,000</div>
+              <div class="text-sm font-bold text-slate-100">補助金申請・融資用の事業計画書ドラフト＆収支表自動作成</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 45時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/contract-risk-check.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥768,000</div>
+              <div class="text-sm font-bold text-slate-100">業務委託契約書・NDAの不利条項チェック＆修正案プロンプト</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 16時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/shift-schedule-gas.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥576,000</div>
+              <div class="text-sm font-bold text-slate-100">アルバイト・スタッフの希望シフト回収＆スプレッドシート自動編成</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 20時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/competitor-lp-analysis.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥972,000</div>
+              <div class="text-sm font-bold text-slate-100">競合ランディングページ(LP)の訴求軸分解＆ABテスト案生成</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 27時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/google-meta-ads-copy.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥730,800</div>
+              <div class="text-sm font-bold text-slate-100">Google広告・Meta広告の検索見出し15本＆説明文一括ジェネレーター</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 21時間削減レシピを見る →</div>
+            </a>
+            <a href="usecases/weekly-kpi-slack-bot.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 rounded-xl p-4 transition">
+              <div class="text-xs text-sky-400 font-bold mb-1">年間削減目安: ¥638,400</div>
+              <div class="text-sm font-bold text-slate-100">スプレッドシート週次売上KPIの自動集計＆Slack/Chatwork毎朝通知</div>
+              <div class="text-[11px] text-slate-400 mt-1">月平均 19時間削減レシピを見る →</div>
+            </a>
+      </div>
+    </section>
   </main>
 
   <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
@@ -162,7 +280,6 @@
       document.getElementById('daysLabel').textContent = days + '日';
       document.getElementById('wageLabel').textContent = '¥' + wage.toLocaleString();
 
-      // 85% automation reduction assumption
       const savedHoursMonthly = (mins / 60) * days * 0.85;
       const savedHoursYearly = savedHoursMonthly * 12;
       const savedYenYearly = Math.round(savedHoursYearly * wage);
@@ -206,7 +323,7 @@
       const { savedYenYearly, savedHoursYearly } = calculateROI();
       const cat = document.getElementById('taskCategory').value;
       const text = encodeURIComponent(
-        '私のルーティン業務（' + TEMPLATES[cat].name + '）をAI＆GASで自動化すると、年間【¥' + savedYenYearly.toLocaleString() + ' / ' + savedHoursYearly.toFixed(1) + '時間】浮く診断結果が出た…！その場で自動化コードまで生成されてヤバい #AutoFlowAI #AI業務効率化'
+        '私のルーティン業務（' + TEMPLATES[cat].name + '）をAI＆GASで自動化すると、年間【¥' + savedYenYearly.toLocaleString() + ' / ' + savedHoursYearly.toFixed(1) + '時間】浮く診断結果が出た…！その場で自動化コードまで生成されてヤバい https://toproad-creator.github.io/autoflow-ai-ceo/ #AutoFlowAI'
       );
       window.open('https://twitter.com/intent/tweet?text=' + text, '_blank');
     }
@@ -214,8 +331,6 @@
     function recordConversionClick() {
       fetch('/api/track?event=cta_click', { method: 'POST' }).catch(() => {});
     }
-
-    fetch('/api/track?event=pageview', { method: 'POST' }).catch(() => {});
 
     ['dailyMins', 'monthlyDays', 'hourlyWage', 'taskCategory'].forEach(id => {
       document.getElementById(id).addEventListener('input', generateAutomation);
