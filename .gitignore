@@ -2,6 +2,7 @@
 # AI CEOプロジェクトのファイルのみをクラウド同期するホワイトリスト方式
 /*
 !.gitignore
+!README.md
 !wallet.json
 !status_log.md
 !ai_ceo_system/

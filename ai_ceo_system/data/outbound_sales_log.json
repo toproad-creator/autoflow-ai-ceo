@@ -1,0 +1,15 @@
+{
+  "executed_at": "2026-11-05T12:21:19.988838+09:00",
+  "actions_completed": [
+    "IndexNow検索エンジン即時登録Ping送信（対象: 全23ページ / ステータス: 202）",
+    "GitHub検索＆Google上位表示用セールスREADME.mdの自動構築・更新",
+    "全20業種ページからnote有料記事(¥1,980)へのダイレクトCTA配置"
+  ],
+  "submitted_urls_count": 23,
+  "indexnow_response": {
+    "status": 202,
+    "message": "IndexNow Ping Accepted"
+  },
+  "readme_path": "C:\\Users\\yukar\\Desktop\\Frontier_clone\\README.md",
+  "key_file": "C:\\Users\\yukar\\Desktop\\Frontier_clone\\ai_ceo_system\\product_site\\autoflowaiceo2026indexnowkey90days.txt"
+}

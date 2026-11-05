@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from cfo_analytics_agent import CFOAnalyticsAgent
 from developer_agent import DeveloperAgent
 from marketer_agent import MarketerAgent
+from outbound_sales_agent import OutboundSalesAgent
 from product_packager_agent import ProductPackagerAgent
 from researcher_agent import ResearcherAgent
 
@@ -59,7 +60,7 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
     note_likes = metrics["product_kpis"].get("note_live_metrics", {}).get("like_count", 0)
     print(f"[3/4 CFO Agent] Financial & Live Note Audit Passed. Balance: ¥{balance:,} | Note Likes: {note_likes}")
 
-    # 4. Marketer Agent
+    # 4. Marketer Agent & Outbound Sales Agent
     marketer = MarketerAgent()
     marketer.generate_daily_campaigns(
         day=day,
@@ -67,7 +68,9 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
         seo_count=build_report["seo_pages_built"],
         note_likes=note_likes
     )
-    print(f"[4/4 Marketer Agent] Generated Day {day} X/Threads Viral Posts & YouTube Script")
+    sales_agent = OutboundSalesAgent()
+    sales_report = sales_agent.execute_daily_sales_actions(niches)
+    print(f"[4/4 Marketer & Sales Agent] Generated Viral Posts + Pinged IndexNow ({sales_report['submitted_urls_count']} URLs)")
 
     # 5. Update root status_log.md
     status_md = f"""# 自律型AI CEO 稼働ステータス＆経営ログ (status_log.md)
