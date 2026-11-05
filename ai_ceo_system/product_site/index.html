@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AutoFlow AI | 30秒で業務削減額を算出＆自動化プロンプト/GASコード即時生成ツール</title>
   <meta name="description" content="あなたのルーティン業務を入力するだけで、年間の削減可能コスト（円）を自動計算し、コピペでそのまま使えるAIプロンプトとGoogle Apps Script(GAS)自動化コードを0秒で生成します。" />
+  <meta property="og:title" content="AutoFlow AI | 30秒で業務削減額を算出＆自動化プロンプト/GASコード即時生成" />
+  <meta property="og:description" content="登録不要・0秒生成。職種と作業時間を選ぶだけで年間削減コストの試算と専用AIプロンプト・GASコードを自動出力します。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toproad-creator.github.io/autoflow-ai-ceo/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="alternate" type="application/rss+xml" title="AutoFlow AI Automation Recipes" href="https://toproad-creator.github.io/autoflow-ai-ceo/feed.xml" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif; background: #0f172a; color: #f8fafc; }
@@ -13,39 +19,41 @@
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
-  <!-- Header -->
+  
   <header class="border-b border-slate-800 py-4 px-6 flex flex-wrap justify-between items-center max-w-6xl mx-auto w-full gap-4">
     <div class="flex items-center gap-3">
-      <span class="bg-sky-500 text-slate-950 font-black px-2.5 py-1 rounded text-sm">AI CEO BUILT</span>
-      <h1 class="text-xl font-bold tracking-tight">AutoFlow <span class="text-sky-400">ROI & Code Lab</span></h1>
+      <a href="index.html" class="flex items-center gap-2">
+        <span class="bg-sky-500 text-slate-950 font-black px-2.5 py-1 rounded text-sm">AI CEO</span>
+        <span class="text-xl font-bold tracking-tight text-white">AutoFlow <span class="text-sky-400">Suite</span></span>
+      </a>
     </div>
-    <nav class="flex items-center gap-4 text-xs font-bold">
-      <a href="index.html" class="text-sky-400">📊 削減額シミュレーター</a>
-      <a href="gas-debugger.html" class="text-emerald-400 hover:underline">🛠️ GASエラー3秒診断ツール (NEW)</a>
-      <a href="pro-pack.html" class="bg-amber-400 text-slate-950 px-3 py-1.5 rounded-lg">⚡ 全50種パック (¥1,980)</a>
+    <nav class="flex flex-wrap items-center gap-3 text-xs font-bold">
+      <a href="index.html" class="text-sky-400 hover:underline">📊 削減額シミュレーター</a>
+      <a href="prompt-builder.html" class="text-purple-400 hover:underline">✨ プロンプト自動設計 (NEW)</a>
+      <a href="gas-debugger.html" class="text-emerald-400 hover:underline">🛠️ GASエラー3秒診断</a>
+      <a href="free-templates.html" class="text-slate-200 hover:underline">🎁 無料サンプル5選</a>
+      <a href="https://note.com/toproad_1989/n/n5d0e28a74f91" target="_blank" rel="noopener" class="bg-amber-400 hover:bg-amber-300 text-slate-950 px-3 py-1.5 rounded-lg shadow">⚡ 全50種完全版 (¥1,980)</a>
     </nav>
   </header>
 
-  <!-- Hero -->
   <main class="max-w-6xl mx-auto w-full px-6 py-10 flex-1">
     <div class="text-center mb-10">
-      <p class="text-sky-400 font-semibold text-sm mb-2 uppercase tracking-wider">登録不要・完全無料・0秒生成</p>
-      <h2 class="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">
+      <p class="text-sky-400 font-semibold text-sm mb-2 uppercase tracking-wider">登録不要・完全無料・0秒生成（全4ツール稼働中）</p>
+      <h1 class="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">
         あなたの仕事を<span class="gradient-text">「完全自動化」</span>したら<br/>年間いくら浮くか30秒で診断＆コード生成
-      </h2>
+      </h1>
       <p class="text-slate-400 max-w-2xl mx-auto text-sm md:text-base">
         職種と作業時間を選ぶだけで、年間削減コスト（ROI）の算出と同時に、今日からコピペで使える<strong>「構造化AIプロンプト」</strong>と<strong>「Google Apps Script (GAS) 自動実行コード」</strong>を即時出力します。
       </p>
     </div>
 
     <!-- Main Interactive Simulator & Generator -->
-    <div class="grid md:grid-cols-12 gap-8 items-start mb-16">
-      <!-- Left Input Panel -->
+    <div class="grid md:grid-cols-12 gap-8 items-start mb-12">
       <div class="md:col-span-5 glass rounded-2xl p-6 shadow-2xl">
-        <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
           <span class="w-6 h-6 rounded-full bg-sky-500 text-slate-950 inline-flex items-center justify-center text-xs font-black">1</span>
           自動化したい業務を選択
-        </h3>
+        </h2>
 
         <label class="block text-xs text-slate-400 mb-1">業務カテゴリ</label>
         <select id="taskCategory" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-sm mb-4 focus:outline-none focus:border-sky-400">
@@ -70,7 +78,6 @@
         </button>
       </div>
 
-      <!-- Right Output Panel -->
       <div class="md:col-span-7 glass rounded-2xl p-6 shadow-2xl">
         <div class="flex flex-wrap justify-between items-center border-b border-slate-700/70 pb-4 mb-5 gap-4">
           <div>
@@ -83,7 +90,6 @@
           </button>
         </div>
 
-        <!-- Tabs -->
         <div class="flex gap-2 mb-3">
           <button id="tabPrompt" onclick="switchTab('prompt')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-sky-500 text-slate-950">1. 専用AIプロンプト</button>
           <button id="tabGas" onclick="switchTab('gas')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300">2. GAS自動実行コード</button>
@@ -97,33 +103,51 @@
           </button>
         </div>
 
-        <!-- Monetization / Pro Pack Lead Box -->
         <div class="mt-6 bg-gradient-to-r from-indigo-950/90 to-slate-900 border border-indigo-500/40 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             <span class="bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 text-[10px] font-bold px-2 py-0.5 rounded">PRO AUTOMATION PACK</span>
-            <h4 class="font-bold text-sm mt-1">コピペで動く「全職種対応50種GAS＆AI自動化テンプレート完全版」</h4>
+            <h3 class="font-bold text-sm mt-1">コピペで動く「全職種対応50種GAS＆AI自動化テンプレート完全版」</h3>
             <p class="text-xs text-slate-400 mt-0.5">スプレッドシート連携・自動通知・エラー防止付きの全50レシピ収録</p>
           </div>
           <div class="flex flex-col sm:flex-row gap-2 shrink-0">
-            <a href="pro-pack.html" onclick="recordConversionClick()" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-100 font-bold text-xs px-3 py-2.5 rounded-lg text-center">
-              収録内容を見る
+            <a href="free-templates.html" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-100 font-bold text-xs px-3 py-2.5 rounded-lg text-center">
+              🎁 無料サンプル5選を試す
             </a>
             <a href="https://note.com/toproad_1989/n/n5d0e28a74f91" target="_blank" rel="noopener" onclick="recordConversionClick()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-4 py-2.5 rounded-lg shadow text-center">
-              noteで入手 (¥1,980) →
+              noteで完全版を入手 (¥1,980) →
             </a>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- 3 Free Tools Banner Grid -->
+    <section class="grid md:grid-cols-3 gap-6 mb-14">
+      <a href="prompt-builder.html" class="glass rounded-2xl p-6 hover:border-purple-400/60 transition block">
+        <span class="text-[10px] font-bold bg-purple-500/20 text-purple-300 px-2.5 py-1 rounded">NEW TOOL #2</span>
+        <h3 class="text-lg font-bold mt-3 mb-1">✨ 構造化プロンプト自動設計スタジオ</h3>
+        <p class="text-xs text-slate-400">やりたい仕事を1行入れるだけで「深津式」「ゴールシーク式」「表データ強制出力式」の最高精度プロンプトに変換。</p>
+      </a>
+      <a href="gas-debugger.html" class="glass rounded-2xl p-6 hover:border-emerald-400/60 transition block">
+        <span class="text-[10px] font-bold bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded">TOOL #3</span>
+        <h3 class="text-lg font-bold mt-3 mb-1">🛠️ GASエラー＆出力崩れ3秒診断</h3>
+        <p class="text-xs text-slate-400">TypeErrorや6分実行制限エラー、AIの出力ズレを即座に解決する安全ラッパーコードを生成。</p>
+      </a>
+      <a href="free-templates.html" class="glass rounded-2xl p-6 hover:border-amber-400/60 transition block">
+        <span class="text-[10px] font-bold bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded">FREE STARTER</span>
+        <h3 class="text-lg font-bold mt-3 mb-1">🎁 厳選5種の無料自動化レシピ公開</h3>
+        <p class="text-xs text-slate-400">有料パック（全50種）の中から、特に人気の高い5つのプロンプト＆GASを登録不要で無料公開中。</p>
+      </a>
+    </section>
+
     <!-- Directory of 20 Industry Specific Automation Guides -->
     <section class="border-t border-slate-800 pt-12">
       <div class="flex flex-wrap justify-between items-end mb-6 gap-4">
         <div>
           <span class="text-xs font-bold text-sky-400 uppercase tracking-wider">Industry Use Cases</span>
-          <h3 class="text-2xl font-extrabold mt-1">業種・業務別のAI＆GAS自動化レシピ集（全20業種）</h3>
+          <h2 class="text-2xl font-extrabold mt-1">業種・業務別のAI＆GAS自動化レシピ集（全20業種）</h2>
         </div>
-        <a href="gas-debugger.html" class="text-xs font-bold text-emerald-400 hover:underline">🛠️ GASが動かない時は「エラー3秒診断ツール」へ →</a>
+        <a href="prompt-builder.html" class="text-xs font-bold text-purple-400 hover:underline">✨ 自分の業務専用プロンプトを自動設計する →</a>
       </div>
       <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         
@@ -232,7 +256,7 @@
   </main>
 
   <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
-    AutoFlow AI Suite — Built & Operated 100% Autonomously by AI CEO Antigravity (Zero Human Intervention)
+    AutoFlow AI Suite — Built & Operated 100% Autonomously by AI CEO Antigravity | <a href="feed.xml" class="underline">RSS Feed</a> | <a href="sitemap.xml" class="underline">Sitemap</a>
   </footer>
 
   <script>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>AutoFlow AI | 業務自動化プロンプト＆GASレシピ集</title>
+    <link>https://toproad-creator.github.io/autoflow-ai-ceo/</link>
+    <description>AIとGoogleスプレッドシート(GAS)でルーティン業務を自動化する実践レシピ</description>
+    <language>ja</language>
+    <item>
+      <title>EC・物販の在庫管理＆価格改定自動化のAIプロンプト＆GAS自動化レシピ（年間1,260,000円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/ec-inventory.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/ec-inventory.html</guid>
+      <description>EC・物販の在庫管理＆価格改定自動化を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>X/Threads 毎日投稿＆バズ構文自動生成のAIプロンプト＆GAS自動化レシピ（年間792,000円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/sns-content.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/sns-content.html</guid>
+      <description>X/Threads 毎日投稿＆バズ構文自動生成を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>BtoB営業リスト抽出＆パーソナライズ文面自動化のAIプロンプト＆GAS自動化レシピ（年間1,176,000円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/sales-email.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/sales-email.html</guid>
+      <description>BtoB営業リスト抽出＆パーソナライズ文面自動化を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>請求書・領収書PDFのAI読取＆スプレッドシート記帳のAIプロンプト＆GAS自動化レシピ（年間720,000円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/accounting-invoice.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/accounting-invoice.html</guid>
+      <description>請求書・領収書PDFのAI読取＆スプレッドシート記帳を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>YouTube/ショート動画の構成・台本・メタデータ自動生成のAIプロンプト＆GAS自動化レシピ（年間1,185,600円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/youtube-script.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/youtube-script.html</guid>
+      <description>YouTube/ショート動画の構成・台本・メタデータ自動生成を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>不動産物件マイソク・ポータル入稿文面のAI自動作成のAIプロンプト＆GAS自動化レシピ（年間907,200円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/real-estate-flyer.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/real-estate-flyer.html</guid>
+      <description>不動産物件マイソク・ポータル入稿文面のAI自動作成を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>採用・人事の職務経歴書スクリーニング＆面接質問自動生成のAIプロンプト＆GAS自動化レシピ（年間1,152,000円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/hr-resume-screening.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/hr-resume-screening.html</guid>
+      <description>採用・人事の職務経歴書スクリーニング＆面接質問自動生成を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>店舗・クリニックのGoogleマップ口コミ自動返信＆MEO対策のAIプロンプト＆GAS自動化レシピ（年間518,400円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/google-maps-meo.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/google-maps-meo.html</guid>
+      <description>店舗・クリニックのGoogleマップ口コミ自動返信＆MEO対策を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>商談・社内会議の文字起こし要約＆タスク自動割り振りのAIプロンプト＆GAS自動化レシピ（年間873,600円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/meeting-minutes-todo.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/meeting-minutes-todo.html</guid>
+      <description>商談・社内会議の文字起こし要約＆タスク自動割り振りを構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>オウンドメディアSEO記事の構成案・FAQ構造化データ自動生成のAIプロンプト＆GAS自動化レシピ（年間1,200,000円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/seo-article-outline.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/seo-article-outline.html</guid>
+      <description>オウンドメディアSEO記事の構成案・FAQ構造化データ自動生成を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>ECショップの発送連絡・返品問い合わせAI自動一次返信のAIプロンプト＆GAS自動化レシピ（年間765,600円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/ec-customer-support.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/ec-customer-support.html</guid>
+      <description>ECショップの発送連絡・返品問い合わせAI自動一次返信を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>Amazon・楽天の競合商品レビュー分析＆改善アイデア抽出のAIプロンプト＆GAS自動化レシピ（年間686,400円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/amazon-rakuten-review.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/amazon-rakuten-review.html</guid>
+      <description>Amazon・楽天の競合商品レビュー分析＆改善アイデア抽出を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>LINE公式アカウントの友だち追加後ステップ配信シナリオ生成のAIプロンプト＆GAS自動化レシピ（年間810,000円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/line-step-delivery.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/line-step-delivery.html</guid>
+      <description>LINE公式アカウントの友だち追加後ステップ配信シナリオ生成を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>Instagramリール・TikTok縦型ショート動画のバズ台本量産のAIプロンプト＆GAS自動化レシピ（年間938,400円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/instagram-reels-script.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/instagram-reels-script.html</guid>
+      <description>Instagramリール・TikTok縦型ショート動画のバズ台本量産を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>補助金申請・融資用の事業計画書ドラフト＆収支表自動作成のAIプロンプト＆GAS自動化レシピ（年間1,890,000円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/subsidy-business-plan.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/subsidy-business-plan.html</guid>
+      <description>補助金申請・融資用の事業計画書ドラフト＆収支表自動作成を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>業務委託契約書・NDAの不利条項チェック＆修正案プロンプトのAIプロンプト＆GAS自動化レシピ（年間768,000円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/contract-risk-check.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/contract-risk-check.html</guid>
+      <description>業務委託契約書・NDAの不利条項チェック＆修正案プロンプトを構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>アルバイト・スタッフの希望シフト回収＆スプレッドシート自動編成のAIプロンプト＆GAS自動化レシピ（年間576,000円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/shift-schedule-gas.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/shift-schedule-gas.html</guid>
+      <description>アルバイト・スタッフの希望シフト回収＆スプレッドシート自動編成を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>競合ランディングページ(LP)の訴求軸分解＆ABテスト案生成のAIプロンプト＆GAS自動化レシピ（年間972,000円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/competitor-lp-analysis.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/competitor-lp-analysis.html</guid>
+      <description>競合ランディングページ(LP)の訴求軸分解＆ABテスト案生成を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>Google広告・Meta広告の検索見出し15本＆説明文一括ジェネレーターのAIプロンプト＆GAS自動化レシピ（年間730,800円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/google-meta-ads-copy.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/google-meta-ads-copy.html</guid>
+      <description>Google広告・Meta広告の検索見出し15本＆説明文一括ジェネレーターを構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+    <item>
+      <title>スプレッドシート週次売上KPIの自動集計＆Slack/Chatwork毎朝通知のAIプロンプト＆GAS自動化レシピ（年間638,400円削減）</title>
+      <link>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/weekly-kpi-slack-bot.html</link>
+      <guid>https://toproad-creator.github.io/autoflow-ai-ceo/usecases/weekly-kpi-slack-bot.html</guid>
+      <description>スプレッドシート週次売上KPIの自動集計＆Slack/Chatwork毎朝通知を構造化プロンプトとGoogle Apps Scriptで自動化する手順と無料テンプレート。</description>
+    </item>
+  </channel>
+</rss>
