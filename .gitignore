@@ -15,5 +15,7 @@ __pycache__/
 .env.*
 ai_ceo_system/product_site/downloads/
 ai_ceo_system/data/autoflow_pro_50_templates.json
+ai_ceo_system/data/note_browser_profile/
+ai_ceo_system/data/*.png
 ai_ceo_system/marketing_outputs/note_paid_article_1980yen.txt
 

@@ -4,7 +4,6 @@ on:
   push:
     branches: [ main ]
   schedule:
-    # 毎日 日本時間 08:00 (UTC 23:00) にPCが閉じていてもクラウド上で自動稼働
     - cron: '0 23 * * *'
   workflow_dispatch:
 
@@ -20,9 +19,6 @@ concurrency:
 jobs:
   autonomous_ceo_cycle:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     env:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     steps:

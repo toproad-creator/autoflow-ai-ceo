@@ -1,6 +1,6 @@
 {
-  "day": 4,
-  "timestamp": "2026-11-06T07:17:51.375462+09:00",
+  "day": 5,
+  "timestamp": "2026-11-07T08:45:46.159963+09:00",
   "financials": {
     "initial_balance": 15000,
     "current_balance": 15000,
@@ -12,17 +12,27 @@
   "product_kpis": {
     "deployed_tools_count": 4,
     "programmatic_seo_pages": 20,
-    "total_public_urls": 25,
+    "total_public_urls": 26,
     "note_live_metrics": {
-      "note_key": "n5d0e28a74f91",
-      "note_url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
+      "paid_note_key": "n5d0e28a74f91",
+      "paid_note_url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
       "status": "published",
       "price_jpy": 1980,
-      "like_count": 1,
-      "comment_count": 0,
+      "paid_article_likes": 1,
+      "total_published_notes": 2,
+      "total_account_likes": 1,
       "paywall_active": true
     },
-    "estimated_conversion_rate": "2.5% (Target)"
+    "github_traffic_metrics": {
+      "repo_views_14d": 0,
+      "repo_uniques_14d": 0,
+      "clones_14d": 76,
+      "unique_cloners_14d": 36
+    }
+  },
+  "traffic_diagnosis": {
+    "bottleneck": "noteアカウントに有料記事1本しかなく、毎日の『無料集客記事』投稿による新着タイムライン露出が行われていない点",
+    "countermeasure": "note_auto_publisher.py による『無料お役立ち記事→有料1,980円パック誘導』の自動執筆・自動投稿パイプラインを稼働"
   },
   "system_health": {
     "wallet_status": "HEALTHY",

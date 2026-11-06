@@ -1,5 +1,6 @@
 import json
 import os
+import subprocess
 import urllib.request
 from datetime import datetime
 
@@ -7,12 +8,14 @@ ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 WALLET_PATH = os.path.join(ROOT_DIR, "wallet.json")
 METRICS_PATH = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "metrics.json")
 NOTE_API_URL = "https://note.com/api/v3/notes/n5d0e28a74f91"
+NOTE_CREATOR_API_URL = "https://note.com/api/v2/creators/toproad_1989/contents?kind=note&page=1"
+GH_EXE = r"C:\Program Files\GitHub CLI\gh.exe"
 
 
 class CFOAnalyticsAgent:
     """財務・計測サブエージェント (CFO & Analytics Agent)
     wallet.jsonの厳格な管理（残高0円未満の即時ブロック）と、
-    本番公開サイトおよびnote有料記事API（スキ数・公開状態・価格）のリアルタイム自動計測を行う。
+    GitHub Traffic API および note API からのリアル集客数値（PV・クローン数・記事数・スキ数）の自動計測を行う。
     """
 
     def __init__(self):
@@ -35,26 +38,57 @@ class CFOAnalyticsAgent:
             with urllib.request.urlopen(req, timeout=8) as resp:
                 payload = json.loads(resp.read().decode("utf-8"))
                 data = payload.get("data", {})
-                return {
-                    "note_key": "n5d0e28a74f91",
-                    "note_url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
-                    "status": data.get("status", "published"),
-                    "price_jpy": data.get("price", 1980),
-                    "like_count": data.get("like_count", 0),
-                    "comment_count": data.get("comment_count", 0),
-                    "paywall_active": not data.get("can_read", False)
-                }
+
+            req_c = urllib.request.Request(NOTE_CREATOR_API_URL, headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req_c, timeout=8) as resp_c:
+                c_data = json.loads(resp_c.read().decode("utf-8")).get("data", {})
+                total_notes = c_data.get("totalCount", 1)
+                total_likes = sum(item.get("likeCount", 0) for item in c_data.get("contents", []))
+
+            return {
+                "paid_note_key": "n5d0e28a74f91",
+                "paid_note_url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
+                "status": data.get("status", "published"),
+                "price_jpy": data.get("price", 1980),
+                "paid_article_likes": data.get("like_count", 0),
+                "total_published_notes": total_notes,
+                "total_account_likes": total_likes,
+                "paywall_active": not data.get("can_read", False)
+            }
         except Exception as e:
             return {
-                "note_key": "n5d0e28a74f91",
-                "note_url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
+                "paid_note_key": "n5d0e28a74f91",
                 "status": "unknown",
                 "error": str(e)
             }
 
-    def audit_and_update_metrics(self, day: int, built_pages_count: int, deployed_tools_count: int = 2) -> dict:
+    def fetch_github_traffic_metrics(self) -> dict:
+        if not os.path.exists(GH_EXE):
+            return {"repo_views_14d": 0, "repo_uniques_14d": 0, "clones_14d": 0, "unique_cloners_14d": 0}
+        try:
+            v_proc = subprocess.run(
+                [GH_EXE, "api", "repos/toproad-creator/autoflow-ai-ceo/traffic/views"],
+                capture_output=True, text=True, encoding="utf-8", timeout=10
+            )
+            c_proc = subprocess.run(
+                [GH_EXE, "api", "repos/toproad-creator/autoflow-ai-ceo/traffic/clones"],
+                capture_output=True, text=True, encoding="utf-8", timeout=10
+            )
+            v_data = json.loads(v_proc.stdout) if v_proc.returncode == 0 else {}
+            c_data = json.loads(c_proc.stdout) if c_proc.returncode == 0 else {}
+            return {
+                "repo_views_14d": v_data.get("count", 0),
+                "repo_uniques_14d": v_data.get("uniques", 0),
+                "clones_14d": c_data.get("count", 0),
+                "unique_cloners_14d": c_data.get("uniques", 0)
+            }
+        except Exception as e:
+            return {"error": str(e)}
+
+    def audit_and_update_metrics(self, day: int, built_pages_count: int, deployed_tools_count: int = 4) -> dict:
         wallet = self.load_wallet()
         note_stats = self.fetch_live_note_metrics()
+        gh_stats = self.fetch_github_traffic_metrics()
         metrics = {
             "day": day,
             "timestamp": datetime.now().astimezone().isoformat(),
@@ -69,9 +103,13 @@ class CFOAnalyticsAgent:
             "product_kpis": {
                 "deployed_tools_count": deployed_tools_count,
                 "programmatic_seo_pages": built_pages_count,
-                "total_public_urls": deployed_tools_count + built_pages_count + 1,
+                "total_public_urls": deployed_tools_count + built_pages_count + 2,
                 "note_live_metrics": note_stats,
-                "estimated_conversion_rate": "2.5% (Target)"
+                "github_traffic_metrics": gh_stats
+            },
+            "traffic_diagnosis": {
+                "bottleneck": "noteアカウントに有料記事1本しかなく、毎日の『無料集客記事』投稿による新着タイムライン露出が行われていない点",
+                "countermeasure": "note_auto_publisher.py による『無料お役立ち記事→有料1,980円パック誘導』の自動執筆・自動投稿パイプラインを稼働"
             },
             "system_health": {
                 "wallet_status": "HEALTHY",
@@ -87,5 +125,5 @@ class CFOAnalyticsAgent:
 
 if __name__ == "__main__":
     agent = CFOAnalyticsAgent()
-    result = agent.audit_and_update_metrics(day=3, built_pages_count=20, deployed_tools_count=2)
-    print("[CFO Agent] Live Note & Financial Audit:", json.dumps(result["product_kpis"]["note_live_metrics"], ensure_ascii=False))
+    result = agent.audit_and_update_metrics(day=5, built_pages_count=20, deployed_tools_count=4)
+    print("[CFO Agent] Audit Complete:", json.dumps(result["product_kpis"], ensure_ascii=False))
