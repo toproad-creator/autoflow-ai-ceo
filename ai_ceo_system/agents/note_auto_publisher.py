@@ -7,6 +7,7 @@ import urllib.request
 from datetime import datetime
 from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
+from thumbnail_generator import NoteThumbnailGenerator
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -23,13 +24,14 @@ NOTE_CREATOR_API_URL = "https://note.com/api/v2/creators/toproad_1989/contents?k
 
 
 class NoteAutoPublisherAgent:
-    """noteタイムライン集客用・無料お役立ち記事の自動執筆＆自動投稿エージェント
-    .env の NOTE_EMAIL / NOTE_PASSWORD を使用して、全自動ログイン＆記事公開を行う。
+    """noteタイムライン集客用・無料お役立ち記事＆1280x670サムネイル画像の自動生成・自動投稿エージェント
+    .env の NOTE_EMAIL / NOTE_PASSWORD を使用して、全自動ログイン＆アイキャッチ画像設定＆記事公開を行う。
     """
 
     def __init__(self):
         os.makedirs(MARKETING_DIR, exist_ok=True)
         os.makedirs(PROFILE_DIR, exist_ok=True)
+        self.thumb_gen = NoteThumbnailGenerator()
 
     def fetch_published_titles(self) -> list[dict]:
         try:
@@ -37,7 +39,12 @@ class NoteAutoPublisherAgent:
             with urllib.request.urlopen(req, timeout=8) as resp:
                 data = json.loads(resp.read().decode("utf-8")).get("data", {})
                 return [
-                    {"key": c.get("key"), "title": c.get("name"), "url": f"https://note.com/toproad_1989/n/{c.get('key')}"}
+                    {
+                        "key": c.get("key"),
+                        "title": c.get("name"),
+                        "eyecatch": c.get("eyecatch"),
+                        "url": f"https://note.com/toproad_1989/n/{c.get('key')}"
+                    }
                     for c in data.get("contents", [])
                 ]
         except Exception:
@@ -80,22 +87,83 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
         with open(out_file, "w", encoding="utf-8") as f:
             f.write(f"【タイトル】\n{title}\n\n【ハッシュタグ】\n{' '.join('#'+h for h in hashtags)}\n\n【本文】\n{body}")
 
+        thumb_path = self.thumb_gen.generate_free_article_thumbnail(niche, day=day)
         return {
             "day": day,
             "title": title,
             "hashtags": hashtags,
             "file_path": out_file,
+            "thumbnail_path": thumb_path,
             "body": body
         }
+
+    def _upload_eyecatch(self, page, thumbnail_path: str) -> bool:
+        if not thumbnail_path or not os.path.exists(thumbnail_path):
+            return False
+        try:
+            btns = page.locator('button[data-id="ButtonIcon"]')
+            for i in range(btns.count()):
+                b = btns.nth(i)
+                box = b.bounding_box()
+                if box and 60 < box["y"] < 220:
+                    b.click()
+                    break
+            time.sleep(1.5)
+            upload_btn = page.locator('button:has-text("画像をアップロード")').first
+            if upload_btn.is_visible(timeout=5000):
+                with page.expect_file_chooser(timeout=10000) as fc_info:
+                    upload_btn.click()
+                fc_info.value.set_files(thumbnail_path)
+                time.sleep(3)
+                save_crop_btn = page.locator('button:has-text("保存")').last
+                if save_crop_btn.is_visible(timeout=8000):
+                    save_crop_btn.click()
+                    time.sleep(5)
+                return True
+        except Exception as e:
+            print(f"[Note Auto-Publisher] Eyecatch upload warning: {e}")
+        return False
+
+    def update_existing_article_thumbnail(self, note_key: str, thumbnail_path: str) -> dict:
+        print(f"[Note Auto-Publisher] Attaching thumbnail to {note_key}...")
+        with sync_playwright() as p:
+            context = p.chromium.launch_persistent_context(
+                user_data_dir=PROFILE_DIR,
+                channel="chrome",
+                headless=False,
+                args=["--disable-blink-features=AutomationControlled", "--start-maximized"],
+                no_viewport=True
+            )
+            page = context.pages[0] if context.pages else context.new_page()
+            page.goto(f"https://editor.note.com/notes/{note_key}/edit/", wait_until="networkidle", timeout=45000)
+            time.sleep(4)
+            uploaded = self._upload_eyecatch(page, thumbnail_path)
+            page.screenshot(path=SCREENSHOT_PATH)
+
+            # 公開に進む -> 更新する/投稿する
+            pub_step = page.locator('button:has-text("公開に進む")').first
+            if pub_step.is_visible():
+                pub_step.click()
+                time.sleep(4)
+                final_btn = page.locator('button:has-text("更新する"), button:has-text("投稿する"), button:has-text("公開")').last
+                if final_btn.is_visible():
+                    final_btn.click()
+                    time.sleep(6)
+            page.screenshot(path=SCREENSHOT_PATH)
+            context.close()
+            return {"note_key": note_key, "uploaded": uploaded, "url": f"https://note.com/toproad_1989/n/{note_key}"}
 
     def auto_publish_headless(self, article: dict) -> dict:
         existing = self.fetch_published_titles()
         for item in existing:
             if item["title"] == article["title"]:
+                if not item.get("eyecatch") and article.get("thumbnail_path"):
+                    self.update_existing_article_thumbnail(item["key"], article["thumbnail_path"])
                 return {
                     "status": "already_published",
                     "url": item["url"],
-                    "title": item["title"]
+                    "title": item["title"],
+                    "thumbnail_path": article.get("thumbnail_path")
                 }
 
         email = os.getenv("NOTE_EMAIL", "").strip()
@@ -141,24 +209,28 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
                 time.sleep(5)
             page.screenshot(path=SCREENSHOT_PATH)
 
-            # 3. タイトル入力
+            # 3. アイキャッチ（サムネイル画像 1280x670px）を自動アップロード
+            if article.get("thumbnail_path"):
+                self._upload_eyecatch(page, article["thumbnail_path"])
+
+            # 4. タイトル入力
             title_box = page.locator('textarea[placeholder*="タイトル"], [placeholder*="タイトル"], [data-placeholder*="タイトル"]').first
             title_box.wait_for(state="visible", timeout=45000)
             title_box.click()
             title_box.fill(article["title"])
             time.sleep(1)
 
-            # 4. 本文入力
+            # 5. 本文入力
             body_box = page.locator('.ProseMirror, div[contenteditable="true"]').first
             body_box.click()
             page.keyboard.insert_text(article["body"])
             time.sleep(2)
 
-            # 5. 公開に進む
+            # 6. 公開に進む
             page.locator('button:has-text("公開に進む")').first.click()
             time.sleep(4)
 
-            # 6. ハッシュタグ入力
+            # 7. ハッシュタグ入力
             try:
                 tag_input = page.locator('input[placeholder*="ハッシュタグ"], input[placeholder*="タグ"]').first
                 if tag_input.is_visible(timeout=5000):
@@ -173,7 +245,7 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             time.sleep(1)
             page.screenshot(path=SCREENSHOT_PATH)
 
-            # 7. 投稿するボタンをクリック
+            # 8. 投稿するボタンをクリック
             final_btn = page.locator('button:has-text("投稿する"), button:has-text("公開")').last
             final_btn.click()
             time.sleep(7)
@@ -183,7 +255,13 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
 
             m = re.search(r"(n[a-z0-9]+)", final_url)
             public_url = f"https://note.com/toproad_1989/n/{m.group(1)}" if m else final_url
-            return {"status": "published", "url": public_url, "title": article["title"], "screenshot": SCREENSHOT_PATH}
+            return {
+                "status": "published",
+                "url": public_url,
+                "title": article["title"],
+                "thumbnail_path": article.get("thumbnail_path"),
+                "screenshot": SCREENSHOT_PATH
+            }
 
     def publish_daily_lead_if_needed(self, day: int, niches: list[dict]) -> dict:
         idx = (day - 5) % len(niches) if day >= 5 else 0
@@ -199,5 +277,10 @@ if __name__ == "__main__":
     if "--auto-post" in sys.argv:
         res = agent.auto_publish_headless(art)
         print(json.dumps(res, ensure_ascii=False))
+    elif "--update-all-thumbs" in sys.argv:
+        paid_thumb = agent.thumb_gen.generate_paid_pack_thumbnail()
+        r1 = agent.update_existing_article_thumbnail("n70171b631e61", art["thumbnail_path"])
+        r2 = agent.update_existing_article_thumbnail("n5d0e28a74f91", paid_thumb)
+        print(json.dumps({"free_article": r1, "paid_article": r2}, ensure_ascii=False))
     else:
-        print("Generated:", art["file_path"])
+        print("Generated:", art["file_path"], art["thumbnail_path"])
