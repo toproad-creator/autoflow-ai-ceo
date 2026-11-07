@@ -11,7 +11,6 @@ sys.path.insert(0, os.path.dirname(__file__))
 from cfo_analytics_agent import CFOAnalyticsAgent
 from developer_agent import DeveloperAgent
 from marketer_agent import MarketerAgent
-from note_auto_publisher import NoteAutoPublisherAgent
 from outbound_sales_agent import OutboundSalesAgent
 from product_packager_agent import ProductPackagerAgent
 from researcher_agent import ResearcherAgent
@@ -55,6 +54,7 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
     note_pub_result = {"status": "skipped_cloud"}
     if not cloud_cron:
         try:
+            from note_auto_publisher import NoteAutoPublisherAgent
             note_publisher = NoteAutoPublisherAgent()
             note_pub_result = note_publisher.publish_daily_lead_if_needed(day=day, niches=niches)
             print(f"[3/5 Note Auto-Publisher] Status: {note_pub_result.get('status')} | URL: {note_pub_result.get('url', '')}")
@@ -71,10 +71,11 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
     note_meta = metrics["product_kpis"].get("note_live_metrics", {})
     note_likes = note_meta.get("paid_article_likes", note_meta.get("like_count", 0))
     total_notes = note_meta.get("total_published_notes", 1)
+    total_likes = note_meta.get("total_account_likes", note_likes)
     gh_meta = metrics["product_kpis"].get("github_traffic_metrics", {})
     print(
         f"[4/5 CFO Agent] Balance: ¥{balance:,} | Note Published Articles: {total_notes} "
-        f"(Likes: {note_likes}) | GitHub Clones (14d): {gh_meta.get('clones_14d', 0)}"
+        f"(Total Likes: {total_likes}) | GitHub Clones (14d): {gh_meta.get('clones_14d', 0)}"
     )
 
     # 5. Marketer Agent & Outbound Sales Agent
@@ -83,7 +84,7 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
         day=day,
         balance=balance,
         seo_count=build_report["seo_pages_built"],
-        note_likes=note_likes
+        note_likes=total_likes
     )
     sales_agent = OutboundSalesAgent()
     sales_report = sales_agent.execute_daily_sales_actions(niches)
@@ -95,7 +96,7 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
 - **最終自動更新日時:** {datetime.now().astimezone().isoformat()}
 - **現在フェーズ:** Day {day} / 90
 - **現在残高:** ¥{balance:,}（初期資金 ¥15,000 / 累計支出 ¥0 / 累計売上 ¥0）
-- **note公開記事ステータス:** 公開記事数 {total_notes}本（有料記事 ¥1,980 + 無料集客記事 {max(0, total_notes - 1)}本 / 累計スキ数: {note_meta.get('total_account_likes', note_likes)}件）
+- **note公開記事ステータス:** 公開記事数 {total_notes}本（有料記事 ¥1,980 + 無料集客記事 {max(0, total_notes - 1)}本 / 累計スキ数: {total_likes}件）
   - 有料本編（¥1,980）: https://note.com/toproad_1989/n/n5d0e28a74f91
   - 無料集客記事（第1弾・自動投稿済）: https://note.com/toproad_1989/n/n70171b631e61
 - **GitHubトラフィック計測:** 過去14日間クローン数 {gh_meta.get('clones_14d', 0)}回（ユニーク {gh_meta.get('unique_cloners_14d', 0)}名）
@@ -117,7 +118,7 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
 - **[Day 1]** `wallet.json` 初期化（¥15,000）、第1弾ツール『AutoFlow AI』開発、GitHub Pages & Actions 24時間自動稼働構築
 - **[Day 2]** 全50種プロンプト＆GAS完全版パック（¥1,980）をnoteにて商用公開（ https://note.com/toproad_1989/n/n5d0e28a74f91 ）、全ページの購入ボタンを実決済へ直結
 - **[Day 3〜4]** 朝08:00自動スケジューラ稼働、第2〜4弾Webツール（`prompt-builder.html`, `gas-debugger.html`, `free-templates.html`）構築、業種別SEOページ20本展開、GitHub Gist & Release 外部被リンク網構築
-- **[Day {day}]** noteタイムライン自動集客システム（`note_auto_publisher.py`）稼働開始。無料お役立ち記事（ https://note.com/toproad_1989/n/n70171b631e61 ）の自動ログイン・自動投稿に成功し、note公開記事数が{total_notes}本に増加
+- **[Day {day}]** noteタイムライン自動集客＆サムネイル自動生成システム（`note_auto_publisher.py` / `thumbnail_generator.py`）稼働開始。無料お役立ち記事（ https://note.com/toproad_1989/n/n70171b631e61 ）の公開直後にスキが付き、アカウント累計スキ数が{total_likes}件に増加
 """
     with open(STATUS_LOG_PATH, "w", encoding="utf-8") as f:
         f.write(status_md)
