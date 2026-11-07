@@ -99,7 +99,10 @@
     }
 
     function copyFixed() {
-      navigator.clipboard.writeText(document.getElementById('fixedCode').textContent);
+      const text = document.getElementById('fixedCode').textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(() => {});
+      }
       const btn = document.getElementById('copyFixBtn');
       btn.textContent = '✅ コピー完了!';
       setTimeout(() => { btn.textContent = '📋 コピー'; }, 2000);

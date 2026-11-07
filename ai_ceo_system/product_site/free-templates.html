@@ -29,8 +29,90 @@
       <span class="bg-amber-400/20 text-amber-300 border border-amber-400/40 text-xs font-bold px-3 py-1 rounded-full">登録不要・その場でコピペ体験</span>
       <h1 class="text-3xl md:text-4xl font-extrabold mt-4 mb-3">🎁 厳選5種の自動化レシピ無料公開 ＆ 完全版50選の比較</h1>
       <p class="text-slate-400 text-sm max-w-2xl mx-auto">
-        まずは無料サンプルの品質を実際にお試しください。気に入っていただけた方は、全10業種・50種類すべてが揃った完全版パック（¥1,980）をnoteにて即時入手いただけます。
+        まずは無料サンプル5選の品質を実際にお試しください。気に入っていただけた方は、全10業種・50種類すべてが揃った完全版パック（¥1,980）をnoteにて即時入手いただけます。
       </p>
+    </div>
+
+    <!-- 5 Interactive Free Samples -->
+    <div class="grid md:grid-cols-1 gap-6 mb-12">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs font-bold text-sky-400">無料サンプル #1（EC・物販）</span>
+          <button onclick="copySample('s1', this)" class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-1 rounded border border-slate-600">📋 コピー</button>
+        </div>
+        <h3 class="font-bold text-base mb-2">競合価格チェック＆利益率20%確保タイトル自動生成レシピ</h3>
+        <pre id="s1" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-slate-200 whitespace-pre-wrap">【AIプロンプト】
+あなたはEC物販の価格戦略アナリストです。以下の原価・競合価格データから利益率20%以上を確保する推奨販売価格と、検索クリック率を高める40文字以内の商品タイトル案を3つTSV形式で出力してください。
+
+【GAS自動実行コード】
+function checkEcPriceMargin() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const rows = sheet.getDataRange().getValues();
+  for (let i = 1; i < rows.length; i++) {
+    const [sku, cost, myPrice, rivalPrice] = rows[i];
+    if (!sku) continue;
+    const margin = (myPrice - cost) / myPrice;
+    sheet.getRange(i + 1, 5).setValue(margin < 0.2 ? '⚠️利益率低下' : '✅適正');
+  }
+}</pre>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs font-bold text-purple-400">無料サンプル #2（SNS運用・マーケティング）</span>
+          <button onclick="copySample('s2', this)" class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-1 rounded border border-slate-600">📋 コピー</button>
+        </div>
+        <h3 class="font-bold text-base mb-2">1つのネタからX（140字）＋長文スレッドを同時生成する構造化プロンプト</h3>
+        <pre id="s2" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-slate-200 whitespace-pre-wrap">【AIプロンプト】
+以下の【テーマ】について、読者が保存したくなるXの140字投稿3パターンと、5連投の解説スレッドを作成してください。
+1行目には必ず「具体的な数字」と「従来の思い込みを覆す結論」を入れてください。</pre>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs font-bold text-emerald-400">無料サンプル #3（営業・カスタマーサポート）</span>
+          <button onclick="copySample('s3', this)" class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-1 rounded border border-slate-600">📋 コピー</button>
+        </div>
+        <h3 class="font-bold text-base mb-2">Googleフォーム問い合わせ受信時の即時お礼＆社内要約通知GAS</h3>
+        <pre id="s3" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-slate-200 whitespace-pre-wrap">function autoReplyInquiry() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+  const [timestamp, name, email, body, status] = sheet.getRange(lastRow, 1, 1, 5).getValues()[0];
+  if (status !== 'DONE' && email) {
+    MailApp.sendEmail(email, 'お問い合わせありがとうございます', name + '様\n内容を確認の上、担当者よりご連絡いたします。');
+    sheet.getRange(lastRow, 5).setValue('DONE');
+  }
+}</pre>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs font-bold text-amber-400">無料サンプル #4（経理・バックオフィス）</span>
+          <button onclick="copySample('s4', this)" class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-1 rounded border border-slate-600">📋 コピー</button>
+        </div>
+        <h3 class="font-bold text-base mb-2">インボイス対応・請求書テキストからの勘定科目＆税区分TSV抽出プロンプト</h3>
+        <pre id="s4" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-slate-200 whitespace-pre-wrap">【AIプロンプト】
+以下の請求書・領収書テキストから【取引日 / 支払先 / 登録番号(T〜) / 税抜金額 / 消費税率(10%・8%) / 税込合計 / 推奨勘定科目】を抽出し、スプレッドシートへ直貼り可能なタブ区切り（TSV）形式で出力してください。前置き挨拶は一切不要です。</pre>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs font-bold text-pink-400">無料サンプル #5（GASエラー防止・バッチ処理）</span>
+          <button onclick="copySample('s5', this)" class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-1 rounded border border-slate-600">📋 コピー</button>
+        </div>
+        <h3 class="font-bold text-base mb-2">GASの「6分実行制限エラー」を自動回避して途中再開する安全テンプレート</h3>
+        <pre id="s5" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-slate-200 whitespace-pre-wrap">function safeBatchRunner() {
+  const start = Date.now();
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const rows = sheet.getDataRange().getValues();
+  for (let i = 1; i < rows.length; i++) {
+    if (Date.now() - start > 270000) break; // 4分30秒で安全中断
+    if (rows[i][2] !== 'DONE') {
+      sheet.getRange(i + 1, 3).setValue('DONE');
+    }
+  }
+}</pre>
+      </div>
     </div>
 
     <!-- Comparison Table -->
@@ -74,5 +156,15 @@
       </div>
     </div>
   </main>
+  <script>
+    function copySample(id, btn) {
+      const text = document.getElementById(id).textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(() => {});
+      }
+      btn.textContent = '✅ コピー完了!';
+      setTimeout(() => { btn.textContent = '📋 コピー'; }, 2000);
+    }
+  </script>
 </body>
 </html>

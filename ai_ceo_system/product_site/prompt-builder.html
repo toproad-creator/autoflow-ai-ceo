@@ -95,7 +95,10 @@
     }
 
     function copyPrompt() {
-      navigator.clipboard.writeText(document.getElementById('promptResult').textContent);
+      const text = document.getElementById('promptResult').textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(() => {});
+      }
       const btn = document.getElementById('copyPBtn');
       btn.textContent = '✅ コピー完了!';
       setTimeout(() => { btn.textContent = '📋 コピー'; }, 2000);

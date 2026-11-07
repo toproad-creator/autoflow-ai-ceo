@@ -1,0 +1,43 @@
+{
+  "inspected_at": "2026-11-07T12:39:52.959152+09:00",
+  "total_urls_checked": 27,
+  "urls_ok_count": 27,
+  "broken_urls": [],
+  "browser_e2e": {
+    "status": "failed_js_error",
+    "js_console_errors": [
+      "https://toproad-creator.github.io/autoflow-ai-ceo/prompt-builder.html: Failed to execute 'writeText' on 'Clipboard': Write permission denied.",
+      "https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html: Failed to execute 'writeText' on 'Clipboard': Write permission denied."
+    ],
+    "tools_tested": {
+      "index_tool": {
+        "title": "AutoFlow AI | 30秒で業務削減額を算出＆自動化プロンプト/GASコード即時生成ツール",
+        "rendered_ok": true,
+        "note_cta_count": 2
+      },
+      "prompt_builder_tool": {
+        "title": "AutoPrompt Studio | 1行の指示を「深津式・構造化プロンプト」へ0秒変換する無料ジェネレーター",
+        "interactive_buttons": 1,
+        "note_cta_count": 2
+      },
+      "gas_debugger_tool": {
+        "title": "AutoFix AI | Google Apps Script(GAS)エラー＆AIプロンプト3秒診断・自動修正ツール",
+        "interactive_buttons": 1,
+        "note_cta_count": 2
+      },
+      "free_templates_page": {
+        "title": "無料サンプル5選 vs 完全版50選 | AutoFlow AI プロンプト＆GAS自動化レシピ",
+        "note_cta_count": 2
+      },
+      "sales_lp": {
+        "title": "AutoFlow Pro Pack | 全職種対応50種AIプロンプト＆GAS自動化テンプレート完全版 (¥1,980)",
+        "note_cta_count": 1
+      }
+    }
+  },
+  "windows_scheduler_check": {
+    "registered": true,
+    "raw_summary": "\nフォルダー\\\nホスト名:                                       DESKTOP-T8LTA9P\nタスク名:                                       \\Antigravity_AI_CEO_Daily\n次回の実行時刻:                                 2026/11/08 8:00:00\n状態:                                           準備完了\nログオン モード:                                対話型のみ\n前回の実行時刻:                                 2026/11/07 8:00:01\n前回の結果:                                     0\n作成者:                                         DESKTOP-T8LTA9P\\山内　裕加里\n実行するタスク:                                 C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Desktop\\F"
+  },
+  "overall_healthy": false
+}

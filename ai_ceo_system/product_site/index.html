@@ -335,9 +335,28 @@
       renderCode();
     }
 
+    function safeCopyText(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(() => fallbackCopyText(text));
+      } else {
+        fallbackCopyText(text);
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+
     function copyCode() {
       const text = document.getElementById('codeOutput').textContent;
-      navigator.clipboard.writeText(text);
+      safeCopyText(text);
       const btn = document.getElementById('copyBtn');
       btn.textContent = '✅ コピー完了!';
       setTimeout(() => { btn.textContent = '📋 コピー'; }, 2000);

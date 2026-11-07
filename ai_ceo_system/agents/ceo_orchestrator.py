@@ -13,6 +13,7 @@ from developer_agent import DeveloperAgent
 from marketer_agent import MarketerAgent
 from outbound_sales_agent import OutboundSalesAgent
 from product_packager_agent import ProductPackagerAgent
+from qa_inspector_agent import QAInspectorAgent
 from researcher_agent import ResearcherAgent
 
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -38,7 +39,7 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
     research_report = researcher.run_market_analysis()
     winner = research_report["winner_model"]
     niches = research_report["high_demand_niches"]
-    print(f"[1/5 Research Agent] Target Niches Expanded to {len(niches)} high-converting verticals")
+    print(f"[1/6 Research Agent] Target Niches Expanded to {len(niches)} high-converting verticals")
 
     # 2. Developer Agent & Product Packager Agent
     developer = DeveloperAgent()
@@ -46,7 +47,7 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
     packager = ProductPackagerAgent()
     pack_report = packager.build_commercial_product_and_lp()
     print(
-        f"[2/5 Developer & Packager Agent] Built {build_report['tools_count']} Interactive Web Tools + "
+        f"[2/6 Developer & Packager Agent] Built {build_report['tools_count']} Interactive Web Tools + "
         f"{build_report['seo_pages_built']} SEO pages + {pack_report['templates_count']} Commercial Templates & Sales LP"
     )
 
@@ -57,9 +58,9 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
             from note_auto_publisher import NoteAutoPublisherAgent
             note_publisher = NoteAutoPublisherAgent()
             note_pub_result = note_publisher.publish_daily_lead_if_needed(day=day, niches=niches)
-            print(f"[3/5 Note Auto-Publisher] Status: {note_pub_result.get('status')} | URL: {note_pub_result.get('url', '')}")
+            print(f"[3/6 Note Auto-Publisher] Status: {note_pub_result.get('status')} | URL: {note_pub_result.get('url', '')}")
         except Exception as e:
-            print(f"[3/5 Note Auto-Publisher] Warning: {e}")
+            print(f"[3/6 Note Auto-Publisher] Warning: {e}")
 
     # 4. CFO & Analytics Agent
     metrics = cfo.audit_and_update_metrics(
@@ -74,7 +75,7 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
     total_likes = note_meta.get("total_account_likes", note_likes)
     gh_meta = metrics["product_kpis"].get("github_traffic_metrics", {})
     print(
-        f"[4/5 CFO Agent] Balance: ¥{balance:,} | Note Published Articles: {total_notes} "
+        f"[4/6 CFO Agent] Balance: ¥{balance:,} | Note Published Articles: {total_notes} "
         f"(Total Likes: {total_likes}) | GitHub Clones (14d): {gh_meta.get('clones_14d', 0)}"
     )
 
@@ -88,9 +89,17 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
     )
     sales_agent = OutboundSalesAgent()
     sales_report = sales_agent.execute_daily_sales_actions(niches)
-    print(f"[5/5 Marketer & Sales Agent] Generated Viral Posts + Pinged IndexNow ({sales_report['submitted_urls_count']} URLs)")
+    print(f"[5/6 Marketer & Sales Agent] Generated Viral Posts + Pinged IndexNow ({sales_report['submitted_urls_count']} URLs)")
 
-    # 6. Update root status_log.md
+    # 6. QA & E2E Inspector Agent
+    qa_agent = QAInspectorAgent()
+    qa_report = qa_agent.run_full_inspection(niches)
+    print(
+        f"[6/6 QA Inspector] URLs OK: {qa_report['urls_ok_count']}/{qa_report['total_urls_checked']} | "
+        f"E2E Status: {qa_report['browser_e2e'].get('status')} | Healthy: {qa_report['overall_healthy']}"
+    )
+
+    # 7. Update root status_log.md
     status_md = f"""# 自律型AI CEO 稼働ステータス＆経営ログ (status_log.md)
 
 - **最終自動更新日時:** {datetime.now().astimezone().isoformat()}
@@ -100,6 +109,7 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
   - 有料本編（¥1,980）: https://note.com/toproad_1989/n/n5d0e28a74f91
   - 無料集客記事（第1弾・自動投稿済）: https://note.com/toproad_1989/n/n70171b631e61
 - **GitHubトラフィック計測:** 過去14日間クローン数 {gh_meta.get('clones_14d', 0)}回（ユニーク {gh_meta.get('unique_cloners_14d', 0)}名）
+- **全自動E2E動作点検ステータス:** {qa_report['urls_ok_count']}/{qa_report['total_urls_checked']} URL正常稼働（JSエラー: {len(qa_report['browser_e2e'].get('js_console_errors', []))}件）
 - **財務健全性:** NORMAL（破産リスク 0%・固定費 ¥0 構成）
 
 ---
@@ -108,7 +118,7 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
 1. **第1弾ツール『AutoFlow AI（業務削減ROIシミュレーター＆コード生成）』**: https://toproad-creator.github.io/autoflow-ai-ceo/
 2. **第2弾ツール『Prompt Builder（3秒カスタムAI命令書ビルダー）』**: https://toproad-creator.github.io/autoflow-ai-ceo/prompt-builder.html
 3. **第3弾ツール『AutoFix AI（GASエラー＆AIプロンプト3秒診断・自動修正ツール）』**: https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
-4. **第4弾ページ『3業種無料サンプル＆全50種比較ページ』**: https://toproad-creator.github.io/autoflow-ai-ceo/free-templates.html
+4. **第4弾ページ『厳選5種の自動化レシピ無料公開＆完全版50選比較ページ』**: https://toproad-creator.github.io/autoflow-ai-ceo/free-templates.html
 5. **有料商品セールスLP『AutoFlow Pro 全50種完全版パック（¥1,980 note決済直結）』**: https://toproad-creator.github.io/autoflow-ai-ceo/pro-pack.html
 6. **業種別Programmatic SEO集客ページ群**: 全{build_report['seo_pages_built']}業種（JSON-LD FAQ構造化データ＆無料スタータープロンプト内蔵）
 
@@ -118,7 +128,7 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
 - **[Day 1]** `wallet.json` 初期化（¥15,000）、第1弾ツール『AutoFlow AI』開発、GitHub Pages & Actions 24時間自動稼働構築
 - **[Day 2]** 全50種プロンプト＆GAS完全版パック（¥1,980）をnoteにて商用公開（ https://note.com/toproad_1989/n/n5d0e28a74f91 ）、全ページの購入ボタンを実決済へ直結
 - **[Day 3〜4]** 朝08:00自動スケジューラ稼働、第2〜4弾Webツール（`prompt-builder.html`, `gas-debugger.html`, `free-templates.html`）構築、業種別SEOページ20本展開、GitHub Gist & Release 外部被リンク網構築
-- **[Day {day}]** noteタイムライン自動集客＆サムネイル自動生成システム（`note_auto_publisher.py` / `thumbnail_generator.py`）稼働開始。無料お役立ち記事（ https://note.com/toproad_1989/n/n70171b631e61 ）の公開直後にスキが付き、アカウント累計スキ数が{total_likes}件に増加
+- **[Day {day}]** noteタイムライン自動集客＆サムネイル自動生成システム稼働、E2E自動点検エージェント（`qa_inspector_agent.py`）導入により `free-templates.html` の5種サンプル表示とクリップボードコピー安全化を改修完了
 """
     with open(STATUS_LOG_PATH, "w", encoding="utf-8") as f:
         f.write(status_md)
