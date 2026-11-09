@@ -168,3 +168,4 @@ if __name__ == "__main__":
     inspector = QAInspectorAgent()
     rep = inspector.run_full_inspection(niches)
     print(json.dumps(rep, ensure_ascii=False, indent=2))
+

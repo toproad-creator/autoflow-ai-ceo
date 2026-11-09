@@ -43,6 +43,7 @@ class NoteAutoPublisherAgent:
                         "key": c.get("key"),
                         "title": c.get("name"),
                         "eyecatch": c.get("eyecatch"),
+                        "created_at": c.get("publishAt", ""),
                         "url": f"https://note.com/toproad_1989/n/{c.get('key')}"
                     }
                     for c in data.get("contents", [])
@@ -140,7 +141,6 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             uploaded = self._upload_eyecatch(page, thumbnail_path)
             page.screenshot(path=SCREENSHOT_PATH)
 
-            # 公開に進む -> 更新する/投稿する
             pub_step = page.locator('button:has-text("公開に進む")').first
             if pub_step.is_visible():
                 pub_step.click()
@@ -264,8 +264,25 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             }
 
     def publish_daily_lead_if_needed(self, day: int, niches: list[dict]) -> dict:
-        idx = (day - 5) % len(niches) if day >= 5 else 0
-        art = self.generate_daily_free_lead_article(day=day, niche=niches[idx])
+        existing = self.fetch_published_titles()
+        today_str = datetime.now().astimezone().strftime("%Y-%m-%d")
+        for item in existing:
+            if item.get("created_at", "").startswith(today_str) and item.get("key") != "n5d0e28a74f91":
+                return {
+                    "status": "already_published_today",
+                    "url": item["url"],
+                    "title": item["title"]
+                }
+
+        existing_titles = {item["title"] for item in existing}
+        target_niche = niches[0]
+        for n in niches:
+            candidate_title = f"【無料コピペOK】{n['title']}をAIとGASで自動化して月{n['avg_hours_saved_monthly']}時間浮かす実践レシピ"
+            if candidate_title not in existing_titles:
+                target_niche = n
+                break
+
+        art = self.generate_daily_free_lead_article(day=day, niche=target_niche)
         return self.auto_publish_headless(art)
 
 
@@ -273,14 +290,15 @@ if __name__ == "__main__":
     from researcher_agent import ResearcherAgent
     niches = ResearcherAgent().run_market_analysis()["high_demand_niches"]
     agent = NoteAutoPublisherAgent()
-    art = agent.generate_daily_free_lead_article(day=5, niche=niches[0])
     if "--auto-post" in sys.argv:
-        res = agent.auto_publish_headless(art)
+        res = agent.publish_daily_lead_if_needed(day=7, niches=niches)
         print(json.dumps(res, ensure_ascii=False))
     elif "--update-all-thumbs" in sys.argv:
+        art = agent.generate_daily_free_lead_article(day=5, niche=niches[0])
         paid_thumb = agent.thumb_gen.generate_paid_pack_thumbnail()
         r1 = agent.update_existing_article_thumbnail("n70171b631e61", art["thumbnail_path"])
         r2 = agent.update_existing_article_thumbnail("n5d0e28a74f91", paid_thumb)
         print(json.dumps({"free_article": r1, "paid_article": r2}, ensure_ascii=False))
     else:
+        art = agent.generate_daily_free_lead_article(day=7, niche=niches[1])
         print("Generated:", art["file_path"], art["thumbnail_path"])

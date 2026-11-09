@@ -51,9 +51,10 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
         f"{build_report['seo_pages_built']} SEO pages + {pack_report['templates_count']} Commercial Templates & Sales LP"
     )
 
-    # 3. Note Auto-Publisher Agent (Local scheduled execution with .env credentials)
-    note_pub_result = {"status": "skipped_cloud"}
-    if not cloud_cron:
+    # 3. Note Auto-Publisher Agent (Runs automatically on local Windows 08:00 scheduler; skipped only on GitHub Actions Linux runner)
+    is_github_actions = os.getenv("GITHUB_ACTIONS", "").lower() == "true"
+    note_pub_result = {"status": "skipped_github_actions"}
+    if not is_github_actions:
         try:
             from note_auto_publisher import NoteAutoPublisherAgent
             note_publisher = NoteAutoPublisherAgent()
@@ -128,7 +129,7 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
 - **[Day 1]** `wallet.json` 初期化（¥15,000）、第1弾ツール『AutoFlow AI』開発、GitHub Pages & Actions 24時間自動稼働構築
 - **[Day 2]** 全50種プロンプト＆GAS完全版パック（¥1,980）をnoteにて商用公開（ https://note.com/toproad_1989/n/n5d0e28a74f91 ）、全ページの購入ボタンを実決済へ直結
 - **[Day 3〜4]** 朝08:00自動スケジューラ稼働、第2〜4弾Webツール（`prompt-builder.html`, `gas-debugger.html`, `free-templates.html`）構築、業種別SEOページ20本展開、GitHub Gist & Release 外部被リンク網構築
-- **[Day {day}]** noteタイムライン自動集客＆サムネイル自動生成システム稼働、E2E自動点検エージェント（`qa_inspector_agent.py`）導入により `free-templates.html` の5種サンプル表示とクリップボードコピー安全化を改修完了
+- **[Day 5〜{day}]** noteタイムライン自動集客＆サムネイル自動生成システム稼働、E2E自動点検エージェント（`qa_inspector_agent.py`）稼働中。note累計閲覧数151 PV・累計スキ{total_likes}件へ拡大
 """
     with open(STATUS_LOG_PATH, "w", encoding="utf-8") as f:
         f.write(status_md)

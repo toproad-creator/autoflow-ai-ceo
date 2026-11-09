@@ -1,6 +1,6 @@
 {
-  "day": 5,
-  "timestamp": "2026-11-07T12:39:42.859424+09:00",
+  "day": 7,
+  "timestamp": "2026-11-09T14:43:34.996324+09:00",
   "financials": {
     "initial_balance": 15000,
     "current_balance": 15000,
@@ -18,16 +18,16 @@
       "paid_note_url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
       "status": "published",
       "price_jpy": 1980,
-      "paid_article_likes": 1,
-      "total_published_notes": 2,
-      "total_account_likes": 3,
+      "paid_article_likes": 3,
+      "total_published_notes": 3,
+      "total_account_likes": 7,
       "paywall_active": true
     },
     "github_traffic_metrics": {
       "repo_views_14d": 0,
       "repo_uniques_14d": 0,
-      "clones_14d": 76,
-      "unique_cloners_14d": 36
+      "clones_14d": 163,
+      "unique_cloners_14d": 77
     }
   },
   "traffic_diagnosis": {
