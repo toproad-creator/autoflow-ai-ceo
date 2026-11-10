@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import subprocess
 import sys
 import urllib.request
@@ -12,11 +13,12 @@ ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 QA_REPORT_PATH = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "qa_health_report.json")
 BASE_URL = "https://toproad-creator.github.io/autoflow-ai-ceo"
 PAID_NOTE_URL = "https://note.com/toproad_1989/n/n5d0e28a74f91"
+NOTE_CREATOR_API_URL = "https://note.com/api/v2/creators/toproad_1989/contents?kind=note&page=1"
 
 
 class QAInspectorAgent:
-    """全Webツール・全SEOページ・note記事・自動スケジューラの動作点検（E2E QA）エージェント
-    ただファイルを作るだけでなく、実際に公開URLへアクセスしてJavaScriptの動作・リンク切れ・コンソールエラー・決済導線を自動点検する。
+    """全Webツール・全SEOページ・note公開記事・自動スケジューラの動作点検（E2E QA）エージェント
+    ただファイルを作るだけでなく、実際に公開URLへアクセスしてJavaScriptの動作・リンク切れ・コンソールエラー・note記事内リンクを自動点検する。
     """
 
     def __init__(self):
@@ -46,6 +48,33 @@ class QAInspectorAgent:
                 })
         return results
 
+    def check_live_note_articles(self) -> list[dict]:
+        results = []
+        try:
+            req = urllib.request.Request(NOTE_CREATOR_API_URL, headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, timeout=8) as resp:
+                c_data = json.loads(resp.read().decode("utf-8")).get("data", {})
+            for item in c_data.get("contents", []):
+                key = item.get("key")
+                n_req = urllib.request.Request(f"https://note.com/api/v3/notes/{key}", headers={"User-Agent": "Mozilla/5.0"})
+                with urllib.request.urlopen(n_req, timeout=8) as n_resp:
+                    n_data = json.loads(n_resp.read().decode("utf-8")).get("data", {})
+                body_html = n_data.get("body", "") or ""
+                link_count = len(re.findall(r"<a href=", body_html))
+                has_thumb = bool(item.get("eyecatch"))
+                results.append({
+                    "key": key,
+                    "url": f"https://note.com/toproad_1989/n/{key}",
+                    "title": item.get("name", "")[:35],
+                    "has_thumbnail": has_thumb,
+                    "clickable_links_count": link_count,
+                    "likes": item.get("likeCount", 0),
+                    "healthy": has_thumb and link_count >= 1
+                })
+        except Exception as e:
+            results.append({"error": str(e), "healthy": False})
+        return results
+
     def run_browser_e2e_tests(self) -> dict:
         try:
             from playwright.sync_api import sync_playwright
@@ -60,18 +89,14 @@ class QAInspectorAgent:
             page = browser.new_page()
             page.on("pageerror", lambda err: console_errors.append(f"{page.url}: {err}"))
 
-            # Test 1: Main ROI Simulator (index.html)
             page.goto(f"{BASE_URL}/", wait_until="networkidle", timeout=30000)
-            title1 = page.title()
-            # Test interactive calculation or code copy if present
             body_text1 = page.inner_text("body")
             e2e_results["index_tool"] = {
-                "title": title1,
+                "title": page.title(),
                 "rendered_ok": "AutoFlow" in body_text1 or "削減" in body_text1,
                 "note_cta_count": page.locator(f'a[href*="{PAID_NOTE_URL}"]').count()
             }
 
-            # Test 2: Prompt Builder (prompt-builder.html)
             page.goto(f"{BASE_URL}/prompt-builder.html", wait_until="networkidle", timeout=30000)
             gen_btn = page.locator("button").first
             if gen_btn.is_visible():
@@ -82,7 +107,6 @@ class QAInspectorAgent:
                 "note_cta_count": page.locator(f'a[href*="{PAID_NOTE_URL}"]').count()
             }
 
-            # Test 3: GAS Error Debugger (gas-debugger.html)
             page.goto(f"{BASE_URL}/gas-debugger.html", wait_until="networkidle", timeout=30000)
             btns = page.locator("button")
             if btns.count() > 0:
@@ -93,14 +117,13 @@ class QAInspectorAgent:
                 "note_cta_count": page.locator(f'a[href*="{PAID_NOTE_URL}"]').count()
             }
 
-            # Test 4: Free Templates Page (free-templates.html)
             page.goto(f"{BASE_URL}/free-templates.html", wait_until="networkidle", timeout=30000)
             e2e_results["free_templates_page"] = {
                 "title": page.title(),
+                "sample_copy_buttons": page.locator("button").count(),
                 "note_cta_count": page.locator(f'a[href*="{PAID_NOTE_URL}"]').count()
             }
 
-            # Test 5: Sales LP (pro-pack.html)
             page.goto(f"{BASE_URL}/pro-pack.html", wait_until="networkidle", timeout=30000)
             e2e_results["sales_lp"] = {
                 "title": page.title(),
@@ -145,6 +168,8 @@ class QAInspectorAgent:
         ok_count = sum(1 for r in all_http if r.get("ok"))
         broken = [r for r in all_http if not r.get("ok")]
 
+        note_articles = self.check_live_note_articles()
+        all_notes_healthy = all(n.get("healthy", False) for n in note_articles)
         e2e = self.run_browser_e2e_tests()
         sched = self.check_windows_scheduler()
 
@@ -153,9 +178,10 @@ class QAInspectorAgent:
             "total_urls_checked": len(all_http),
             "urls_ok_count": ok_count,
             "broken_urls": broken,
+            "live_note_articles_check": note_articles,
             "browser_e2e": e2e,
             "windows_scheduler_check": sched,
-            "overall_healthy": (len(broken) == 0 and e2e.get("status") in ("passed", "skipped_no_playwright"))
+            "overall_healthy": (len(broken) == 0 and all_notes_healthy and e2e.get("status") in ("passed", "skipped_no_playwright"))
         }
         with open(QA_REPORT_PATH, "w", encoding="utf-8") as f:
             json.dump(report, f, ensure_ascii=False, indent=2)
@@ -168,4 +194,3 @@ if __name__ == "__main__":
     inspector = QAInspectorAgent()
     rep = inspector.run_full_inspection(niches)
     print(json.dumps(rep, ensure_ascii=False, indent=2))
-

@@ -1,3 +1,4 @@
+import html as html_lib
 import json
 import os
 import re
@@ -25,7 +26,7 @@ NOTE_CREATOR_API_URL = "https://note.com/api/v2/creators/toproad_1989/contents?k
 
 class NoteAutoPublisherAgent:
     """noteタイムライン集客用・無料お役立ち記事＆1280x670サムネイル画像の自動生成・自動投稿エージェント
-    .env の NOTE_EMAIL / NOTE_PASSWORD を使用して、全自動ログイン＆アイキャッチ画像設定＆記事公開を行う。
+    .env の NOTE_EMAIL / NOTE_PASSWORD を使用して、全自動ログイン＆アイキャッチ画像設定＆クリック可能なリンク付き記事公開を行う。
     """
 
     def __init__(self):
@@ -98,6 +99,50 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             "body": body
         }
 
+    def _body_to_rich_html(self, body_text: str) -> str:
+        paragraphs = []
+        for line in body_text.strip().split("\n"):
+            escaped = html_lib.escape(line.strip())
+            if not escaped:
+                paragraphs.append("<p><br></p>")
+            else:
+                linked = re.sub(
+                    r"(https://[^\s<]+)",
+                    r'<a href="\1" target="_blank" rel="noopener">\1</a>',
+                    escaped
+                )
+                paragraphs.append(f"<p>{linked}</p>")
+        return "".join(paragraphs)
+
+    def _insert_rich_body(self, page, body_text: str, replace_existing: bool = False):
+        body_box = page.locator('.ProseMirror, div[contenteditable="true"]').first
+        body_box.click()
+        time.sleep(0.5)
+        if replace_existing:
+            page.keyboard.press("Control+A")
+            time.sleep(0.3)
+            page.keyboard.press("Backspace")
+            time.sleep(0.5)
+
+        rich_html = self._body_to_rich_html(body_text)
+        page.evaluate(
+            """([htmlStr, plainStr]) => {
+                const editor = document.querySelector('.ProseMirror') || document.querySelector('div[contenteditable="true"]');
+                editor.focus();
+                const dt = new DataTransfer();
+                dt.setData('text/html', htmlStr);
+                dt.setData('text/plain', plainStr);
+                const pasteEvent = new ClipboardEvent('paste', {
+                    bubbles: true,
+                    cancelable: true,
+                    clipboardData: dt
+                });
+                editor.dispatchEvent(pasteEvent);
+            }""",
+            [rich_html, body_text]
+        )
+        time.sleep(2)
+
     def _upload_eyecatch(self, page, thumbnail_path: str) -> bool:
         if not thumbnail_path or not os.path.exists(thumbnail_path):
             return False
@@ -125,8 +170,9 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             print(f"[Note Auto-Publisher] Eyecatch upload warning: {e}")
         return False
 
-    def update_existing_article_thumbnail(self, note_key: str, thumbnail_path: str) -> dict:
-        print(f"[Note Auto-Publisher] Attaching thumbnail to {note_key}...")
+    def fix_existing_free_article_links(self, note_key: str, niche: dict, day: int) -> dict:
+        art = self.generate_daily_free_lead_article(day=day, niche=niche)
+        print(f"[Note Auto-Publisher] Upgrading links in {note_key} ({art['title'][:25]}...)...")
         with sync_playwright() as p:
             context = p.chromium.launch_persistent_context(
                 user_data_dir=PROFILE_DIR,
@@ -138,7 +184,7 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             page = context.pages[0] if context.pages else context.new_page()
             page.goto(f"https://editor.note.com/notes/{note_key}/edit/", wait_until="domcontentloaded", timeout=30000)
             time.sleep(4)
-            uploaded = self._upload_eyecatch(page, thumbnail_path)
+            self._insert_rich_body(page, art["body"], replace_existing=True)
             page.screenshot(path=SCREENSHOT_PATH)
 
             pub_step = page.locator('button:has-text("公開に進む")').first
@@ -151,14 +197,12 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
                     time.sleep(6)
             page.screenshot(path=SCREENSHOT_PATH)
             context.close()
-            return {"note_key": note_key, "uploaded": uploaded, "url": f"https://note.com/toproad_1989/n/{note_key}"}
+            return {"note_key": note_key, "url": f"https://note.com/toproad_1989/n/{note_key}"}
 
     def auto_publish_headless(self, article: dict) -> dict:
         existing = self.fetch_published_titles()
         for item in existing:
             if item["title"] == article["title"]:
-                if not item.get("eyecatch") and article.get("thumbnail_path"):
-                    self.update_existing_article_thumbnail(item["key"], article["thumbnail_path"])
                 return {
                     "status": "already_published",
                     "url": item["url"],
@@ -213,11 +257,8 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             title_box.fill(article["title"])
             time.sleep(1)
 
-            # 4. 本文入力
-            body_box = page.locator('.ProseMirror, div[contenteditable="true"]').first
-            body_box.click()
-            page.keyboard.insert_text(article["body"])
-            time.sleep(2)
+            # 4. 本文入力（クリック可能なHTMLリンク付きでペースト）
+            self._insert_rich_body(page, article["body"], replace_existing=False)
 
             # 5. 公開に進む
             page.locator('button:has-text("公開に進む")').first.click()
@@ -290,6 +331,11 @@ if __name__ == "__main__":
     if "--auto-post" in sys.argv:
         res = agent.publish_daily_lead_if_needed(day=8, niches=niches)
         print(json.dumps(res, ensure_ascii=False))
+    elif "--fix-all-links" in sys.argv:
+        r1 = agent.fix_existing_free_article_links("n70171b631e61", niches[0], day=5)
+        r2 = agent.fix_existing_free_article_links("n9a7bd90cf282", niches[1], day=7)
+        r3 = agent.fix_existing_free_article_links("n2b36747c935d", niches[2], day=8)
+        print(json.dumps({"fixed": [r1, r2, r3]}, ensure_ascii=False))
     else:
         art = agent.generate_daily_free_lead_article(day=8, niche=niches[2])
         print("Generated:", art["file_path"], art["thumbnail_path"])

@@ -1,8 +1,46 @@
 {
-  "inspected_at": "2026-11-10T11:13:47.759126+09:00",
+  "inspected_at": "2026-11-10T11:51:39.004188+09:00",
   "total_urls_checked": 27,
   "urls_ok_count": 27,
   "broken_urls": [],
+  "live_note_articles_check": [
+    {
+      "key": "n2b36747c935d",
+      "url": "https://note.com/toproad_1989/n/n2b36747c935d",
+      "title": "【無料コピペOK】BtoB営業リスト抽出＆パーソナライズ文面自動化をA",
+      "has_thumbnail": true,
+      "clickable_links_count": 3,
+      "likes": 0,
+      "healthy": true
+    },
+    {
+      "key": "n9a7bd90cf282",
+      "url": "https://note.com/toproad_1989/n/n9a7bd90cf282",
+      "title": "【無料コピペOK】X/Threads 毎日投稿＆バズ構文自動生成をAI",
+      "has_thumbnail": true,
+      "clickable_links_count": 3,
+      "likes": 3,
+      "healthy": true
+    },
+    {
+      "key": "n70171b631e61",
+      "url": "https://note.com/toproad_1989/n/n70171b631e61",
+      "title": "【無料コピペOK】EC・物販の在庫管理＆価格改定自動化をAIとGASで",
+      "has_thumbnail": true,
+      "clickable_links_count": 3,
+      "likes": 4,
+      "healthy": true
+    },
+    {
+      "key": "n5d0e28a74f91",
+      "url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
+      "title": "コピペ5分で毎日のルーティン作業を消滅させる『全10業種・50選 AI",
+      "has_thumbnail": true,
+      "clickable_links_count": 1,
+      "likes": 3,
+      "healthy": true
+    }
+  ],
   "browser_e2e": {
     "status": "passed",
     "js_console_errors": [],
@@ -24,6 +62,7 @@
       },
       "free_templates_page": {
         "title": "無料サンプル5選 vs 完全版50選 | AutoFlow AI プロンプト＆GAS自動化レシピ",
+        "sample_copy_buttons": 5,
         "note_cta_count": 2
       },
       "sales_lp": {
