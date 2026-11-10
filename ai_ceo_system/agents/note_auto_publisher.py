@@ -135,8 +135,8 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
                 args=["--disable-blink-features=AutomationControlled", "--start-maximized"],
                 no_viewport=True
             )
-            page = context.pages[0] if context.pages else context.new_page()
-            page.goto(f"https://editor.note.com/notes/{note_key}/edit/", wait_until="networkidle", timeout=45000)
+            page = context.pages[0] if context.pages else ctx_new_page(context)
+            page.goto(f"https://editor.note.com/notes/{note_key}/edit/", wait_until="domcontentloaded", timeout=30000)
             time.sleep(4)
             uploaded = self._upload_eyecatch(page, thumbnail_path)
             page.screenshot(path=SCREENSHOT_PATH)
@@ -182,9 +182,9 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             )
             page = context.pages[0] if context.pages else context.new_page()
 
-            # 1. ログイン確認＆自動ログイン
-            page.goto("https://note.com/login", wait_until="networkidle", timeout=45000)
-            time.sleep(2)
+            # 1. 直接新規記事エディタへ移動し、未ログインならログイン画面で認証する
+            page.goto("https://editor.note.com/new", wait_until="domcontentloaded", timeout=30000)
+            time.sleep(4)
             if "login" in page.url:
                 inputs = page.locator("input")
                 if inputs.count() >= 2:
@@ -197,40 +197,33 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
                     btn = page.locator('button:has-text("ログイン")').first
                     btn.click()
                     time.sleep(7)
-                    page.screenshot(path=SCREENSHOT_PATH)
+                    page.goto("https://editor.note.com/new", wait_until="domcontentloaded", timeout=30000)
+                    time.sleep(5)
 
-            # 2. トップページの「投稿」ボタンをクリック、または新規作成画面へ移動
-            post_btn = page.locator('a:has-text("投稿"), button:has-text("投稿")').first
-            if post_btn.is_visible():
-                post_btn.click()
-                time.sleep(5)
-            else:
-                page.goto("https://editor.note.com/new", wait_until="networkidle", timeout=45000)
-                time.sleep(5)
             page.screenshot(path=SCREENSHOT_PATH)
 
-            # 3. アイキャッチ（サムネイル画像 1280x670px）を自動アップロード
+            # 2. アイキャッチ（サムネイル画像 1280x670px）を自動アップロード
             if article.get("thumbnail_path"):
                 self._upload_eyecatch(page, article["thumbnail_path"])
 
-            # 4. タイトル入力
+            # 3. タイトル入力
             title_box = page.locator('textarea[placeholder*="タイトル"], [placeholder*="タイトル"], [data-placeholder*="タイトル"]').first
-            title_box.wait_for(state="visible", timeout=45000)
+            title_box.wait_for(state="visible", timeout=30000)
             title_box.click()
             title_box.fill(article["title"])
             time.sleep(1)
 
-            # 5. 本文入力
+            # 4. 本文入力
             body_box = page.locator('.ProseMirror, div[contenteditable="true"]').first
             body_box.click()
             page.keyboard.insert_text(article["body"])
             time.sleep(2)
 
-            # 6. 公開に進む
+            # 5. 公開に進む
             page.locator('button:has-text("公開に進む")').first.click()
             time.sleep(4)
 
-            # 7. ハッシュタグ入力
+            # 6. ハッシュタグ入力
             try:
                 tag_input = page.locator('input[placeholder*="ハッシュタグ"], input[placeholder*="タグ"]').first
                 if tag_input.is_visible(timeout=5000):
@@ -245,7 +238,7 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             time.sleep(1)
             page.screenshot(path=SCREENSHOT_PATH)
 
-            # 8. 投稿するボタンをクリック
+            # 7. 投稿するボタンをクリック
             final_btn = page.locator('button:has-text("投稿する"), button:has-text("公開")').last
             final_btn.click()
             time.sleep(7)
@@ -291,14 +284,8 @@ if __name__ == "__main__":
     niches = ResearcherAgent().run_market_analysis()["high_demand_niches"]
     agent = NoteAutoPublisherAgent()
     if "--auto-post" in sys.argv:
-        res = agent.publish_daily_lead_if_needed(day=7, niches=niches)
+        res = agent.publish_daily_lead_if_needed(day=8, niches=niches)
         print(json.dumps(res, ensure_ascii=False))
-    elif "--update-all-thumbs" in sys.argv:
-        art = agent.generate_daily_free_lead_article(day=5, niche=niches[0])
-        paid_thumb = agent.thumb_gen.generate_paid_pack_thumbnail()
-        r1 = agent.update_existing_article_thumbnail("n70171b631e61", art["thumbnail_path"])
-        r2 = agent.update_existing_article_thumbnail("n5d0e28a74f91", paid_thumb)
-        print(json.dumps({"free_article": r1, "paid_article": r2}, ensure_ascii=False))
     else:
-        art = agent.generate_daily_free_lead_article(day=7, niche=niches[1])
+        art = agent.generate_daily_free_lead_article(day=8, niche=niches[2])
         print("Generated:", art["file_path"], art["thumbnail_path"])
