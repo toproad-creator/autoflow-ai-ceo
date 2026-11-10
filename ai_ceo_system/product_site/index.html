@@ -372,7 +372,7 @@
     }
 
     function recordConversionClick() {
-      fetch('/api/track?event=cta_click', { method: 'POST' }).catch(() => {});
+      try { localStorage.setItem('af_last_cta_click', new Date().toISOString()); } catch (e) {}
     }
 
     ['dailyMins', 'monthlyDays', 'hourlyWage', 'taskCategory'].forEach(id => {

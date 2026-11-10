@@ -336,7 +336,7 @@ class DeveloperAgent:
     }}
 
     function recordConversionClick() {{
-      fetch('/api/track?event=cta_click', {{ method: 'POST' }}).catch(() => {{}});
+      try {{ localStorage.setItem('af_last_cta_click', new Date().toISOString()); }} catch (e) {{}}
     }}
 
     ['dailyMins', 'monthlyDays', 'hourlyWage', 'taskCategory'].forEach(id => {{
@@ -772,8 +772,11 @@ function checkEcPriceMargin() {{
   <p class="text-slate-400 mb-6">月間平均 <strong>{hours}時間</strong>（時給{wage:,}円換算で<strong>年間 ¥{yearly_yen:,}</strong>）の手作業を削減できる自動化レシピです。</p>
 
   <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6">
-    <h2 class="text-lg font-bold mb-2 text-sky-400">📋 今すぐ使える「{title}」無料スタータープロンプト</h2>
-    <pre class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-slate-200 whitespace-pre-wrap mb-4">{starter_prompt}</pre>
+    <div class="flex justify-between items-center mb-2">
+      <h2 class="text-lg font-bold text-sky-400">📋 今すぐ使える「{title}」無料スタータープロンプト</h2>
+      <button onclick="copyStarter(this)" class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-1 rounded border border-slate-600">📋 コピー</button>
+    </div>
+    <pre id="starterPrompt" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-slate-200 whitespace-pre-wrap mb-4">{starter_prompt}</pre>
     <p class="text-sm text-slate-300 leading-relaxed mb-4">
       さらにGoogleスプレッドシートの自動トリガー（GAS）を組み合わせることで、毎日の定型チェックや転記・通知まで人間の手作業ゼロで完結できます。
     </p>
@@ -786,6 +789,16 @@ function checkEcPriceMargin() {{
       </a>
     </div>
   </div>
+  <script>
+    function copyStarter(btn) {{
+      const text = document.getElementById('starterPrompt').textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {{
+        navigator.clipboard.writeText(text).catch(() => {{}});
+      }}
+      btn.textContent = '✅ コピー完了!';
+      setTimeout(() => {{ btn.textContent = '📋 コピー'; }}, 2000);
+    }}
+  </script>
 </body>
 </html>
 """

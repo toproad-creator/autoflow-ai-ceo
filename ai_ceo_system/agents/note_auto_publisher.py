@@ -135,7 +135,7 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
                 args=["--disable-blink-features=AutomationControlled", "--start-maximized"],
                 no_viewport=True
             )
-            page = context.pages[0] if context.pages else ctx_new_page(context)
+            page = context.pages[0] if context.pages else context.new_page()
             page.goto(f"https://editor.note.com/notes/{note_key}/edit/", wait_until="domcontentloaded", timeout=30000)
             time.sleep(4)
             uploaded = self._upload_eyecatch(page, thumbnail_path)
@@ -246,8 +246,12 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             final_url = page.url
             context.close()
 
-            m = re.search(r"(n[a-z0-9]+)", final_url)
-            public_url = f"https://note.com/toproad_1989/n/{m.group(1)}" if m else final_url
+            m = re.search(r"/notes/(n[a-z0-9]+)", final_url)
+            if m:
+                public_url = f"https://note.com/toproad_1989/n/{m.group(1)}"
+            else:
+                latest_notes = self.fetch_published_titles()
+                public_url = latest_notes[0]["url"] if latest_notes else final_url
             return {
                 "status": "published",
                 "url": public_url,

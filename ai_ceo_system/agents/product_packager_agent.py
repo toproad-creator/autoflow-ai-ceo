@@ -115,7 +115,7 @@ class ProductPackagerAgent:
 
   <script>
     function triggerCheckout() {{
-      fetch('/api/track?event=checkout_intent', {{ method: 'POST' }}).catch(() => {{}});
+      try {{ localStorage.setItem('af_checkout_intent', new Date().toISOString()); }} catch (e) {{}}
     }}
   </script>
 </body>
