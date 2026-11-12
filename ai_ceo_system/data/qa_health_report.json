@@ -1,16 +1,25 @@
 {
-  "inspected_at": "2026-11-10T11:51:39.004188+09:00",
+  "inspected_at": "2026-11-12T21:05:39.150459+09:00",
   "total_urls_checked": 27,
   "urls_ok_count": 27,
   "broken_urls": [],
   "live_note_articles_check": [
+    {
+      "key": "n49963f8d62b9",
+      "url": "https://note.com/toproad_1989/n/n49963f8d62b9",
+      "title": "【無料コピペOK】請求書・領収書PDFのAI読取＆スプレッドシート記帳",
+      "has_thumbnail": true,
+      "clickable_links_count": 3,
+      "likes": 0,
+      "healthy": true
+    },
     {
       "key": "n2b36747c935d",
       "url": "https://note.com/toproad_1989/n/n2b36747c935d",
       "title": "【無料コピペOK】BtoB営業リスト抽出＆パーソナライズ文面自動化をA",
       "has_thumbnail": true,
       "clickable_links_count": 3,
-      "likes": 0,
+      "likes": 2,
       "healthy": true
     },
     {
@@ -73,7 +82,7 @@
   },
   "windows_scheduler_check": {
     "registered": true,
-    "raw_summary": "\nフォルダー\\\nホスト名:                                       DESKTOP-T8LTA9P\nタスク名:                                       \\Antigravity_AI_CEO_Daily\n次回の実行時刻:                                 2026/11/11 8:00:00\n状態:                                           準備完了\nログオン モード:                                対話型のみ\n前回の実行時刻:                                 2026/11/10 8:00:01\n前回の結果:                                     0\n作成者:                                         DESKTOP-T8LTA9P\\山内　裕加里\n実行するタスク:                                 C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Desktop\\F"
+    "raw_summary": "\nFolder: \\\nHostName:                             DESKTOP-T8LTA9P\nTaskName:                             \\Antigravity_AI_CEO_Daily\nNext Run Time:                        2026/11/13 8:00:00\nStatus:                               Ready\nLogon Mode:                           Interactive only\nLast Run Time:                        2026/11/12 20:18:56\nLast Result:                          1\nAuthor:                               DESKTOP-T8LTA9P\\山内　裕加里\nTask To Run:                          C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Desktop\\Frontier_clone\\ai_ceo_system\\"
   },
   "overall_healthy": true
 }

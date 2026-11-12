@@ -2,6 +2,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 import traceback
 import urllib.request
 from datetime import datetime
@@ -32,6 +33,20 @@ def log_step(msg: str):
             f.write(f"[{datetime.now().astimezone().isoformat()}] {msg}\n")
     except Exception:
         pass
+
+
+def wait_for_internet_connection(max_wait_sec: int = 120) -> bool:
+    """スリープ復帰直後のWi-Fi再接続待ちによる ERR_INTERNET_DISCONNECTED を防ぐため、通信確立まで待機する"""
+    start = time.time()
+    while time.time() - start < max_wait_sec:
+        try:
+            req = urllib.request.Request("https://note.com", headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                if resp.status == 200:
+                    return True
+        except Exception:
+            time.sleep(3)
+    return False
 
 
 def fetch_all_published_notes() -> list[dict]:
@@ -71,6 +86,9 @@ def auto_sync_github_if_local(day: int):
 
 
 def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False):
+    online = wait_for_internet_connection(max_wait_sec=120)
+    log_step(f"[Network Check] Internet connection ready: {online}")
+
     cfo = CFOAnalyticsAgent()
     wallet = cfo.load_wallet()
     if cloud_cron:
