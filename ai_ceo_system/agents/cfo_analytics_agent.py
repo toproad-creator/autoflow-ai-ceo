@@ -39,11 +39,21 @@ class CFOAnalyticsAgent:
                 payload = json.loads(resp.read().decode("utf-8"))
                 data = payload.get("data", {})
 
-            req_c = urllib.request.Request(NOTE_CREATOR_API_URL, headers={"User-Agent": "Mozilla/5.0"})
-            with urllib.request.urlopen(req_c, timeout=8) as resp_c:
-                c_data = json.loads(resp_c.read().decode("utf-8")).get("data", {})
-                total_notes = c_data.get("totalCount", 1)
-                total_likes = sum(item.get("likeCount", 0) for item in c_data.get("contents", []))
+            total_notes = 1
+            total_likes = 0
+            for page_idx in range(1, 5):
+                req_c = urllib.request.Request(
+                    f"https://note.com/api/v2/creators/toproad_1989/contents?kind=note&page={page_idx}",
+                    headers={"User-Agent": "Mozilla/5.0"}
+                )
+                with urllib.request.urlopen(req_c, timeout=8) as resp_c:
+                    c_data = json.loads(resp_c.read().decode("utf-8")).get("data", {})
+                    if page_idx == 1:
+                        total_notes = c_data.get("totalCount", 1)
+                    contents = c_data.get("contents", [])
+                    total_likes += sum(item.get("likeCount", 0) for item in contents)
+                    if c_data.get("isLastPage", True) or not contents:
+                        break
 
             return {
                 "paid_note_key": "n5d0e28a74f91",

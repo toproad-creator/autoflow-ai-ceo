@@ -1,5 +1,5 @@
 {
-  "inspected_at": "2026-11-14T07:21:26.809534+09:00",
+  "inspected_at": "2026-11-14T07:26:55.076739+09:00",
   "total_urls_checked": 27,
   "urls_ok_count": 27,
   "broken_urls": [],
@@ -56,6 +56,15 @@
       "has_thumbnail": true,
       "clickable_links_count": 3,
       "likes": 4,
+      "healthy": true
+    },
+    {
+      "key": "n5d0e28a74f91",
+      "url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
+      "title": "【先着10部¥980】コピペ5分で毎日のルーティン作業を消滅させる『全",
+      "has_thumbnail": true,
+      "clickable_links_count": 0,
+      "likes": 3,
       "healthy": true
     }
   ],

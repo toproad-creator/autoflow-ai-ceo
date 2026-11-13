@@ -50,25 +50,29 @@ def wait_for_internet_connection(max_wait_sec: int = 120) -> bool:
 
 
 def fetch_all_published_notes() -> list[dict]:
+    all_notes = []
     try:
-        req = urllib.request.Request(
-            "https://note.com/api/v2/creators/toproad_1989/contents?kind=note&page=1",
-            headers={"User-Agent": "Mozilla/5.0"}
-        )
-        with urllib.request.urlopen(req, timeout=8) as resp:
-            data = json.loads(resp.read().decode("utf-8")).get("data", {})
-            return [
-                {
-                    "key": c.get("key"),
-                    "title": c.get("name"),
-                    "likes": c.get("likeCount", 0),
-                    "price": c.get("price", 0),
-                    "url": f"https://note.com/toproad_1989/n/{c.get('key')}"
-                }
-                for c in data.get("contents", [])
-            ]
+        for page_idx in range(1, 5):
+            req = urllib.request.Request(
+                f"https://note.com/api/v2/creators/toproad_1989/contents?kind=note&page={page_idx}",
+                headers={"User-Agent": "Mozilla/5.0"}
+            )
+            with urllib.request.urlopen(req, timeout=8) as resp:
+                data = json.loads(resp.read().decode("utf-8")).get("data", {})
+                contents = data.get("contents", [])
+                for c in contents:
+                    all_notes.append({
+                        "key": c.get("key"),
+                        "title": c.get("name"),
+                        "likes": c.get("likeCount", 0),
+                        "price": c.get("price", 0),
+                        "url": f"https://note.com/toproad_1989/n/{c.get('key')}"
+                    })
+                if data.get("isLastPage", True) or not contents:
+                    break
     except Exception:
-        return []
+        pass
+    return all_notes
 
 
 def auto_sync_github_if_local(day: int):

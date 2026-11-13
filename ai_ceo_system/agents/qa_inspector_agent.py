@@ -58,10 +58,16 @@ class QAInspectorAgent:
     def check_live_note_articles(self) -> list[dict]:
         results = []
         try:
-            req = urllib.request.Request(NOTE_CREATOR_API_URL, headers={"User-Agent": "Mozilla/5.0"})
-            with urllib.request.urlopen(req, timeout=8) as resp:
-                c_data = json.loads(resp.read().decode("utf-8")).get("data", {})
-            for item in c_data.get("contents", []):
+            all_items = []
+            for page_idx in range(1, 5):
+                req = urllib.request.Request(f"{NOTE_CREATOR_API_URL[:-1]}{page_idx}", headers={"User-Agent": "Mozilla/5.0"})
+                with urllib.request.urlopen(req, timeout=8) as resp:
+                    c_data = json.loads(resp.read().decode("utf-8")).get("data", {})
+                contents = c_data.get("contents", [])
+                all_items.extend(contents)
+                if c_data.get("isLastPage", True) or not contents:
+                    break
+            for item in all_items:
                 key = item.get("key")
                 n_req = urllib.request.Request(f"https://note.com/api/v3/notes/{key}", headers={"User-Agent": "Mozilla/5.0"})
                 with urllib.request.urlopen(n_req, timeout=8) as n_resp:

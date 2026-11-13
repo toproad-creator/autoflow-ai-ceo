@@ -35,22 +35,26 @@ class NoteAutoPublisherAgent:
         self.thumb_gen = NoteThumbnailGenerator()
 
     def fetch_published_titles(self) -> list[dict]:
+        all_items = []
         try:
-            req = urllib.request.Request(NOTE_CREATOR_API_URL, headers={"User-Agent": "Mozilla/5.0"})
-            with urllib.request.urlopen(req, timeout=8) as resp:
-                data = json.loads(resp.read().decode("utf-8")).get("data", {})
-                return [
-                    {
+            for page_idx in range(1, 5):
+                req = urllib.request.Request(f"{NOTE_CREATOR_API_URL[:-1]}{page_idx}", headers={"User-Agent": "Mozilla/5.0"})
+                with urllib.request.urlopen(req, timeout=8) as resp:
+                    data = json.loads(resp.read().decode("utf-8")).get("data", {})
+                contents = data.get("contents", [])
+                for c in contents:
+                    all_items.append({
                         "key": c.get("key"),
                         "title": c.get("name"),
                         "eyecatch": c.get("eyecatch"),
                         "created_at": c.get("publishAt", ""),
                         "url": f"https://note.com/toproad_1989/n/{c.get('key')}"
-                    }
-                    for c in data.get("contents", [])
-                ]
+                    })
+                if data.get("isLastPage", True) or not contents:
+                    break
         except Exception:
-            return []
+            pass
+        return all_items
 
     def generate_daily_free_lead_article(self, day: int, niche: dict) -> dict:
         title = f"【無料コピペOK】{niche['title']}をAIとGASで自動化して月{niche['avg_hours_saved_monthly']}時間浮かす実践レシピ"
