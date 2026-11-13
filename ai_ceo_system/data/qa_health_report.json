@@ -1,24 +1,17 @@
 {
-  "inspected_at": "2026-11-13T20:30:01.886258+09:00",
+  "inspected_at": "2026-11-13T20:37:52.818402+09:00",
   "total_urls_checked": 27,
-  "urls_ok_count": 26,
-  "broken_urls": [
-    {
-      "url": "https://toproad-creator.github.io/autoflow-ai-ceo/feed.xml",
-      "status": 0,
-      "ok": false,
-      "error": "The read operation timed out"
-    }
-  ],
+  "urls_ok_count": 27,
+  "broken_urls": [],
   "live_note_articles_check": [
     {
       "key": "n1c4995075b64",
       "url": "https://note.com/toproad_1989/n/n1c4995075b64",
       "title": "【無料コピペOK】YouTube/ショート動画の構成・台本・メタデータ",
-      "has_thumbnail": false,
+      "has_thumbnail": true,
       "clickable_links_count": 3,
       "likes": 0,
-      "healthy": false
+      "healthy": true
     },
     {
       "key": "n49963f8d62b9",
@@ -98,7 +91,7 @@
   },
   "windows_scheduler_check": {
     "registered": true,
-    "raw_summary": "\nフォルダー\\\nホスト名:                                       DESKTOP-T8LTA9P\nタスク名:                                       \\Antigravity_AI_CEO_Daily\n次回の実行時刻:                                 2026/11/14 8:00:00\n状態:                                           実行中\nログオン モード:                                対話型のみ\n前回の実行時刻:                                 2026/11/13 20:26:34\n前回の結果:                                     267009\n作成者:                                         DESKTOP-T8LTA9P\\山内　裕加里\n実行するタスク:                                 C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Desk"
+    "raw_summary": "\nFolder: \\\nHostName:                             DESKTOP-T8LTA9P\nTaskName:                             \\Antigravity_AI_CEO_Daily\nNext Run Time:                        2026/11/14 8:00:00\nStatus:                               Ready\nLogon Mode:                           Interactive only\nLast Run Time:                        2026/11/13 20:26:34\nLast Result:                          0\nAuthor:                               DESKTOP-T8LTA9P\\山内　裕加里\nTask To Run:                          C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Desktop\\Frontier_clone\\ai_ceo_system\\"
   },
-  "overall_healthy": false
+  "overall_healthy": true
 }

@@ -146,33 +146,36 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
     def _upload_eyecatch(self, page, thumbnail_path: str) -> bool:
         if not thumbnail_path or not os.path.exists(thumbnail_path):
             return False
-        try:
-            btns = page.locator('button[data-id="ButtonIcon"]')
-            for i in range(btns.count()):
-                b = btns.nth(i)
-                box = b.bounding_box()
-                if box and 60 < box["y"] < 220:
-                    b.click()
-                    break
-            time.sleep(1.5)
-            upload_btn = page.locator('button:has-text("画像をアップロード")').first
-            if upload_btn.is_visible(timeout=5000):
-                with page.expect_file_chooser(timeout=10000) as fc_info:
-                    upload_btn.click()
-                fc_info.value.set_files(thumbnail_path)
-                time.sleep(3)
-                save_crop_btn = page.locator('button:has-text("保存")').last
-                if save_crop_btn.is_visible(timeout=8000):
-                    save_crop_btn.click()
-                    time.sleep(5)
-                return True
-        except Exception as e:
-            print(f"[Note Auto-Publisher] Eyecatch upload warning: {e}")
+        for attempt in range(2):
+            try:
+                page.wait_for_selector('button[data-id="ButtonIcon"]', timeout=8000)
+                btns = page.locator('button[data-id="ButtonIcon"]')
+                for i in range(btns.count()):
+                    b = btns.nth(i)
+                    box = b.bounding_box()
+                    if box and 40 < box["y"] < 260:
+                        b.click()
+                        break
+                time.sleep(2.0)
+                upload_btn = page.locator('button:has-text("画像をアップロード")').first
+                if upload_btn.is_visible(timeout=5000):
+                    with page.expect_file_chooser(timeout=10000) as fc_info:
+                        upload_btn.click()
+                    fc_info.value.set_files(thumbnail_path)
+                    time.sleep(3.5)
+                    save_crop_btn = page.locator('button:has-text("保存")').last
+                    if save_crop_btn.is_visible(timeout=8000):
+                        save_crop_btn.click()
+                        time.sleep(6)
+                    return True
+            except Exception as e:
+                print(f"[Note Auto-Publisher] Eyecatch upload attempt {attempt + 1} warning: {e}")
+                time.sleep(2)
         return False
 
     def fix_existing_free_article_links(self, note_key: str, niche: dict, day: int) -> dict:
         art = self.generate_daily_free_lead_article(day=day, niche=niche)
-        print(f"[Note Auto-Publisher] Upgrading links in {note_key} ({art['title'][:25]}...)...")
+        print(f"[Note Auto-Publisher] Upgrading links & thumbnail in {note_key} ({art['title'][:25]}...)...")
         with sync_playwright() as p:
             context = p.chromium.launch_persistent_context(
                 user_data_dir=PROFILE_DIR,
@@ -183,7 +186,9 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             )
             page = context.pages[0] if context.pages else context.new_page()
             page.goto(f"https://editor.note.com/notes/{note_key}/edit/", wait_until="domcontentloaded", timeout=30000)
-            time.sleep(4)
+            time.sleep(5)
+            if art.get("thumbnail_path"):
+                self._upload_eyecatch(page, art["thumbnail_path"])
             self._insert_rich_body(page, art["body"], replace_existing=True)
             page.screenshot(path=SCREENSHOT_PATH)
 

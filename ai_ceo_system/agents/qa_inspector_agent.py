@@ -27,24 +27,31 @@ class QAInspectorAgent:
     def check_http_and_links(self, urls: list[str]) -> list[dict]:
         results = []
         for url in urls:
-            try:
-                req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-                with urllib.request.urlopen(req, timeout=10) as resp:
-                    html = resp.read().decode("utf-8", errors="ignore")
-                    has_note_cta = PAID_NOTE_URL in html
-                    results.append({
-                        "url": url,
-                        "status": resp.status,
-                        "ok": resp.status == 200,
-                        "has_paid_note_link": has_note_cta,
-                        "size_bytes": len(html)
-                    })
-            except Exception as e:
+            last_err = ""
+            ok_done = False
+            for _ in range(2):
+                try:
+                    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+                    with urllib.request.urlopen(req, timeout=15) as resp:
+                        html = resp.read().decode("utf-8", errors="ignore")
+                        has_note_cta = PAID_NOTE_URL in html
+                        results.append({
+                            "url": url,
+                            "status": resp.status,
+                            "ok": resp.status == 200,
+                            "has_paid_note_link": has_note_cta,
+                            "size_bytes": len(html)
+                        })
+                        ok_done = True
+                        break
+                except Exception as e:
+                    last_err = str(e)
+            if not ok_done:
                 results.append({
                     "url": url,
                     "status": 0,
                     "ok": False,
-                    "error": str(e)
+                    "error": last_err
                 })
         return results
 
