@@ -1,6 +1,6 @@
 {
   "day": 11,
-  "timestamp": "2026-11-14T07:18:27.863348+09:00",
+  "timestamp": "2026-11-14T07:20:45.989436+09:00",
   "financials": {
     "initial_balance": 15000,
     "current_balance": 15000,
@@ -19,8 +19,8 @@
       "status": "published",
       "price_jpy": 980,
       "paid_article_likes": 3,
-      "total_published_notes": 6,
-      "total_account_likes": 15,
+      "total_published_notes": 7,
+      "total_account_likes": 12,
       "paywall_active": true
     },
     "github_traffic_metrics": {
