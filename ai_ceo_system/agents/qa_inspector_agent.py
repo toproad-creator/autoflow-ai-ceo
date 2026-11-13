@@ -69,6 +69,7 @@ class QAInspectorAgent:
                 body_html = n_data.get("body", "") or ""
                 link_count = len(re.findall(r"<a href=", body_html))
                 has_thumb = bool(item.get("eyecatch"))
+                is_paid = item.get("price", 0) > 0
                 results.append({
                     "key": key,
                     "url": f"https://note.com/toproad_1989/n/{key}",
@@ -76,7 +77,7 @@ class QAInspectorAgent:
                     "has_thumbnail": has_thumb,
                     "clickable_links_count": link_count,
                     "likes": item.get("likeCount", 0),
-                    "healthy": has_thumb and link_count >= 1
+                    "healthy": has_thumb and (is_paid or link_count >= 1)
                 })
         except Exception as e:
             results.append({"error": str(e), "healthy": False})

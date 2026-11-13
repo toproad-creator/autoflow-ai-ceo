@@ -197,7 +197,7 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             if pub_step.is_visible():
                 pub_step.click()
                 time.sleep(4)
-                final_btn = page.locator('button:has-text("更新する"), button:has-text("投稿する"), button:has-text("公開")').last
+                final_btn = page.locator('button:text-is("更新する"), button:text-is("投稿する")').first
                 if final_btn.is_visible():
                     final_btn.click()
                     time.sleep(6)
@@ -285,8 +285,8 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             time.sleep(1)
             page.screenshot(path=SCREENSHOT_PATH)
 
-            # 7. 投稿するボタンをクリック
-            final_btn = page.locator('button:has-text("投稿する"), button:has-text("公開")').last
+            # 7. 投稿するボタンをクリック（タグ候補の「#公開」ではなく右上の「投稿する」を厳密指定）
+            final_btn = page.locator('button:text-is("投稿する"), button:text-is("更新する")').first
             final_btn.click()
             time.sleep(7)
             page.screenshot(path=SCREENSHOT_PATH)

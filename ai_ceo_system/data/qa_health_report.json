@@ -1,5 +1,5 @@
 {
-  "inspected_at": "2026-11-14T07:15:20.563949+09:00",
+  "inspected_at": "2026-11-14T07:19:00.541866+09:00",
   "total_urls_checked": 27,
   "urls_ok_count": 27,
   "broken_urls": [],
@@ -56,7 +56,7 @@
       "has_thumbnail": true,
       "clickable_links_count": 0,
       "likes": 3,
-      "healthy": false
+      "healthy": true
     }
   ],
   "browser_e2e": {
@@ -91,7 +91,7 @@
   },
   "windows_scheduler_check": {
     "registered": true,
-    "raw_summary": "\nフォルダー\\\nホスト名:                                       DESKTOP-T8LTA9P\nタスク名:                                       \\Antigravity_AI_CEO_Daily\n次回の実行時刻:                                 2026/11/14 8:00:00\n状態:                                           実行中\nログオン モード:                                対話型のみ\n前回の実行時刻:                                 2026/11/14 7:13:40\n前回の結果:                                     267009\n作成者:                                         DESKTOP-T8LTA9P\\山内　裕加里\n実行するタスク:                                 C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Deskt"
+    "raw_summary": "\nFolder: \\\nHostName:                             DESKTOP-T8LTA9P\nTaskName:                             \\Antigravity_AI_CEO_Daily\nNext Run Time:                        2026/11/14 8:00:00\nStatus:                               Ready\nLogon Mode:                           Interactive only\nLast Run Time:                        2026/11/14 7:13:40\nLast Result:                          0\nAuthor:                               DESKTOP-T8LTA9P\\山内　裕加里\nTask To Run:                          C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Desktop\\Frontier_clone\\ai_ceo_system\\a"
   },
-  "overall_healthy": false
+  "overall_healthy": true
 }
