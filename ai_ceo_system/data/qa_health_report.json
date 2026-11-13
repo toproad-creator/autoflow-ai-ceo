@@ -1,5 +1,5 @@
 {
-  "inspected_at": "2026-11-12T21:05:39.150459+09:00",
+  "inspected_at": "2026-11-13T03:04:35.487422+00:00",
   "total_urls_checked": 27,
   "urls_ok_count": 27,
   "broken_urls": [],
@@ -10,7 +10,7 @@
       "title": "【無料コピペOK】請求書・領収書PDFのAI読取＆スプレッドシート記帳",
       "has_thumbnail": true,
       "clickable_links_count": 3,
-      "likes": 0,
+      "likes": 1,
       "healthy": true
     },
     {
@@ -54,8 +54,7 @@
     "status": "skipped_no_playwright"
   },
   "windows_scheduler_check": {
-    "registered": true,
-    "raw_summary": "\nFolder: \\\nHostName:                             DESKTOP-T8LTA9P\nTaskName:                             \\Antigravity_AI_CEO_Daily\nNext Run Time:                        2026/11/13 8:00:00\nStatus:                               Ready\nLogon Mode:                           Interactive only\nLast Run Time:                        2026/11/12 20:18:56\nLast Result:                          1\nAuthor:                               DESKTOP-T8LTA9P\\山内　裕加里\nTask To Run:                          C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Desktop\\Frontier_clone\\ai_ceo_system\\"
+    "status": "cloud_linux_env"
   },
   "overall_healthy": true
 }

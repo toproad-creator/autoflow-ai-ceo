@@ -1,9 +1,9 @@
 {
-  "executed_at": "2026-11-12T21:05:17.227094+09:00",
+  "executed_at": "2026-11-13T03:04:30.934732+00:00",
   "actions_completed": [
     "IndexNow検索エンジン即時登録Ping送信（対象: 全26ページ / ステータス: queued_for_deploy）",
-    "GitHub Gist外部技術メディア記事の自動公開・被リンク獲得（URL: https://gist.github.com/toproad-creator/c7130dd57172da4c70453aaec5cdbc00）",
-    "GitHub Release公式スターターキット配布ページの自動公開（URL: https://github.com/toproad-creator/autoflow-ai-ceo/releases/tag/v1.4.0）",
+    "GitHub Gist外部技術メディア記事の自動公開・被リンク獲得（URL: gh_cli_not_found_in_cloud）",
+    "GitHub Release公式スターターキット配布ページの自動公開（URL: gh_cli_not_found_in_cloud）",
     "GitHub検索＆Google上位表示用セールスREADME.mdの自動構築・更新"
   ],
   "submitted_urls_count": 26,
@@ -11,8 +11,8 @@
     "status": "queued_for_deploy",
     "message": "HTTP Error 403: Forbidden"
   },
-  "public_gist_url": "https://gist.github.com/toproad-creator/c7130dd57172da4c70453aaec5cdbc00",
-  "github_release_url": "https://github.com/toproad-creator/autoflow-ai-ceo/releases/tag/v1.4.0",
-  "readme_path": "C:\\Users\\yukar\\Desktop\\Frontier_clone\\README.md",
-  "key_file": "C:\\Users\\yukar\\Desktop\\Frontier_clone\\ai_ceo_system\\product_site\\autoflowaiceo2026indexnowkey90days.txt"
+  "public_gist_url": "gh_cli_not_found_in_cloud",
+  "github_release_url": "gh_cli_not_found_in_cloud",
+  "readme_path": "/home/runner/work/autoflow-ai-ceo/autoflow-ai-ceo/README.md",
+  "key_file": "/home/runner/work/autoflow-ai-ceo/autoflow-ai-ceo/ai_ceo_system/product_site/autoflowaiceo2026indexnowkey90days.txt"
 }
