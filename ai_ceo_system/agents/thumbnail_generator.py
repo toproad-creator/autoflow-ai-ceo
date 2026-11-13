@@ -321,8 +321,8 @@ class NoteThumbnailGenerator:
   <div class="bg-grid"></div>
   <div class="left-col">
     <div class="badge-row">
-      <span class="badge-gold">AutoFlow Pro 完全版</span>
-      <span class="badge-sub">コピペ5分でルーティン業務を消滅</span>
+      <span class="badge-gold">先着10部限定 50%OFFセール</span>
+      <span class="badge-sub">1レシピあたり19円・コピペ5分で完結</span>
     </div>
     <div class="main-title">
       <span class="gold-text">全10業種・50選</span><br>
@@ -335,8 +335,8 @@ class NoteThumbnailGenerator:
         <span class="metric-val">全 50 種類</span>
       </div>
       <div class="metric-card">
-        <span class="metric-label">エラー対策・自動通知</span>
-        <span class="metric-val">完全実装済</span>
+        <span class="metric-label">先着10部限定価格</span>
+        <span class="metric-val">¥1,980 ➔ ¥980</span>
       </div>
     </div>
   </div>
@@ -347,9 +347,9 @@ class NoteThumbnailGenerator:
     <div class="pack-list">
       ✅ EC・物販 / 不動産 / 採用<br>
       ✅ 経理・請求 / SNS運用<br>
-      ✅ 営業リスト / 広告レポート
+      ✅ 無料エリアに実物2本公開中
     </div>
-    <div class="price-tag">買い切り ¥1,980</div>
+    <div class="price-tag">限定特価 ¥980</div>
   </div>
 </body>
 </html>"""

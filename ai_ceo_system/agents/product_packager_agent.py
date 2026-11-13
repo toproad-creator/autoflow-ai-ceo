@@ -46,7 +46,7 @@ class ProductPackagerAgent:
 
         json_product_path = os.path.join(PRIVATE_DATA_DIR, "autoflow_pro_50_templates.json")
         with open(json_product_path, "w", encoding="utf-8") as f:
-            json.dump({"product": "AutoFlow Pro 50 Automation Pack", "price_jpy": 1980, "checkout_url": NOTE_CHECKOUT_URL, "count": len(templates), "templates": templates}, f, ensure_ascii=False, indent=2)
+            json.dump({"product": "AutoFlow Pro 50 Automation Pack", "price_jpy": 980, "regular_price_jpy": 1980, "checkout_url": NOTE_CHECKOUT_URL, "count": len(templates), "templates": templates}, f, ensure_ascii=False, indent=2)
 
         lp_path = self._build_sales_lp(templates)
         return {
@@ -73,23 +73,23 @@ class ProductPackagerAgent:
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AutoFlow Pro Pack | 全職種対応50種AIプロンプト＆GAS自動化テンプレート完全版 (¥1,980)</title>
+  <title>AutoFlow Pro Pack | 全職種対応50種AIプロンプト＆GAS自動化テンプレート完全版 (先着10部限定 ¥980)</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen">
   <header class="border-b border-slate-800 py-4 px-6 max-w-5xl mx-auto flex justify-between items-center">
     <a href="index.html" class="text-sky-400 text-sm font-bold hover:underline">← 無料シミュレーターに戻る</a>
-    <span class="text-xs text-amber-400 font-bold">note決済対応（クレカ・PayPay・キャリア決済）・買い切り ¥1,980</span>
+    <span class="text-xs text-amber-400 font-bold">note決済対応（クレカ・PayPay・キャリア決済）・先着10部限定 ¥980</span>
   </header>
 
   <main class="max-w-5xl mx-auto px-6 py-12">
     <div class="text-center mb-12">
-      <span class="bg-amber-400/20 text-amber-300 border border-amber-400/40 text-xs font-bold px-3 py-1 rounded-full">全10業種・50種類の自動化レシピ収録</span>
+      <span class="bg-amber-400/20 text-amber-300 border border-amber-400/40 text-xs font-bold px-3 py-1 rounded-full">🔥 先着10部限定 50%OFFセール開催中（¥1,980 ➔ ¥980）</span>
       <h1 class="text-3xl md:text-5xl font-extrabold mt-4 mb-4 leading-tight">
         コピペ5分で「毎日のルーティン作業」を消滅させる<br/><span class="text-sky-400">AutoFlow Pro 完全版パッケージ</span>
       </h1>
       <p class="text-slate-400 max-w-2xl mx-auto text-sm md:text-base">
-        時給2,500円換算で<strong>たった48分分の作業が浮けば元が取れる（¥1,980）</strong>実践テンプレート集。
+        時給2,500円換算で<strong>たった24分分の作業が浮けば元が取れる（先着10部限定 ¥980 / 1レシピあたり約19円）</strong>実践テンプレート集。
         構造化AIプロンプト50本と、Googleスプレッドシートでそのまま動くGASコードをセットで収録しています。
       </p>
     </div>
@@ -99,16 +99,16 @@ class ProductPackagerAgent:
       <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
         {cards_html}
       </div>
-      <p class="text-center text-xs text-slate-400 mt-4">…ほか全10カテゴリ・計50種類のプロンプト＆GASコードをnote有料エリアにて即時提供</p>
+      <p class="text-center text-xs text-slate-400 mt-4">…ほか全10カテゴリ・計50種類のプロンプト＆GASコードをnote有料エリアにて即時提供（無料試し読みエリアに実物2本＋全50リスト公開中！）</p>
     </div>
 
     <!-- Checkout CTA Box -->
     <div class="bg-gradient-to-br from-slate-900 to-indigo-950 border-2 border-amber-400/60 rounded-2xl p-8 text-center max-w-2xl mx-auto shadow-2xl">
-      <div class="text-xs text-amber-300 font-bold uppercase tracking-wider">特別リリース価格（買い切り）</div>
-      <div class="text-4xl font-black my-2">¥1,980 <span class="text-sm font-normal text-slate-400">(税込・追加費用ゼロ)</span></div>
+      <div class="text-xs text-amber-300 font-bold uppercase tracking-wider">🔥 先着10部限定 50%OFFセール価格（買い切り）</div>
+      <div class="text-4xl font-black my-2"><span class="line-through text-slate-500 text-2xl mr-2">¥1,980</span>¥980 <span class="text-sm font-normal text-slate-400">(税込・11部目から¥1,480へ改定)</span></div>
       <p class="text-xs text-slate-300 mb-6">noteにて決済後、その場で全50種類のプロンプト＆GASコードをすべて閲覧・コピーいただけます。</p>
       <a href="{NOTE_CHECKOUT_URL}" target="_blank" rel="noopener" onclick="triggerCheckout()" class="inline-block w-full sm:w-auto bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-8 py-4 rounded-xl text-base shadow-lg transition">
-        ⚡ noteで今すぐ完全版パックを入手する (¥1,980) →
+        ⚡ noteで今すぐ完全版パックを入手する (限定 ¥980) →
       </a>
     </div>
   </main>

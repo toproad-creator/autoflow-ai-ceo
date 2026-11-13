@@ -62,7 +62,7 @@ class DeveloperAgent:
       <a href="prompt-builder.html" class="text-purple-400 hover:underline">✨ プロンプト自動設計 (NEW)</a>
       <a href="gas-debugger.html" class="text-emerald-400 hover:underline">🛠️ GASエラー3秒診断</a>
       <a href="free-templates.html" class="text-slate-200 hover:underline">🎁 無料サンプル5選</a>
-      <a href="{NOTE_URL}" target="_blank" rel="noopener" class="bg-amber-400 hover:bg-amber-300 text-slate-950 px-3 py-1.5 rounded-lg shadow">⚡ 全50種完全版 (¥1,980)</a>
+      <a href="{NOTE_URL}" target="_blank" rel="noopener" class="bg-amber-400 hover:bg-amber-300 text-slate-950 px-3 py-1.5 rounded-lg shadow">🔥 全50種完全版 (先着10部 ¥980)</a>
     </nav>
   </header>"""
 
@@ -178,7 +178,7 @@ class DeveloperAgent:
               🎁 無料サンプル5選を試す
             </a>
             <a href="{NOTE_URL}" target="_blank" rel="noopener" onclick="recordConversionClick()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-4 py-2.5 rounded-lg shadow text-center">
-              noteで完全版を入手 (¥1,980) →
+              🔥 先着10部限定 ¥980 で入手 →
             </a>
           </div>
         </div>
@@ -409,7 +409,7 @@ class DeveloperAgent:
             <p class="text-xs text-slate-300 mt-1">全10業種・50種類の完成品プロンプト＆GASコード集をnoteで公開中</p>
           </div>
           <a href="{NOTE_URL}" target="_blank" rel="noopener" class="shrink-0 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-4 py-2.5 rounded-lg">
-            全50種パックを見る (¥1,980) →
+            🔥 先着10部限定 ¥980 で見る →
           </a>
         </div>
       </div>
@@ -469,10 +469,10 @@ class DeveloperAgent:
   {self._nav_header()}
   <main class="max-w-5xl mx-auto w-full px-6 py-10 flex-1">
     <div class="text-center mb-10">
-      <span class="bg-amber-400/20 text-amber-300 border border-amber-400/40 text-xs font-bold px-3 py-1 rounded-full">登録不要・その場でコピペ体験</span>
+      <span class="bg-amber-400/20 text-amber-300 border border-amber-400/40 text-xs font-bold px-3 py-1 rounded-full">🔥 先着10部限定 50%OFFセール開催中（¥1,980 ➔ ¥980）</span>
       <h1 class="text-3xl md:text-4xl font-extrabold mt-4 mb-3">🎁 厳選5種の自動化レシピ無料公開 ＆ 完全版50選の比較</h1>
       <p class="text-slate-400 text-sm max-w-2xl mx-auto">
-        まずは無料サンプル5選の品質を実際にお試しください。気に入っていただけた方は、全10業種・50種類すべてが揃った完全版パック（¥1,980）をnoteにて即時入手いただけます。
+        まずは無料サンプル5選の品質を実際にお試しください。気に入っていただけた方は、全10業種・50種類すべてが揃った完全版パック（先着10部限定 ¥980）をnoteにて即時入手いただけます。
       </p>
     </div>
 
@@ -566,14 +566,14 @@ function checkEcPriceMargin() {{
           <tr class="border-b border-slate-800 text-slate-400">
             <th class="py-3 px-4">機能・収録内容</th>
             <th class="py-3 px-4">無料Webツール版</th>
-            <th class="py-3 px-4 text-amber-400 font-black">AutoFlow Pro 完全版 (¥1,980)</th>
+            <th class="py-3 px-4 text-amber-400 font-black">AutoFlow Pro 完全版 (先着10部 ¥980)</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-800/70">
           <tr>
             <td class="py-3 px-4 font-bold">収録プロンプト＆GAS数</td>
             <td class="py-3 px-4">基本5種</td>
-            <td class="py-3 px-4 text-emerald-400 font-bold">全10業種・計50種類フル収録（1レシピあたり約39円）</td>
+            <td class="py-3 px-4 text-emerald-400 font-bold">全10業種・計50種類フル収録（1レシピあたり約19円！）</td>
           </tr>
           <tr>
             <td class="py-3 px-4 font-bold">スプレッドシート完了ステータス自動記録</td>
@@ -588,13 +588,13 @@ function checkEcPriceMargin() {{
           <tr>
             <td class="py-3 px-4 font-bold">時給2,500円換算の損益分岐点</td>
             <td class="py-3 px-4">¥0</td>
-            <td class="py-3 px-4 text-amber-300 font-bold">たった48分の作業短縮で100%元が取れる買い切り価格</td>
+            <td class="py-3 px-4 text-amber-300 font-bold">たった24分の作業短縮で100%元が取れる買い切り価格（¥1,980 ➔ ¥980）</td>
           </tr>
         </tbody>
       </table>
       <div class="mt-6 text-center">
         <a href="{NOTE_URL}" target="_blank" rel="noopener" class="inline-block bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-8 py-3.5 rounded-xl text-sm shadow-lg transition">
-          ⚡ noteで全50種・完全版パックを入手する (¥1,980) →
+          🔥 noteで全50種・完全版パックを入手する (先着10部 ¥980) →
         </a>
       </div>
     </div>
@@ -666,7 +666,7 @@ function checkEcPriceMargin() {{
             <p class="text-xs text-slate-300 mt-1">全10業種・50種類の動作確認済みGAS＆構造化プロンプト集をnoteで公開中</p>
           </div>
           <a href="{NOTE_URL}" target="_blank" rel="noopener" class="shrink-0 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-4 py-2.5 rounded-lg">
-            全50種パックを見る (¥1,980) →
+            🔥 先着10部限定 ¥980 で見る →
           </a>
         </div>
       </div>
@@ -785,7 +785,7 @@ function checkEcPriceMargin() {{
         無料シミュレーターで専用コードを生成する →
       </a>
       <a href="{NOTE_URL}" target="_blank" rel="noopener" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-5 py-2.5 rounded-lg text-sm">
-        ⚡ 全50種プロンプト＆GAS完全版パック (¥1,980) →
+        🔥 全50種プロンプト＆GAS完全版パック (先着10部 ¥980) →
       </a>
     </div>
   </div>
