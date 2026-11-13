@@ -1,6 +1,6 @@
 {
-  "day": 10,
-  "timestamp": "2026-11-13T20:28:26.446639+09:00",
+  "day": 11,
+  "timestamp": "2026-11-14T07:14:53.398678+09:00",
   "financials": {
     "initial_balance": 15000,
     "current_balance": 15000,
@@ -17,10 +17,10 @@
       "paid_note_key": "n5d0e28a74f91",
       "paid_note_url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
       "status": "published",
-      "price_jpy": 1980,
+      "price_jpy": 980,
       "paid_article_likes": 3,
       "total_published_notes": 6,
-      "total_account_likes": 14,
+      "total_account_likes": 15,
       "paywall_active": true
     },
     "github_traffic_metrics": {
