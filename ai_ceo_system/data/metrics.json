@@ -1,6 +1,6 @@
 {
-  "day": 9,
-  "timestamp": "2026-11-12T21:05:11.956473+09:00",
+  "day": 10,
+  "timestamp": "2026-11-13T20:28:26.446639+09:00",
   "financials": {
     "initial_balance": 15000,
     "current_balance": 15000,
@@ -19,15 +19,15 @@
       "status": "published",
       "price_jpy": 1980,
       "paid_article_likes": 3,
-      "total_published_notes": 5,
-      "total_account_likes": 12,
+      "total_published_notes": 6,
+      "total_account_likes": 14,
       "paywall_active": true
     },
     "github_traffic_metrics": {
       "repo_views_14d": 0,
       "repo_uniques_14d": 0,
-      "clones_14d": 290,
-      "unique_cloners_14d": 117
+      "clones_14d": 315,
+      "unique_cloners_14d": 126
     }
   },
   "traffic_diagnosis": {
