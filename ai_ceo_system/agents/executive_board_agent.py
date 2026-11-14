@@ -125,42 +125,50 @@ class ExecutiveBoardAgent:
 
         gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
         if gemini_key:
-            try:
-                url = f"https://generativelanguage.googleapis.com/v1beta/models/gemma-4-26b-a4b-it:generateContent?key={gemini_key}"
-                body = json.dumps({
-                    "contents": [{"parts": [{"text": prompt}]}],
-                    "generationConfig": {
-                        "temperature": 0.4,
-                    },
-                }).encode("utf-8")
-                req = urllib.request.Request(
-                    url,
-                    data=body,
-                    headers={"Content-Type": "application/json"},
-                    method="POST",
-                )
-                with urllib.request.urlopen(req, timeout=8) as resp:
-                    payload = json.loads(resp.read().decode("utf-8"))
-                parts = payload["candidates"][0]["content"]["parts"]
-                content = "".join(p.get("text", "") for p in parts if not p.get("thought")) or parts[-1].get("text", "")
-                match = re.search(r"\{.*\}", content, re.S)
-                if match:
-                    parsed = json.loads(match.group(0))
-                    required = (
-                        "agenda",
-                        "cfo_statement",
-                        "cro_statement",
-                        "cmo_statement",
-                        "cto_statement",
-                        "primary_goal",
-                        "approved_actions",
-                        "kpi_target",
+            candidate_models = [
+                "gemini-3-flash-preview",
+                "gemma-4-31b-it",
+                "gemma-4-26b-a4b-it",
+                "gemini-3.1-flash-lite",
+            ]
+            for model_name in candidate_models:
+                try:
+                    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={gemini_key}"
+                    body = json.dumps({
+                        "contents": [{"parts": [{"text": prompt}]}],
+                        "generationConfig": {
+                            "temperature": 0.4,
+                        },
+                    }).encode("utf-8")
+                    req = urllib.request.Request(
+                        url,
+                        data=body,
+                        headers={"Content-Type": "application/json"},
+                        method="POST",
                     )
-                    if all(k in parsed for k in required) and isinstance(parsed["approved_actions"], list) and len(parsed["approved_actions"]) >= 4:
-                        parsed["_engine"] = "LLM_MULTI_AGENT (gemma-4-26b-a4b-it)"
-                        return parsed
-            except Exception as e:
-                print(f"[ExecutiveBoard] Gemini fallback call warning: {e}")
+                    with urllib.request.urlopen(req, timeout=45) as resp:
+                        payload = json.loads(resp.read().decode("utf-8"))
+                    parts = payload["candidates"][0]["content"]["parts"]
+                    content = "".join(p.get("text", "") for p in parts if not p.get("thought")) or parts[-1].get("text", "")
+                    match = re.search(r"\{.*\}", content, re.S)
+                    if match:
+                        parsed = json.loads(match.group(0))
+                        required = (
+                            "agenda",
+                            "cfo_statement",
+                            "cro_statement",
+                            "cmo_statement",
+                            "cto_statement",
+                            "primary_goal",
+                            "approved_actions",
+                            "kpi_target",
+                        )
+                        if all(k in parsed for k in required) and isinstance(parsed["approved_actions"], list) and len(parsed["approved_actions"]) >= 4:
+                            parsed["_engine"] = f"LLM_MULTI_AGENT ({model_name})"
+                            print(f"[ExecutiveBoard] Successfully held AI board meeting using {model_name}")
+                            return parsed
+                except Exception as e:
+                    print(f"[ExecutiveBoard] Gemini ({model_name}) call warning: {e}")
 
         return None
 
