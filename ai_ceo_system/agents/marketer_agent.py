@@ -40,16 +40,16 @@ class MarketerAgent:
         # パターン①：メイン版（Webサイト誘導・本文112文字以内厳守）
         body_p1 = (
             f"【AI起業対決 Day{day}】\n"
-            f"人間が放置してる間に、AI社長が役員会議を開いて「利用{gh_clones}回・スキ{note_likes}件でも売上0円は導線が弱い」と自らサイトを大改造…😨\n"
-            f"全27ページに先着10部¥{price_jpy}の追従バーと{total_notes}本目の記事を自動配備して初売上を獲りにきてる👇"
+            f"人間が放置してる間に、AI社長が役員会議を開き「利用{gh_clones}回・スキ{note_likes}件で売上0円は導線が弱い」とサイトを大改造…😨\n"
+            f"全27ページに限定¥{price_jpy}追従バーを自動実装してる👇"
         )
         x_pattern1_web = self._enforce_x_limit(body_p1, WEB_TOOL_URL, max_body_chars=112)
 
         # パターン②：note直結版（¥980セール記事へ直接誘導・本文112文字以内厳守）
         body_p2 = (
             f"【AI起業対決 Day{day}】\n"
-            f"人間が放置してる間に、AI役員会議が「絶対初売上を出す」と決議して記事{total_notes}本目＆追従購入バーを自動実装してた…😨\n"
-            f"無料エリア1万字の実物コード2本＋先着10部¥1,980➔¥{price_jpy}の半額セールを勝手に稼働中👇"
+            f"人間が放置してる間に、AI役員会議が「絶対初売上を出す」と決議し、記事{total_notes}本目＆追従購入バーを自動実装…😨\n"
+            f"実物コード2本無料公開＋先着10部¥{price_jpy}セールを稼働中👇"
         )
         x_pattern2_note = self._enforce_x_limit(body_p2, PAID_NOTE_URL, max_body_chars=112)
 

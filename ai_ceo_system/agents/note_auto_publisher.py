@@ -213,6 +213,78 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             context.close()
             return {"note_key": note_key, "url": f"https://note.com/toproad_1989/n/{note_key}"}
 
+    def upgrade_all_existing_free_articles(self, niches: list[dict]) -> list[dict]:
+        """既存の公開済み無料note記事6本すべてを最新の『AI起業対決・限定¥980導線』へ一括アップグレードする。"""
+        targets = [
+            ("n70171b631e61", niches[0], 5),
+            ("n9a7bd90cf282", niches[1], 7),
+            ("n2b36747c935d", niches[2], 8),
+            ("n49963f8d62b9", niches[3], 9),
+            ("n1c4995075b64", niches[4], 10),
+            ("n7ecd98d031ad", niches[5], 11),
+        ]
+        email = os.getenv("NOTE_EMAIL", "").strip()
+        password = os.getenv("NOTE_PASSWORD", "").strip()
+        results = []
+        prepared = [
+            (note_key, day_num, self.generate_daily_free_lead_article(day=day_num, niche=niche))
+            for note_key, niche, day_num in targets
+        ]
+
+        with sync_playwright() as p:
+            context = p.chromium.launch_persistent_context(
+                user_data_dir=PROFILE_DIR,
+                channel="chrome",
+                headless=False,
+                args=["--disable-blink-features=AutomationControlled", "--start-maximized"],
+                no_viewport=True
+            )
+            page = context.pages[0] if context.pages else context.new_page()
+
+            for note_key, day_num, art in prepared:
+                edit_url = f"https://editor.note.com/notes/{note_key}/edit/"
+                print(f"[Note Auto-Publisher] Upgrading existing free article {note_key} (Day {day_num}: {art['title'][:25]}...)...")
+                page.goto(edit_url, wait_until="domcontentloaded", timeout=30000)
+                time.sleep(4)
+
+                if "login" in page.url and email and password:
+                    inputs = page.locator("input")
+                    if inputs.count() >= 2:
+                        inputs.nth(0).click()
+                        inputs.nth(0).press_sequentially(email, delay=40)
+                        time.sleep(0.5)
+                        inputs.nth(1).click()
+                        inputs.nth(1).press_sequentially(password, delay=40)
+                        time.sleep(1.0)
+                        page.locator('button:has-text("ログイン")').first.click()
+                        time.sleep(7)
+                        page.goto(edit_url, wait_until="domcontentloaded", timeout=30000)
+                        time.sleep(4)
+
+                body_box = page.locator('.ProseMirror, div[contenteditable="true"]').first
+                body_box.wait_for(state="visible", timeout=20000)
+                self._insert_rich_body(page, art["body"], replace_existing=True)
+
+                pub_step = page.locator('button:has-text("公開に進む")').first
+                pub_step.click()
+                time.sleep(3.5)
+
+                final_btn = page.locator('button:has-text("更新する"), button:has-text("投稿する")').first
+                final_btn.click()
+                time.sleep(5)
+                page.screenshot(path=SCREENSHOT_PATH)
+
+                results.append({
+                    "note_key": note_key,
+                    "day": day_num,
+                    "title": art["title"],
+                    "url": f"https://note.com/toproad_1989/n/{note_key}",
+                    "status": "upgraded"
+                })
+
+            context.close()
+        return results
+
     def auto_publish_headless(self, article: dict) -> dict:
         existing = self.fetch_published_titles()
         for item in existing:
@@ -345,6 +417,9 @@ if __name__ == "__main__":
     if "--auto-post" in sys.argv:
         res = agent.publish_daily_lead_if_needed(day=8, niches=niches)
         print(json.dumps(res, ensure_ascii=False))
+    elif "--upgrade-all-free" in sys.argv:
+        upgraded = agent.upgrade_all_existing_free_articles(niches)
+        print(json.dumps({"upgraded": upgraded}, ensure_ascii=False, indent=2))
     elif "--fix-all-links" in sys.argv:
         r1 = agent.fix_existing_free_article_links("n70171b631e61", niches[0], day=5)
         r2 = agent.fix_existing_free_article_links("n9a7bd90cf282", niches[1], day=7)
