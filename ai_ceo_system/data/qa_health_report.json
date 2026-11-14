@@ -69,34 +69,7 @@
     }
   ],
   "browser_e2e": {
-    "status": "passed",
-    "js_console_errors": [],
-    "tools_tested": {
-      "index_tool": {
-        "title": "AutoFlow AI | 30秒で業務削減額を算出＆自動化プロンプト/GASコード即時生成ツール",
-        "rendered_ok": true,
-        "note_cta_count": 2
-      },
-      "prompt_builder_tool": {
-        "title": "AutoPrompt Studio | 1行の指示を「深津式・構造化プロンプト」へ0秒変換する無料ジェネレーター",
-        "interactive_buttons": 1,
-        "note_cta_count": 2
-      },
-      "gas_debugger_tool": {
-        "title": "AutoFix AI | Google Apps Script(GAS)エラー＆AIプロンプト3秒診断・自動修正ツール",
-        "interactive_buttons": 1,
-        "note_cta_count": 2
-      },
-      "free_templates_page": {
-        "title": "無料サンプル5選 vs 完全版50選 | AutoFlow AI プロンプト＆GAS自動化レシピ",
-        "sample_copy_buttons": 5,
-        "note_cta_count": 2
-      },
-      "sales_lp": {
-        "title": "AutoFlow Pro Pack | 全職種対応50種AIプロンプト＆GAS自動化テンプレート完全版 (先着10部限定 ¥980)",
-        "note_cta_count": 1
-      }
-    }
+    "status": "skipped_no_playwright"
   },
   "windows_scheduler_check": {
     "registered": true,
