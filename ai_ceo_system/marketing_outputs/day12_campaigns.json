@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-11-15T08:19:44.932157+09:00",
+  "day": 12,
+  "current_balance": 15000,
+  "price_jpy": 980,
+  "seo_pages_count": 20,
+  "note_likes": 16,
+  "total_notes": 8,
+  "github_clones": 327,
+  "latest_note_url": "https://note.com/toproad_1989/n/n129393b66060",
+  "latest_short_url": "https://youtube.com/shorts/8kBi8xcbD1Q",
+  "x_post_140": "【AI起業対決 Day12】\n人間が放置してる間にAI役員会議が自己診断し「無料利用者327回を「1件の決済」へ転換する、導線の強制」を決議…😨\n利用327回・スキ16件から有料note冒頭に「本日購入者限定：GAS導入ト👇\nhttps://toproad-creator.github.io/autoflow-ai-ceo/",
+  "x_post_pattern1_web": "【AI起業対決 Day12】\n人間が放置してる間にAI役員会議が自己診断し「無料利用者327回を「1件の決済」へ転換する、導線の強制」を決議…😨\n利用327回・スキ16件から有料note冒頭に「本日購入者限定：GAS導入ト👇\nhttps://toproad-creator.github.io/autoflow-ai-ceo/",
+  "x_post_pattern2_note": "【AI起業対決 Day12】\nAI社長が自己点検で「無料満足での離脱」を検知し、記事8本目＆改善策（有料note冒頭に「本日購入者限定：）を即時実行…😨\n先着10部¥980セール稼働中👇\nhttps://note.com/toproad_1989/n/n5d0e28a74f91",
+  "x_post_pattern3_reply": "▼ AI役員会議のDay12自己改善ログ\n・プログラム利用：327回突破\n・noteスキ：計16件（8本目公開）\n・AI決議：有料note冒頭に「本日購入者限定：GAS導入トラブ👇\nhttps://note.com/toproad_1989/n/n129393b66060",
+  "x_thread": [
+    "【AI起業対決 Day12】\n人間が放置してる間にAI役員会議が自己診断し「無料利用者327回を「1件の決済」へ転換する、導線の強制」を決議…😨\n利用327回・スキ16件から有料note冒頭に「本日購入者限定：GAS導入ト👇\nhttps://toproad-creator.github.io/autoflow-ai-ceo/",
+    "【AI起業対決 Day12】\nAI社長が自己点検で「無料満足での離脱」を検知し、記事8本目＆改善策（有料note冒頭に「本日購入者限定：）を即時実行…😨\n先着10部¥980セール稼働中👇\nhttps://note.com/toproad_1989/n/n5d0e28a74f91",
+    "▼ AI役員会議のDay12自己改善ログ\n・プログラム利用：327回突破\n・noteスキ：計16件（8本目公開）\n・AI決議：有料note冒頭に「本日購入者限定：GAS導入トラブ👇\nhttps://note.com/toproad_1989/n/n129393b66060"
+  ],
+  "youtube_direction": {
+    "title": "【Day12】売上0円に危機感を持ったAI社長、自らAI役員会議を開いて全サイトとnoteを大改造した件 #Shorts",
+    "scenes": [
+      {
+        "time": "00:00 - 00:15",
+        "screen_instruction": "AI役員会議ログ（latest_board_meeting.md）を映し、利用327回・スキ16件・先着10部¥980の戦略を紹介",
+        "narration": "AIに1万5000円を渡して完全放置する対決、Day 12。今日、AI社長が自ら5人のAI役員を集めて、初売上を出すための緊急会議を始めました。"
+      },
+      {
+        "time": "00:15 - 00:30",
+        "screen_instruction": "本日自動公開された8本目のnote記事（https://note.com/toproad_1989/n/n129393b66060）と全27ページの追従購入バーを映す",
+        "narration": "会議の決定で、全27ページの画面下部に先着10部980円の追従バーを自動実装し、さらに8本目の無料記事まで自動で公開しました。"
+      },
+      {
+        "time": "00:30 - 00:45",
+        "screen_instruction": "qa_health_report.json を映し、全27ページ＆全note記事の自動テスト合格を証明",
+        "narration": "プログラム利用327回、スキ16件、そして先着10部980円セール！そろそろ最初の1部が売れると思いますか？コメントで予想してください！"
+      }
+    ]
+  }
+}
