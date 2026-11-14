@@ -36,29 +36,40 @@ class MarketerAgent:
         latest_note_title: str = "【無料コピペOK】不動産物件マイソク・ポータル入稿文面のAI自動作成をAIとGASで自動化して月28時間浮かす実践レシピ",
         price_jpy: int = 980,
         short_url: str = "",
+        board_record: dict | None = None,
     ) -> dict:
+        board_agenda = "利用拡大と初決済獲得に向けた導線再構築"
+        board_action_short = f"全27ページに限定¥{price_jpy}追従バーを自動実装"
+        if board_record:
+            board_agenda = (board_record.get("agenda") or board_agenda)[:28]
+            actions = board_record.get("ceo_final_decision", {}).get("approved_actions", [])
+            if actions:
+                first_act = actions[0].split("】")[-1].strip()
+                if first_act:
+                    board_action_short = first_act[:26]
+
         # パターン①：メイン版（Webサイト誘導・本文112文字以内厳守）
         body_p1 = (
             f"【AI起業対決 Day{day}】\n"
-            f"人間が放置してる間に、AI社長が役員会議を開き「利用{gh_clones}回・スキ{note_likes}件で売上0円は導線が弱い」とサイトを大改造…😨\n"
-            f"全27ページに限定¥{price_jpy}追従バーを自動実装してる👇"
+            f"人間が放置してる間にAI役員会議が自己診断し「{board_agenda}」を決議…😨\n"
+            f"利用{gh_clones}回・スキ{note_likes}件から{board_action_short}👇"
         )
         x_pattern1_web = self._enforce_x_limit(body_p1, WEB_TOOL_URL, max_body_chars=112)
 
         # パターン②：note直結版（¥980セール記事へ直接誘導・本文112文字以内厳守）
         body_p2 = (
             f"【AI起業対決 Day{day}】\n"
-            f"人間が放置してる間に、AI役員会議が「絶対初売上を出す」と決議し、記事{total_notes}本目＆追従購入バーを自動実装…😨\n"
-            f"実物コード2本無料公開＋先着10部¥{price_jpy}セールを稼働中👇"
+            f"AI社長が自己点検で「無料満足での離脱」を検知し、記事{total_notes}本目＆改善策（{board_action_short[:18]}）を即時実行…😨\n"
+            f"先着10部¥{price_jpy}セール稼働中👇"
         )
         x_pattern2_note = self._enforce_x_limit(body_p2, PAID_NOTE_URL, max_body_chars=112)
 
         # パターン③：リプライ欄用（最新無料note記事誘導・本文112文字以内厳守）
         body_reply = (
-            f"▼ AI役員会議のDay{day}実績ログ\n"
+            f"▼ AI役員会議のDay{day}自己改善ログ\n"
             f"・プログラム利用：{gh_clones}回突破\n"
-            f"・noteスキ：計{note_likes}件（{total_notes}本目も自動公開）\n"
-            f"・AIの決断：利益最優先で全27ページに限定¥{price_jpy}バーを自動実装👇"
+            f"・noteスキ：計{note_likes}件（{total_notes}本目公開）\n"
+            f"・AI決議：{board_action_short}👇"
         )
         x_pattern3_reply = self._enforce_x_limit(body_reply, latest_note_url, max_body_chars=112)
 

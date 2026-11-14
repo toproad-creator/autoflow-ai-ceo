@@ -35,6 +35,38 @@ class ExecutiveBoardAgent:
     def __init__(self):
         os.makedirs(BOARD_DIR, exist_ok=True)
 
+    def _load_diagnostic_context(self, day: int, detected_issues: list[str] | None = None) -> tuple[list[str], str]:
+        issues = list(detected_issues) if detected_issues else []
+        if not issues:
+            qa_path = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "qa_health_report.json")
+            if os.path.exists(qa_path):
+                try:
+                    with open(qa_path, "r", encoding="utf-8") as f:
+                        qa_data = json.loads(f.read())
+                    issues = qa_data.get("detected_issues", [])
+                except Exception:
+                    pass
+        if not issues:
+            issues = ["【自己診断】技術エラー0件。アクセス・スキ数から有料決済（¥980）への転換率改善が最優先課題。"]
+
+        prev_summary = "（初回または前回記録なし）"
+        try:
+            prev_files = sorted(
+                [fn for fn in os.listdir(BOARD_DIR) if fn.startswith("day") and fn.endswith("_meeting.json")],
+                key=lambda x: int(re.sub(r"\D", "", x) or 0),
+            )
+            for fn in reversed(prev_files):
+                d_num = int(re.sub(r"\D", "", fn) or 0)
+                if d_num < day:
+                    with open(os.path.join(BOARD_DIR, fn), "r", encoding="utf-8") as f:
+                        pdata = json.loads(f.read())
+                    prev_summary = f"Day {d_num} 議題: {pdata.get('agenda', '')} / ゴール: {pdata.get('ceo_final_decision', {}).get('primary_goal', '')}"
+                    break
+        except Exception:
+            pass
+
+        return issues, prev_summary
+
     def _call_llm_board_debate(
         self,
         day: int,
@@ -47,10 +79,13 @@ class ExecutiveBoardAgent:
         gh_clones: int,
         gh_uniques: int,
         latest_note_title: str,
+        detected_issues: list[str] | None = None,
+        prev_summary: str = "",
     ) -> dict | None:
-        """OpenAI gpt-4o-mini (またはフォールバックとしてGemini) を使い、実測値をもとに5人のAI役員が議論・意思決定する。"""
+        """OpenAI gpt-4o-mini (またはフォールバックとしてGemini) を使い、実測値と自己診断課題をもとに5人のAI役員が議論・意思決定する。"""
+        issues_bullet = "\n".join(f"- {iss}" for iss in (detected_issues or []))
         prompt = f"""あなたは「90日間・初期資金15,000円・人間介入ゼロのAI起業対決」を戦う自律AI企業組織の会議シミュレーターです。
-組織の唯一の目的は「1円でも早く、1円でも多くの実売上・純利益を生み出すこと」です。人間に許可を求めたり確認したりせず、AIエージェント自身で考え、決め、実行命令を下してください。
+組織の唯一の目的は「1円でも早く、1円でも多くの実売上・純利益を生み出すこと」です。人間に許可を求めたり確認したりせず、AIエージェント自身で問題点を見つけ、考え、決め、実行命令を下してください。
 
 【本日の実測データ (Day {day} / 90)】
 - 軍資金残高: ¥{balance:,}（累計売上: ¥{total_revenue:,}）
@@ -59,8 +94,14 @@ class ExecutiveBoardAgent:
 - note公開済み記事数: {total_notes}本 / アカウント累計スキ: {total_likes}件（うち有料記事スキ: {paid_likes}件）
 - 最新公開した無料記事タイトル: {latest_note_title}
 
+【システム自己診断（QA自動点検）で検出された現在の問題点・課題】
+{issues_bullet}
+
+【前回の役員会議の記録（同じ議論の繰り返しは厳禁・必ず一歩進んだ具体策を出すこと）】
+- {prev_summary}
+
 【出力要件】
-以下の5名の役員エージェントが、上記の実測数値を踏まえて「なぜ今売上が¥{total_revenue:,}なのか」を冷徹に診断し、本日即座に実行する売上直結の改善策を会議で決定してください。専門用語・プログラミング用語は避け、ビジネス視点で具体的に記述してください。
+以下の5名の役員エージェントが、上記の実測数値と「自己診断で検出された問題点」を踏まえて、なぜ今売上が¥{total_revenue:,}なのか、システムや導線のどこに問題があるのかを自ら指摘し、本日即座に実行する改善策を会議で決定してください。専門用語・プログラミング用語は避け、ビジネス視点で具体的に記述してください。
 
 必ず以下のキーを持つJSONオブジェクトのみを返してください（日本語）:
 {{
@@ -68,13 +109,13 @@ class ExecutiveBoardAgent:
   "cfo_statement": "CFO（最高財務・データ分析責任者）の発言（実測数値の冷徹な監査とボトルネック指摘・120〜180文字）",
   "cro_statement": "CRO（最高収益・成約率改善責任者）の発言（Web導線やnote記事から¥{price_jpy:,}決済へ繋げる具体策・140〜200文字）",
   "cmo_statement": "CMO（最高集客・SNS・ショート動画責任者）の発言（note無料記事・X140字投稿・YouTubeショートによる集客拡大策・140〜200文字）",
-  "cto_statement": "CTO/QA（最高技術・品質保証責任者）の発言（全27Webページ＆全note記事の自動改修・エラー0件保証の実行宣言・120〜180文字）",
+  "cto_statement": "CTO/QA（最高技術・品質保証責任者）の発言（自己診断で見つかった課題の修正・全27Webページ＆全note記事の自動改修宣言・120〜180文字）",
   "primary_goal": "AI社長（CEO）が決断した本日の最優先ゴール（1文）",
   "approved_actions": [
     "【CRO実装】本日即実行する成約率改善アクション1",
     "【CRO/CMO実装】本日即実行するnote導線改善アクション2",
     "【CMO実装】本日即実行するX・ショート動画集客アクション3",
-    "【CTO/QA実装】本日即実行する自動点検・公開アクション4"
+    "【CTO/QA実装】本日即実行する自己修復・自動点検アクション4"
   ],
   "kpi_target": "次期達成ターゲット（noteスキ数、GitHub利用数、初決済の数値目標）"
 }}"""
@@ -185,8 +226,10 @@ class ExecutiveBoardAgent:
         gh_uniques: int,
         latest_note_url: str,
         latest_note_title: str,
+        detected_issues: list[str] | None = None,
     ) -> dict:
         timestamp = datetime.now().astimezone().isoformat()
+        issues_list, prev_summary = self._load_diagnostic_context(day, detected_issues)
 
         llm_result = self._call_llm_board_debate(
             day=day,
@@ -199,6 +242,8 @@ class ExecutiveBoardAgent:
             gh_clones=gh_clones,
             gh_uniques=gh_uniques,
             latest_note_title=latest_note_title,
+            detected_issues=issues_list,
+            prev_summary=prev_summary,
         )
 
         if llm_result:
@@ -253,6 +298,7 @@ class ExecutiveBoardAgent:
             "held_at": timestamp,
             "reasoning_engine": reasoning_engine,
             "Single_Objective": "MAXIMIZE_NET_PROFIT",
+            "detected_issues": issues_list,
             "metrics_snapshot": {
                 "balance_jpy": balance,
                 "total_revenue_jpy": total_revenue,
@@ -278,6 +324,7 @@ class ExecutiveBoardAgent:
         with open(json_path, "w", encoding="utf-8") as f:
             json.dump(meeting_record, f, ensure_ascii=False, indent=2)
 
+        issues_md = "\n".join(f"- {iss}" for iss in issues_list)
         md_content = f"""# 🏢 AI起業対決・利益創出役員会議 議事録（Day {day} / 90）
 
 - **開催日時**: {timestamp}
@@ -285,6 +332,11 @@ class ExecutiveBoardAgent:
 - **組織の唯一の目的**: **利益（売上）を出すこと**
 - **本日の議題**: {agenda}
 - **現在の実測スコア**: 残高 ¥{balance:,} / 売上 ¥{total_revenue:,} / プログラム利用 {gh_clones}回（{gh_uniques}名） / note記事 {total_notes}本（累計スキ {total_likes}件） / 現在価格 **先着10部限定 ¥{price_jpy:,}**
+
+---
+
+## 🔍 システム自己診断（QA自動点検）で検出された課題
+{issues_md}
 
 ---
 

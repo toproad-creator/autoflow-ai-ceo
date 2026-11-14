@@ -167,6 +167,84 @@ class QAInspectorAgent:
         except Exception as e:
             return {"registered": False, "error": str(e)}
 
+    def diagnose_system_and_business_issues(
+        self,
+        broken_urls: list[dict],
+        note_articles: list[dict],
+        e2e: dict,
+    ) -> list[str]:
+        """AIシステム自身の稼働異常・エラーログ・売上ボトルネックを自動検出する自己診断エンジン"""
+        issues = []
+
+        # 1. Webページ・リンク切れチェック
+        if broken_urls:
+            issues.append(f"【Web障害】公開URLのうち {len(broken_urls)} 件でアクセス異常が発生しています。")
+
+        # 2. note記事の品質チェック
+        unhealthy_notes = [n for n in note_articles if not n.get("healthy", False)]
+        if unhealthy_notes:
+            issues.append(f"【note導線不備】公開note記事のうち {len(unhealthy_notes)} 本でサムネイルまたは誘導リンクが不足しています。")
+
+        # 3. ブラウザE2Eエラーチェック
+        js_errs = e2e.get("js_console_errors", [])
+        if js_errs:
+            issues.append(f"【画面エラー】Webツール上で {len(js_errs)} 件のJavaScriptエラーが検出されました。")
+
+        # 4. 直近の実行ログ（scheduler_execution.log）からエラーやWarningを自動検知
+        sched_log_path = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "scheduler_execution.log")
+        if os.path.exists(sched_log_path):
+            try:
+                with open(sched_log_path, "r", encoding="utf-8", errors="ignore") as f:
+                    recent_lines = f.readlines()[-40:]
+                warnings = [ln.strip() for ln in recent_lines if ("Warning:" in ln or "Error" in ln or "Traceback" in ln)]
+                if warnings:
+                    issues.append(f"【システム警告検知】直近の自動実行ログで警告が記録されています（例: {warnings[-1][:80]}）。")
+            except Exception:
+                pass
+
+        # 5. 直近の役員会議が定型文（フォールバック）に落ちていないか自己点検
+        board_dir = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "board_meetings")
+        if os.path.exists(board_dir):
+            try:
+                meeting_files = sorted(
+                    [fn for fn in os.listdir(board_dir) if fn.startswith("day") and fn.endswith("_meeting.json")],
+                    key=lambda x: int(re.sub(r"\D", "", x) or 0),
+                )
+                if meeting_files:
+                    latest_m_path = os.path.join(board_dir, meeting_files[-1])
+                    with open(latest_m_path, "r", encoding="utf-8") as f:
+                        m_data = json.loads(f.read())
+                    engine = m_data.get("reasoning_engine", "")
+                    if "LLM_MULTI_AGENT" not in engine:
+                        issues.append(
+                            f"【AI頭脳フォールバック警告】直近の役員会議（{meeting_files[-1]}）がAIモデルではなく定型文エンジン（{engine}）で動作していました。"
+                        )
+            except Exception:
+                pass
+
+        # 6. ビジネス数値（metrics.json）からのボトルネック自動診断
+        metrics_path = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "metrics.json")
+        if os.path.exists(metrics_path):
+            try:
+                with open(metrics_path, "r", encoding="utf-8") as f:
+                    m = json.loads(f.read())
+                rev = m.get("financials", {}).get("total_revenue", 0)
+                clones = m.get("product_kpis", {}).get("github_traffic_metrics", {}).get("clones_14d", 0)
+                likes = m.get("product_kpis", {}).get("note_live_metrics", {}).get("total_account_likes", 0)
+                paid_likes = m.get("product_kpis", {}).get("note_live_metrics", {}).get("paid_article_likes", 0)
+                if rev == 0:
+                    issues.append(
+                        f"【最重要課題：未収益】ツール利用{clones}回・note累計スキ{likes}件（有料記事スキ{paid_likes}件）に対し売上が¥0です。"
+                        "無料満足で離脱させず、有料版でしか手に入らない具体的な実利と緊急性を提示する必要があります。"
+                    )
+            except Exception:
+                pass
+
+        if not issues:
+            issues.append("【システム正常】技術エラーは0件です。さらなる成約率（CVR）向上と新規集客チャネルの拡大に集中してください。")
+
+        return issues
+
     def run_full_inspection(self, niches: list[dict]) -> dict:
         core_urls = [
             f"{BASE_URL}/",
@@ -186,6 +264,7 @@ class QAInspectorAgent:
         all_notes_healthy = all(n.get("healthy", False) for n in note_articles)
         e2e = self.run_browser_e2e_tests()
         sched = self.check_windows_scheduler()
+        detected_issues = self.diagnose_system_and_business_issues(broken, note_articles, e2e)
 
         report = {
             "inspected_at": datetime.now().astimezone().isoformat(),
@@ -195,6 +274,7 @@ class QAInspectorAgent:
             "live_note_articles_check": note_articles,
             "browser_e2e": e2e,
             "windows_scheduler_check": sched,
+            "detected_issues": detected_issues,
             "overall_healthy": (len(broken) == 0 and all_notes_healthy and e2e.get("status") in ("passed", "skipped_no_playwright"))
         }
         with open(QA_REPORT_PATH, "w", encoding="utf-8") as f:

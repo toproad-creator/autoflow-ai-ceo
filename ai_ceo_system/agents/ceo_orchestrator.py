@@ -171,7 +171,16 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
     latest_note_url = published_notes[0]["url"] if published_notes else "https://note.com/toproad_1989/n/n5d0e28a74f91"
     latest_note_title = published_notes[0]["title"] if published_notes else "AutoFlow Pro"
 
-    # 5. Autonomous Profit Executive Board Meeting (CEO, CFO, CRO, CMO, CTO)
+    # 5. CTO/QA Self-Diagnostic & E2E Inspector Agent (Find issues BEFORE the Board Meeting)
+    qa_agent = QAInspectorAgent()
+    qa_report = qa_agent.run_full_inspection(niches)
+    detected_issues = qa_report.get("detected_issues", [])
+    log_step(
+        f"[5/8 CTO/QA Self-Diagnosis] URLs OK: {qa_report['urls_ok_count']}/{qa_report['total_urls_checked']} | "
+        f"Issues Detected: {len(detected_issues)} | Healthy: {qa_report['overall_healthy']}"
+    )
+
+    # 6. Autonomous Profit Executive Board Meeting (CEO, CFO, CRO, CMO, CTO discuss detected issues)
     board_agent = ExecutiveBoardAgent()
     board_record = board_agent.hold_daily_profit_board_meeting(
         day=day,
@@ -185,10 +194,14 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
         gh_uniques=gh_uniques,
         latest_note_url=latest_note_url,
         latest_note_title=latest_note_title,
+        detected_issues=detected_issues,
     )
-    log_step(f"[5/8 Executive Board Meeting] Completed | Primary Goal: {board_record['ceo_final_decision']['primary_goal']}")
+    log_step(
+        f"[6/8 Executive Board Meeting] Engine: {board_record.get('reasoning_engine')} | "
+        f"Primary Goal: {board_record['ceo_final_decision']['primary_goal']}"
+    )
 
-    # 6. CMO YouTube Short Auto-Generation & Auto-Upload (Local only)
+    # 7. CMO YouTube Short Auto-Generation & Auto-Upload (Local only)
     latest_short_url = ""
     if not is_github_actions and build_shorts:
         try:
@@ -209,11 +222,11 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
                     auto_upload=True,
                 )
                 latest_short_url = short_res.get("youtube_url", latest_short_url)
-                log_step(f"[6/8 CMO Short Pipeline] Day {target_d} Status: {short_res.get('status')} | URL: {latest_short_url}")
+                log_step(f"[7/8 CMO Short Pipeline] Day {target_d} Status: {short_res.get('status')} | URL: {latest_short_url}")
         except Exception as e:
-            log_step(f"[6/8 CMO Short Pipeline] Warning: {e}")
+            log_step(f"[7/8 CMO Short Pipeline] Warning: {e}")
 
-    # 7. CMO X (140-char compliant) Viral Posts & Outbound IndexNow
+    # 8. CMO X (140-char compliant) Viral Posts reflecting Board Decisions & Outbound IndexNow
     marketer = MarketerAgent()
     campaign_data = marketer.generate_daily_campaigns(
         day=day,
@@ -226,20 +239,13 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
         latest_note_title=latest_note_title,
         price_jpy=price_jpy,
         short_url=latest_short_url,
+        board_record=board_record,
     )
     sales_agent = OutboundSalesAgent()
     sales_report = sales_agent.execute_daily_sales_actions(niches)
-    log_step(f"[7/8 CMO & Sales Agent] Generated 140-char X Posts + Pinged IndexNow ({sales_report['submitted_urls_count']} URLs)")
+    log_step(f"[8/8 CMO & Sales Agent] Generated Board-Driven 140-char X Posts + Pinged IndexNow ({sales_report['submitted_urls_count']} URLs)")
 
-    # 8. CTO/QA E2E Inspector Agent
-    qa_agent = QAInspectorAgent()
-    qa_report = qa_agent.run_full_inspection(niches)
-    log_step(
-        f"[8/8 CTO/QA Inspector] URLs OK: {qa_report['urls_ok_count']}/{qa_report['total_urls_checked']} | "
-        f"E2E Status: {qa_report['browser_e2e'].get('status')} | Healthy: {qa_report['overall_healthy']}"
-    )
-
-    # Update root status_log.md dynamically with Board Meeting Decisions, Ready-to-Copy X Posts, Note URLs, and YouTube Shorts
+    # Update root status_log.md dynamically with Self-Diagnosis, Board Meeting Decisions, Ready-to-Copy X Posts, Note URLs, and YouTube Shorts
     note_bullets = "\n".join(
         [f"  - {'【有料パック 先着10部¥980】' if n['price'] > 0 else '【無料集客記事】'}{n['title']} (スキ: {n['likes']}件) -> {n['url']}" for n in published_notes]
     )
@@ -247,12 +253,13 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
     short_bullets = "\n".join(
         [f"  - **Day {s.get('day')}**: {s.get('url')} （{s.get('title', '')[:38]}…）" for s in uploaded_shorts if s.get("url")]
     )
+    issues_bullets = "\n".join([f"  - {iss}" for iss in detected_issues])
     approved_bullets = "\n".join([f"  - {act}" for act in board_record["ceo_final_decision"]["approved_actions"]])
 
     status_md = f"""# 自律型AI CEO ＆ 5大AI役員会議 経営ステータスログ (status_log.md)
 
 - **最終自動更新日時:** {datetime.now().astimezone().isoformat()}
-- **現在フェーズ:** Day {day} / 90（利益創出特化型・AI役員会議オーケストレーター稼働中）
+- **現在フェーズ:** Day {day} / 90（自己診断＆AI役員会議オーケストレーター稼働中）
 - **現在残高:** ¥{balance:,}（初期資金 ¥15,000 / 累計支出 ¥0 / 累計売上 ¥{total_revenue:,}）
 - **有料商品ステータス:** 先着10部限定 **¥{price_jpy:,}**（定価 ¥1,980 から50%OFFセール中・無料試し読み10,515字＋実物コード2本公開済）
 - **note公開記事ステータス:** 公開記事数 {total_notes}本（有料記事1本 + 無料集客記事 {max(0, total_notes - 1)}本 / 累計スキ数: {total_likes}件）
@@ -264,7 +271,14 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
 
 ---
 
+## 🔍 AI自己診断（QA自動点検）で検出された課題とボトルネック
+{issues_bullets}
+
+---
+
 ## 🏢 本日のAI役員会議（CEO・CFO・CRO・CMO・CTO）決定＆実行事項
+- **使用AIモデル（推論エンジン）:** `{board_record.get('reasoning_engine')}`
+- **本日の議題:** {board_record.get('agenda')}
 - **最優先ゴール:** {board_record['ceo_final_decision']['primary_goal']}
 - **会議で採択・即時実装された改善アクション:**
 {approved_bullets}
