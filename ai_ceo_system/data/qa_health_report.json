@@ -1,5 +1,5 @@
 {
-  "inspected_at": "2026-11-14T08:00:41.355629+09:00",
+  "inspected_at": "2026-11-14T02:50:02.372151+00:00",
   "total_urls_checked": 27,
   "urls_ok_count": 27,
   "broken_urls": [],
@@ -69,38 +69,10 @@
     }
   ],
   "browser_e2e": {
-    "status": "passed",
-    "js_console_errors": [],
-    "tools_tested": {
-      "index_tool": {
-        "title": "AutoFlow AI | 30秒で業務削減額を算出＆自動化プロンプト/GASコード即時生成ツール",
-        "rendered_ok": true,
-        "note_cta_count": 2
-      },
-      "prompt_builder_tool": {
-        "title": "AutoPrompt Studio | 1行の指示を「深津式・構造化プロンプト」へ0秒変換する無料ジェネレーター",
-        "interactive_buttons": 1,
-        "note_cta_count": 2
-      },
-      "gas_debugger_tool": {
-        "title": "AutoFix AI | Google Apps Script(GAS)エラー＆AIプロンプト3秒診断・自動修正ツール",
-        "interactive_buttons": 1,
-        "note_cta_count": 2
-      },
-      "free_templates_page": {
-        "title": "無料サンプル5選 vs 完全版50選 | AutoFlow AI プロンプト＆GAS自動化レシピ",
-        "sample_copy_buttons": 5,
-        "note_cta_count": 2
-      },
-      "sales_lp": {
-        "title": "AutoFlow Pro Pack | 全職種対応50種AIプロンプト＆GAS自動化テンプレート完全版 (先着10部限定 ¥980)",
-        "note_cta_count": 1
-      }
-    }
+    "status": "skipped_no_playwright"
   },
   "windows_scheduler_check": {
-    "registered": true,
-    "raw_summary": "\nフォルダー\\\nホスト名:                                       DESKTOP-T8LTA9P\nタスク名:                                       \\Antigravity_AI_CEO_Daily\n次回の実行時刻:                                 2026/11/15 8:00:00\n状態:                                           実行中\nログオン モード:                                対話型のみ\n前回の実行時刻:                                 2026/11/14 8:00:01\n前回の結果:                                     267009\n作成者:                                         DESKTOP-T8LTA9P\\山内　裕加里\n実行するタスク:                                 C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Deskt"
+    "status": "cloud_linux_env"
   },
   "overall_healthy": true
 }
