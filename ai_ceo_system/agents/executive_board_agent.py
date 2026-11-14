@@ -5,13 +5,16 @@ import sys
 import urllib.error
 import urllib.request
 from datetime import datetime
-from dotenv import load_dotenv
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-load_dotenv(os.path.join(ROOT_DIR, ".env"))
+try:
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(ROOT_DIR, ".env"))
+except ImportError:
+    pass
 
 BOARD_DIR = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "board_meetings")
 LATEST_BOARD_MD = os.path.join(BOARD_DIR, "latest_board_meeting.md")
