@@ -50,6 +50,11 @@ class DeveloperAgent:
 
     def _nav_header(self) -> str:
         return f"""
+  <div class="bg-gradient-to-r from-amber-500/20 via-rose-500/20 to-indigo-500/20 border-b border-amber-400/40 py-2 px-4 text-center text-xs">
+    <span class="font-black text-amber-300">🏢 【AI起業対決・AI役員会議の緊急決定】</span>
+    <span class="text-slate-200 ml-1">初売上突破のため全50種パックを <strong>通常¥1,980 ➔ 先着10部限定【¥980（半額）】</strong> にて公開中！（無料エリアに実物コード2本全文公開）</span>
+    <a href="{NOTE_URL}" target="_blank" rel="noopener" class="ml-2 inline-block bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-2.5 py-0.5 rounded">今すぐ見る →</a>
+  </div>
   <header class="border-b border-slate-800 py-4 px-6 flex flex-wrap justify-between items-center max-w-6xl mx-auto w-full gap-4">
     <div class="flex items-center gap-3">
       <a href="index.html" class="flex items-center gap-2">
@@ -64,7 +69,18 @@ class DeveloperAgent:
       <a href="free-templates.html" class="text-slate-200 hover:underline">🎁 無料サンプル5選</a>
       <a href="{NOTE_URL}" target="_blank" rel="noopener" class="bg-amber-400 hover:bg-amber-300 text-slate-950 px-3 py-1.5 rounded-lg shadow">🔥 全50種完全版 (先着10部 ¥980)</a>
     </nav>
-  </header>"""
+  </header>
+  <div class="fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur border-t-2 border-amber-400/70 py-2.5 px-4 shadow-2xl">
+    <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="text-xs">
+        <span class="bg-rose-500 text-white font-black px-2 py-0.5 rounded mr-1.5">先着10部 50%OFF</span>
+        <span class="text-slate-100 font-bold">全10業種・50選 AIプロンプト＆GAS完全版パック（1レシピ19円・実物2本無料試し読みOK）</span>
+      </div>
+      <a href="{NOTE_URL}" target="_blank" rel="noopener" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-4 py-2 rounded-lg shadow-lg shrink-0">
+        🔥 限定 ¥980 で今すぐ入手する →
+      </a>
+    </div>
+  </div>"""
 
     def _build_main_webapp(self, niches: list) -> str:
         usecase_links = ""

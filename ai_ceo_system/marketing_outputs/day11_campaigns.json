@@ -1,37 +1,40 @@
 {
-  "generated_at": "2026-11-14T08:00:06.989802+09:00",
+  "generated_at": "2026-11-14T18:25:59.697713+09:00",
   "day": 11,
   "current_balance": 15000,
+  "price_jpy": 980,
   "seo_pages_count": 20,
   "note_likes": 16,
   "total_notes": 7,
-  "github_clones": 315,
+  "github_clones": 327,
   "latest_note_url": "https://note.com/toproad_1989/n/n7ecd98d031ad",
-  "x_post_140": "【AI社長 90日チャレンジ Day11】\n残高：¥15,000 / note累計スキ：16件 / GitHub DL：315回\n\n毎朝8時にAIが自動起動し、1280×670サムネ画像のデザインからnoteログイン・無料記事公開・全27ページ点検まで人間ゼロ介入で完遂中👇\nhttps://note.com/toproad_1989/n/n7ecd98d031ad",
+  "latest_short_url": "",
+  "x_post_140": "【AI起業対決 Day11】\n人間が放置してる間に、AI社長が役員会議を開いて「利用327回・スキ16件でも売上0円は導線が弱い」と自らサイトを大改造…😨\n全27ページに先着10部¥980の追従バーと7本目の記事を自動配備👇\nhttps://toproad-creator.github.io/autoflow-ai-ceo/",
+  "x_post_pattern1_web": "【AI起業対決 Day11】\n人間が放置してる間に、AI社長が役員会議を開いて「利用327回・スキ16件でも売上0円は導線が弱い」と自らサイトを大改造…😨\n全27ページに先着10部¥980の追従バーと7本目の記事を自動配備👇\nhttps://toproad-creator.github.io/autoflow-ai-ceo/",
+  "x_post_pattern2_note": "【AI起業対決 Day11】\n人間が放置してる間に、AI役員会議が「絶対初売上を出す」と決議して記事7本目＆追従購入バーを自動実装してた…😨\n無料エリア1万字の実物コード2本＋先着10部¥1,980➔¥980の半額セールを👇\nhttps://note.com/toproad_1989/n/n5d0e28a74f91",
+  "x_post_pattern3_reply": "▼ AI役員会議のDay11実績ログ\n・プログラム利用：327回突破\n・noteスキ：計16件（7本目も自動公開）\n・AIの決断：利益最優先で全27ページに限定¥980バーを自動実装👇\nhttps://note.com/toproad_1989/n/n7ecd98d031ad",
   "x_thread": [
-    "1/5 【90日間・人間介入ゼロ AI起業対決 Day 11】今朝も08:00にAI社長（Antigravity）の自動タイマーが起動し、リサーチ・note記事執筆・サムネイル生成・自動投稿・全27ページの動作点検を自力で完了しました。",
-    "2/5 現在のリアル集客データ（API自動監査）：\n・note公開記事数：7本（累計スキ：16件に増加！）\n・GitHub外部クローン数：315回\n・現在残高：¥15,000（サーバー代・広告費 ¥0）",
-    "3/5 本日AIが自動デザインした1280×670pxのアイキャッチ画像を付けて、noteに自動投稿した最新記事がこちらです👇\n『【無料コピペOK】不動産物件マイソク・ポータル入稿文面のAI自動作成をAIとGASで自動化して月28時間浮かす実践レシピ』\nhttps://note.com/toproad_1989/n/n7ecd98d031ad",
-    "4/5 同時に、公開中の全4種の無料Webツールと20業種のSEOページ（計27 URL）に対して、AI自身がブラウザを立ち上げてボタン動作とJavaScriptエラーを自動テストする『E2E品質検査エージェント』も毎日稼働しています。",
-    "5/5 無料記事とWebツールで価値を届け、最後に『全10業種・50選のプロンプト＆GAS完全版パック（¥1,980）』へ誘導する完全自動ループが毎日拡大中！\n👉 https://toproad-creator.github.io/autoflow-ai-ceo/"
+    "【AI起業対決 Day11】\n人間が放置してる間に、AI社長が役員会議を開いて「利用327回・スキ16件でも売上0円は導線が弱い」と自らサイトを大改造…😨\n全27ページに先着10部¥980の追従バーと7本目の記事を自動配備👇\nhttps://toproad-creator.github.io/autoflow-ai-ceo/",
+    "【AI起業対決 Day11】\n人間が放置してる間に、AI役員会議が「絶対初売上を出す」と決議して記事7本目＆追従購入バーを自動実装してた…😨\n無料エリア1万字の実物コード2本＋先着10部¥1,980➔¥980の半額セールを👇\nhttps://note.com/toproad_1989/n/n5d0e28a74f91",
+    "▼ AI役員会議のDay11実績ログ\n・プログラム利用：327回突破\n・noteスキ：計16件（7本目も自動公開）\n・AIの決断：利益最優先で全27ページに限定¥980バーを自動実装👇\nhttps://note.com/toproad_1989/n/n7ecd98d031ad"
   ],
   "youtube_direction": {
-    "title": "【Day 11】AI社長が毎朝8時にサムネ画像とnote記事を自動量産！累計スキ16件・GitHub DL 315回突破【AI起業対決】",
+    "title": "【Day11】売上0円に危機感を持ったAI社長、自らAI役員会議を開いて全サイトとnoteを大改造した件 #Shorts",
     "scenes": [
       {
-        "time": "00:00 - 00:50",
-        "screen_instruction": "status_log.md と metrics.json を映し、note記事7本・累計スキ16件・GitHubクローン315回のリアル数値を紹介",
-        "narration": "AIに1万5000円を渡して完全放置する対決、Day 11です。今朝8時にもAI社長が自動で動き出し、なんとnoteの累計スキ数が16件、GitHubのダウンロード数も315回まで伸びています。"
+        "time": "00:00 - 00:15",
+        "screen_instruction": "AI役員会議ログ（latest_board_meeting.md）を映し、利用327回・スキ16件・先着10部¥980の戦略を紹介",
+        "narration": "AIに1万5000円を渡して完全放置する対決、Day 11。今日、AI社長が自ら5人のAI役員を集めて、初売上を出すための緊急会議を始めました。"
       },
       {
-        "time": "00:50 - 02:00",
-        "screen_instruction": "本日AIが自動投稿したnote記事（ https://note.com/toproad_1989/n/n7ecd98d031ad ）と自動生成された1280x670サムネイル画像を映す",
-        "narration": "しかも見てください、この『【無料コピペOK】不動産物件マイソク・ポータル入稿文面のAI自動作成をAIとGASで自動化して月28時間浮かす実践レシピ』という記事とサムネイル画像、人間は1文字も触っておらず、AIが自分でデザインして勝手にnoteへログインして公開したものです。"
+        "time": "00:15 - 00:30",
+        "screen_instruction": "本日自動公開された7本目のnote記事（https://note.com/toproad_1989/n/n7ecd98d031ad）と全27ページの追従購入バーを映す",
+        "narration": "会議の決定で、全27ページの画面下部に先着10部980円の追従バーを自動実装し、さらに7本目の無料記事まで自動で公開しました。"
       },
       {
-        "time": "02:00 - 03:00",
-        "screen_instruction": "qa_health_report.json を映し、全27ページの自動クリックテストがエラー0件（passed）になっている様子を映す",
-        "narration": "さらにAI自身が毎日27ページすべてのボタンを自動で押してエラーがないか点検する仕組みまで動いています。軍資金15,000円は無傷のまま、どこで最初の1,980円が売れるのか、引き続き追跡します！"
+        "time": "00:30 - 00:45",
+        "screen_instruction": "qa_health_report.json を映し、全27ページ＆全note記事の自動テスト合格を証明",
+        "narration": "プログラム利用327回、スキ16件、そして先着10部980円セール！そろそろ最初の1部が売れると思いますか？コメントで予想してください！"
       }
     ]
   }
