@@ -1,0 +1,146 @@
+{
+  "analyzed_at": "2026-11-15T21:22:01.817029+09:00",
+  "api_status": {
+    "own_api": "live",
+    "trend_api": "live"
+  },
+  "market_summary": "実測スキ反響（8記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「EC・物販の在庫管理＆価格改定自動化」「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」。",
+  "top_winner_niches": [
+    {
+      "slug": "ec-inventory",
+      "title": "EC・物販の在庫管理＆価格改定自動化",
+      "avg_hours_saved_monthly": 42,
+      "hourly_wage": 2500,
+      "actual_likes": 4,
+      "matched_own_articles": 1,
+      "trend_matches": 1,
+      "demand_score": 111.5,
+      "status": "winner"
+    },
+    {
+      "slug": "subsidy-business-plan",
+      "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
+      "avg_hours_saved_monthly": 45,
+      "hourly_wage": 3500,
+      "actual_likes": 0,
+      "matched_own_articles": 0,
+      "trend_matches": 0,
+      "demand_score": 97.5,
+      "status": "winner"
+    },
+    {
+      "slug": "hr-resume-screening",
+      "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
+      "avg_hours_saved_monthly": 32,
+      "hourly_wage": 3000,
+      "actual_likes": 3,
+      "matched_own_articles": 1,
+      "trend_matches": 0,
+      "demand_score": 95.0,
+      "status": "winner"
+    }
+  ],
+  "external_trends_top5": [
+    {
+      "query": "GAS 自動化",
+      "title": "【1件1万円の受託から】GAS・Python自動化の副業ロードマップ｜比較表・テンプレ11点つき",
+      "likes": 0,
+      "price": 2980,
+      "is_paid": true
+    },
+    {
+      "query": "GAS 自動化",
+      "title": "全部自動化できないなら意味ないと思っていたけど、半分だけでもかなり楽だった",
+      "likes": 0,
+      "price": 0,
+      "is_paid": false
+    },
+    {
+      "query": "GAS 自動化",
+      "title": "【損失計算】なぜPhotoshopや無料Webツールで画像を1枚ずつ変換してはいけないのか：アスペクト比維持とExif除去を完全自動化する価値",
+      "likes": 0,
+      "price": 0,
+      "is_paid": false
+    },
+    {
+      "query": "GAS 自動化",
+      "title": "【テンプレ付き】スプレッドシートからGmail下書きを一括作成。送信しないGASの作り方",
+      "likes": 0,
+      "price": 0,
+      "is_paid": false
+    },
+    {
+      "query": "GAS 自動化",
+      "title": "【月7万円】未経験からGASで始める、業務自動化ツール受託の3つの手法",
+      "likes": 0,
+      "price": 298,
+      "is_paid": true
+    }
+  ],
+  "own_articles_performance": [
+    {
+      "key": "n5d0e28a74f91",
+      "title": "【先着10部¥980】コピペ5分で毎日のルーティン作業を消滅させる『全10業種・50選 AIプロンプト＆GAS自動実行コード完全版』",
+      "likes": 3,
+      "price": 980
+    },
+    {
+      "key": "n129393b66060",
+      "title": "【無料コピペOK】採用・人事の職務経歴書スクリーニング＆面接質問自動生成をAIとGASで自動化して月32時間浮かす実践レシピ",
+      "likes": 3,
+      "price": 0
+    },
+    {
+      "key": "n7ecd98d031ad",
+      "title": "【無料コピペOK】不動産物件マイソク・ポータル入稿文面のAI自動作成をAIとGASで自動化して月28時間浮かす実践レシピ",
+      "likes": 1,
+      "price": 0
+    },
+    {
+      "key": "n1c4995075b64",
+      "title": "【無料コピペOK】YouTube/ショート動画の構成・台本・メタデータ自動生成をAIとGASで自動化して月38時間浮かす実践レシピ",
+      "likes": 1,
+      "price": 0
+    },
+    {
+      "key": "n49963f8d62b9",
+      "title": "【無料コピペOK】請求書・領収書PDFのAI読取＆スプレッドシート記帳をAIとGASで自動化して月24時間浮かす実践レシピ",
+      "likes": 2,
+      "price": 0
+    },
+    {
+      "key": "n2b36747c935d",
+      "title": "【無料コピペOK】BtoB営業リスト抽出＆パーソナライズ文面自動化をAIとGASで自動化して月35時間浮かす実践レシピ",
+      "likes": 2,
+      "price": 0
+    },
+    {
+      "key": "n9a7bd90cf282",
+      "title": "【無料コピペOK】X/Threads 毎日投稿＆バズ構文自動生成をAIとGASで自動化して月30時間浮かす実践レシピ",
+      "likes": 3,
+      "price": 0
+    },
+    {
+      "key": "n70171b631e61",
+      "title": "【無料コピペOK】EC・物販の在庫管理＆価格改定自動化をAIとGASで自動化して月42時間浮かす実践レシピ",
+      "likes": 4,
+      "price": 0
+    }
+  ],
+  "new_business_seeds": [
+    {
+      "pillar": "第2の柱（BtoBバックオフィス・監査支援）",
+      "title": "請求書・契約リスク・補助金ドラフトのAI自動チェックツール群",
+      "reason": "単価（時給換算¥3,500〜¥4,000）が高く法人・フリーランスの支払意欲が強い領域のため、第1事業の初黒字化後に上位パックとして展開。",
+      "target_price_jpy": 4980,
+      "stage": "needs_validation"
+    },
+    {
+      "pillar": "第3の柱（SNS・クリエイター収益化自動化）",
+      "title": "YouTubeショート・note・LINEステップ配信のテンプレート量産スタジオ",
+      "reason": "SNS発信者・副業層からの需要が急増しており、無料ツールからのバイラル流入と高相性なため次期新市場として育成。",
+      "target_price_jpy": 2980,
+      "stage": "market_research"
+    }
+  ]
+}

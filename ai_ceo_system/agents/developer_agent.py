@@ -4,9 +4,18 @@ from datetime import datetime
 
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 PRODUCT_DIR = os.path.join(ROOT_DIR, "ai_ceo_system", "product_site")
+DATA_DIR = os.path.join(ROOT_DIR, "ai_ceo_system", "data")
+EVOLUTION_STATE_PATH = os.path.join(DATA_DIR, "company_evolution_state.json")
 WORKFLOW_DIR = os.path.join(ROOT_DIR, ".github", "workflows")
 BASE_URL = "https://toproad-creator.github.io/autoflow-ai-ceo"
 NOTE_URL = "https://note.com/toproad_1989/n/n5d0e28a74f91"
+
+
+def _sanitize_customer_text(text: str) -> str:
+    cleaned = text or ""
+    for term in ("AI起業対決", "AI CEO", "実験ログ", "実験台", "実験", "対決"):
+        cleaned = cleaned.replace(term, "")
+    return cleaned.strip()
 
 
 class DeveloperAgent:
@@ -22,6 +31,16 @@ class DeveloperAgent:
         os.makedirs(PRODUCT_DIR, exist_ok=True)
         os.makedirs(os.path.join(PRODUCT_DIR, "usecases"), exist_ok=True)
         os.makedirs(WORKFLOW_DIR, exist_ok=True)
+
+    @staticmethod
+    def _load_evolution_state() -> dict:
+        if os.path.exists(EVOLUTION_STATE_PATH):
+            try:
+                with open(EVOLUTION_STATE_PATH, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception:
+                pass
+        return {}
 
     def build_all(self, niches: list) -> dict:
         main_file = self._build_main_webapp(niches)
@@ -83,6 +102,33 @@ class DeveloperAgent:
   </div>"""
 
     def _build_main_webapp(self, niches: list) -> str:
+        evo_state = self._load_evolution_state()
+        offer_cfg = evo_state.get("dynamic_offer_config", {})
+        ranked_fallback = sorted(niches, key=lambda x: x.get("demand_score", 0), reverse=True)[:3]
+        winners = offer_cfg.get("winner_highlights") or [
+            {
+                "rank": idx + 1,
+                "slug": item["slug"],
+                "title": item["title"],
+                "avg_hours_saved_monthly": item["avg_hours_saved_monthly"],
+                "yearly_yen": item["avg_hours_saved_monthly"] * 12 * item["hourly_wage"],
+            }
+            for idx, item in enumerate(ranked_fallback)
+        ]
+
+        top3_cards_html = ""
+        for w in winners[:3]:
+            w_title = _sanitize_customer_text(w.get("title", ""))
+            top3_cards_html += f"""
+            <a href="usecases/{w.get('slug', 'ec-inventory')}.html" class="block bg-gradient-to-br from-slate-900 to-indigo-950/60 hover:border-amber-400/80 border border-amber-400/40 rounded-xl p-5 transition shadow-lg">
+              <div class="flex items-center justify-between text-[11px] font-bold mb-2">
+                <span class="bg-amber-400/20 text-amber-300 px-2.5 py-0.5 rounded">🔥 需要ランキング #{w.get('rank', 1)}</span>
+                <span class="text-emerald-400">年間削減目安 ¥{int(w.get('yearly_yen', 1000000)):,}</span>
+              </div>
+              <div class="text-base font-extrabold text-white leading-snug">{w_title}</div>
+              <div class="text-xs text-slate-300 mt-2">月平均 {w.get('avg_hours_saved_monthly', 30)}時間削減の専用レシピを見る →</div>
+            </a>"""
+
         usecase_links = ""
         for item in niches:
             yearly = item["avg_hours_saved_monthly"] * 12 * item["hourly_wage"]
@@ -200,6 +246,20 @@ class DeveloperAgent:
         </div>
       </div>
     </div>
+
+    <!-- High Demand Top 3 Selection & Focus -->
+    <section class="mb-12">
+      <div class="flex flex-wrap justify-between items-end mb-4 gap-3">
+        <div>
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Most Requested Recipes</span>
+          <h2 class="text-2xl font-extrabold mt-1">🔥 今もっとも需要が高い人気自動化レシピ TOP3</h2>
+        </div>
+        <a href="pro-pack.html" class="text-xs font-bold text-amber-300 hover:underline">🪜 導入ステップ別プラン＆全50選完全版を見る →</a>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        {top3_cards_html}
+      </div>
+    </section>
 
     <!-- 3 Free Tools Banner Grid -->
     <section class="grid md:grid-cols-3 gap-6 mb-14">

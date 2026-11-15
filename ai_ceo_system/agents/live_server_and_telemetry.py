@@ -6,14 +6,61 @@ from urllib.parse import parse_qs, urlparse
 
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 PRODUCT_DIR = os.path.join(ROOT_DIR, "ai_ceo_system", "product_site")
-METRICS_PATH = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "metrics.json")
+DATA_DIR = os.path.join(ROOT_DIR, "ai_ceo_system", "data")
+METRICS_PATH = os.path.join(DATA_DIR, "metrics.json")
+LEARNING_STATE_PATH = os.path.join(DATA_DIR, "learning_loop_state.json")
+QA_REPORT_PATH = os.path.join(DATA_DIR, "qa_health_report.json")
+LATEST_BOARD_MD_PATH = os.path.join(DATA_DIR, "board_meetings", "latest_board_meeting.md")
 
 
 class TelemetryAndWebHandler(SimpleHTTPRequestHandler):
-    """Webサイトの配信と同時に、PV・CTAクリック・購入意向イベントをリアルタイムで metrics.json に記録するサーバー"""
+    """Webサイトの配信と同時に、PV・CTAクリック・購入意向イベントの記録、および司令室APIを提供するサーバー"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=PRODUCT_DIR, **kwargs)
+
+    @staticmethod
+    def _read_json_safe(path: str) -> dict:
+        if os.path.exists(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception:
+                pass
+        return {}
+
+    def do_GET(self):
+        parsed = urlparse(self.path)
+        if parsed.path == "/api/command-center":
+            state = self._read_json_safe(LEARNING_STATE_PATH)
+            metrics = self._read_json_safe(METRICS_PATH)
+            qa_report = self._read_json_safe(QA_REPORT_PATH)
+            day = state.get("day") or metrics.get("day") or 12
+            board_json_path = os.path.join(DATA_DIR, "board_meetings", f"day{day}_meeting.json")
+            board_meeting = self._read_json_safe(board_json_path)
+
+            payload = dict(state) if state else {}
+            payload["metrics"] = metrics
+            payload["qa_report"] = qa_report
+            payload["raw_board_meeting"] = board_meeting
+            if "board_meeting" not in payload:
+                payload["board_meeting"] = board_meeting
+            if os.path.exists(LATEST_BOARD_MD_PATH):
+                try:
+                    with open(LATEST_BOARD_MD_PATH, "r", encoding="utf-8") as f:
+                        payload["latest_board_markdown"] = f.read()
+                except Exception:
+                    pass
+
+            body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
+        super().do_GET()
 
     def do_POST(self):
         parsed = urlparse(self.path)

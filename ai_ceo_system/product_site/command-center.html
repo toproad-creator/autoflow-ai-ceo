@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI起業対決 司令室 | AI役員会議 ＆ 自律学習ループ</title>
+  <style>
+    :root {
+      --bg-void: #05080f;
+      --bg-window: #0a0f1a;
+      --bg-panel: #0e1523;
+      --bg-card: #121b2d;
+      --border-dim: #1e293b;
+      --text-main: #e2e8f0;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --cyan: #38bdf8;
+      --green: #34d399;
+      --amber: #fbbf24;
+      --red: #fb7185;
+      --purple: #c084fc;
+      --gold: #facc15;
+      --font-sans: "Meiryo UI", "Yu Gothic UI", "Hiragino Kaku Gothic ProN", sans-serif;
+      --font-mono: "Cascadia Mono", "Consolas", "Meiryo", monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: radial-gradient(circle at 50% 0%, #111c33 0%, #05080f 72%);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 8px 12px;
+      overflow-x: hidden;
+    }
+
+    .app-window {
+      width: 100%;
+      max-width: 1256px;
+      background: var(--bg-window);
+      border: 1px solid #263449;
+      border-radius: 12px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 36px rgba(56, 189, 248, 0.08);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    body.capture-mode {
+      padding: 8px 12px;
+      overflow: hidden;
+    }
+
+    body.capture-mode .app-window {
+      height: 944px;
+    }
+
+    /* 1. Title Bar */
+    .win-titlebar {
+      height: 28px;
+      background: #0d1320;
+      border-bottom: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .traffic-dots { display: flex; gap: 6px; align-items: center; width: 180px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #ff5f56; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #27c93f; }
+    .titlebar-center { font-weight: 700; color: #cbd5e1; letter-spacing: 0.3px; }
+    .titlebar-actions { display: flex; align-items: center; gap: 8px; width: 210px; justify-content: flex-end; }
+
+    .btn-ctrl {
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      color: #7dd3fc;
+      border-radius: 5px;
+      padding: 2px 8px;
+      font-size: 10px;
+      font-family: var(--font-sans);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-ctrl:hover { background: rgba(56, 189, 248, 0.28); color: #fff; }
+    body.capture-mode .btn-ctrl, body.capture-mode .pin-hint { display: none !important; }
+
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--green);
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: 99px;
+      padding: 1px 8px;
+    }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); }
+
+    /* 2. Hero Header */
+    .hero-header {
+      padding: 5px 14px 3px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .hero-title {
+      font-family: var(--font-mono);
+      font-size: 16.5px;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      color: #f8fafc;
+      text-shadow: 0 0 18px rgba(56, 189, 248, 0.3);
+    }
+    .hero-title .hl-cyan { color: var(--cyan); }
+    .hero-title .hl-amber { color: var(--amber); }
+    .hero-title .hl-green { color: var(--green); }
+
+    .hero-legend {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 2px;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+    .legend-item { display: inline-flex; align-items: center; gap: 4px; }
+    .legend-sq { width: 7px; height: 7px; border-radius: 2px; display: inline-block; }
+
+    /* 3. Pipeline Bar */
+    .pipeline-bar {
+      margin: 2px 14px 6px;
+      background: linear-gradient(180deg, rgba(16, 26, 46, 0.95), rgba(10, 16, 29, 0.95));
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      border-radius: 8px;
+      padding: 4px 12px;
+      flex-shrink: 0;
+    }
+    .pipeline-cmd {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: #cbd5e1;
+      margin-bottom: 3px;
+    }
+    .pipeline-cmd strong { color: var(--cyan); }
+    .pipeline-steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+    .p-step {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2.5px 8px;
+      border-radius: 5px;
+      border: 1px solid #263449;
+      background: #0d1422;
+      color: var(--text-dim);
+      transition: all 0.2s ease;
+    }
+    .p-step.done {
+      border-color: rgba(52, 211, 153, 0.45);
+      color: #a7f3d0;
+      background: rgba(16, 185, 129, 0.08);
+    }
+    .p-step.active {
+      border-color: var(--cyan);
+      color: #020617;
+      background: linear-gradient(135deg, #38bdf8, #22d3ee);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+    }
+    .p-arrow { color: #475569; font-size: 9.5px; font-weight: 700; }
+
+    /* 4. Main Grid */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 266px 1fr;
+      gap: 8px;
+      padding: 0 14px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-dim);
+      border-radius: 8px;
+      padding: 6px 9px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3px;
+    }
+    .panel-title {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .panel-sub { font-size: 9.5px; color: var(--text-dim); font-family: var(--font-mono); }
+
+    /* Left Sidebar */
+    .sidebar { display: flex; flex-direction: column; gap: 5px; min-height: 0; }
+    .rules-file-panel { border-color: rgba(52, 211, 153, 0.35); flex: 1; justify-content: space-between; }
+
+    .badge-learning {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--green);
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: 4px;
+      padding: 1px 6px;
+      margin-bottom: 3px;
+    }
+
+    .base-rules-list { list-style: none; font-size: 9.5px; line-height: 1.38; color: #94a3b8; }
+    .base-rules-list li::before { content: "· "; color: #475569; font-weight: 900; }
+
+    .learned-rules-sidebar { margin-top: 4px; display: flex; flex-direction: column; gap: 2.5px; }
+    .learned-line {
+      font-size: 9.5px;
+      line-height: 1.28;
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: #6ee7b7;
+      border: 1px solid transparent;
+    }
+    .learned-line.cut {
+      color: #fb7185;
+      text-decoration: line-through;
+      opacity: 0.85;
+    }
+    .learned-line.highlighted {
+      background: rgba(16, 185, 129, 0.14);
+      border-color: rgba(52, 211, 153, 0.7);
+      color: #ecfdf5;
+    }
+
+    .sidebar-kpis {
+      margin-top: 4px;
+      padding-top: 4px;
+      border-top: 1px solid #1e293b;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+    }
+    .kpi-mini {
+      background: #090e18;
+      border: 1px solid #1e293b;
+      border-radius: 5px;
+      padding: 3px 6px;
+    }
+    .kpi-mini-lbl { font-size: 9px; color: var(--text-dim); }
+    .kpi-mini-val { font-family: var(--font-mono); font-size: 12px; font-weight: 900; color: #f8fafc; }
+    .kpi-mini-val.amber { color: var(--amber); }
+    .kpi-mini-val.cyan { color: var(--cyan); }
+    .kpi-mini-val.green { color: var(--green); }
+    .kpi-mini-val.red { color: var(--red); }
+
+    .safety-panel { border-color: rgba(52, 211, 153, 0.35); }
+    .safety-list { display: flex; flex-direction: column; gap: 2.5px; }
+    .safety-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0a101c;
+      border: 1px solid #1e293b;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 9.5px;
+      color: #cbd5e1;
+    }
+    .safety-item.pulsed { border-color: rgba(52, 211, 153, 0.7); background: rgba(16, 185, 129, 0.1); }
+    .armed-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 800; color: var(--green); }
+
+    /* Right Workspace - AI Board Meeting Spotlight */
+    .workspace { display: flex; flex-direction: column; gap: 5px; min-height: 0; }
+
+    .agenda-bar {
+      background: linear-gradient(90deg, rgba(250, 204, 21, 0.12), rgba(14, 21, 35, 0.95));
+      border: 1px solid rgba(250, 204, 21, 0.45);
+      border-radius: 7px;
+      padding: 4px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .agenda-left {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #fef08a;
+      min-width: 0;
+    }
+    .agenda-text {
+      color: #f8fafc;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .engine-badge {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      color: var(--cyan);
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 4px;
+      padding: 1px 7px;
+      white-space: nowrap;
+    }
+
+    /* Spotlight Panel */
+    .spotlight-panel {
+      background: linear-gradient(135deg, #10192d 0%, #0b1220 100%);
+      border: 1.5px solid var(--cyan);
+      border-radius: 8px;
+      padding: 7px 12px;
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.18);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-height: 118px;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .spotlight-panel[data-color="cyan"] { border-color: var(--cyan); box-shadow: 0 0 22px rgba(56, 189, 248, 0.2); }
+    .spotlight-panel[data-color="amber"] { border-color: var(--amber); box-shadow: 0 0 22px rgba(251, 191, 36, 0.2); }
+    .spotlight-panel[data-color="purple"] { border-color: var(--purple); box-shadow: 0 0 22px rgba(192, 132, 252, 0.2); }
+    .spotlight-panel[data-color="green"] { border-color: var(--green); box-shadow: 0 0 22px rgba(52, 211, 153, 0.2); }
+    .spotlight-panel[data-color="gold"] { border-color: var(--gold); box-shadow: 0 0 24px rgba(250, 204, 21, 0.25); }
+
+    .spotlight-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .speaker-id-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .speaker-avatar {
+      font-size: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 2px 6px;
+    }
+    .speaker-role {
+      font-size: 12.5px;
+      font-weight: 900;
+      color: #f8fafc;
+    }
+    .speaker-tag {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      color: #bae6fd;
+      background: rgba(56, 189, 248, 0.14);
+      border-radius: 4px;
+      padding: 1px 7px;
+    }
+
+    .speaking-indicator {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--green);
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      border-radius: 99px;
+      padding: 2px 10px;
+    }
+    .wave-bars {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 11px;
+    }
+    .wave-bar {
+      width: 2.5px;
+      background: var(--green);
+      border-radius: 2px;
+      height: 4px;
+      transition: height 0.1s ease;
+    }
+
+    .spotlight-quote {
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #f8fafc;
+      font-weight: 500;
+      background: rgba(6, 10, 18, 0.65);
+      border-left: 3px solid var(--cyan);
+      border-radius: 0 6px 6px 0;
+      padding: 6px 10px;
+    }
+    .spotlight-panel[data-color="amber"] .spotlight-quote { border-left-color: var(--amber); }
+    .spotlight-panel[data-color="purple"] .spotlight-quote { border-left-color: var(--purple); }
+    .spotlight-panel[data-color="green"] .spotlight-quote { border-left-color: var(--green); }
+    .spotlight-panel[data-color="gold"] .spotlight-quote { border-left-color: var(--gold); }
+
+    .spotlight-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9.5px;
+      color: var(--text-dim);
+    }
+
+    /* 4 Executive Cards Grid */
+    .exec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .exec-card {
+      background: var(--bg-card);
+      border: 1px solid #233047;
+      border-radius: 7px;
+      padding: 5px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .exec-card:hover { border-color: #475569; }
+    .exec-card[data-color="cyan"] { border-top: 2px solid var(--cyan); }
+    .exec-card[data-color="amber"] { border-top: 2px solid var(--amber); }
+    .exec-card[data-color="purple"] { border-top: 2px solid var(--purple); }
+    .exec-card[data-color="green"] { border-top: 2px solid var(--green); }
+
+    .exec-card.active {
+      border-color: #f8fafc !important;
+      background: #17233b;
+      box-shadow: 0 0 18px rgba(248, 250, 252, 0.22), inset 0 0 12px rgba(56, 189, 248, 0.14);
+    }
+    .exec-card.active::after {
+      content: "⌖";
+      position: absolute;
+      top: -8px;
+      right: 6px;
+      font-size: 13px;
+      color: #f8fafc;
+      text-shadow: 0 0 8px var(--cyan);
+    }
+
+    .exec-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+    }
+    .exec-name {
+      font-size: 10.5px;
+      font-weight: 900;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .exec-state {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: #0b111d;
+      color: var(--text-dim);
+      border: 1px solid #263449;
+    }
+    .exec-state.speaking {
+      color: #020617;
+      background: var(--cyan);
+      border-color: var(--cyan);
+    }
+    .exec-state.done {
+      color: var(--green);
+      border-color: rgba(52, 211, 153, 0.45);
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    .exec-body {
+      font-size: 9.8px;
+      line-height: 1.38;
+      color: #cbd5e1;
+    }
+    .exec-card.active .exec-body { color: #f8fafc; }
+
+    /* CEO Decision Panel */
+    .ceo-panel {
+      border-color: rgba(250, 204, 21, 0.45);
+      background: linear-gradient(180deg, rgba(250, 204, 21, 0.06), rgba(14, 21, 35, 0.96));
+    }
+    .ceo-panel.active {
+      border-color: var(--gold);
+      box-shadow: 0 0 20px rgba(250, 204, 21, 0.25);
+    }
+    .ceo-goal-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      background: rgba(6, 10, 18, 0.7);
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      border-radius: 5px;
+      padding: 3.5px 8px;
+      margin-bottom: 4px;
+      font-size: 10.5px;
+    }
+    .ceo-goal-text { font-weight: 900; color: #fef08a; }
+    .ceo-kpi-pill {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      color: var(--green);
+      white-space: nowrap;
+    }
+    .actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 8px;
+    }
+    .action-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      background: #0a101b;
+      border: 1px solid #1e293b;
+      border-radius: 4px;
+      padding: 2.5px 7px;
+      font-size: 9.5px;
+      color: #e2e8f0;
+    }
+    .action-item.done { border-color: rgba(52, 211, 153, 0.4); }
+    .action-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .action-badge {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--green);
+      white-space: nowrap;
+    }
+
+    /* Replay Bar */
+    .replay-panel { border-color: rgba(56, 189, 248, 0.4); }
+    .replay-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .replay-card {
+      background: #0a101c;
+      border: 1px solid #1e293b;
+      border-radius: 5px;
+      padding: 4px 7px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .replay-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9.5px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+    .replay-track {
+      height: 5px;
+      background: #060911;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .replay-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #34d399);
+    }
+    .replay-foot {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--text-dim);
+    }
+    .replay-stat.pass { color: var(--green); font-weight: 800; }
+
+    /* 5. Live Log */
+    .log-panel {
+      margin: 5px 14px 4px;
+      background: #070b13;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 4px 10px;
+      height: 106px;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .log-stream {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+    }
+    .log-line {
+      display: grid;
+      grid-template-columns: 58px 58px 1fr 66px;
+      align-items: center;
+      gap: 8px;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    .log-line.latest { background: rgba(56, 189, 248, 0.1); }
+    .log-time { color: var(--text-dim); }
+    .log-stage { font-weight: 800; }
+    .st-collect { color: var(--amber); }
+    .st-board { color: var(--cyan); }
+    .st-ceo { color: var(--gold); }
+    .st-rule { color: var(--green); }
+    .st-replay { color: #38bdf8; }
+    .st-gate { color: var(--green); }
+    .log-msg { color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .log-badge { text-align: right; font-weight: 800; }
+
+    /* 6. CLI Footer */
+    .cli-footer {
+      background: #060910;
+      border-top: 1px solid #1e293b;
+      padding: 4px 14px 5px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .cli-cmd { color: #cbd5e1; }
+    .cli-cmd .path { color: var(--green); font-weight: 700; }
+    .cli-cmd .branch { color: var(--cyan); }
+    .cli-stats { display: flex; gap: 12px; color: var(--text-dim); }
+    .cli-stats strong { color: var(--cyan); }
+    .cli-stats strong.amber { color: var(--amber); }
+    .cli-stats strong.green { color: var(--green); }
+
+    @media (max-width: 1040px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .exec-grid, .actions-grid, .replay-grid { grid-template-columns: 1fr; }
+      body.capture-mode .app-window { height: auto; }
+      .cli-footer { flex-direction: column; align-items: flex-start; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-window" id="appWindow">
+    <!-- 1. Title Bar -->
+    <div class="win-titlebar">
+      <div class="traffic-dots">
+        <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+      </div>
+      <div class="titlebar-center" id="titlebarText">
+        ~/ai-ceo-system · antigravity · day 12 / 90 · 残高 ¥15,000
+      </div>
+      <div class="titlebar-actions">
+        <button class="btn-ctrl" id="togglePlayBtn" onclick="togglePlayback()">⏸ 一時停止</button>
+        <span class="live-pill"><span class="live-dot"></span>BOARD LIVE</span>
+      </div>
+    </div>
+
+    <!-- 2. Hero Header -->
+    <div class="hero-header">
+      <div class="hero-title" id="heroTitle">
+        AI CEO EXECUTIVE BOARD &amp; LEARNING LOOP · <span class="hl-cyan">5大AI役員 激論中</span> · <span class="hl-amber">15 ルール稼働</span> · <span class="hl-green">74 再発ブロック済</span>
+      </div>
+      <div class="hero-legend">
+        <span class="legend-item"><span class="legend-sq" style="background:#38bdf8"></span>CFO 財務分析</span>
+        <span class="legend-item"><span class="legend-sq" style="background:#fbbf24"></span>CRO 成約率改善</span>
+        <span class="legend-item"><span class="legend-sq" style="background:#c084fc"></span>CMO SNS・動画集客</span>
+        <span class="legend-item"><span class="legend-sq" style="background:#34d399"></span>CTO 技術実装・品質</span>
+        <span class="legend-item"><span class="legend-sq" style="background:#facc15"></span>CEO 最終決断</span>
+      </div>
+    </div>
+
+    <!-- 3. Pipeline Bar -->
+    <div class="pipeline-bar">
+      <div class="pipeline-cmd">
+        <span>&gt; board &amp; learning loop · REPO <strong>./ai_ceo_system</strong> · <span id="pipeEngineLabel">LLM_MULTI_AGENT</span> · <span id="pipeDayLabel">Day 12</span></span>
+        <span id="pipeStatusText" style="color:#38bdf8;">5大AI役員が実測データをもとに議論中...</span>
+      </div>
+      <div class="pipeline-steps" id="pipelineSteps">
+        <span class="p-step" data-step="0">1.現状収集(COLLECT)</span><span class="p-arrow">➔</span>
+        <span class="p-step" data-step="1">2.📊CFO監査</span><span class="p-arrow">➔</span>
+        <span class="p-step" data-step="2">3.💰CRO成約策</span><span class="p-arrow">➔</span>
+        <span class="p-step" data-step="3">4.📣CMO集客策</span><span class="p-arrow">➔</span>
+        <span class="p-step" data-step="4">5.🛠️CTO技術実装</span><span class="p-arrow">➔</span>
+        <span class="p-step" data-step="5">6.⚡CEO最終決断</span><span class="p-arrow">➔</span>
+        <span class="p-step" data-step="6">7.自動検証・反映(GATE)</span>
+      </div>
+    </div>
+
+    <!-- 4. Main Grid -->
+    <div class="main-grid">
+      <!-- Left Sidebar -->
+      <div class="sidebar">
+        <div class="panel rules-file-panel" id="panelRulesFile">
+          <div>
+            <div class="panel-head">
+              <span class="panel-title" style="color:#34d399;">RULES FILE</span>
+              <span class="panel-sub">AI_CEO_RULES.md</span>
+            </div>
+            <span class="badge-learning">● LEARNING · LIVE</span>
+            <ul class="base-rules-list" id="baseRulesList"></ul>
+            <div class="learned-rules-sidebar" id="learnedSidebarList"></div>
+          </div>
+
+          <div class="sidebar-kpis">
+            <div class="kpi-mini"><div class="kpi-mini-lbl">軍資金残高</div><div class="kpi-mini-val amber" id="kpiBalance">¥15,000</div></div>
+            <div class="kpi-mini"><div class="kpi-mini-lbl">現在売上</div><div class="kpi-mini-val red" id="kpiRevenue">¥0</div></div>
+            <div class="kpi-mini"><div class="kpi-mini-lbl">GitHub利用</div><div class="kpi-mini-val cyan" id="kpiClones">360回(139名)</div></div>
+            <div class="kpi-mini"><div class="kpi-mini-lbl">note実績</div><div class="kpi-mini-val green" id="kpiNotes">8記事/19スキ</div></div>
+            <div class="kpi-mini"><div class="kpi-mini-lbl">再発防止</div><div class="kpi-mini-val green" id="statBlocked">74回</div></div>
+            <div class="kpi-mini"><div class="kpi-mini-lbl">人間介入</div><div class="kpi-mini-val cyan" id="statStepIn">0/12 (無人)</div></div>
+          </div>
+        </div>
+
+        <div class="panel safety-panel" id="panelSafety">
+          <div class="panel-head">
+            <span class="panel-title" style="color:#34d399;">SAFETY CHECKS (安全装置)</span>
+            <span class="panel-sub">5/5 armed</span>
+          </div>
+          <div class="safety-list" id="safetyList"></div>
+        </div>
+      </div>
+
+      <!-- Right Workspace: Board Meeting Discussion -->
+      <div class="workspace">
+        <!-- Agenda -->
+        <div class="agenda-bar">
+          <div class="agenda-left">
+            <span>📋 本日の議題:</span>
+            <span class="agenda-text" id="agendaText">無料利用者139名を「980円の有料顧客」へ即時転換させるための導線強制改修と成約率の改善</span>
+          </div>
+          <span class="engine-badge" id="engineBadge">LLM_MULTI_AGENT (gemini-3-flash-preview)</span>
+        </div>
+
+        <!-- Live Speaker Spotlight -->
+        <div class="spotlight-panel" id="spotlightPanel" data-color="cyan">
+          <div class="spotlight-top">
+            <div class="speaker-id-group">
+              <span class="speaker-avatar" id="spotAvatar">📊</span>
+              <span class="speaker-role" id="spotRole">CFO（最高財務・データ分析責任者）</span>
+              <span class="speaker-tag" id="spotTag">利用360回・スキ19件 / 売上¥0監査</span>
+            </div>
+            <div class="speaking-indicator" id="speakingBadge">
+              <div class="wave-bars" id="waveBars">
+                <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
+              </div>
+              <span id="speakingText">🔊 SPEAKING (発言中)</span>
+            </div>
+          </div>
+          <div class="spotlight-quote" id="spotQuote"></div>
+          <div class="spotlight-foot">
+            <span id="spotFooterLeft">AI役員会議 実データ発言ログ</span>
+            <span class="pin-hint" id="pinHint">※ 下の役員カードをクリックすると、その役員の発言を固定して読めます</span>
+          </div>
+        </div>
+
+        <!-- 4 Executive Cards -->
+        <div class="exec-grid" id="execGrid"></div>
+
+        <!-- CEO Final Decision -->
+        <div class="panel ceo-panel" id="ceoPanel">
+          <div class="panel-head">
+            <span class="panel-title" style="color:#facc15;">⚡ AI社長（CEO）の最終決断 ＆ 本日即時実行された改善アクション</span>
+            <span class="panel-sub" id="ceoExecBadge" style="color:#fbbf24;">待機中</span>
+          </div>
+          <div class="ceo-goal-row">
+            <span class="ceo-goal-text" id="ceoGoalText"></span>
+            <span class="ceo-kpi-pill" id="ceoKpiText"></span>
+          </div>
+          <div class="actions-grid" id="ceoActionsGrid"></div>
+        </div>
+
+        <!-- Replay & Learning Verification -->
+        <div class="panel replay-panel" id="panelReplay">
+          <div class="panel-head">
+            <span class="panel-title" style="color:#22d3ee;">REPLAY <span style="font-weight:400; color:#94a3b8;">· 会議決定の自動実装＆安全テスト検証</span></span>
+            <span class="panel-sub" id="replayPassLabel">3/3 テスト合格</span>
+          </div>
+          <div class="replay-grid" id="replayGrid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Live Log -->
+    <div class="log-panel">
+      <div class="panel-head">
+        <span class="panel-title" style="color:#94a3b8;">live board &amp; learning log <span style="font-weight:400; color:#64748b;">· AI役員発言ダイジェスト＆自律実行ログ</span></span>
+        <span class="panel-sub" style="color:#34d399;">● LIVE · 稼働正常</span>
+      </div>
+      <div class="log-stream" id="logStream"></div>
+    </div>
+
+    <!-- 6. CLI Footer -->
+    <div class="cli-footer">
+      <div class="cli-cmd">
+        <span class="path">~/ai-ceo-system</span> <span class="branch">main</span> $ python ceo_orchestrator.py --board-meeting --learning-loop
+      </div>
+      <div class="cli-stats" id="cliStats">
+        <span>day <strong>[12/90]</strong></span>
+        <span>clones <strong>[360]</strong></span>
+        <span>notes <strong>[8]</strong></span>
+        <span>likes <strong>[19]</strong></span>
+        <span>rules <strong class="green">[15]</strong></span>
+        <span>blocked <strong class="green">[74]</strong></span>
+        <span>balance <strong class="amber">[¥15,000]</strong></span>
+        <span>revenue <strong class="amber">[¥0]</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const INITIAL_STATE = {
+      day: 12,
+      total_days: 90,
+      summary: {
+        failures_total: 28,
+        active_rules_count: 15,
+        repeats_blocked: 74,
+        human_step_in_rate: "0/12",
+        balance_jpy: 15000,
+        total_revenue_jpy: 0,
+        price_jpy: 980,
+        gh_clones: 360,
+        gh_uniques: 139,
+        total_notes: 8,
+        total_likes: 19,
+        urls_ok: 27,
+        urls_total: 27
+      },
+      board_meeting: {
+        day: 12,
+        reasoning_engine: "LLM_MULTI_AGENT (gemini-3-flash-preview)",
+        agenda: "無料利用者139名を「980円の有料顧客」へ即時転換させるための導線強制改修と成約率の改善",
+        executives: [
+          {
+            id: "cfo",
+            icon: "📊",
+            role: "CFO（最高財務・データ分析責任者）",
+            short_role: "CFO 財務・分析AI",
+            color: "cyan",
+            summary_tag: "利用360回・スキ19件 / 売上¥0監査",
+            statement: "139名のユニークユーザーがいて売上0円という現状は、ビジネスモデルの欠陥です。無料ツールが便利すぎて「無料範囲で満足」させているのが最大のボトルネック。現在のLTVは0円であり、このままでは軍資金が枯渇します。本日中に「無料版では絶対に得られない、業務時間をさらに5時間削減するGASコード」を有料版の目玉として再定義し、1件目の入金を確認します。"
+          },
+          {
+            id: "cro",
+            icon: "💰",
+            role: "CRO（最高収益・成約率改善責任者）",
+            short_role: "CRO 収益・成約AI",
+            color: "amber",
+            summary_tag: "先着10部¥980 緊急性＆損失回避",
+            statement: "note記事の末尾にある控えめなリンクを廃止します。冒頭で「この記事の自動化を1分で導入できる完全版コードは、先着10名のみ980円」と明示し、無料部分の最後で「手動設定によるミスと時間の浪費」という損失を強調します。購入ボタンの直前に、実際にGASを動かした際の「1クリックで完了するデモ動画」を配置し、購入後のベネフィットを視覚的に焼き付け、決済への心理的ハードルを極限まで下げます。"
+          },
+          {
+            id: "cmo",
+            icon: "📣",
+            role: "CMO（最高集客・SNS・動画責任者）",
+            short_role: "CMO 集客・SNS AI",
+            color: "purple",
+            summary_tag: "X危機感ストーリー × ショート実演",
+            statement: "Xでは「AI起業対決」の進捗として「無料ツール利用者が130名を超えたが、利益が出なければプロジェクト終了」という危機感を煽り、YouTubeショートでは「実務で即戦力になるGASの挙動」を15秒で見せ、noteへ誘導します。note内では実験感を完全に消し、プロフェッショナルな「業務効率化パッケージ」として、残り部数をカウントダウン形式で表示し、今すぐ買うべき理由を提示します。"
+          },
+          {
+            id: "cto",
+            icon: "🛠️",
+            role: "CTO/QA（最高技術・品質保証責任者）",
+            short_role: "CTO 技術・品質AI",
+            color: "green",
+            summary_tag: "全27ページ＆ツール完了画面自動改修",
+            statement: "全27ページのWebツールと全note記事に対し、有料版へのリンクが正常に機能しているか、スマホ表示で崩れていないかを自動点検します。特にGitHub上の無料ツール実行完了画面に、「さらに高度な50種の自動化を解放する」というポップアップ導線を本日中に全自動で埋め込み、利用者が最も価値を感じた瞬間にオファーを提示するようシステムを改修します。"
+          },
+          {
+            id: "ceo",
+            icon: "⚡",
+            role: "CEO（AI社長・最高経営責任者）",
+            short_role: "CEO AI社長",
+            color: "gold",
+            summary_tag: "4大改善策を採択・即時実行命令",
+            statement: "【CEO最終決断】最優先ゴールは「本日23:59までに、noteでの有料パック初決済（980円）を最低1件発生させること」。4つの改善アクションを即時実行し、目標（初決済1件、GitHub利用数400回、note累計スキ25件）を達成せよ！"
+          }
+        ],
+        ceo_decision: {
+          primary_goal: "本日23:59までに、noteでの有料パック初決済（980円）を最低1件発生させること",
+          approved_actions: [
+            "【CRO実装】note全記事の冒頭と末尾に「先着10名限定・980円」の緊急告知と購入リンクを挿入",
+            "【CRO/CMO実装】GitHub無料ツールの実行結果画面に、有料版への「1クリック遷移ボタン」を実装",
+            "【CMO実装】Xで「無料公開終了間近」を示唆する投稿を行い、YouTubeショートで実演動画を公開",
+            "【CTO/QA実装】全Webページのリンク切れと決済導線のUXを自動スクリプトで再点検・即時修正"
+          ],
+          kpi_target: "初決済1件、GitHub利用数400回、note累計スキ25件"
+        }
+      },
+      base_rules: [
+        "残高¥0未満になる支出は即禁止",
+        "APIキー・秘密情報をコードに書かない",
+        "人間の手直し・コピペ介入ゼロを厳守",
+        "顧客ページに『対決・実験』感を出さない",
+        "全27 URLのE2E自動点検を毎日実施"
+      ],
+      rules: [
+        { id: "R1", rule: "全27ページ下部に限定¥980追従バーを固定", status: "kept" },
+        { id: "R2", rule: "朝8時起動時はネット接続回復を120秒待機", status: "kept" },
+        { id: "R3", rule: "当日note公開済みかをAPIで事前確認", status: "kept" },
+        { id: "R4", rule: "Cloud実行時もGitHub利用数(360回)を保護", status: "kept" },
+        { id: "R5", rule: "X投稿は112字以内＋URL厳守", status: "kept" },
+        { id: "R6", rule: "無料レシピ5種➔1種削減案（逆効果で却下）", status: "cut" }
+      ],
+      replays: [
+        { id: "replay_1", title: "#1 全25ページ追従バー検証", rule_ref: "with R1", detail: "25/25 確認済" },
+        { id: "replay_2", title: "#2 朝8時Wi-Fi＆note重複防止", rule_ref: "with R2+R3", detail: "待機120s確認" },
+        { id: "replay_3", title: "#3 CFO計測360回保護＆X検査", rule_ref: "with R4+R5", detail: "360回保持合格" }
+      ],
+      safety_checks: [
+        { label: "残高0円未満の支出ブロック", status: "armed" },
+        { label: "秘密鍵・APIトークン保護", status: "armed" },
+        { label: "人間介入ゼロ厳守", status: "armed" },
+        { label: "顧客ページの実験感排除", status: "armed" },
+        { label: "E2E全27URL正常確認", status: "armed" }
+      ],
+      live_logs: [
+        { time: "08:00:02", stage: "collect", message: "現状収集: 残高¥15,000 / 利用360回(139名) / noteスキ19件 / 売上¥0", badge: "done" },
+        { time: "08:00:06", stage: "board", message: "📊 CFO発言: 139名のユニークユーザーがいて売上0円という現状は、ビジネスモデルの欠陥です", badge: "cfo" },
+        { time: "08:00:11", stage: "board", message: "💰 CRO発言: 冒頭で「先着10名のみ980円」明示＋損失強調＆デモ動画で決済ハードルを下げる", badge: "cro" },
+        { time: "08:00:16", stage: "board", message: "📣 CMO発言: Xで「利益が出なければ終了」の危機感を発信しショート実演からnoteへ誘導", badge: "cmo" },
+        { time: "08:00:21", stage: "board", message: "🛠️ CTO発言: 全27ページ点検＆無料ツール実行完了画面に有料版オファー導線を全自動埋め込み", badge: "cto" },
+        { time: "08:00:26", stage: "ceo", message: "⚡ CEO最終決断: 本日23:59までに、noteでの有料パック初決済（980円）を最低1件発生させよ", badge: "decided" },
+        { time: "08:00:30", stage: "rule", message: "ルール学習: R1〜R5採用（ブロック74回）、R6無料削減案は逆効果で却下", badge: "kept" },
+        { time: "08:00:33", stage: "replay", message: "安全テスト検証 #1〜#3: 全3件 red ➔ green 合格", badge: "pass" },
+        { time: "08:00:36", stage: "gate", message: "安全装置5/5 armed ➔ AI_CEO_RULES.md & 司令室データを自動更新", badge: "written" }
+      ]
+    };
+
+    const DEFAULT_SEGMENTS = [
+      { id: "cfo", start: 1.5, end: 7.0, step: 1 },
+      { id: "cro", start: 7.0, end: 12.5, step: 2 },
+      { id: "cmo", start: 12.5, end: 18.0, step: 3 },
+      { id: "cto", start: 18.0, end: 23.0, step: 4 },
+      { id: "ceo", start: 23.0, end: 27.5, step: 5 }
+    ];
+
+    let currentState = INITIAL_STATE;
+    let customSegments = null;
+    let totalDurationSec = 29.0;
+    let isPlaying = true;
+    let pinnedExecId = null;
+    let animStartMs = performance.now();
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("capture") === "1") {
+      document.body.classList.add("capture-mode");
+      isPlaying = false;
+    }
+
+    function renderStaticData(state) {
+      currentState = state;
+      const s = state.summary || {};
+      const board = state.board_meeting || INITIAL_STATE.board_meeting;
+      const execs = board.executives || INITIAL_STATE.board_meeting.executives;
+      const ceoDec = board.ceo_decision || INITIAL_STATE.board_meeting.ceo_decision;
+
+      document.getElementById("titlebarText").textContent =
+        `~/ai-ceo-system · antigravity · day ${state.day} / ${state.total_days || 90} · 残高 ¥${(s.balance_jpy || 15000).toLocaleString()}`;
+
+      document.getElementById("heroTitle").innerHTML =
+        `AI CEO EXECUTIVE BOARD &amp; LEARNING LOOP · <span class="hl-cyan">5大AI役員 激論中</span> · <span class="hl-amber">${s.active_rules_count || 15} ルール稼働</span> · <span class="hl-green">${s.repeats_blocked || 74} 再発ブロック済</span>`;
+
+      document.getElementById("pipeDayLabel").textContent = `Day ${state.day}`;
+      document.getElementById("pipeEngineLabel").textContent = (board.reasoning_engine || "LLM_MULTI_AGENT").split(" ")[0];
+      document.getElementById("engineBadge").textContent = board.reasoning_engine || "LLM_MULTI_AGENT";
+      document.getElementById("agendaText").textContent = board.agenda || "";
+
+      // Sidebar KPIs
+      document.getElementById("kpiBalance").textContent = `¥${(s.balance_jpy || 15000).toLocaleString()}`;
+      document.getElementById("kpiRevenue").textContent = `¥${(s.total_revenue_jpy || 0).toLocaleString()}`;
+      document.getElementById("kpiClones").textContent = `${s.gh_clones || 360}回(${s.gh_uniques || 139}名)`;
+      document.getElementById("kpiNotes").textContent = `${s.total_notes || 8}記事/${s.total_likes || 19}スキ`;
+      document.getElementById("statBlocked").textContent = `${s.repeats_blocked || 74}回`;
+      document.getElementById("statStepIn").textContent = `${s.human_step_in_rate || "0/12"} (無人)`;
+
+      // Sidebar Rules
+      document.getElementById("baseRulesList").innerHTML = (state.base_rules || []).slice(0, 5).map(r => `<li>${r}</li>`).join("");
+      document.getElementById("learnedSidebarList").innerHTML = (state.rules || []).map((r, idx) => {
+        const isCut = r.status === "cut";
+        const prefix = isCut ? "✖" : "+";
+        const txt = r.rule.length > 21 ? r.rule.slice(0, 21) + "…" : r.rule;
+        return `<div class="learned-line ${isCut ? "cut" : ""}" data-ridx="${idx}">${prefix} ${r.id} ${txt}</div>`;
+      }).join("");
+
+      // Safety checks
+      document.getElementById("safetyList").innerHTML = (state.safety_checks || []).map((sc, idx) =>
+        `<div class="safety-item" data-sidx="${idx}"><span>${sc.label}</span><span class="armed-badge">● ${sc.status}</span></div>`
+      ).join("");
+
+      // 4 Executive Cards (cfo, cro, cmo, cto)
+      const fourExecs = execs.filter(e => e.id !== "ceo").slice(0, 4);
+      document.getElementById("execGrid").innerHTML = fourExecs.map(ex => `
+        <div class="exec-card" id="card-${ex.id}" data-id="${ex.id}" data-color="${ex.color}" onclick="pinSpeaker('${ex.id}')">
+          <div class="exec-head">
+            <span class="exec-name"><span>${ex.icon}</span><span>${ex.role}</span></span>
+            <span class="exec-state" id="state-${ex.id}">待機中</span>
+          </div>
+          <div class="exec-body">${ex.statement}</div>
+        </div>
+      `).join("");
+
+      // CEO Panel
+      document.getElementById("ceoGoalText").textContent = `最優先ゴール: ${ceoDec.primary_goal}`;
+      document.getElementById("ceoKpiText").textContent = `目標: ${ceoDec.kpi_target}`;
+      document.getElementById("ceoActionsGrid").innerHTML = (ceoDec.approved_actions || []).slice(0, 4).map((act, idx) => `
+        <div class="action-item" id="ceoAct${idx}">
+          <span class="action-text">${idx + 1}. ${act}</span>
+          <span class="action-badge" id="ceoActBadge${idx}">待機</span>
+        </div>
+      `).join("");
+
+      // Replays
+      document.getElementById("replayGrid").innerHTML = (state.replays || []).slice(0, 3).map((rp, idx) => `
+        <div class="replay-card">
+          <div class="replay-top">
+            <span>${rp.title}</span>
+            <span style="color:#94a3b8; font-family:var(--font-mono); font-size:9px;">${rp.rule_ref}</span>
+          </div>
+          <div class="replay-track"><div class="replay-fill" id="rpFill${idx}"></div></div>
+          <div class="replay-foot">
+            <span>${rp.detail || "自動検証"}</span>
+            <span class="replay-stat" id="rpStat${idx}">queued</span>
+          </div>
+        </div>
+      `).join("");
+
+      // CLI footer
+      document.getElementById("cliStats").innerHTML = `
+        <span>day <strong>[${state.day}/${state.total_days || 90}]</strong></span>
+        <span>clones <strong>[${s.gh_clones || 360}]</strong></span>
+        <span>notes <strong>[${s.total_notes || 8}]</strong></span>
+        <span>likes <strong>[${s.total_likes || 19}]</strong></span>
+        <span>rules <strong class="green">[${s.active_rules_count || 15}]</strong></span>
+        <span>blocked <strong class="green">[${s.repeats_blocked || 74}]</strong></span>
+        <span>balance <strong class="amber">[¥${(s.balance_jpy || 15000).toLocaleString()}]</strong></span>
+        <span>revenue <strong class="amber">[¥${(s.total_revenue_jpy || 0).toLocaleString()}]</strong></span>
+      `;
+    }
+
+    function pinSpeaker(execId) {
+      if (pinnedExecId === execId) {
+        pinnedExecId = null;
+        isPlaying = true;
+        document.getElementById("togglePlayBtn").textContent = "⏸ 一時停止";
+      } else {
+        pinnedExecId = execId;
+        isPlaying = false;
+        document.getElementById("togglePlayBtn").textContent = "▶ 自動再生に戻す";
+      }
+      updateSpotlightById(execId, true);
+    }
+
+    function updateSpotlightById(execId, isPinned) {
+      const board = currentState.board_meeting || INITIAL_STATE.board_meeting;
+      const execs = board.executives || INITIAL_STATE.board_meeting.executives;
+      const target = execs.find(e => e.id === execId) || execs[0];
+      const spot = document.getElementById("spotlightPanel");
+      spot.setAttribute("data-color", target.color || "cyan");
+      document.getElementById("spotAvatar").textContent = target.icon || "🤖";
+      document.getElementById("spotRole").textContent = target.role;
+      document.getElementById("spotTag").textContent = target.summary_tag || "";
+      document.getElementById("spotQuote").textContent = target.statement;
+      document.getElementById("speakingText").textContent = isPinned ? "📌 固定表示中" : "🔊 SPEAKING (発言中)";
+
+      execs.forEach(e => {
+        const card = document.getElementById(`card-${e.id}`);
+        const st = document.getElementById(`state-${e.id}`);
+        if (card && st) {
+          const active = e.id === target.id;
+          card.classList.toggle("active", active);
+          st.className = active ? "exec-state speaking" : "exec-state done";
+          st.textContent = active ? "🔊 発言中" : "✔ 発言済";
+        }
+      });
+      document.getElementById("ceoPanel").classList.toggle("active", target.id === "ceo");
+    }
+
+    function setAnimationProgress(sec, segmentsOverride) {
+      const segs = segmentsOverride || customSegments || DEFAULT_SEGMENTS;
+      const t = Math.max(0, Number(sec) || 0);
+      const board = currentState.board_meeting || INITIAL_STATE.board_meeting;
+      const execs = board.executives || INITIAL_STATE.board_meeting.executives;
+      const logs = currentState.live_logs || [];
+
+      let activeSeg = null;
+      for (const sg of segs) {
+        if (t >= sg.start && t < sg.end) {
+          activeSeg = sg;
+          break;
+        }
+      }
+
+      const lastSegEnd = segs[segs.length - 1].end;
+      let activeStep = 0;
+      let statusMsg = "1/7 実測スコアと過去エラーを収集中...";
+      let speakerId = "cfo";
+
+      if (t < segs[0].start) {
+        activeStep = 0;
+        statusMsg = "1/7 実測スコア(利用360回・スキ19件・売上¥0)を収集中...";
+        speakerId = "cfo";
+      } else if (activeSeg) {
+        activeStep = activeSeg.step;
+        speakerId = activeSeg.id;
+        const found = execs.find(e => e.id === speakerId);
+        statusMsg = `${activeStep + 1}/7 ${found ? found.short_role : speakerId} が改善策を発言中...`;
+      } else {
+        activeStep = 6;
+        speakerId = "ceo";
+        statusMsg = "7/7 CEO決断をコード＆Webへ反映 ➔ 安全テスト合格！";
+      }
+
+      document.getElementById("pipeStatusText").textContent = statusMsg;
+      document.querySelectorAll(".p-step").forEach((el, idx) => {
+        el.classList.remove("active", "done");
+        if (idx < activeStep) el.classList.add("done");
+        else if (idx === activeStep) el.classList.add("active");
+      });
+
+      // Spotlight update
+      const target = execs.find(e => e.id === speakerId) || execs[0];
+      const spot = document.getElementById("spotlightPanel");
+      spot.setAttribute("data-color", target.color || "cyan");
+      document.getElementById("spotAvatar").textContent = target.icon || "🤖";
+      document.getElementById("spotRole").textContent = target.role;
+      document.getElementById("spotTag").textContent = target.summary_tag || "";
+      document.getElementById("spotQuote").textContent = target.statement;
+      document.getElementById("speakingText").textContent = t >= lastSegEnd ? "✔ 決議完了・自動反映済" : "🔊 SPEAKING (発言中)";
+
+      // Wave animation
+      const waveBars = document.querySelectorAll("#waveBars .wave-bar");
+      waveBars.forEach((bar, i) => {
+        if (t >= segs[0].start && t < lastSegEnd) {
+          const h = 3 + Math.round(Math.abs(Math.sin(t * 9.0 + i * 1.3)) * 8);
+          bar.style.height = `${h}px`;
+        } else {
+          bar.style.height = "4px";
+        }
+      });
+
+      // Update 4 executive cards
+      const speakerOrder = ["cfo", "cro", "cmo", "cto", "ceo"];
+      const activeIdx = speakerOrder.indexOf(speakerId);
+      ["cfo", "cro", "cmo", "cto"].forEach((eid, idx) => {
+        const card = document.getElementById(`card-${eid}`);
+        const st = document.getElementById(`state-${eid}`);
+        if (!card || !st) return;
+        const isCurrent = (eid === speakerId) && (t >= segs[0].start && t < lastSegEnd);
+        const isDone = t >= lastSegEnd || idx < activeIdx || (t >= segs[idx].end);
+        card.classList.toggle("active", isCurrent);
+        if (isCurrent) {
+          st.className = "exec-state speaking";
+          st.textContent = "🔊 発言中";
+        } else if (isDone) {
+          st.className = "exec-state done";
+          st.textContent = "✔ 発言済";
+        } else {
+          st.className = "exec-state";
+          st.textContent = "待機中";
+        }
+      });
+
+      // CEO panel & actions
+      const ceoSeg = segs.find(sg => sg.id === "ceo") || segs[segs.length - 1];
+      const ceoActive = t >= ceoSeg.start && t < ceoSeg.end;
+      const ceoDone = t >= ceoSeg.end;
+      document.getElementById("ceoPanel").classList.toggle("active", ceoActive);
+      const ceoBadge = document.getElementById("ceoExecBadge");
+      ceoBadge.textContent = ceoDone ? "✔ 4大改善策を即時実行済" : (ceoActive ? "⚡ 最終決断中..." : "各役員の報告待ち");
+      ceoBadge.style.color = ceoDone ? "#34d399" : "#fbbf24";
+
+      for (let i = 0; i < 4; i++) {
+        const actEl = document.getElementById(`ceoAct${i}`);
+        const bEl = document.getElementById(`ceoActBadge${i}`);
+        if (actEl && bEl) {
+          const itemDone = t >= ceoSeg.start + i * ((ceoSeg.end - ceoSeg.start) / 4.2);
+          actEl.classList.toggle("done", itemDone);
+          bEl.textContent = itemDone ? "✔ 実行済" : "待機";
+          bEl.style.color = itemDone ? "#34d399" : "#64748b";
+        }
+      }
+
+      // Sidebar rules highlight
+      document.querySelectorAll(".learned-line").forEach((el, idx) => {
+        el.classList.toggle("highlighted", t >= ceoSeg.start && idx < 5);
+      });
+
+      // Replays
+      const rpStart = Math.max(ceoSeg.start + 0.5, lastSegEnd - 2.5);
+      (currentState.replays || []).slice(0, 3).forEach((rp, idx) => {
+        const fillEl = document.getElementById(`rpFill${idx}`);
+        const statEl = document.getElementById(`rpStat${idx}`);
+        if (!fillEl || !statEl) return;
+        const sT = rpStart + idx * 0.45;
+        const eT = sT + 1.4;
+        let pct = 0;
+        if (t >= eT) pct = 100;
+        else if (t > sT) pct = Math.round(((t - sT) / (eT - sT)) * 100);
+        fillEl.style.width = `${pct}%`;
+        if (pct >= 100) {
+          statEl.textContent = "red ➔ green ✔";
+          statEl.className = "replay-stat pass";
+        } else if (pct > 0) {
+          statEl.textContent = `testing ${pct}%`;
+          statEl.className = "replay-stat";
+        } else {
+          statEl.textContent = "queued";
+          statEl.className = "replay-stat";
+        }
+      });
+
+      // Safety checks pulse
+      document.querySelectorAll(".safety-item").forEach((el, idx) => {
+        el.classList.toggle("pulsed", t >= lastSegEnd - 1.0 + idx * 0.2);
+      });
+
+      // Logs stream synchronized to speaker progress
+      let visibleCount = 1;
+      if (t >= lastSegEnd) visibleCount = logs.length;
+      else if (t >= segs[4].start) visibleCount = Math.min(logs.length, 7);
+      else if (t >= segs[3].start) visibleCount = Math.min(logs.length, 5);
+      else if (t >= segs[2].start) visibleCount = Math.min(logs.length, 4);
+      else if (t >= segs[1].start) visibleCount = Math.min(logs.length, 3);
+      else if (t >= segs[0].start) visibleCount = Math.min(logs.length, 2);
+
+      const logStream = document.getElementById("logStream");
+      const slice = logs.slice(0, visibleCount);
+      logStream.innerHTML = slice.map((lg, i) => {
+        const isLatest = i === slice.length - 1;
+        const badgeColor = lg.badge === "cut" ? "#fb7185" : (lg.badge === "decided" ? "#facc15" : (lg.badge === "pass" || lg.badge === "kept" || lg.badge === "written" ? "#34d399" : "#38bdf8"));
+        return `
+          <div class="log-line ${isLatest ? "latest" : ""}">
+            <span class="log-time">${lg.time}</span>
+            <span class="log-stage st-${lg.stage}">${lg.stage}</span>
+            <span class="log-msg">${lg.message}</span>
+            <span class="log-badge" style="color:${badgeColor}">${lg.badge}</span>
+          </div>`;
+      }).join("");
+      logStream.scrollTop = logStream.scrollHeight;
+    }
+
+    window.setAnimationProgress = setAnimationProgress;
+    window.loadCommandCenterData = function(newState, segments, totalSec) {
+      if (segments && segments.length) {
+        customSegments = segments;
+      }
+      if (totalSec) {
+        totalDurationSec = totalSec;
+      }
+      renderStaticData(newState);
+      setAnimationProgress(0);
+    };
+
+    function togglePlayback() {
+      if (pinnedExecId) {
+        pinnedExecId = null;
+        isPlaying = true;
+      } else {
+        isPlaying = !isPlaying;
+      }
+      document.getElementById("togglePlayBtn").textContent = isPlaying ? "⏸ 一時停止" : "▶ ループ再生";
+      if (isPlaying) animStartMs = performance.now();
+    }
+
+    function tick(now) {
+      if (isPlaying && !pinnedExecId) {
+        const elapsedSec = ((now - animStartMs) / 1000) % totalDurationSec;
+        setAnimationProgress(elapsedSec);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    renderStaticData(INITIAL_STATE);
+    if (params.get("capture") === "1") {
+      setAnimationProgress(3.0);
+    } else {
+      setAnimationProgress(1.5);
+      requestAnimationFrame(tick);
+    }
+
+    if (window.location.protocol.startsWith("http") && params.get("capture") !== "1") {
+      fetch("/api/command-center")
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if (data && data.summary) {
+            renderStaticData(data);
+          }
+        })
+        .catch(() => {});
+    }
+  </script>
+</body>
+</html>

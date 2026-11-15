@@ -1,9 +1,18 @@
 {
-  "inspected_at": "2026-11-15T02:18:44.773179+00:00",
+  "inspected_at": "2026-11-15T21:23:19.105355+09:00",
   "total_urls_checked": 27,
   "urls_ok_count": 27,
   "broken_urls": [],
   "live_note_articles_check": [
+    {
+      "key": "n5d0e28a74f91",
+      "url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
+      "title": "【先着10部¥980】コピペ5分で毎日のルーティン作業を消滅させる『全",
+      "has_thumbnail": true,
+      "clickable_links_count": 0,
+      "likes": 3,
+      "healthy": true
+    },
     {
       "key": "n129393b66060",
       "url": "https://note.com/toproad_1989/n/n129393b66060",
@@ -66,25 +75,44 @@
       "clickable_links_count": 3,
       "likes": 4,
       "healthy": true
-    },
-    {
-      "key": "n5d0e28a74f91",
-      "url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
-      "title": "【先着10部¥980】コピペ5分で毎日のルーティン作業を消滅させる『全",
-      "has_thumbnail": true,
-      "clickable_links_count": 0,
-      "likes": 3,
-      "healthy": true
     }
   ],
   "browser_e2e": {
-    "status": "skipped_no_playwright"
+    "status": "passed",
+    "js_console_errors": [],
+    "tools_tested": {
+      "index_tool": {
+        "title": "AutoFlow AI | 30秒で業務削減額を算出＆自動化プロンプト/GASコード即時生成ツール",
+        "rendered_ok": true,
+        "note_cta_count": 4
+      },
+      "prompt_builder_tool": {
+        "title": "AutoPrompt Studio | 1行の指示を「深津式・構造化プロンプト」へ0秒変換する無料ジェネレーター",
+        "interactive_buttons": 1,
+        "note_cta_count": 4
+      },
+      "gas_debugger_tool": {
+        "title": "AutoFix AI | Google Apps Script(GAS)エラー＆AIプロンプト3秒診断・自動修正ツール",
+        "interactive_buttons": 1,
+        "note_cta_count": 4
+      },
+      "free_templates_page": {
+        "title": "無料サンプル5選 vs 完全版50選 | AutoFlow AI プロンプト＆GAS自動化レシピ",
+        "sample_copy_buttons": 5,
+        "note_cta_count": 4
+      },
+      "sales_lp": {
+        "title": "AutoFlow Pro Pack | 全職種対応50種AIプロンプト＆GAS自動化テンプレート完全版 (先着10部限定 ¥980)",
+        "note_cta_count": 1
+      }
+    }
   },
   "windows_scheduler_check": {
-    "status": "cloud_linux_env"
+    "registered": true,
+    "raw_summary": "\nFolder: \\\nHostName:                             DESKTOP-T8LTA9P\nTaskName:                             \\Antigravity_AI_CEO_Daily\nNext Run Time:                        2026/11/16 8:00:00\nStatus:                               Ready\nLogon Mode:                           Interactive only\nLast Run Time:                        2026/11/15 8:00:01\nLast Result:                          0\nAuthor:                               DESKTOP-T8LTA9P\\山内　裕加里\nTask To Run:                          C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Desktop\\Frontier_clone\\ai_ceo_system\\a"
   },
   "detected_issues": [
-    "【最重要課題：未収益】ツール利用0回・note累計スキ19件（有料記事スキ3件）に対し売上が¥0です。無料満足で離脱させず、有料版でしか手に入らない具体的な実利と緊急性を提示する必要があります。"
+    "【最重要課題：未収益】ツール利用360回・note累計スキ19件（有料記事スキ3件）に対し売上が¥0です。無料満足で離脱させず、有料版でしか手に入らない具体的な実利と緊急性を提示する必要があります。"
   ],
   "overall_healthy": true
 }

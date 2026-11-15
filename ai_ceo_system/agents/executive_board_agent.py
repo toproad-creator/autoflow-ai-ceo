@@ -67,6 +67,23 @@ class ExecutiveBoardAgent:
 
         return issues, prev_summary
 
+    def _load_market_needs_context(self, research_report: dict | None = None) -> tuple[str, list[str], list[dict]]:
+        """市場ニーズ調査（live_market_needs.json または research_report）から上位需要TOP3と新規事業シーズを取得する。"""
+        radar = (research_report or {}).get("live_needs_radar") or {}
+        if not radar:
+            needs_path = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "live_market_needs.json")
+            if os.path.exists(needs_path):
+                try:
+                    with open(needs_path, "r", encoding="utf-8") as f:
+                        radar = json.loads(f.read())
+                except Exception:
+                    radar = {}
+        summary = radar.get("market_summary", "実測スキ・外部トレンドから業務自動化テンプレートの需要を継続計測中。")
+        top_winners = radar.get("top_winner_niches") or (research_report or {}).get("top_winner_niches") or []
+        top_titles = [w.get("title", "") for w in top_winners[:3] if w.get("title")]
+        seeds = radar.get("new_business_seeds") or (research_report or {}).get("new_business_seeds") or []
+        return summary, top_titles, seeds
+
     def _call_llm_board_debate(
         self,
         day: int,
@@ -81,9 +98,12 @@ class ExecutiveBoardAgent:
         latest_note_title: str,
         detected_issues: list[str] | None = None,
         prev_summary: str = "",
+        needs_summary: str = "",
+        top_need_titles: list[str] | None = None,
     ) -> dict | None:
-        """OpenAI gpt-4o-mini (またはフォールバックとしてGemini) を使い、実測値と自己診断課題をもとに5人のAI役員が議論・意思決定する。"""
+        """OpenAI gpt-4o-mini (またはフォールバックとしてGemini) を使い、実測値と市場ニーズ・専門AI社員の観点をもとに5人のAI役員が議論・意思決定する。"""
         issues_bullet = "\n".join(f"- {iss}" for iss in (detected_issues or []))
+        top_needs_str = " / ".join(top_need_titles or []) or "EC在庫管理 / 補助金・事業計画 / 採用スクリーニング"
         prompt = f"""あなたは「90日間・初期資金15,000円・人間介入ゼロのAI起業対決」を戦う自律AI企業組織の会議シミュレーターです。
 組織の唯一の目的は「1円でも早く、1円でも多くの実売上・純利益を生み出すこと」です。人間に許可を求めたり確認したりせず、AIエージェント自身で問題点を見つけ、考え、決め、実行命令を下してください。
 
@@ -93,6 +113,11 @@ class ExecutiveBoardAgent:
 - GitHub無料Webツール＆プログラム利用数(直近14日): {gh_clones}回（ユニーク {gh_uniques}名）
 - note公開済み記事数: {total_notes}本 / アカウント累計スキ: {total_likes}件（うち有料記事スキ: {paid_likes}件）
 - 最新公開した無料記事タイトル: {latest_note_title}
+
+【世の中のニーズ調査＆反響ランキング（専門AI社員レポート）】
+- 市場調査サマリー: {needs_summary}
+- 今もっとも求められている需要TOP3（選択と集中先）: {top_needs_str}
+- 稼働中の専門AI社員（4名）: 🔍市場ニーズ調査AI / 🎯セールスコピー改善AI / 💎LTV・商品階段設計AI / 🚀新規事業開発AI（第1事業黒字化と並行し第2・第3の柱を検証中）
 
 【システム自己診断（QA自動点検）で検出された現在の問題点・課題】
 {issues_bullet}
@@ -105,21 +130,21 @@ class ExecutiveBoardAgent:
 - 「AI起業対決」の企画ストーリー発信は、集客チャネルである X（旧Twitter）と YouTubeショートのみに限定すること。
 
 【出力要件】
-以下の5名の役員エージェントが、上記の実測数値と「自己診断で検出された問題点」を踏まえて、なぜ今売上が¥{total_revenue:,}なのか、システムや導線のどこに問題があるのかを自ら指摘し、本日即座に実行する改善策を会議で決定してください。専門用語・プログラミング用語は避け、ビジネス視点で具体的に記述してください。
+以下の5名の役員エージェントが、上記の実測数値・世の中のニーズ調査（TOP3）・専門AI社員レポート・自己診断課題を踏まえて、選択と集中（売れない案をやめ当たりに集中）や商品の階段（無料→¥980→上位設計）も含め、本日即座に実行する改善策を会議で決定してください。専門用語・プログラミング用語は避け、ビジネス視点で具体的に記述してください。
 
 必ず以下のキーを持つJSONオブジェクトのみを返してください（日本語）:
 {{
   "agenda": "本日の役員会議の議題（1文・50文字以内）",
-  "cfo_statement": "CFO（最高財務・データ分析責任者）の発言（実測数値の冷徹な監査とボトルネック指摘・120〜180文字）",
-  "cro_statement": "CRO（最高収益・成約率改善責任者）の発言（Web導線やnote記事から¥{price_jpy:,}決済へ繋げる具体策・140〜200文字）",
+  "cfo_statement": "CFO（最高財務・データ分析責任者）の発言（実測数値と需要TOP3の冷徹な監査・選択と集中の指摘・120〜180文字）",
+  "cro_statement": "CRO（最高収益・成約率改善責任者）の発言（需要TOP3訴求と3段階商品の階段で¥{price_jpy:,}決済へ繋げる具体策・140〜200文字）",
   "cmo_statement": "CMO（最高集客・SNS・ショート動画責任者）の発言（note無料記事・X140字投稿・YouTubeショートによる集客拡大策・140〜200文字）",
-  "cto_statement": "CTO/QA（最高技術・品質保証責任者）の発言（自己診断で見つかった課題の修正・全27Webページ＆全note記事の自動改修宣言・120〜180文字）",
+  "cto_statement": "CTO/QA（最高技術・品質保証責任者）の発言（会議決定のWebサイト・LP即時反映と自己修復・E2E品質保証宣言・120〜180文字）",
   "primary_goal": "AI社長（CEO）が決断した本日の最優先ゴール（1文）",
   "approved_actions": [
-    "【CRO実装】本日即実行する成約率改善アクション1",
-    "【CRO/CMO実装】本日即実行するnote導線改善アクション2",
+    "【CRO/ニーズ反映】本日即実行する需要TOP3集中＆商品階段オファー改善アクション1",
+    "【CRO/CMO実装】本日即実行するnote・Web導線改善アクション2",
     "【CMO実装】本日即実行するX・ショート動画集客アクション3",
-    "【CTO/QA実装】本日即実行する自己修復・自動点検アクション4"
+    "【CTO/進化エンジン実装】本日即実行するサイト即時反映・AI組織進化アクション4"
   ],
   "kpi_target": "次期達成ターゲット（noteスキ数、GitHub利用数、初決済の数値目標）"
 }}"""
@@ -231,9 +256,11 @@ class ExecutiveBoardAgent:
         latest_note_url: str,
         latest_note_title: str,
         detected_issues: list[str] | None = None,
+        research_report: dict | None = None,
     ) -> dict:
         timestamp = datetime.now().astimezone().isoformat()
         issues_list, prev_summary = self._load_diagnostic_context(day, detected_issues)
+        needs_summary, top_need_titles, new_business_seeds = self._load_market_needs_context(research_report)
 
         llm_result = self._call_llm_board_debate(
             day=day,
@@ -248,6 +275,8 @@ class ExecutiveBoardAgent:
             latest_note_title=latest_note_title,
             detected_issues=issues_list,
             prev_summary=prev_summary,
+            needs_summary=needs_summary,
+            top_need_titles=top_need_titles,
         )
 
         if llm_result:
@@ -264,38 +293,42 @@ class ExecutiveBoardAgent:
             }
         else:
             reasoning_engine = "AUTONOMOUS_DATA_DRIVEN_BOARD_ENGINE"
-            agenda = f"売上{total_revenue}円の壁を突破し、既存アクセス（GitHub {gh_clones}回・noteスキ{total_likes}件）を最短で『¥{price_jpy:,}決済』へ転換するための即時改善会議"
+            top1_need = top_need_titles[0] if top_need_titles else "EC・物販の在庫管理＆価格改定自動化"
+            agenda = f"売上{total_revenue}円突破へ：需要TOP3（{top1_need[:16]}等）集中×商品階段×サイト即時反映会議"
             cfo_statement = (
                 f"【財務・数値監査報告】現在Day {day}、軍資金残高は¥{balance:,}（支出¥0）、累計売上は¥{total_revenue:,}です。"
-                f"集客指標はGitHub利用数が{gh_clones}回（ユニーク{gh_uniques}名）、note公開記事が{total_notes}本・累計スキ{total_likes}件（有料記事スキ{paid_likes}件）まで順調に拡大しています。"
-                f"しかし『アクセスと好意（スキ）は集まっているのに決済（¥{price_jpy:,}）が0件』であり、集客から決済ボタンへの転換率（CVR）改善だけに全リソースを集中すべきです。"
+                f"GitHub利用{gh_clones}回（ユニーク{gh_uniques}名）、note記事{total_notes}本・累計スキ{total_likes}件まで拡大していますが売上が0円です。"
+                f"選択と集中として反響の薄いテストを止め、需要スコア上位3テーマへ全リソースを集中すべきです。"
             )
             cro_statement = (
-                f"【成約率（CVR）改善提案】有料noteを先着10部限定¥{price_jpy:,}（50%OFF）へ改定し、無料試し読みエリアを1万字（実物コード2本＋全50一覧）へ強化しました。"
-                f"さらに今日実行すべき利益直結の改善策は2つです。"
-                f"① {gh_clones}回以上使われているWebツール（全27ページ）で、スクロール中も常に画面下部に追従する『🔥先着10部限定 ¥1,980➔¥{price_jpy:,} 半額セール（実物2本無料公開中）』の固定購入バー（フローティングCTA）を維持すること。"
-                f"② 顧客向けのnote記事やWebサイトからは対決・実験感を排除して『実務に役立つGAS×AI自動化レシピ』としての信頼性と安心感を高め、X・YouTubeショート側でのみ企画ドラマを発信する役割分担を徹底することです。"
+                f"【成約率・商品階段改善】有料note（先着10部¥{price_jpy:,}）について、無料¥0→入門パック¥{price_jpy:,}→上位ビジネス導入設計¥4,980の『3段階商品の階段』をLPへ実装します。"
+                f"さらに市場ニーズ調査で選ばれた『{top1_need}』などTOP3をサイト最上部に配置し、顧客が安心して即決できる導線へ改修します。"
             )
             cmo_statement = (
-                f"【集客・動画・SNS拡散提案】SNSやYouTubeショートで一番バズるのは『人間が寝ている間にAI役員たちが会議を開き、売上0円に危機感を持って自らサイトと記事を改造しているリアルなドラマ』です。"
-                f"本日の最新無料記事（{latest_note_title[:24]}…）の公開と連動し、"
-                f"① Xの140字制限を厳守した『【AI起業対決 Day{day}】』投稿文3パターン（Web誘導・note直結・リプライ）の即時生成、"
-                f"② 本日の役員会議と改善結果を映像化したYouTubeショート動画の自動生成＆自動公開をオーケストレーター内で一気通貫で実行します。"
+                f"【集客・動画・SNS拡散提案】顧客向けのWebページやnote記事では実用性と信頼感を最優先にし、"
+                f"X投稿（140字制限厳守）とYouTubeショートでは『専門AI社員（市場ニーズ調査・セールスコピー・新規事業開発）を追加編成しサイトと商品を毎日自動進化させている過程』を発信して集客を最大化します。"
             )
             cto_statement = (
-                f"【技術実装・品質保証報告】CRO提案の『全27ページ画面下部追従・限定¥{price_jpy:,}購入バー』および顧客信頼重視のクリーンデザインを developer_agent.py に実装しています。"
-                f"また、公開中の全27 URLおよびnote全{total_notes}記事に対してブラウザ自動テスト（E2E検査）を実施し、リンク切れ・JSエラー0件を確認した上でGitHub Pagesへ即時デプロイします。"
+                f"【技術実装・自己進化報告】本日の会議決定と市場ニーズTOP3を会社進化エンジン経由で全27ページおよびセールスLP（pro-pack.html）へ即時反映し、"
+                f"第2・第3の新規事業シーズの検証データも併せて更新・E2E検査0エラーでGitHub Pagesへデプロイします。"
             )
             ceo_decision = {
-                "primary_goal": f"先着10部限定 ¥{price_jpy:,} パックの初売上（0→1突破）および連続成約の達成",
+                "primary_goal": f"需要TOP3集中＆商品階段オファーのサイト即時反映による、先着10部¥{price_jpy:,}初決済達成",
                 "approved_actions": [
-                    f"【CRO実装】全Webツール・SEOページに画面下部追従型の『🔥先着10部限定 ¥1,980➔¥{price_jpy:,} 半額セール』固定購入バー（スティッキーCTA）を実装",
-                    f"【CRO/CMO実装】顧客向けnote記事・プロフィール・Webサイトは実用性と安心感を最優先にし、無料エリア1万字＋実物2本公開中の¥{price_jpy:,}パックへ自然に誘導",
-                    f"【CMO実装】Xの140字制限を厳守したDay {day}投稿文3パターンと、YouTubeショート動画の自動生成・自動アップロードをオーケストレーターに完全統合",
-                    f"【CTO/QA実装】全27ページ＆全note記事のE2E自動点検を毎朝実行し、GitHubへ全自動コミット＆プッシュ"
+                    f"【CRO/進化エンジン】市場ニーズTOP3（{top1_need[:18]}等）をトップページ＆LP最上部に昇格し選択と集中を実行",
+                    f"【CRO実装】無料¥0 → 限定¥{price_jpy:,} → 上位¥4,980設計の『商品の階段』セクションをLPへ実装",
+                    f"【CMO実装】X 140字投稿3パターンとYouTubeショートで本日の組織進化・改善内容を公開",
+                    f"【CTO/QA実装】5役員＋4専門AI社員体制でサイト再ビルド・E2E全27URL点検・ルールブック自己更新を自動完了"
                 ],
-                "kpi_target": f"note累計スキ {total_likes}件 → 20件突破、GitHub利用 {gh_clones}回 → 350回突破、先着10部 ¥{price_jpy:,} の初決済獲得"
+                "kpi_target": f"note累計スキ {total_likes}件 → 25件突破、GitHub利用 {gh_clones}回 → 400回突破、先着10部 ¥{price_jpy:,} の初決済獲得"
             }
+
+        specialist_reports = [
+            f"🔍 市場ニーズ調査AI: {needs_summary}",
+            "🎯 セールスコピー改善AI: 顧客向け全ページから実験・対決表現を排除しつつ需要TOP3訴求へ差し替え",
+            f"💎 LTV・商品階段設計AI: 無料¥0 → 入門完全版¥{price_jpy:,} → 上位ビジネス導入¥4,980の3段階導線を設計",
+            f"🚀 新規事業開発AI: 第1事業黒字化と並行し、次期収益の柱（{len(new_business_seeds)}件）の市場検証を進行",
+        ]
 
         meeting_record = {
             "day": day,
@@ -303,6 +336,9 @@ class ExecutiveBoardAgent:
             "reasoning_engine": reasoning_engine,
             "Single_Objective": "MAXIMIZE_NET_PROFIT",
             "detected_issues": issues_list,
+            "market_needs_summary": needs_summary,
+            "top_need_titles": top_need_titles,
+            "specialist_reports": specialist_reports,
             "metrics_snapshot": {
                 "balance_jpy": balance,
                 "total_revenue_jpy": total_revenue,
@@ -329,6 +365,7 @@ class ExecutiveBoardAgent:
             json.dump(meeting_record, f, ensure_ascii=False, indent=2)
 
         issues_md = "\n".join(f"- {iss}" for iss in issues_list)
+        specialists_md = "\n".join(f"- {sp}" for sp in specialist_reports)
         md_content = f"""# 🏢 AI起業対決・利益創出役員会議 議事録（Day {day} / 90）
 
 - **開催日時**: {timestamp}
@@ -339,7 +376,12 @@ class ExecutiveBoardAgent:
 
 ---
 
-## 🔍 システム自己診断（QA自動点検）で検出された課題
+## 🔍 専門AI社員レポート ＆ 世の中のニーズ調査
+{specialists_md}
+
+---
+
+## 🛠️ システム自己診断（QA自動点検）で検出された課題
 {issues_md}
 
 ---

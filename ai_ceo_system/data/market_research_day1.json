@@ -1,5 +1,5 @@
 {
-  "analyzed_at": "2026-11-15T02:18:38.206161+00:00",
+  "analyzed_at": "2026-11-15T21:22:01.825018+09:00",
   "winner_model": {
     "id": "BM-01",
     "name": "AI業務自動化ROIシミュレーター＆職種別プロンプト・GAS自動生成Webスイート（Programmatic SEO型ツール＋テンプレート販売）",
@@ -79,122 +79,419 @@
       "slug": "ec-inventory",
       "title": "EC・物販の在庫管理＆価格改定自動化",
       "avg_hours_saved_monthly": 42,
-      "hourly_wage": 2500
+      "hourly_wage": 2500,
+      "actual_likes": 4,
+      "matched_own_articles": 1,
+      "trend_matches": 1,
+      "demand_score": 111.5,
+      "status": "winner"
     },
     {
       "slug": "sns-content",
       "title": "X/Threads 毎日投稿＆バズ構文自動生成",
       "avg_hours_saved_monthly": 30,
-      "hourly_wage": 2200
+      "hourly_wage": 2200,
+      "actual_likes": 3,
+      "matched_own_articles": 1,
+      "trend_matches": 0,
+      "demand_score": 85.0,
+      "status": "growing"
     },
     {
       "slug": "sales-email",
       "title": "BtoB営業リスト抽出＆パーソナライズ文面自動化",
       "avg_hours_saved_monthly": 35,
-      "hourly_wage": 2800
+      "hourly_wage": 2800,
+      "actual_likes": 2,
+      "matched_own_articles": 1,
+      "trend_matches": 0,
+      "demand_score": 89.7,
+      "status": "growing"
     },
     {
       "slug": "accounting-invoice",
       "title": "請求書・領収書PDFのAI読取＆スプレッドシート記帳",
       "avg_hours_saved_monthly": 24,
-      "hourly_wage": 2500
+      "hourly_wage": 2500,
+      "actual_likes": 2,
+      "matched_own_articles": 1,
+      "trend_matches": 1,
+      "demand_score": 84.5,
+      "status": "growing"
     },
     {
       "slug": "youtube-script",
       "title": "YouTube/ショート動画の構成・台本・メタデータ自動生成",
       "avg_hours_saved_monthly": 38,
-      "hourly_wage": 2600
+      "hourly_wage": 2600,
+      "actual_likes": 1,
+      "matched_own_articles": 1,
+      "trend_matches": 0,
+      "demand_score": 83.9,
+      "status": "growing"
     },
     {
       "slug": "real-estate-flyer",
       "title": "不動産物件マイソク・ポータル入稿文面のAI自動作成",
       "avg_hours_saved_monthly": 28,
-      "hourly_wage": 2700
+      "hourly_wage": 2700,
+      "actual_likes": 1,
+      "matched_own_articles": 1,
+      "trend_matches": 0,
+      "demand_score": 76.2,
+      "status": "growing"
     },
     {
       "slug": "hr-resume-screening",
       "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
       "avg_hours_saved_monthly": 32,
-      "hourly_wage": 3000
+      "hourly_wage": 3000,
+      "actual_likes": 3,
+      "matched_own_articles": 1,
+      "trend_matches": 0,
+      "demand_score": 95.0,
+      "status": "winner"
     },
     {
       "slug": "google-maps-meo",
       "title": "店舗・クリニックのGoogleマップ口コミ自動返信＆MEO対策",
       "avg_hours_saved_monthly": 18,
-      "hourly_wage": 2400
+      "hourly_wage": 2400,
+      "actual_likes": 0,
+      "matched_own_articles": 0,
+      "trend_matches": 0,
+      "demand_score": 59.4,
+      "status": "pivot_candidate"
     },
     {
       "slug": "meeting-minutes-todo",
       "title": "商談・社内会議の文字起こし要約＆タスク自動割り振り",
       "avg_hours_saved_monthly": 26,
-      "hourly_wage": 2800
+      "hourly_wage": 2800,
+      "actual_likes": 0,
+      "matched_own_articles": 0,
+      "trend_matches": 0,
+      "demand_score": 69.3,
+      "status": "growing"
     },
     {
       "slug": "seo-article-outline",
       "title": "オウンドメディアSEO記事の構成案・FAQ構造化データ自動生成",
       "avg_hours_saved_monthly": 40,
-      "hourly_wage": 2500
+      "hourly_wage": 2500,
+      "actual_likes": 0,
+      "matched_own_articles": 0,
+      "trend_matches": 0,
+      "demand_score": 78.3,
+      "status": "growing"
     },
     {
       "slug": "ec-customer-support",
       "title": "ECショップの発送連絡・返品問い合わせAI自動一次返信",
       "avg_hours_saved_monthly": 29,
-      "hourly_wage": 2200
+      "hourly_wage": 2200,
+      "actual_likes": 0,
+      "matched_own_articles": 0,
+      "trend_matches": 0,
+      "demand_score": 66.3,
+      "status": "growing"
     },
     {
       "slug": "amazon-rakuten-review",
       "title": "Amazon・楽天の競合商品レビュー分析＆改善アイデア抽出",
       "avg_hours_saved_monthly": 22,
-      "hourly_wage": 2600
+      "hourly_wage": 2600,
+      "actual_likes": 0,
+      "matched_own_articles": 0,
+      "trend_matches": 0,
+      "demand_score": 64.1,
+      "status": "pivot_candidate"
     },
     {
       "slug": "line-step-delivery",
       "title": "LINE公式アカウントの友だち追加後ステップ配信シナリオ生成",
       "avg_hours_saved_monthly": 25,
-      "hourly_wage": 2700
+      "hourly_wage": 2700,
+      "actual_likes": 0,
+      "matched_own_articles": 0,
+      "trend_matches": 0,
+      "demand_score": 67.5,
+      "status": "growing"
     },
     {
       "slug": "instagram-reels-script",
       "title": "Instagramリール・TikTok縦型ショート動画のバズ台本量産",
       "avg_hours_saved_monthly": 34,
-      "hourly_wage": 2300
+      "hourly_wage": 2300,
+      "actual_likes": 0,
+      "matched_own_articles": 0,
+      "trend_matches": 0,
+      "demand_score": 71.1,
+      "status": "growing"
     },
     {
       "slug": "subsidy-business-plan",
       "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
       "avg_hours_saved_monthly": 45,
-      "hourly_wage": 3500
+      "hourly_wage": 3500,
+      "actual_likes": 0,
+      "matched_own_articles": 0,
+      "trend_matches": 0,
+      "demand_score": 97.5,
+      "status": "winner"
     },
     {
       "slug": "contract-risk-check",
       "title": "業務委託契約書・NDAの不利条項チェック＆修正案プロンプト",
       "avg_hours_saved_monthly": 16,
-      "hourly_wage": 4000
+      "hourly_wage": 4000,
+      "actual_likes": 0,
+      "matched_own_articles": 0,
+      "trend_matches": 0,
+      "demand_score": 66.3,
+      "status": "growing"
     },
     {
       "slug": "shift-schedule-gas",
       "title": "アルバイト・スタッフの希望シフト回収＆スプレッドシート自動編成",
       "avg_hours_saved_monthly": 20,
-      "hourly_wage": 2400
+      "hourly_wage": 2400,
+      "actual_likes": 0,
+      "matched_own_articles": 0,
+      "trend_matches": 0,
+      "demand_score": 61.0,
+      "status": "pivot_candidate"
     },
     {
       "slug": "competitor-lp-analysis",
       "title": "競合ランディングページ(LP)の訴求軸分解＆ABテスト案生成",
       "avg_hours_saved_monthly": 27,
-      "hourly_wage": 3000
+      "hourly_wage": 3000,
+      "actual_likes": 0,
+      "matched_own_articles": 0,
+      "trend_matches": 0,
+      "demand_score": 72.0,
+      "status": "growing"
     },
     {
       "slug": "google-meta-ads-copy",
       "title": "Google広告・Meta広告の検索見出し15本＆説明文一括ジェネレーター",
       "avg_hours_saved_monthly": 21,
-      "hourly_wage": 2900
+      "hourly_wage": 2900,
+      "actual_likes": 0,
+      "matched_own_articles": 0,
+      "trend_matches": 0,
+      "demand_score": 65.3,
+      "status": "growing"
     },
     {
       "slug": "weekly-kpi-slack-bot",
       "title": "スプレッドシート週次売上KPIの自動集計＆Slack/Chatwork毎朝通知",
       "avg_hours_saved_monthly": 19,
-      "hourly_wage": 2800
+      "hourly_wage": 2800,
+      "actual_likes": 2,
+      "matched_own_articles": 1,
+      "trend_matches": 0,
+      "demand_score": 74.7,
+      "status": "growing"
     }
   ],
-  "strategic_conclusion": "サーバー代・API代を0円に抑える『クライアントサイド完結型インタラクティブ診断＆コード生成Webツール』を中核とし、サブエージェントが毎日自動で職種別ランディングページ（Programmatic SEO）を増殖させるモデルを採用。軍資金15,000円は無傷で温存し、勝機が見えたタイミングでのみ独自ドメインやプロモーションに投下する。"
+  "top_winner_niches": [
+    {
+      "slug": "ec-inventory",
+      "title": "EC・物販の在庫管理＆価格改定自動化",
+      "avg_hours_saved_monthly": 42,
+      "hourly_wage": 2500,
+      "actual_likes": 4,
+      "matched_own_articles": 1,
+      "trend_matches": 1,
+      "demand_score": 111.5,
+      "status": "winner"
+    },
+    {
+      "slug": "subsidy-business-plan",
+      "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
+      "avg_hours_saved_monthly": 45,
+      "hourly_wage": 3500,
+      "actual_likes": 0,
+      "matched_own_articles": 0,
+      "trend_matches": 0,
+      "demand_score": 97.5,
+      "status": "winner"
+    },
+    {
+      "slug": "hr-resume-screening",
+      "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
+      "avg_hours_saved_monthly": 32,
+      "hourly_wage": 3000,
+      "actual_likes": 3,
+      "matched_own_articles": 1,
+      "trend_matches": 0,
+      "demand_score": 95.0,
+      "status": "winner"
+    }
+  ],
+  "live_needs_radar": {
+    "analyzed_at": "2026-11-15T21:22:01.817029+09:00",
+    "api_status": {
+      "own_api": "live",
+      "trend_api": "live"
+    },
+    "market_summary": "実測スキ反響（8記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「EC・物販の在庫管理＆価格改定自動化」「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」。",
+    "top_winner_niches": [
+      {
+        "slug": "ec-inventory",
+        "title": "EC・物販の在庫管理＆価格改定自動化",
+        "avg_hours_saved_monthly": 42,
+        "hourly_wage": 2500,
+        "actual_likes": 4,
+        "matched_own_articles": 1,
+        "trend_matches": 1,
+        "demand_score": 111.5,
+        "status": "winner"
+      },
+      {
+        "slug": "subsidy-business-plan",
+        "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
+        "avg_hours_saved_monthly": 45,
+        "hourly_wage": 3500,
+        "actual_likes": 0,
+        "matched_own_articles": 0,
+        "trend_matches": 0,
+        "demand_score": 97.5,
+        "status": "winner"
+      },
+      {
+        "slug": "hr-resume-screening",
+        "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
+        "avg_hours_saved_monthly": 32,
+        "hourly_wage": 3000,
+        "actual_likes": 3,
+        "matched_own_articles": 1,
+        "trend_matches": 0,
+        "demand_score": 95.0,
+        "status": "winner"
+      }
+    ],
+    "external_trends_top5": [
+      {
+        "query": "GAS 自動化",
+        "title": "【1件1万円の受託から】GAS・Python自動化の副業ロードマップ｜比較表・テンプレ11点つき",
+        "likes": 0,
+        "price": 2980,
+        "is_paid": true
+      },
+      {
+        "query": "GAS 自動化",
+        "title": "全部自動化できないなら意味ないと思っていたけど、半分だけでもかなり楽だった",
+        "likes": 0,
+        "price": 0,
+        "is_paid": false
+      },
+      {
+        "query": "GAS 自動化",
+        "title": "【損失計算】なぜPhotoshopや無料Webツールで画像を1枚ずつ変換してはいけないのか：アスペクト比維持とExif除去を完全自動化する価値",
+        "likes": 0,
+        "price": 0,
+        "is_paid": false
+      },
+      {
+        "query": "GAS 自動化",
+        "title": "【テンプレ付き】スプレッドシートからGmail下書きを一括作成。送信しないGASの作り方",
+        "likes": 0,
+        "price": 0,
+        "is_paid": false
+      },
+      {
+        "query": "GAS 自動化",
+        "title": "【月7万円】未経験からGASで始める、業務自動化ツール受託の3つの手法",
+        "likes": 0,
+        "price": 298,
+        "is_paid": true
+      }
+    ],
+    "own_articles_performance": [
+      {
+        "key": "n5d0e28a74f91",
+        "title": "【先着10部¥980】コピペ5分で毎日のルーティン作業を消滅させる『全10業種・50選 AIプロンプト＆GAS自動実行コード完全版』",
+        "likes": 3,
+        "price": 980
+      },
+      {
+        "key": "n129393b66060",
+        "title": "【無料コピペOK】採用・人事の職務経歴書スクリーニング＆面接質問自動生成をAIとGASで自動化して月32時間浮かす実践レシピ",
+        "likes": 3,
+        "price": 0
+      },
+      {
+        "key": "n7ecd98d031ad",
+        "title": "【無料コピペOK】不動産物件マイソク・ポータル入稿文面のAI自動作成をAIとGASで自動化して月28時間浮かす実践レシピ",
+        "likes": 1,
+        "price": 0
+      },
+      {
+        "key": "n1c4995075b64",
+        "title": "【無料コピペOK】YouTube/ショート動画の構成・台本・メタデータ自動生成をAIとGASで自動化して月38時間浮かす実践レシピ",
+        "likes": 1,
+        "price": 0
+      },
+      {
+        "key": "n49963f8d62b9",
+        "title": "【無料コピペOK】請求書・領収書PDFのAI読取＆スプレッドシート記帳をAIとGASで自動化して月24時間浮かす実践レシピ",
+        "likes": 2,
+        "price": 0
+      },
+      {
+        "key": "n2b36747c935d",
+        "title": "【無料コピペOK】BtoB営業リスト抽出＆パーソナライズ文面自動化をAIとGASで自動化して月35時間浮かす実践レシピ",
+        "likes": 2,
+        "price": 0
+      },
+      {
+        "key": "n9a7bd90cf282",
+        "title": "【無料コピペOK】X/Threads 毎日投稿＆バズ構文自動生成をAIとGASで自動化して月30時間浮かす実践レシピ",
+        "likes": 3,
+        "price": 0
+      },
+      {
+        "key": "n70171b631e61",
+        "title": "【無料コピペOK】EC・物販の在庫管理＆価格改定自動化をAIとGASで自動化して月42時間浮かす実践レシピ",
+        "likes": 4,
+        "price": 0
+      }
+    ],
+    "new_business_seeds": [
+      {
+        "pillar": "第2の柱（BtoBバックオフィス・監査支援）",
+        "title": "請求書・契約リスク・補助金ドラフトのAI自動チェックツール群",
+        "reason": "単価（時給換算¥3,500〜¥4,000）が高く法人・フリーランスの支払意欲が強い領域のため、第1事業の初黒字化後に上位パックとして展開。",
+        "target_price_jpy": 4980,
+        "stage": "needs_validation"
+      },
+      {
+        "pillar": "第3の柱（SNS・クリエイター収益化自動化）",
+        "title": "YouTubeショート・note・LINEステップ配信のテンプレート量産スタジオ",
+        "reason": "SNS発信者・副業層からの需要が急増しており、無料ツールからのバイラル流入と高相性なため次期新市場として育成。",
+        "target_price_jpy": 2980,
+        "stage": "market_research"
+      }
+    ]
+  },
+  "new_business_seeds": [
+    {
+      "pillar": "第2の柱（BtoBバックオフィス・監査支援）",
+      "title": "請求書・契約リスク・補助金ドラフトのAI自動チェックツール群",
+      "reason": "単価（時給換算¥3,500〜¥4,000）が高く法人・フリーランスの支払意欲が強い領域のため、第1事業の初黒字化後に上位パックとして展開。",
+      "target_price_jpy": 4980,
+      "stage": "needs_validation"
+    },
+    {
+      "pillar": "第3の柱（SNS・クリエイター収益化自動化）",
+      "title": "YouTubeショート・note・LINEステップ配信のテンプレート量産スタジオ",
+      "reason": "SNS発信者・副業層からの需要が急増しており、無料ツールからのバイラル流入と高相性なため次期新市場として育成。",
+      "target_price_jpy": 2980,
+      "stage": "market_research"
+    }
+  ],
+  "strategic_conclusion": "サーバー代・API代を0円に抑える『クライアントサイド完結型インタラクティブ診断＆コード生成Webツール』を中核とし、世の中のニーズ調査と実測反響（スキ数）で上位TOP3に入った勝ち筋テーマに集中投下する。第1事業で安定した利益と顧客基盤を作った後、第2・第3の柱（BtoB監査・クリエイター自動化）へ多角化する。"
 }

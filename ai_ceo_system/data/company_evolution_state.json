@@ -1,0 +1,268 @@
+{
+  "generated_at": "2026-11-15T21:23:33.392728+09:00",
+  "day": 12,
+  "market_needs_insight": {
+    "api_status": {
+      "own_api": "live",
+      "trend_api": "live"
+    },
+    "summary": "実測スキ反響（8記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「EC・物販の在庫管理＆価格改定自動化」「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」。",
+    "external_trends_top5": [
+      {
+        "query": "GAS 自動化",
+        "title": "【1件1万円の受託から】GAS・Python自動化の副業ロードマップ｜比較表・テンプレ11点つき",
+        "likes": 0,
+        "price": 2980,
+        "is_paid": true
+      },
+      {
+        "query": "GAS 自動化",
+        "title": "全部自動化できないなら意味ないと思っていたけど、半分だけでもかなり楽だった",
+        "likes": 0,
+        "price": 0,
+        "is_paid": false
+      },
+      {
+        "query": "GAS 自動化",
+        "title": "【損失計算】なぜPhotoshopや無料Webツールで画像を1枚ずつ変換してはいけないのか：アスペクト比維持とExif除去を完全自動化する価値",
+        "likes": 0,
+        "price": 0,
+        "is_paid": false
+      },
+      {
+        "query": "GAS 自動化",
+        "title": "【テンプレ付き】スプレッドシートからGmail下書きを一括作成。送信しないGASの作り方",
+        "likes": 0,
+        "price": 0,
+        "is_paid": false
+      },
+      {
+        "query": "GAS 自動化",
+        "title": "【月7万円】未経験からGASで始める、業務自動化ツール受託の3つの手法",
+        "likes": 0,
+        "price": 298,
+        "is_paid": true
+      }
+    ]
+  },
+  "selection_and_focus": {
+    "winners_top3": [
+      {
+        "slug": "ec-inventory",
+        "title": "EC・物販の在庫管理＆価格改定自動化",
+        "demand_score": 111.5,
+        "actual_likes": 4,
+        "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
+      },
+      {
+        "slug": "subsidy-business-plan",
+        "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
+        "demand_score": 97.5,
+        "actual_likes": 0,
+        "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
+      },
+      {
+        "slug": "hr-resume-screening",
+        "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
+        "demand_score": 95.0,
+        "actual_likes": 3,
+        "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
+      }
+    ],
+    "pruned_or_pivoted": [
+      {
+        "item": "無料サンプル5種→1種削減テスト（R6）",
+        "reason": "ページ滞在・回遊率が低下したため自動却下・破棄",
+        "action": "stopped"
+      },
+      {
+        "item": "Amazon・楽天の競合商品レビュー分析＆改善アイデア抽出",
+        "reason": "需要スコアが下位（64.1pt）のため新規露出優先度を下げ、上位TOP3へリソース集中",
+        "action": "deprioritized_for_pivot"
+      },
+      {
+        "item": "アルバイト・スタッフの希望シフト回収＆スプレッドシート自動編成",
+        "reason": "需要スコアが下位（61.0pt）のため新規露出優先度を下げ、上位TOP3へリソース集中",
+        "action": "deprioritized_for_pivot"
+      }
+    ]
+  },
+  "dynamic_offer_config": {
+    "updated_at": "2026-11-15T21:23:33.392074+09:00",
+    "board_sync_note": "Day 12 経営会議＆市場ニーズ調査をサイト・LPへ自動反映済",
+    "internal_goal_ref": "本日23:59までに、需要TOP3（EC・補助金・採用）のいずれかで「980円」の初売上を1件以上計上する",
+    "hero_badge": "注目レシピTOP3反映中｜先着10部限定 50%OFF（¥1,980 ➔ ¥980）",
+    "spotlight_headline": "今もっとも選ばれている自動化テーマ：EC・物販の在庫管理＆価格改定自動化",
+    "spotlight_subcopy": "実務ユーザーの要望が多い「EC・物販の在庫管理＆価格改定自動化」「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」をはじめ、全10業種・50種類のコピペ完結テンプレートを収録。無料エリアで実物完成コード2本をそのままお試しいただけます。",
+    "winner_highlights": [
+      {
+        "rank": 1,
+        "slug": "ec-inventory",
+        "title": "EC・物販の在庫管理＆価格改定自動化",
+        "avg_hours_saved_monthly": 42,
+        "hourly_wage": 2500,
+        "yearly_yen": 1260000,
+        "demand_score": 111.5,
+        "actual_likes": 4
+      },
+      {
+        "rank": 2,
+        "slug": "subsidy-business-plan",
+        "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
+        "avg_hours_saved_monthly": 45,
+        "hourly_wage": 3500,
+        "yearly_yen": 1890000,
+        "demand_score": 97.5,
+        "actual_likes": 0
+      },
+      {
+        "rank": 3,
+        "slug": "hr-resume-screening",
+        "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
+        "avg_hours_saved_monthly": 32,
+        "hourly_wage": 3000,
+        "yearly_yen": 1152000,
+        "demand_score": 95.0,
+        "actual_likes": 3
+      }
+    ]
+  },
+  "product_ladder": [
+    {
+      "tier": "STEP 1｜無料スターター",
+      "name": "AutoFlow 無料Webツール＆厳選5種レシピ",
+      "price_label": "¥0（登録不要）",
+      "target": "まずは1つ自分の業務で試してみたい方",
+      "features": [
+        "業務削減ROIシミュレーター＋コード即時生成",
+        "構造化プロンプト設計＆GASエラー3秒診断",
+        "厳選5種類の無料サンプルコード体験"
+      ],
+      "cta_label": "無料で試してみる →",
+      "cta_url": "free-templates.html",
+      "highlight": false
+    },
+    {
+      "tier": "STEP 2｜一番人気・入門完全版",
+      "name": "AutoFlow Pro 全10業種・50選 完全版パック",
+      "price_label": "限定 ¥980（定価 ¥1,980 / 先着10部）",
+      "target": "エラー対策済みの実用コード50本を今すぐ現場導入したい方",
+      "features": [
+        "需要TOP3（EC・物販の在庫管理＆価格改等）含む全50本収録",
+        "エラーリトライ・通知連携付きの完成GASコード",
+        "購入前に無料部分で実物2本＆全50一覧を確認可能"
+      ],
+      "cta_label": "🔥 限定 ¥980 で今すぐ入手する →",
+      "cta_url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
+      "highlight": true
+    },
+    {
+      "tier": "STEP 3｜上位・部門導入拡張",
+      "name": "AutoFlow Business 部門横断カスタム自動化設計（上位プラン準備中）",
+      "price_label": "想定 ¥4,980（上位拡張モデル）",
+      "target": "請求書・契約チェック・チームKPI連携まで丸ごと自動化したい法人・上級者",
+      "features": [
+        "BtoBバックオフィス・契約監査・補助金支援特化",
+        "複数シート連携＆Slack/Chatwork自動レポート統合",
+        "STEP 2 完全版ユーザー向けの優先アップグレード対象"
+      ],
+      "cta_label": "まずはSTEP 2（限定¥980）から始める →",
+      "cta_url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
+      "highlight": false
+    }
+  ],
+  "ai_team_roster": {
+    "organization_mode": "0→1突破集中編成（5役員＋4専門AI社員：第1事業成約率改善にリソース75%集中・新規事業先行調査25%）",
+    "total_headcount": 9,
+    "core_executives": [
+      {
+        "id": "ceo",
+        "role": "CEO（AI社長）",
+        "mission": "全社戦略の最終決断と利益最大化"
+      },
+      {
+        "id": "cfo",
+        "role": "CFO（財務・分析）",
+        "mission": "売上・残高・アクセス転換率の数値監査"
+      },
+      {
+        "id": "cro",
+        "role": "CRO（収益・成約率）",
+        "mission": "LP・購入導線・価格階段の成約率改善"
+      },
+      {
+        "id": "cmo",
+        "role": "CMO（集客・発信）",
+        "mission": "note・X・ショート動画からの集客拡大"
+      },
+      {
+        "id": "cto",
+        "role": "CTO/QA（技術・品質）",
+        "mission": "全Webページの自動改修とE2E品質保証"
+      }
+    ],
+    "specialist_staff": [
+      {
+        "id": "needs_radar_ai",
+        "badge": "🔍 専門採用 #1",
+        "role": "市場ニーズ調査AI",
+        "hired_reason": "「何が求められているか」を外の市場データから毎日特定し、企画の空回りを防ぐため",
+        "status": "active",
+        "today_task": "noteトレンドと実測スキを分析し「EC・物販の在庫管理＆価格改定自動化」など上位3需要を特定"
+      },
+      {
+        "id": "copy_optimizer_ai",
+        "badge": "🎯 専門採用 #2",
+        "role": "セールスコピー改善AI",
+        "hired_reason": "無料満足の離脱を防ぎ、会議の決定を顧客が安心・納得できる言葉でLPへ反映するため",
+        "status": "active",
+        "today_task": "TOP3ニーズを訴求軸にしたヘッドライン＆追従バー文言を自動最適化（内部語句除去済）"
+      },
+      {
+        "id": "ltv_architect_ai",
+        "badge": "💎 専門採用 #3",
+        "role": "LTV・商品階段設計AI",
+        "hired_reason": "1回980円で終わらせず、無料→入門→上位ビジネスパックの階段で顧客単価を伸ばすため",
+        "status": "active",
+        "today_task": "3段階導入プラン（¥0 / 限定¥980 / ¥4,980上位設計）の比較価値をLPへ実装"
+      },
+      {
+        "id": "venture_builder_ai",
+        "badge": "🚀 専門採用 #4",
+        "role": "新規事業開発AI",
+        "hired_reason": "第1事業の黒字化後に第2・第3の収益の柱を素早く立ち上げられるよう先行検証するため",
+        "status": "incubating",
+        "today_task": "第1事業と並行し、単価の高い第2事業（BtoB契約・補助金監査）のニーズ検証を進行"
+      }
+    ]
+  },
+  "business_portfolio": [
+    {
+      "id": "BIZ-01",
+      "pillar": "第1の柱（現在の主力事業）",
+      "name": "AutoFlow Suite（GAS×AI 業務自動化ツール＆50選テンプレート販売）",
+      "stage": "初期収益化（0→1突破最優先）",
+      "allocation_pct": 75,
+      "kpis": "累計売上 ¥0 / ツール利用 360回 / noteスキ 19件",
+      "next_milestone": "先着10部 ¥980 パック初成約と上位段階プランへの導線確立"
+    },
+    {
+      "id": "BIZ-02",
+      "pillar": "第2の柱（BtoBバックオフィス・監査支援）",
+      "name": "請求書・契約リスク・補助金ドラフトのAI自動チェックツール群",
+      "stage": "先行市場検証（売上確認後に本格ローンチ）",
+      "allocation_pct": 15,
+      "target_price_jpy": 4980,
+      "reason": "単価（時給換算¥3,500〜¥4,000）が高く法人・フリーランスの支払意欲が強い領域のため、第1事業の初黒字化後に上位パックとして展開。"
+    },
+    {
+      "id": "BIZ-03",
+      "pillar": "第3の柱（SNS・クリエイター収益化自動化）",
+      "name": "YouTubeショート・note・LINEステップ配信のテンプレート量産スタジオ",
+      "stage": "先行市場検証（売上確認後に本格ローンチ）",
+      "allocation_pct": 10,
+      "target_price_jpy": 2980,
+      "reason": "SNS発信者・副業層からの需要が急増しており、無料ツールからのバイラル流入と高相性なため次期新市場として育成。"
+    }
+  ]
+}

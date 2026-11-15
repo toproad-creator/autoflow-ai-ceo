@@ -13,8 +13,10 @@ if hasattr(sys.stdout, "reconfigure"):
 sys.path.insert(0, os.path.dirname(__file__))
 
 from cfo_analytics_agent import CFOAnalyticsAgent
+from company_evolution_agent import CompanyEvolutionAgent
 from developer_agent import DeveloperAgent
 from executive_board_agent import ExecutiveBoardAgent
+from learning_loop_agent import LearningLoopAgent
 from marketer_agent import MarketerAgent
 from outbound_sales_agent import OutboundSalesAgent
 from product_packager_agent import ProductPackagerAgent
@@ -118,30 +120,34 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
 
     log_step(f"=== [AI CEO Antigravity] Starting Profit-First Autonomous Organization Cycle: Day {day} / 90 ===")
 
-    # 1. Market Research Agent
+    # 1. Market Research & Needs Radar Agent
     researcher = ResearcherAgent()
     research_report = researcher.run_market_analysis()
     niches = research_report["high_demand_niches"]
-    log_step(f"[1/8 Research Agent] Target Niches Expanded to {len(niches)} high-converting verticals")
+    ranked_niches = sorted(niches, key=lambda x: x.get("demand_score", 0), reverse=True)
+    log_step(
+        f"[1/8 Research & Needs Radar] Niches: {len(niches)} | "
+        f"Top1 Need: {ranked_niches[0]['title']}"
+    )
 
-    # 2. CRO & CTO Developer/Packager Agent (Builds 27 Web Pages with Sticky ¥980 Bar & Board Banner)
+    # 2. Initial CRO & CTO Build (Base 27 Pages before inspection)
     developer = DeveloperAgent()
     build_report = developer.build_all(niches)
     packager = ProductPackagerAgent()
     pack_report = packager.build_commercial_product_and_lp()
     log_step(
-        f"[2/8 CRO & CTO Build] Built {build_report['tools_count']} Web Tools + "
-        f"{build_report['seo_pages_built']} SEO pages + Sticky ¥980 Conversion Funnel"
+        f"[2/8 CRO & CTO Base Build] Built {build_report['tools_count']} Web Tools + "
+        f"{build_report['seo_pages_built']} SEO pages"
     )
 
-    # 3. CMO Note Auto-Publisher Agent (Local Windows 08:00 scheduler)
+    # 3. CMO Note Auto-Publisher Agent (Local Windows 08:00 scheduler - prioritizes high-demand niches)
     is_github_actions = os.getenv("GITHUB_ACTIONS", "").lower() == "true"
     note_pub_result = {"status": "skipped_github_actions"}
     if not is_github_actions:
         try:
             from note_auto_publisher import NoteAutoPublisherAgent
             note_publisher = NoteAutoPublisherAgent()
-            note_pub_result = note_publisher.publish_daily_lead_if_needed(day=day, niches=niches)
+            note_pub_result = note_publisher.publish_daily_lead_if_needed(day=day, niches=ranked_niches)
             log_step(f"[3/8 CMO Note Publisher] Status: {note_pub_result.get('status')} | URL: {note_pub_result.get('url', '')}")
         except Exception as e:
             log_step(f"[3/8 CMO Note Publisher] Warning: {e}\n{traceback.format_exc()}")
@@ -180,7 +186,7 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
         f"Issues Detected: {len(detected_issues)} | Healthy: {qa_report['overall_healthy']}"
     )
 
-    # 6. Autonomous Profit Executive Board Meeting (CEO, CFO, CRO, CMO, CTO discuss detected issues)
+    # 6. Autonomous Profit Executive Board Meeting (5 Execs + Specialist AI Reports + Needs Radar)
     board_agent = ExecutiveBoardAgent()
     board_record = board_agent.hold_daily_profit_board_meeting(
         day=day,
@@ -195,10 +201,42 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
         latest_note_url=latest_note_url,
         latest_note_title=latest_note_title,
         detected_issues=detected_issues,
+        research_report=research_report,
     )
     log_step(
         f"[6/8 Executive Board Meeting] Engine: {board_record.get('reasoning_engine')} | "
         f"Primary Goal: {board_record['ceo_final_decision']['primary_goal']}"
+    )
+
+    # 6.5 Company Evolution Engine (Selection & Focus + Product Ladder + Dynamic AI Staff + New Business Portfolio)
+    evolution_agent = CompanyEvolutionAgent()
+    evolution_state = evolution_agent.run_evolution_cycle(
+        day=day,
+        research_report=research_report,
+        metrics=metrics,
+        qa_report=qa_report,
+        board_record=board_record,
+    )
+    log_step(
+        f"[6.5/8 Company Evolution Engine] AI Staff: {evolution_state['ai_team_roster']['total_headcount']} | "
+        f"Top1 Focus: {evolution_state['selection_and_focus']['winners_top3'][0]['title']}"
+    )
+
+    # 6.6 Apply Board & Evolution Decisions Immediately to Web Site & Sales LP
+    build_report = developer.build_all(niches)
+    pack_report = packager.build_commercial_product_and_lp()
+    log_step(
+        f"[6.6/8 Live Site & Offer Sync] Rebuilt {build_report['tools_count']} Web Tools + "
+        f"{build_report['seo_pages_built']} SEO pages + LP (TOP3 Needs & 3-Step Product Ladder synced)"
+    )
+
+    # 6.8 Autonomous Learning Loop Engine (Collect -> Cluster -> Draft -> Replay -> Measure -> Prune -> Gate)
+    learning_agent = LearningLoopAgent()
+    learning_state = learning_agent.run_learning_cycle(day=day)
+    log_step(
+        f"[6.8/8 Learning Loop] Failures: {learning_state['summary']['failures_total']} | "
+        f"Active Rules: {learning_state['summary']['active_rules_count']} | "
+        f"Repeats Blocked: {learning_state['summary']['repeats_blocked']}"
     )
 
     # 7. CMO YouTube Short Auto-Generation & Auto-Upload (Local only)
@@ -245,7 +283,7 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
     sales_report = sales_agent.execute_daily_sales_actions(niches)
     log_step(f"[8/8 CMO & Sales Agent] Generated Board-Driven 140-char X Posts + Pinged IndexNow ({sales_report['submitted_urls_count']} URLs)")
 
-    # Update root status_log.md dynamically with Self-Diagnosis, Board Meeting Decisions, Ready-to-Copy X Posts, Note URLs, and YouTube Shorts
+    # Update root status_log.md dynamically with Needs Radar, Selection & Focus, Product Ladder, Team Roster, Portfolio, Board Decisions, and X Posts
     note_bullets = "\n".join(
         [f"  - {'【有料パック 先着10部¥980】' if n['price'] > 0 else '【無料集客記事】'}{n['title']} (スキ: {n['likes']}件) -> {n['url']}" for n in published_notes]
     )
@@ -256,10 +294,26 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
     issues_bullets = "\n".join([f"  - {iss}" for iss in detected_issues])
     approved_bullets = "\n".join([f"  - {act}" for act in board_record["ceo_final_decision"]["approved_actions"]])
 
-    status_md = f"""# 自律型AI CEO ＆ 5大AI役員会議 経営ステータスログ (status_log.md)
+    winners_bullets = "\n".join(
+        [f"  - **TOP {idx + 1}: {w['title']}** （需要スコア: {w['demand_score']}pt / スキ: {w['actual_likes']}件）→ {w['action']}" for idx, w in enumerate(evolution_state["selection_and_focus"]["winners_top3"])]
+    )
+    pruned_bullets = "\n".join(
+        [f"  - **{p['item']}** （理由: {p['reason']}）" for p in evolution_state["selection_and_focus"]["pruned_or_pivoted"]]
+    )
+    ladder_bullets = "\n".join(
+        [f"  - **{st['tier']}**『{st['name']}』 — **{st['price_label']}**（対象: {st['target']}）" for st in evolution_state["product_ladder"]]
+    )
+    staff_bullets = "\n".join(
+        [f"  - **{sp['badge']} {sp['role']}**（稼働状態: {sp['status']}）: {sp['today_task']}" for sp in evolution_state["ai_team_roster"]["specialist_staff"]]
+    )
+    portfolio_bullets = "\n".join(
+        [f"  - **{b['pillar']}**『{b['name']}』 — 段階: {b['stage']}（リソース配分: {b['allocation_pct']}%）" for b in evolution_state["business_portfolio"]]
+    )
+
+    status_md = f"""# 自律型AI CEO ＆ 自己進化AI企業システム 経営ステータスログ (status_log.md)
 
 - **最終自動更新日時:** {datetime.now().astimezone().isoformat()}
-- **現在フェーズ:** Day {day} / 90（自己診断＆AI役員会議オーケストレーター稼働中）
+- **現在フェーズ:** Day {day} / 90（5大成長エンジン＆自律役員会議オーケストレーター稼働中）
 - **現在残高:** ¥{balance:,}（初期資金 ¥15,000 / 累計支出 ¥0 / 累計売上 ¥{total_revenue:,}）
 - **有料商品ステータス:** 先着10部限定 **¥{price_jpy:,}**（定価 ¥1,980 から50%OFFセール中・無料試し読み10,515字＋実物コード2本公開済）
 - **note公開記事ステータス:** 公開記事数 {total_notes}本（有料記事1本 + 無料集客記事 {max(0, total_notes - 1)}本 / 累計スキ数: {total_likes}件）
@@ -271,16 +325,41 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
 
 ---
 
+## 🎯 世の中のニーズ調査 ＆ 選択と集中（勝ち筋TOP3へ自動集中）
+- **市場ニーズ調査サマリー:** {evolution_state['market_needs_insight']['summary']}
+- **集中投下中（サイト・LP最上部へ自動昇格した勝ち筋TOP3）:**
+{winners_bullets}
+- **見直し・切り捨て・優先度調整（選択と集中）:**
+{pruned_bullets}
+
+---
+
+## 🪜 商品の階段（1回で終わらせず単価・成約率を伸ばす3段階設計）
+{ladder_bullets}
+
+---
+
+## 👥 AI社員チーム編成（5役員 ＋ 専門AI社員 計{evolution_state['ai_team_roster']['total_headcount']}名体制）
+- **現在の組織モード:** {evolution_state['ai_team_roster']['organization_mode']}
+{staff_bullets}
+
+---
+
+## 🚀 事業ポートフォリオ（第1事業の黒字化 ＋ 新規事業パイプライン）
+{portfolio_bullets}
+
+---
+
 ## 🔍 AI自己診断（QA自動点検）で検出された課題とボトルネック
 {issues_bullets}
 
 ---
 
-## 🏢 本日のAI役員会議（CEO・CFO・CRO・CMO・CTO）決定＆実行事項
+## 🏢 本日のAI役員会議（CEO・CFO・CRO・CMO・CTO）決定＆サイト即時反映事項
 - **使用AIモデル（推論エンジン）:** `{board_record.get('reasoning_engine')}`
 - **本日の議題:** {board_record.get('agenda')}
 - **最優先ゴール:** {board_record['ceo_final_decision']['primary_goal']}
-- **会議で採択・即時実装された改善アクション:**
+- **会議で採択・サイト/LPへ即時実装された改善アクション:**
 {approved_bullets}
 - **詳細議事録ファイル:** `ai_ceo_system/data/board_meetings/latest_board_meeting.md`
 

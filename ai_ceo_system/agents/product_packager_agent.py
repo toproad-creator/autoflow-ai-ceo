@@ -5,17 +5,35 @@ from datetime import datetime
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 PRODUCT_DIR = os.path.join(ROOT_DIR, "ai_ceo_system", "product_site")
 PRIVATE_DATA_DIR = os.path.join(ROOT_DIR, "ai_ceo_system", "data")
+EVOLUTION_STATE_PATH = os.path.join(PRIVATE_DATA_DIR, "company_evolution_state.json")
 NOTE_CHECKOUT_URL = "https://note.com/toproad_1989/n/n5d0e28a74f91"
+
+
+def _sanitize_customer_text(text: str) -> str:
+    cleaned = text or ""
+    for term in ("AI起業対決", "AI CEO", "実験ログ", "実験台", "実験", "対決"):
+        cleaned = cleaned.replace(term, "")
+    return cleaned.strip()
 
 
 class ProductPackagerAgent:
     """有料商品パッケージ＆高成約率セールスLP構築サブエージェント
-    ダミーのアラートを撤廃し、実際に販売する『全職種対応・業務自動化50種プロンプト＆GAS完全版パック（¥1,980）』の
-    商品データ本体と、note決済直結セールスLP（pro-pack.html）を自動生成する。
+    実際に販売する『全職種対応・業務自動化50種プロンプト＆GAS完全版パック』の商品データ本体と、
+    市場ニーズTOP3・3段階商品の階段（無料→¥980→上位設計）を反映したセールスLP（pro-pack.html）を自動生成する。
     """
 
     def __init__(self):
         os.makedirs(PRIVATE_DATA_DIR, exist_ok=True)
+
+    @staticmethod
+    def _load_evolution_state() -> dict:
+        if os.path.exists(EVOLUTION_STATE_PATH):
+            try:
+                with open(EVOLUTION_STATE_PATH, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception:
+                pass
+        return {}
 
     def build_commercial_product_and_lp(self) -> dict:
         categories = [
@@ -58,6 +76,90 @@ class ProductPackagerAgent:
         }
 
     def _build_sales_lp(self, templates: list) -> str:
+        evo_state = self._load_evolution_state()
+        offer_cfg = evo_state.get("dynamic_offer_config", {})
+        winners = offer_cfg.get("winner_highlights") or [
+            {"rank": 1, "slug": "ec-inventory", "title": "EC・物販の在庫管理＆価格改定自動化", "avg_hours_saved_monthly": 42, "yearly_yen": 1260000},
+            {"rank": 2, "slug": "subsidy-business-plan", "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成", "avg_hours_saved_monthly": 45, "yearly_yen": 1890000},
+            {"rank": 3, "slug": "hr-resume-screening", "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成", "avg_hours_saved_monthly": 32, "yearly_yen": 1152000},
+        ]
+        ladder = evo_state.get("product_ladder") or [
+            {
+                "tier": "STEP 1｜無料スターター",
+                "name": "AutoFlow 無料Webツール＆厳選5種レシピ",
+                "price_label": "¥0（登録不要）",
+                "target": "まずは1つ自分の業務で試してみたい方",
+                "features": ["業務削減ROIシミュレーター＋コード即時生成", "構造化プロンプト設計＆GASエラー3秒診断", "厳選5種類の無料サンプルコード体験"],
+                "cta_label": "無料で試してみる →",
+                "cta_url": "free-templates.html",
+                "highlight": False,
+            },
+            {
+                "tier": "STEP 2｜一番人気・入門完全版",
+                "name": "AutoFlow Pro 全10業種・50選 完全版パック",
+                "price_label": "限定 ¥980（定価 ¥1,980 / 先着10部）",
+                "target": "エラー対策済みの実用コード50本を今すぐ現場導入したい方",
+                "features": ["人気TOP3含む全50本を完全収録", "エラーリトライ・通知連携付きの完成GASコード", "無料エリアで実物2本＆全50一覧を事前確認OK"],
+                "cta_label": "🔥 限定 ¥980 で今すぐ入手する →",
+                "cta_url": NOTE_CHECKOUT_URL,
+                "highlight": True,
+            },
+            {
+                "tier": "STEP 3｜上位・部門導入拡張",
+                "name": "AutoFlow Business 部門横断カスタム自動化設計",
+                "price_label": "想定 ¥4,980（上位拡張モデル）",
+                "target": "請求書・契約チェック・チームKPI連携まで自動化したい法人・上級者",
+                "features": ["BtoBバックオフィス・契約監査・補助金支援特化", "複数シート連携＆Slack/Chatwork自動レポート統合", "STEP 2 完全版ユーザー向けの優先アップグレード対象"],
+                "cta_label": "まずはSTEP 2（限定¥980）から始める →",
+                "cta_url": NOTE_CHECKOUT_URL,
+                "highlight": False,
+            },
+        ]
+
+        hero_badge = _sanitize_customer_text(offer_cfg.get("hero_badge", "🔥 先着10部限定 50%OFFセール開催中（¥1,980 ➔ ¥980）"))
+        spotlight_sub = _sanitize_customer_text(
+            offer_cfg.get(
+                "spotlight_subcopy",
+                "時給2,500円換算でたった24分分の作業が浮けば元が取れる（先着10部限定 ¥980 / 1レシピあたり約19円）実践テンプレート集。構造化AIプロンプト50本とGASコードをセットで収録しています。",
+            )
+        )
+
+        top3_html = ""
+        for w in winners[:3]:
+            title_clean = _sanitize_customer_text(w.get("title", ""))
+            top3_html += f"""
+            <a href="usecases/{w.get('slug', 'ec-inventory')}.html" class="block bg-slate-900/90 hover:bg-slate-800 border border-amber-400/40 rounded-xl p-4 transition">
+              <div class="flex items-center justify-between text-[11px] font-bold mb-1">
+                <span class="bg-amber-400/20 text-amber-300 px-2 py-0.5 rounded">注目ランキング #{w.get('rank', 1)}</span>
+                <span class="text-emerald-400">年間削減目安 ¥{int(w.get('yearly_yen', 1000000)):,}</span>
+              </div>
+              <div class="font-bold text-sm text-slate-100 mt-1">{title_clean}</div>
+              <div class="text-xs text-slate-400 mt-1">月平均 {w.get('avg_hours_saved_monthly', 30)}時間削減レシピを見る →</div>
+            </a>
+            """
+
+        ladder_html = ""
+        for step in ladder:
+            is_hi = step.get("highlight", False)
+            border_cls = "border-2 border-amber-400 bg-gradient-to-b from-slate-900 to-indigo-950 shadow-2xl" if is_hi else "border border-slate-800 bg-slate-900/80"
+            btn_cls = "bg-amber-400 hover:bg-amber-300 text-slate-950 font-black" if is_hi else "bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 font-bold"
+            target_attr = 'target="_blank" rel="noopener"' if step.get("cta_url", "").startswith("http") else ""
+            feats = "".join(f"<li class='text-xs text-slate-300 flex items-start gap-1.5'><span>✔</span><span>{_sanitize_customer_text(ft)}</span></li>" for ft in step.get("features", []))
+            ladder_html += f"""
+            <div class="{border_cls} rounded-2xl p-6 flex flex-col justify-between">
+              <div>
+                <span class="text-[11px] font-bold {'text-amber-300' if is_hi else 'text-sky-400'}">{_sanitize_customer_text(step.get('tier', ''))}</span>
+                <h3 class="text-lg font-extrabold text-white mt-1">{_sanitize_customer_text(step.get('name', ''))}</h3>
+                <div class="text-base font-black {'text-amber-400' if is_hi else 'text-slate-200'} mt-2 mb-2">{_sanitize_customer_text(step.get('price_label', ''))}</div>
+                <p class="text-xs text-slate-400 mb-4">{_sanitize_customer_text(step.get('target', ''))}</p>
+                <ul class="space-y-2 mb-6">{feats}</ul>
+              </div>
+              <a href="{step.get('cta_url', NOTE_CHECKOUT_URL)}" {target_attr} class="block text-center text-xs px-4 py-3 rounded-xl transition {btn_cls}">
+                {_sanitize_customer_text(step.get('cta_label', ''))}
+              </a>
+            </div>
+            """
+
         cards_html = ""
         for item in templates[:12]:
             cards_html += f"""
@@ -84,15 +186,37 @@ class ProductPackagerAgent:
 
   <main class="max-w-5xl mx-auto px-6 py-12">
     <div class="text-center mb-12">
-      <span class="bg-amber-400/20 text-amber-300 border border-amber-400/40 text-xs font-bold px-3 py-1 rounded-full">🔥 先着10部限定 50%OFFセール開催中（¥1,980 ➔ ¥980）</span>
+      <span class="bg-amber-400/20 text-amber-300 border border-amber-400/40 text-xs font-bold px-3 py-1 rounded-full">{hero_badge}</span>
       <h1 class="text-3xl md:text-5xl font-extrabold mt-4 mb-4 leading-tight">
         コピペ5分で「毎日のルーティン作業」を消滅させる<br/><span class="text-sky-400">AutoFlow Pro 完全版パッケージ</span>
       </h1>
       <p class="text-slate-400 max-w-2xl mx-auto text-sm md:text-base">
-        時給2,500円換算で<strong>たった24分分の作業が浮けば元が取れる（先着10部限定 ¥980 / 1レシピあたり約19円）</strong>実践テンプレート集。
-        構造化AIプロンプト50本と、Googleスプレッドシートでそのまま動くGASコードをセットで収録しています。
+        {spotlight_sub}
       </p>
     </div>
+
+    <!-- 最近のニーズ調査で特に選ばれている注目レシピ TOP3 -->
+    <section class="mb-12">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <h2 class="text-xl font-bold">📈 最近のニーズ調査で特に選ばれている注目レシピ TOP3</h2>
+        <span class="text-xs text-slate-400">需要の高い実践領域をピックアップ</span>
+      </div>
+      <div class="grid md:grid-cols-3 gap-4">
+        {top3_html}
+      </div>
+    </section>
+
+    <!-- 目的に合わせて選べる3つの導入ステップ（商品の階段） -->
+    <section class="mb-14">
+      <div class="text-center mb-6">
+        <span class="text-xs font-bold text-sky-400 uppercase tracking-wider">導入ステップ別プラン</span>
+        <h2 class="text-2xl font-extrabold mt-1">🪜 目的に合わせて選べる3つの導入ステップ</h2>
+        <p class="text-xs text-slate-400 mt-1">まずは無料ツールで体験し、実務導入なら全50選完全版パック（限定¥980）が最もお得です。</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        {ladder_html}
+      </div>
+    </section>
 
     <div class="mb-12">
       <h2 class="text-xl font-bold mb-4">📦 収録されている50種類の自動化テンプレート（一部抜粋）</h2>
