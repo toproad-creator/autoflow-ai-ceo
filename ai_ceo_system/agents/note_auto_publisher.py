@@ -285,7 +285,11 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             pin_item = page.locator('button:has-text("固定"), a:has-text("固定"), li:has-text("固定"), [role="menuitem"]:has-text("固定")').first
             if pin_item.is_visible(timeout=3000):
                 pin_item.click()
-                time.sleep(4)
+                time.sleep(2)
+                ok_btn = page.locator('[data-name="modal"] button:has-text("OK"), button:has-text("OK")').last
+                if ok_btn.is_visible(timeout=4000):
+                    ok_btn.click()
+                    time.sleep(4)
                 page.screenshot(path=os.path.join(ROOT_DIR, "ai_ceo_system", "data", "note_pin_result.png"))
                 return {"status": "pinned_via_creator_page", "note_key": note_key}
             page.keyboard.press("Escape")
@@ -319,7 +323,11 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
                 pin_item = page.locator('button:has-text("固定"), a:has-text("固定"), li:has-text("固定"), [role="menuitem"]:has-text("固定")').first
                 if pin_item.is_visible(timeout=2000):
                     pin_item.click()
-                    time.sleep(4)
+                    time.sleep(2)
+                    ok_btn = page.locator('[data-name="modal"] button:has-text("OK"), button:has-text("OK")').last
+                    if ok_btn.is_visible(timeout=4000):
+                        ok_btn.click()
+                        time.sleep(4)
                     page.screenshot(path=os.path.join(ROOT_DIR, "ai_ceo_system", "data", "note_pin_result.png"))
                     return {"status": "pinned_via_article_page", "note_key": note_key}
                 page.keyboard.press("Escape")
