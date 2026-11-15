@@ -97,7 +97,7 @@ def auto_sync_github_if_local(day: int):
         subprocess.run([GIT_EXE, "commit", "-m", f"chore(orchestrator): automated Day {day} executive board & profit cycle sync"], cwd=ROOT_DIR, timeout=20)
         subprocess.run([GIT_EXE, "fetch", "origin"], cwd=ROOT_DIR, timeout=25)
         subprocess.run([GIT_EXE, "merge", "origin/main", "-X", "ours", "-m", "Auto-merge remote"], cwd=ROOT_DIR, timeout=20)
-        subprocess.run([GIT_EXE, "push", "origin", "main"], cwd=ROOT_DIR, timeout=30)
+        subprocess.run([GIT_EXE, "push", "origin", "main"], cwd=ROOT_DIR, timeout=120)
         log_step("[Git Auto-Sync] Successfully pushed daily updates to GitHub.")
     except Exception as e:
         log_step(f"[Git Auto-Sync] Warning: {e}")
