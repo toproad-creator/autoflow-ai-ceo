@@ -354,10 +354,190 @@ class NoteThumbnailGenerator:
 </body>
 </html>"""
 
-    def render_html_to_png(self, html: str, out_path: str) -> str:
+    def build_profile_avatar_html(self) -> str:
+        return """<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@800;900&family=Noto+Sans+JP:wght@700;900&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 800px;
+    height: 800px;
+    font-family: 'Inter', 'Noto Sans JP', sans-serif;
+    background: radial-gradient(circle at 25% 20%, #0ea5e9 0%, #0f172a 48%, #020617 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(56, 189, 248, 0.12) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(56, 189, 248, 0.12) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .ring {
+    position: relative;
+    z-index: 2;
+    width: 620px;
+    height: 620px;
+    border-radius: 150px;
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.92), rgba(30, 41, 59, 0.9));
+    border: 6px solid rgba(56, 189, 248, 0.65);
+    box-shadow: 0 30px 90px rgba(14, 165, 233, 0.35), inset 0 0 60px rgba(16, 185, 129, 0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  .emblem {
+    font-size: 210px;
+    font-weight: 900;
+    letter-spacing: -10px;
+    line-height: 1;
+    background: linear-gradient(135deg, #38bdf8 0%, #34d399 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 12px 28px rgba(16, 185, 129, 0.35));
+  }
+  .badge {
+    background: linear-gradient(90deg, #0284c7, #059669);
+    color: #ffffff;
+    font-size: 44px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    padding: 14px 44px;
+    border-radius: 999px;
+    box-shadow: 0 10px 28px rgba(2, 132, 199, 0.45);
+  }
+  .sub {
+    font-size: 28px;
+    color: #cbd5e1;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="ring">
+    <div class="emblem">AF</div>
+    <div class="badge">GAS × AI</div>
+    <div class="sub">WORKFLOW LAB</div>
+  </div>
+</body>
+</html>"""
+
+    def build_profile_header_html(self) -> str:
+        return """<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700;900&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1920px;
+    height: 1006px;
+    font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
+    background: radial-gradient(circle at 80% 20%, #0c4a6e 0%, #0f172a 55%, #020617 100%);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 140px;
+    position: relative;
+    overflow: hidden;
+  }
+  .grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(56, 189, 248, 0.08) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(56, 189, 248, 0.08) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .glow {
+    position: absolute;
+    width: 900px;
+    height: 900px;
+    right: -180px;
+    top: -220px;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%);
+  }
+  .content {
+    position: relative;
+    z-index: 2;
+    max-width: 1520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .pills {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .pill {
+    background: rgba(56, 189, 248, 0.16);
+    border: 2px solid #38bdf8;
+    color: #7dd3fc;
+    font-size: 22px;
+    font-weight: 700;
+    padding: 6px 20px;
+    border-radius: 999px;
+  }
+  .pill-green {
+    background: rgba(16, 185, 129, 0.18);
+    border: 2px solid #34d399;
+    color: #6ee7b7;
+  }
+  .headline {
+    font-size: 52px;
+    font-weight: 900;
+    line-height: 1.25;
+    margin-bottom: 14px;
+    text-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  }
+  .accent {
+    color: #34d399;
+  }
+  .subcopy {
+    font-size: 24px;
+    color: #cbd5e1;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="glow"></div>
+  <div class="content">
+    <div class="pills">
+      <span class="pill">Google Apps Script × 生成AI</span>
+      <span class="pill pill-green">コピペ5分で業務を自動化</span>
+    </div>
+    <div class="headline">
+      毎日の<span class="accent">単純作業・転記・作成業務</span>を<br>
+      スプレッドシート×AIで仕組み化する
+    </div>
+    <div class="subcopy">
+      プログラミング知識不要の実践レシピ ＆ 登録不要の無料Webツールを公開中
+    </div>
+  </div>
+</body>
+</html>"""
+
+    def render_html_to_png(self, html: str, out_path: str, width: int = 1280, height: int = 670) -> str:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
-            page = browser.new_page(viewport={"width": 1280, "height": 670, "device_scale_factor": 1})
+            page = browser.new_page(viewport={"width": width, "height": height, "device_scale_factor": 1})
             page.set_content(html, wait_until="networkidle", timeout=30000)
             page.screenshot(path=out_path)
             browser.close()
@@ -373,6 +553,16 @@ class NoteThumbnailGenerator:
         out_path = os.path.join(THUMB_DIR, "thumb_paid_autoflow_pro_50.png")
         html = self.build_paid_pack_html()
         return self.render_html_to_png(html, out_path)
+
+    def generate_profile_avatar(self) -> str:
+        out_path = os.path.join(THUMB_DIR, "note_profile_avatar.png")
+        html = self.build_profile_avatar_html()
+        return self.render_html_to_png(html, out_path, width=800, height=800)
+
+    def generate_profile_header(self) -> str:
+        out_path = os.path.join(THUMB_DIR, "note_profile_header.png")
+        html = self.build_profile_header_html()
+        return self.render_html_to_png(html, out_path, width=1920, height=1006)
 
 
 if __name__ == "__main__":
