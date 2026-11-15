@@ -212,8 +212,140 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             context.close()
             return {"note_key": note_key, "url": f"https://note.com/toproad_1989/n/{note_key}"}
 
-    def upgrade_all_existing_free_articles(self, niches: list[dict]) -> list[dict]:
-        """既存の公開済み無料note記事6本すべてを最新の『AI起業対決・限定¥980導線』へ一括アップグレードする。"""
+    def _dismiss_any_modals(self, page):
+        for _ in range(3):
+            modal = page.locator('[data-name="modal"]').last
+            if modal.is_visible(timeout=1500):
+                close_btn = modal.locator('button:has-text("閉じる"), button:has-text("OK"), button[aria-label*="閉じる"]').first
+                if close_btn.is_visible(timeout=1000):
+                    close_btn.click()
+                    time.sleep(1.5)
+                else:
+                    page.keyboard.press("Escape")
+                    time.sleep(1.5)
+            else:
+                break
+
+    def _pin_note_in_session(self, page, note_key: str = "n5d0e28a74f91") -> dict:
+        """ログイン済みセッションを使って指定記事をクリエイターページの先頭に固定表示（ピン留め）する。"""
+        # 方法A: クリエイターページ (https://note.com/toproad_1989) の記事一覧から対象記事の「…」メニューを開く
+        page.goto("https://note.com/toproad_1989", wait_until="domcontentloaded", timeout=30000)
+        time.sleep(4)
+        self._dismiss_any_modals(page)
+
+        for _ in range(3):
+            if page.locator(f'a[href*="{note_key}"]').count() > 0:
+                break
+            more_btn = page.locator('button:has-text("もっとみる"), a:has-text("もっとみる")').first
+            if more_btn.is_visible(timeout=2000):
+                more_btn.scroll_into_view_if_needed()
+                more_btn.click()
+                time.sleep(3)
+            else:
+                break
+
+        btn_info = page.evaluate(
+            """(key) => {
+                const links = Array.from(document.querySelectorAll(`a[href*="${key}"]`));
+                for (const a of links) {
+                    let card = a.closest('article, li, section, div');
+                    for (let hop = 0; hop < 6 && card; hop++) {
+                        const btns = Array.from(card.querySelectorAll('button'));
+                        const validBtns = btns.filter(b => {
+                            const rect = b.getBoundingClientRect();
+                            const aria = (b.getAttribute('aria-label') || '').trim();
+                            return rect.width > 0 && rect.height > 0 && !aria.includes('スキ');
+                        });
+                        for (const b of validBtns) {
+                            const aria = (b.getAttribute('aria-label') || '').trim();
+                            const hasPopup = b.getAttribute('aria-haspopup') === 'true';
+                            if (hasPopup || aria.includes('その他') || aria.includes('メニュー')) {
+                                b.setAttribute('data-pin-menu', '1');
+                                return { found: true, aria, hasPopup, hop };
+                            }
+                        }
+                        if (validBtns.length > 0 && card.querySelectorAll(`a[href*="/n/"]`).length <= 2) {
+                            const lastBtn = validBtns[validBtns.length - 1];
+                            lastBtn.setAttribute('data-pin-menu', '1');
+                            return { found: true, fallbackLastBtn: true, hop, count: validBtns.length };
+                        }
+                        card = card.parentElement;
+                    }
+                }
+                return { found: false };
+            }""",
+            note_key,
+        )
+        print(f"[Note Pin] Search on creator page: {btn_info}")
+        if btn_info.get("found"):
+            menu_btn = page.locator('[data-pin-menu="1"]').first
+            menu_btn.scroll_into_view_if_needed()
+            menu_btn.click()
+            time.sleep(2)
+            pin_item = page.locator('button:has-text("固定"), a:has-text("固定"), li:has-text("固定"), [role="menuitem"]:has-text("固定")').first
+            if pin_item.is_visible(timeout=3000):
+                pin_item.click()
+                time.sleep(4)
+                page.screenshot(path=os.path.join(ROOT_DIR, "ai_ceo_system", "data", "note_pin_result.png"))
+                return {"status": "pinned_via_creator_page", "note_key": note_key}
+            page.keyboard.press("Escape")
+            time.sleep(1)
+
+        # 方法B: 記事詳細ページ (y > 120 にあるポップアップメニューのみ順番に試す)
+        page.goto(f"https://note.com/toproad_1989/n/{note_key}", wait_until="domcontentloaded", timeout=30000)
+        time.sleep(4)
+        self._dismiss_any_modals(page)
+        candidate_indices = page.evaluate(
+            """() => {
+                const btns = Array.from(document.querySelectorAll('button[aria-haspopup="true"], button[aria-label*="その他"], button[aria-label*="メニュー"]'));
+                const idxs = [];
+                btns.forEach((b, i) => {
+                    const r = b.getBoundingClientRect();
+                    if (r.y > 120 && r.width > 0 && r.height > 0) {
+                        b.setAttribute('data-pin-cand', String(i));
+                        idxs.push(i);
+                    }
+                });
+                return idxs;
+            }"""
+        )
+        print(f"[Note Pin] Article page candidates (y > 120): {candidate_indices}")
+        for idx in candidate_indices:
+            cand = page.locator(f'[data-pin-cand="{idx}"]').first
+            try:
+                cand.scroll_into_view_if_needed()
+                cand.click()
+                time.sleep(1.5)
+                pin_item = page.locator('button:has-text("固定"), a:has-text("固定"), li:has-text("固定"), [role="menuitem"]:has-text("固定")').first
+                if pin_item.is_visible(timeout=2000):
+                    pin_item.click()
+                    time.sleep(4)
+                    page.screenshot(path=os.path.join(ROOT_DIR, "ai_ceo_system", "data", "note_pin_result.png"))
+                    return {"status": "pinned_via_article_page", "note_key": note_key}
+                page.keyboard.press("Escape")
+                time.sleep(0.5)
+            except Exception as e:
+                print(f"[Note Pin] Candidate {idx} warning: {e}")
+
+        page.screenshot(path=os.path.join(ROOT_DIR, "ai_ceo_system", "data", "note_pin_debug.png"))
+        return {"status": "pin_menu_not_found", "note_key": note_key}
+
+    def pin_paid_article(self, note_key: str = "n5d0e28a74f91") -> dict:
+        with sync_playwright() as p:
+            context = p.chromium.launch_persistent_context(
+                user_data_dir=PROFILE_DIR,
+                channel="chrome",
+                headless=False,
+                args=["--disable-blink-features=AutomationControlled", "--start-maximized"],
+                no_viewport=True,
+            )
+            page = context.pages[0] if context.pages else context.new_page()
+            res = self._pin_note_in_session(page, note_key=note_key)
+            context.close()
+            return res
+
+    def upgrade_all_existing_free_articles(self, niches: list[dict], pin_paid_key: str = "n5d0e28a74f91") -> list[dict]:
+        """既存の公開済み無料note記事7本すべてをクリーンな文面へ一括更新し、必要に応じて有料記事を先頭固定する。"""
         targets = [
             ("n70171b631e61", niches[0], 5),
             ("n9a7bd90cf282", niches[1], 7),
@@ -221,6 +353,7 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
             ("n49963f8d62b9", niches[3], 9),
             ("n1c4995075b64", niches[4], 10),
             ("n7ecd98d031ad", niches[5], 11),
+            ("n129393b66060", niches[6], 12),
         ]
         email = os.getenv("NOTE_EMAIL", "").strip()
         password = os.getenv("NOTE_PASSWORD", "").strip()
@@ -280,6 +413,10 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
                     "url": f"https://note.com/toproad_1989/n/{note_key}",
                     "status": "upgraded"
                 })
+
+            if pin_paid_key:
+                pin_res = self._pin_note_in_session(page, note_key=pin_paid_key)
+                print(f"[Note Auto-Publisher] Pin result: {pin_res}")
 
             context.close()
         return results
