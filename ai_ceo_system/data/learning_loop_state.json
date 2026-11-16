@@ -86,44 +86,30 @@
     "market_needs_insight": {
       "api_status": {
         "own_api": "live",
-        "trend_api": "live"
+        "trend_api": "fallback"
       },
       "summary": "実測スキ反響（8記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」。",
       "external_trends_top5": [
         {
           "query": "GAS 自動化",
-          "title": "【1件1万円の受託から】GAS・Python自動化の副業ロードマップ｜比較表・テンプレ11点つき",
-          "likes": 0,
-          "price": 2980,
+          "title": "スプレッドシート×GASで請求書・集計作業を完全自動化する実務テンプレート",
+          "likes": 45,
+          "price": 980,
+          "is_paid": true
+        },
+        {
+          "query": "AI 業務効率化 プロンプト",
+          "title": "コピペで使えるAI構造化プロンプト＆SNS・営業メール半自動化ガイド",
+          "likes": 38,
+          "price": 980,
           "is_paid": true
         },
         {
           "query": "GAS 自動化",
-          "title": "全部自動化できないなら意味ないと思っていたけど、半分だけでもかなり楽だった",
-          "likes": 0,
+          "title": "Googleドライブ請求書整理・LINEステップ・EC在庫通知の時短スクリプト",
+          "likes": 29,
           "price": 0,
           "is_paid": false
-        },
-        {
-          "query": "GAS 自動化",
-          "title": "【損失計算】なぜPhotoshopや無料Webツールで画像を1枚ずつ変換してはいけないのか：アスペクト比維持とExif除去を完全自動化する価値",
-          "likes": 0,
-          "price": 0,
-          "is_paid": false
-        },
-        {
-          "query": "GAS 自動化",
-          "title": "【テンプレ付き】スプレッドシートからGmail下書きを一括作成。送信しないGASの作り方",
-          "likes": 0,
-          "price": 0,
-          "is_paid": false
-        },
-        {
-          "query": "GAS 自動化",
-          "title": "【月7万円】未経験からGASで始める、業務自動化ツール受託の3つの手法",
-          "likes": 0,
-          "price": 298,
-          "is_paid": true
         }
       ]
     },
@@ -351,44 +337,30 @@
   "market_needs": {
     "api_status": {
       "own_api": "live",
-      "trend_api": "live"
+      "trend_api": "fallback"
     },
     "summary": "実測スキ反響（8記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」。",
     "external_trends_top5": [
       {
         "query": "GAS 自動化",
-        "title": "【1件1万円の受託から】GAS・Python自動化の副業ロードマップ｜比較表・テンプレ11点つき",
-        "likes": 0,
-        "price": 2980,
+        "title": "スプレッドシート×GASで請求書・集計作業を完全自動化する実務テンプレート",
+        "likes": 45,
+        "price": 980,
+        "is_paid": true
+      },
+      {
+        "query": "AI 業務効率化 プロンプト",
+        "title": "コピペで使えるAI構造化プロンプト＆SNS・営業メール半自動化ガイド",
+        "likes": 38,
+        "price": 980,
         "is_paid": true
       },
       {
         "query": "GAS 自動化",
-        "title": "全部自動化できないなら意味ないと思っていたけど、半分だけでもかなり楽だった",
-        "likes": 0,
+        "title": "Googleドライブ請求書整理・LINEステップ・EC在庫通知の時短スクリプト",
+        "likes": 29,
         "price": 0,
         "is_paid": false
-      },
-      {
-        "query": "GAS 自動化",
-        "title": "【損失計算】なぜPhotoshopや無料Webツールで画像を1枚ずつ変換してはいけないのか：アスペクト比維持とExif除去を完全自動化する価値",
-        "likes": 0,
-        "price": 0,
-        "is_paid": false
-      },
-      {
-        "query": "GAS 自動化",
-        "title": "【テンプレ付き】スプレッドシートからGmail下書きを一括作成。送信しないGASの作り方",
-        "likes": 0,
-        "price": 0,
-        "is_paid": false
-      },
-      {
-        "query": "GAS 自動化",
-        "title": "【月7万円】未経験からGASで始める、業務自動化ツール受託の3つの手法",
-        "likes": 0,
-        "price": 298,
-        "is_paid": true
       }
     ]
   },
