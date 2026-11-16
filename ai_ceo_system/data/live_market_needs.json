@@ -1,20 +1,31 @@
 {
-  "analyzed_at": "2026-11-15T21:22:01.817029+09:00",
+  "analyzed_at": "2026-11-16T19:11:19.707538+09:00",
   "api_status": {
     "own_api": "live",
     "trend_api": "live"
   },
-  "market_summary": "実測スキ反響（8記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「EC・物販の在庫管理＆価格改定自動化」「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」。",
+  "market_summary": "実測スキ反響（8記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」。",
   "top_winner_niches": [
     {
       "slug": "ec-inventory",
       "title": "EC・物販の在庫管理＆価格改定自動化",
       "avg_hours_saved_monthly": 42,
       "hourly_wage": 2500,
-      "actual_likes": 4,
+      "actual_likes": 5,
       "matched_own_articles": 1,
       "trend_matches": 1,
-      "demand_score": 111.5,
+      "demand_score": 117.5,
+      "status": "winner"
+    },
+    {
+      "slug": "hr-resume-screening",
+      "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
+      "avg_hours_saved_monthly": 32,
+      "hourly_wage": 3000,
+      "actual_likes": 5,
+      "matched_own_articles": 1,
+      "trend_matches": 0,
+      "demand_score": 107.0,
       "status": "winner"
     },
     {
@@ -26,17 +37,6 @@
       "matched_own_articles": 0,
       "trend_matches": 0,
       "demand_score": 97.5,
-      "status": "winner"
-    },
-    {
-      "slug": "hr-resume-screening",
-      "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
-      "avg_hours_saved_monthly": 32,
-      "hourly_wage": 3000,
-      "actual_likes": 3,
-      "matched_own_articles": 1,
-      "trend_matches": 0,
-      "demand_score": 95.0,
       "status": "winner"
     }
   ],
@@ -87,7 +87,7 @@
     {
       "key": "n129393b66060",
       "title": "【無料コピペOK】採用・人事の職務経歴書スクリーニング＆面接質問自動生成をAIとGASで自動化して月32時間浮かす実践レシピ",
-      "likes": 3,
+      "likes": 5,
       "price": 0
     },
     {
@@ -123,7 +123,7 @@
     {
       "key": "n70171b631e61",
       "title": "【無料コピペOK】EC・物販の在庫管理＆価格改定自動化をAIとGASで自動化して月42時間浮かす実践レシピ",
-      "likes": 4,
+      "likes": 5,
       "price": 0
     }
   ],

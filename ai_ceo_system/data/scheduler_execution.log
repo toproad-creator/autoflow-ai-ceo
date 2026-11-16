@@ -236,3 +236,72 @@ Call log:
 [2026-11-15T21:23:43.807713+09:00] [8/8 CMO & Sales Agent] Generated Board-Driven 140-char X Posts + Pinged IndexNow (26 URLs)
 [2026-11-15T21:24:35.764037+09:00] [Git Auto-Sync] Warning: Command '['C:\\Users\\yukar\\AppData\\Local\\Programs\\MinGit\\cmd\\git.exe', 'push', 'origin', 'main']' timed out after 30 seconds
 [2026-11-15T21:24:35.767591+09:00] === [AI CEO Antigravity] Day 12 Profit-First Autonomous Cycle Completed Successfully! ===
+[2026-11-16T08:02:08.225990+09:00] [Network Check] Internet connection ready: False
+[2026-11-16T08:02:08.278117+09:00] === [AI CEO Antigravity] Starting Profit-First Autonomous Organization Cycle: Day 13 / 90 ===
+[2026-11-16T08:02:08.333144+09:00] [1/8 Research & Needs Radar] Niches: 20 | Top1 Need: 補助金申請・融資用の事業計画書ドラフト＆収支表自動作成
+[2026-11-16T08:02:08.638591+09:00] [2/8 CRO & CTO Base Build] Built 4 Web Tools + 20 SEO pages
+[2026-11-16T08:02:47.491362+09:00] [3/8 CMO Note Publisher] Warning: Page.goto: net::ERR_INTERNET_DISCONNECTED at https://editor.note.com/new
+Call log:
+  - navigating to "https://editor.note.com/new", waiting until "domcontentloaded"
+
+Traceback (most recent call last):
+  File "C:\Users\yukar\Desktop\Frontier_clone\ai_ceo_system\agents\ceo_orchestrator.py", line 150, in run_autonomous_day_cycle
+    note_pub_result = note_publisher.publish_daily_lead_if_needed(day=day, niches=ranked_niches)
+  File "C:\Users\yukar\Desktop\Frontier_clone\ai_ceo_system\agents\note_auto_publisher.py", line 554, in publish_daily_lead_if_needed
+    return self.auto_publish_headless(art)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\yukar\Desktop\Frontier_clone\ai_ceo_system\agents\note_auto_publisher.py", line 460, in auto_publish_headless
+    page.goto("https://editor.note.com/new", wait_until="domcontentloaded", timeout=30000)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yukar\AppData\Local\Programs\Python\Python314\Lib\site-packages\playwright\sync_api\_generated.py", line 9362, in goto
+    self._sync(
+    ~~~~~~~~~~^
+        self._impl_obj.goto(
+        ^^^^^^^^^^^^^^^^^^^^
+            url=url, timeout=timeout, waitUntil=wait_until, referer=referer
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        )
+        ^
+    )
+    ^
+  File "C:\Users\yukar\AppData\Local\Programs\Python\Python314\Lib\site-packages\playwright\_impl\_sync_base.py", line 115, in _sync
+    return task.result()
+           ~~~~~~~~~~~^^
+  File "C:\Users\yukar\AppData\Local\Programs\Python\Python314\Lib\site-packages\playwright\_impl\_page.py", line 552, in goto
+    return await self._main_frame.goto(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yukar\AppData\Local\Programs\Python\Python314\Lib\site-packages\playwright\_impl\_frame.py", line 153, in goto
+    await self._channel.send(
+        "goto", self._navigation_timeout, locals_to_params(locals())
+    )
+  File "C:\Users\yukar\AppData\Local\Programs\Python\Python314\Lib\site-packages\playwright\_impl\_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\yukar\AppData\Local\Programs\Python\Python314\Lib\site-packages\playwright\_impl\_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.Error: Page.goto: net::ERR_INTERNET_DISCONNECTED at https://editor.note.com/new
+Call log:
+  - navigating to "https://editor.note.com/new", waiting until "domcontentloaded"
+
+
+[2026-11-16T08:02:50.471538+09:00] [4/8 CFO Audit] Balance: ¥15,000 | Revenue: ¥0 | Price: ¥980 | Note Articles: 7 (Likes: 15) | GitHub Clones: 360
+[2026-11-16T19:11:18.887616+09:00] [Network Check] Internet connection ready: True
+[2026-11-16T19:11:18.917857+09:00] === [AI CEO Antigravity] Starting Profit-First Autonomous Organization Cycle: Day 13 / 90 ===
+[2026-11-16T19:11:19.714516+09:00] [1/8 Research & Needs Radar] Niches: 20 | Top1 Need: EC・物販の在庫管理＆価格改定自動化
+[2026-11-16T19:11:19.781717+09:00] [2/8 CRO & CTO Base Build] Built 4 Web Tools + 20 SEO pages
+[2026-11-16T19:13:01.004386+09:00] [3/8 CMO Note Publisher] Status: published | URL: https://note.com/toproad_1989/n/n45f6c425ee66
+[2026-11-16T19:13:10.705614+09:00] [4/8 CFO Audit] Balance: ¥15,000 | Revenue: ¥0 | Price: ¥980 | Note Articles: 9 (Likes: 22) | GitHub Clones: 360
+[2026-11-16T19:15:39.136177+09:00] [5/8 CTO/QA Self-Diagnosis] URLs OK: 27/27 | Issues Detected: 2 | Healthy: True
+[2026-11-16T19:15:50.187199+09:00] [6/8 Executive Board Meeting] Engine: LLM_MULTI_AGENT (gemini-3-flash-preview) | Primary Goal: 需要TOP3に特化した「即効解決オファー」への全面刷新により、本日23:59までに初決済1件を完了する。
+[2026-11-16T19:15:50.205483+09:00] [6.5/8 Company Evolution Engine] AI Staff: 9 | Top1 Focus: EC・物販の在庫管理＆価格改定自動化
+[2026-11-16T19:15:50.516465+09:00] [6.6/8 Live Site & Offer Sync] Rebuilt 4 Web Tools + 20 SEO pages + LP (TOP3 Needs & 3-Step Product Ladder synced)
+[2026-11-16T19:15:52.533886+09:00] [6.8/8 Learning Loop] Failures: 28 | Active Rules: 15 | Repeats Blocked: 74
+[2026-11-16T19:15:53.444154+09:00] [7/8 CMO Short Pipeline] Day 12 Status: already_uploaded | URL: https://youtube.com/shorts/8kBi8xcbD1Q
+[2026-11-16T19:18:58.878169+09:00] [7/8 CMO Short Pipeline] Warning: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "file:///C:/Users/yukar/Desktop/Frontier_clone/ai_ceo_system/shorts_videos/day13/temp_build/frame_1.html", waiting until "networkidle"
+
+[2026-11-16T19:19:22.709396+09:00] [8/8 CMO & Sales Agent] Generated Board-Driven 140-char X Posts + Pinged IndexNow (26 URLs)
