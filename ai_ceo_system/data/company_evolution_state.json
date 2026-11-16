@@ -1,38 +1,59 @@
 {
-  "generated_at": "2026-11-16T19:15:50.196372+09:00",
-  "day": 13,
+  "generated_at": "2026-11-17T08:01:54.053572+09:00",
+  "day": 14,
   "market_needs_insight": {
     "api_status": {
       "own_api": "live",
-      "trend_api": "fallback"
+      "trend_api": "live"
     },
-    "summary": "実測スキ反響（8記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」。",
+    "summary": "実測スキ反響（9記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」。",
     "external_trends_top5": [
       {
         "query": "GAS 自動化",
-        "title": "スプレッドシート×GASで請求書・集計作業を完全自動化する実務テンプレート",
-        "likes": 45,
-        "price": 980,
-        "is_paid": true
-      },
-      {
-        "query": "AI 業務効率化 プロンプト",
-        "title": "コピペで使えるAI構造化プロンプト＆SNS・営業メール半自動化ガイド",
-        "likes": 38,
-        "price": 980,
+        "title": "【1件1万円の受託から】GAS・Python自動化の副業ロードマップ｜比較表・テンプレ11点つき",
+        "likes": 0,
+        "price": 2980,
         "is_paid": true
       },
       {
         "query": "GAS 自動化",
-        "title": "Googleドライブ請求書整理・LINEステップ・EC在庫通知の時短スクリプト",
-        "likes": 29,
+        "title": "全部自動化できないなら意味ないと思っていたけど、半分だけでもかなり楽だった",
+        "likes": 0,
         "price": 0,
         "is_paid": false
+      },
+      {
+        "query": "GAS 自動化",
+        "title": "【損失計算】なぜPhotoshopや無料Webツールで画像を1枚ずつ変換してはいけないのか：アスペクト比維持とExif除去を完全自動化する価値",
+        "likes": 0,
+        "price": 0,
+        "is_paid": false
+      },
+      {
+        "query": "GAS 自動化",
+        "title": "【テンプレ付き】スプレッドシートからGmail下書きを一括作成。送信しないGASの作り方",
+        "likes": 0,
+        "price": 0,
+        "is_paid": false
+      },
+      {
+        "query": "GAS 自動化",
+        "title": "【月7万円】未経験からGASで始める、業務自動化ツール受託の3つの手法",
+        "likes": 0,
+        "price": 298,
+        "is_paid": true
       }
     ]
   },
   "selection_and_focus": {
     "winners_top3": [
+      {
+        "slug": "subsidy-business-plan",
+        "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
+        "demand_score": 121.5,
+        "actual_likes": 4,
+        "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
+      },
       {
         "slug": "ec-inventory",
         "title": "EC・物販の在庫管理＆価格改定自動化",
@@ -45,13 +66,6 @@
         "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
         "demand_score": 107.0,
         "actual_likes": 5,
-        "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
-      },
-      {
-        "slug": "subsidy-business-plan",
-        "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
-        "demand_score": 97.5,
-        "actual_likes": 0,
         "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
       }
     ],
@@ -74,15 +88,25 @@
     ]
   },
   "dynamic_offer_config": {
-    "updated_at": "2026-11-16T19:15:50.193571+09:00",
-    "board_sync_note": "Day 13 経営会議＆市場ニーズ調査をサイト・LPへ自動反映済",
+    "updated_at": "2026-11-17T08:01:54.053304+09:00",
+    "board_sync_note": "Day 14 経営会議＆市場ニーズ調査をサイト・LPへ自動反映済",
     "internal_goal_ref": "需要TOP3に特化した「即効解決オファー」への全面刷新により、本日23:59までに初決済1件を完了する。",
     "hero_badge": "注目レシピTOP3反映中｜先着10部限定 50%OFF（¥1,980 ➔ ¥980）",
-    "spotlight_headline": "今もっとも選ばれている自動化テーマ：EC・物販の在庫管理＆価格改定自動化",
-    "spotlight_subcopy": "実務ユーザーの要望が多い「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」をはじめ、全10業種・50種類のコピペ完結テンプレートを収録。無料エリアで実物完成コード2本をそのままお試しいただけます。",
+    "spotlight_headline": "今もっとも選ばれている自動化テーマ：補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
+    "spotlight_subcopy": "実務ユーザーの要望が多い「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」をはじめ、全10業種・50種類のコピペ完結テンプレートを収録。無料エリアで実物完成コード2本をそのままお試しいただけます。",
     "winner_highlights": [
       {
         "rank": 1,
+        "slug": "subsidy-business-plan",
+        "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
+        "avg_hours_saved_monthly": 45,
+        "hourly_wage": 3500,
+        "yearly_yen": 1890000,
+        "demand_score": 121.5,
+        "actual_likes": 4
+      },
+      {
+        "rank": 2,
         "slug": "ec-inventory",
         "title": "EC・物販の在庫管理＆価格改定自動化",
         "avg_hours_saved_monthly": 42,
@@ -92,7 +116,7 @@
         "actual_likes": 5
       },
       {
-        "rank": 2,
+        "rank": 3,
         "slug": "hr-resume-screening",
         "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
         "avg_hours_saved_monthly": 32,
@@ -100,16 +124,6 @@
         "yearly_yen": 1152000,
         "demand_score": 107.0,
         "actual_likes": 5
-      },
-      {
-        "rank": 3,
-        "slug": "subsidy-business-plan",
-        "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
-        "avg_hours_saved_monthly": 45,
-        "hourly_wage": 3500,
-        "yearly_yen": 1890000,
-        "demand_score": 97.5,
-        "actual_likes": 0
       }
     ]
   },
@@ -134,7 +148,7 @@
       "price_label": "限定 ¥980（定価 ¥1,980 / 先着10部）",
       "target": "エラー対策済みの実用コード50本を今すぐ現場導入したい方",
       "features": [
-        "需要TOP3（EC・物販の在庫管理＆価格改等）含む全50本収録",
+        "需要TOP3（補助金申請・融資用の事業計画等）含む全50本収録",
         "エラーリトライ・通知連携付きの完成GASコード",
         "購入前に無料部分で実物2本＆全50一覧を確認可能"
       ],
@@ -194,7 +208,7 @@
         "role": "市場ニーズ調査AI",
         "hired_reason": "「何が求められているか」を外の市場データから毎日特定し、企画の空回りを防ぐため",
         "status": "active",
-        "today_task": "noteトレンドと実測スキを分析し「EC・物販の在庫管理＆価格改定自動化」など上位3需要を特定"
+        "today_task": "noteトレンドと実測スキを分析し「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」など上位3需要を特定"
       },
       {
         "id": "copy_optimizer_ai",
@@ -229,7 +243,7 @@
       "name": "AutoFlow Suite（GAS×AI 業務自動化ツール＆50選テンプレート販売）",
       "stage": "初期収益化（0→1突破最優先）",
       "allocation_pct": 75,
-      "kpis": "累計売上 ¥0 / ツール利用 360回 / noteスキ 22件",
+      "kpis": "累計売上 ¥0 / ツール利用 360回 / noteスキ 26件",
       "next_milestone": "先着10部 ¥980 パック初成約と上位段階プランへの導線確立"
     },
     {
