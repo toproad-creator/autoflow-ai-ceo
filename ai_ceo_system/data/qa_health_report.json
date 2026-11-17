@@ -1,5 +1,5 @@
 {
-  "inspected_at": "2026-11-17T08:01:44.876226+09:00",
+  "inspected_at": "2026-11-18T08:01:35.968193+09:00",
   "total_urls_checked": 27,
   "urls_ok_count": 27,
   "broken_urls": [],
@@ -14,12 +14,21 @@
       "healthy": true
     },
     {
+      "key": "n5f9435e21513",
+      "url": "https://note.com/toproad_1989/n/n5f9435e21513",
+      "title": "【無料コピペOK】スプレッドシート週次売上KPIの自動集計＆Slack",
+      "has_thumbnail": true,
+      "clickable_links_count": 3,
+      "likes": 0,
+      "healthy": true
+    },
+    {
       "key": "ncafc405d047e",
       "url": "https://note.com/toproad_1989/n/ncafc405d047e",
       "title": "【無料コピペOK】オウンドメディアSEO記事の構成案・FAQ構造化デー",
       "has_thumbnail": true,
       "clickable_links_count": 3,
-      "likes": 0,
+      "likes": 3,
       "healthy": true
     },
     {
@@ -28,7 +37,7 @@
       "title": "【無料コピペOK】補助金申請・融資用の事業計画書ドラフト＆収支表自動作",
       "has_thumbnail": true,
       "clickable_links_count": 3,
-      "likes": 4,
+      "likes": 5,
       "healthy": true
     },
     {
@@ -37,7 +46,7 @@
       "title": "【無料コピペOK】採用・人事の職務経歴書スクリーニング＆面接質問自動生",
       "has_thumbnail": true,
       "clickable_links_count": 3,
-      "likes": 5,
+      "likes": 6,
       "healthy": true
     },
     {
@@ -127,11 +136,11 @@
   },
   "windows_scheduler_check": {
     "registered": true,
-    "raw_summary": "\nフォルダー\\\nホスト名:                                       DESKTOP-T8LTA9P\nタスク名:                                       \\Antigravity_AI_CEO_Daily\n次回の実行時刻:                                 2026/11/18 8:00:00\n状態:                                           実行中\nログオン モード:                                対話型のみ\n前回の実行時刻:                                 2026/11/17 8:00:01\n前回の結果:                                     267009\n作成者:                                         DESKTOP-T8LTA9P\\山内　裕加里\n実行するタスク:                                 C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Deskt"
+    "raw_summary": "\nフォルダー\\\nホスト名:                                       DESKTOP-T8LTA9P\nタスク名:                                       \\Antigravity_AI_CEO_Daily\n次回の実行時刻:                                 2026/11/19 8:00:00\n状態:                                           実行中\nログオン モード:                                対話型のみ\n前回の実行時刻:                                 2026/11/18 8:00:01\n前回の結果:                                     267009\n作成者:                                         DESKTOP-T8LTA9P\\山内　裕加里\n実行するタスク:                                 C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Deskt"
   },
   "detected_issues": [
     "【システム警告検知】直近の自動実行ログで警告が記録されています（例: [2026-11-16T19:18:58.878169+09:00] [7/8 CMO Short Pipeline] Warning: Page.goto: ）。",
-    "【最重要課題：未収益】ツール利用360回・note累計スキ26件（有料記事スキ3件）に対し売上が¥0です。無料満足で離脱させず、有料版でしか手に入らない具体的な実利と緊急性を提示する必要があります。"
+    "【最重要課題：未収益】ツール利用429回・note累計スキ31件（有料記事スキ3件）に対し売上が¥0です。無料満足で離脱させず、有料版でしか手に入らない具体的な実利と緊急性を提示する必要があります。"
   ],
   "overall_healthy": true
 }

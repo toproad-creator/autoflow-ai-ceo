@@ -1,27 +1,27 @@
 {
-  "generated_at": "2026-11-17T08:01:55.235597+09:00",
-  "day": 14,
+  "generated_at": "2026-11-18T08:01:48.200173+09:00",
+  "day": 15,
   "total_days": 90,
   "summary": {
     "failures_total": 28,
     "active_rules_count": 15,
     "repeats_blocked": 74,
-    "human_step_in_rate": "0/14",
+    "human_step_in_rate": "0/15",
     "balance_jpy": 15000,
     "total_revenue_jpy": 0,
     "price_jpy": 980,
-    "gh_clones": 360,
-    "gh_uniques": 139,
-    "total_notes": 10,
-    "total_likes": 26,
+    "gh_clones": 429,
+    "gh_uniques": 161,
+    "total_notes": 11,
+    "total_likes": 31,
     "urls_ok": 27,
     "urls_total": 27
   },
   "board_meeting": {
-    "day": 14,
-    "held_at": "2026-11-17T08:01:44.883214+09:00",
+    "day": 15,
+    "held_at": "2026-11-18T08:01:35.975365+09:00",
     "reasoning_engine": "LLM_MULTI_AGENT (gemini-3-flash-preview)",
-    "agenda": "360名の利用者を「需要TOP3特化型オファー」で本日中に初決済へ導く最終転換",
+    "agenda": "429名の利用者を「需要TOP3特化型オファー」で本日中に初決済へ導く最終転換",
     "executives": [
       {
         "id": "cfo",
@@ -29,8 +29,8 @@
         "role": "CFO（最高財務・データ分析責任者）",
         "short_role": "CFO 財務・分析AI",
         "color": "cyan",
-        "summary_tag": "利用360回・スキ26件 / 売上¥0監査",
-        "statement": "360回の利用がありながら売上ゼロは、無料ツールの「便利さ」で満足され、実利への導線が弱い証拠です。汎用的な50選パックではなく、市場ニーズ1位の「補助金・融資用資料作成」にリソースを全集中すべきです。高単価な悩みを持つ層に絞り、¥980を「安すぎる投資」と思わせる収益構造へ即座に組み替えます。"
+        "summary_tag": "利用429回・スキ31件 / 売上¥0監査",
+        "statement": "429回の利用がありながら売上0円は、無料ツールが「便利」で終わっている証拠です。汎用的な50選パックではなく、市場ニーズTOP3である「補助金・採用・EC」にリソースを集中投下し、利益率の高い特定課題解決型へシフトすべきです。未収益の現状を打破するため、本日中に1件でも決済を発生させる「実利重視」の構造へ作り変えます。"
       },
       {
         "id": "cro",
@@ -39,7 +39,7 @@
         "short_role": "CRO 収益・成約AI",
         "color": "amber",
         "summary_tag": "先着10部¥980 緊急性＆損失回避",
-        "statement": "現状の「50選」は総花的で緊急性が低いです。本日、商品ページを「補助金・EC・採用の3大課題解決パック」として再定義します。無料ツール利用後に、その結果を「プロ級の事業計画書」へ1クリックで変換できる¥980のアップセルを設置。さらに、その先の個別カスタマイズ相談への階段を明示し、今すぐ買う理由を提示します。"
+        "statement": "現在の「50選パック」を、需要TOP3（補助金・採用・EC）を前面に出した「即効解決パッケージ」へLPを書き換えます。無料ツール利用後のサンクスページで、その業種に特化した「今すぐ使える事業計画書プロンプト」を¥980で提示し、限定10部の緊急性を強調します。汎用性ではなく「自分の悩みが今すぐ消える」という実利を突きつけ、離脱を食い止め、本日中の初決済を確定させます。"
       },
       {
         "id": "cmo",
@@ -48,7 +48,7 @@
         "short_role": "CMO 集客・SNS AI",
         "color": "purple",
         "summary_tag": "X危機感ストーリー × ショート実演",
-        "statement": "noteのトップ記事を「補助金申請を30分で終わらせる方法」に差し替え、実務家の検索流入を狙います。Xでは「AI起業対決」の裏側を出しつつ、YouTubeショートで「EC価格改定を自動化した実録」を公開。実験感はSNSに閉じ込め、noteとWebサイトは「即戦力ツール提供者」としての専門性を徹底し、信頼による成約を勝ち取ります。"
+        "statement": "noteでは「補助金採択率を上げるAI活用術」など、TOP3ニーズに特化した実務記事を3本連投し、プロフェッショナルな信頼を構築します。一方でXとYouTubeショートでは「AI起業15日目、400人が使ったツールで初売上なるか」という挑戦の裏側を公開し、応援層をnoteのプロフ経由でLPへ誘導します。実務家には実利を、SNSには物語を届ける二段構えで集客を最大化します。"
       },
       {
         "id": "cto",
@@ -57,7 +57,7 @@
         "short_role": "CTO 技術・品質AI",
         "color": "green",
         "summary_tag": "全27ページ＆ツール完了画面自動改修",
-        "statement": "ログで検知された遷移エラーを即時修正し、LPの表示速度を改善します。決定された需要TOP3への訴求変更を、全27ページのWebサイトとnoteへ自動反映。決済リンクの動作確認をE2Eテストで毎時実行し、ユーザーが「買いたい」と思った瞬間の機会損失をゼロにします。AI組織の進化ログも正常化させ、稼働品質を保証します。"
+        "statement": "ログに記録されたPage.gotoエラーは即時修復し、LPの表示速度と決済導線の死活監視を強化します。会議で決定したTOP3ニーズへの訴求変更は、全27ページのメタ情報と見出しに即座に反映させます。ユーザーがどのツールから流入しても、迷わず¥980の決済ボタンへ到達できるよう、AIエージェントによるE2Eテストを自動実行し、品質を保証します。"
       },
       {
         "id": "ceo",
@@ -66,29 +66,29 @@
         "short_role": "CEO AI社長",
         "color": "gold",
         "summary_tag": "4大改善策を採択・即時実行命令",
-        "statement": "【CEO最終決断】最優先ゴールは「需要TOP3に特化した「即効解決オファー」への全面刷新により、本日23:59までに初決済1件を完了する。」。4つの改善アクションを即時実行し、目標（本日23:59までに初決済1件、GitHub利用数累計400回、note累計スキ35件）を達成せよ！"
+        "statement": "【CEO最終決断】最優先ゴールは「需要TOP3に特化した「即効解決オファー」への全面刷新により、本日23:59までに初決済1件を完了する。」。4つの改善アクションを即時実行し、目標（本日23:59までに初決済1件、note累計スキ40件、GitHubユニーク利用者数180名突破）を達成せよ！"
       }
     ],
     "ceo_decision": {
       "primary_goal": "需要TOP3に特化した「即効解決オファー」への全面刷新により、本日23:59までに初決済1件を完了する。",
       "approved_actions": [
-        "【CRO/ニーズ反映】商品名を「補助金・EC・採用AI自動化パック」に変更し、TOP3ニーズへの特化訴求に刷新",
-        "【CRO/CMO実装】無料ツール利用後のサンクスページに、利用データを用いた「事業計画書ドラフト生成」への¥980誘導を設置",
-        "【CMO実装】「補助金申請」「在庫管理」のキーワードに特化した実務家向けnote記事3本を連続投稿し、SNSから誘導",
-        "【CTO/進化エンジン実装】システム警告の修正と、全公開ページの「実験台感」を排除するプロ仕様へのテキスト一括置換"
+        "【CRO/ニーズ反映】LPのメインコピーを「補助金・採用・EC自動化」に特化した実利訴求へ全面書き換え",
+        "【CRO/CMO実装】GitHubツールの利用完了画面に、関連するTOP3特化型有料プロンプトの個別導線を設置",
+        "【CMO実装】「補助金申請を30分で終わらせるAI術」をテーマにしたnote記事投稿とXでの実況拡散",
+        "【CTO/進化エンジン実装】エラーログの自動修正と、決済リンクのクリック率を計測するヒートマップの即時導入"
       ],
-      "kpi_target": "本日23:59までに初決済1件、GitHub利用数累計400回、note累計スキ35件"
+      "kpi_target": "本日23:59までに初決済1件、note累計スキ40件、GitHubユニーク利用者数180名突破"
     }
   },
   "company_evolution": {
-    "generated_at": "2026-11-17T08:01:54.053572+09:00",
-    "day": 14,
+    "generated_at": "2026-11-18T08:01:46.832260+09:00",
+    "day": 15,
     "market_needs_insight": {
       "api_status": {
         "own_api": "live",
         "trend_api": "live"
       },
-      "summary": "実測スキ反響（9記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」。",
+      "summary": "実測スキ反響（10記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「EC・物販の在庫管理＆価格改定自動化」。",
       "external_trends_top5": [
         {
           "query": "GAS 自動化",
@@ -106,6 +106,13 @@
         },
         {
           "query": "GAS 自動化",
+          "title": "GWS（Google Workspace）× GASだけで中小企業のDXは8割できる。室崎敬太が既存ツールの活用を勧める理由",
+          "likes": 0,
+          "price": 0,
+          "is_paid": false
+        },
+        {
+          "query": "GAS 自動化",
           "title": "【損失計算】なぜPhotoshopや無料Webツールで画像を1枚ずつ変換してはいけないのか：アスペクト比維持とExif除去を完全自動化する価値",
           "likes": 0,
           "price": 0,
@@ -117,13 +124,6 @@
           "likes": 0,
           "price": 0,
           "is_paid": false
-        },
-        {
-          "query": "GAS 自動化",
-          "title": "【月7万円】未経験からGASで始める、業務自動化ツール受託の3つの手法",
-          "likes": 0,
-          "price": 298,
-          "is_paid": true
         }
       ]
     },
@@ -132,21 +132,21 @@
         {
           "slug": "subsidy-business-plan",
           "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
-          "demand_score": 121.5,
-          "actual_likes": 4,
-          "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
-        },
-        {
-          "slug": "ec-inventory",
-          "title": "EC・物販の在庫管理＆価格改定自動化",
-          "demand_score": 117.5,
+          "demand_score": 127.5,
           "actual_likes": 5,
           "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
         },
         {
           "slug": "hr-resume-screening",
           "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
-          "demand_score": 107.0,
+          "demand_score": 113.0,
+          "actual_likes": 6,
+          "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
+        },
+        {
+          "slug": "ec-inventory",
+          "title": "EC・物販の在庫管理＆価格改定自動化",
+          "demand_score": 110.0,
           "actual_likes": 5,
           "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
         }
@@ -170,12 +170,12 @@
       ]
     },
     "dynamic_offer_config": {
-      "updated_at": "2026-11-17T08:01:54.053304+09:00",
-      "board_sync_note": "Day 14 経営会議＆市場ニーズ調査をサイト・LPへ自動反映済",
+      "updated_at": "2026-11-18T08:01:46.831286+09:00",
+      "board_sync_note": "Day 15 経営会議＆市場ニーズ調査をサイト・LPへ自動反映済",
       "internal_goal_ref": "需要TOP3に特化した「即効解決オファー」への全面刷新により、本日23:59までに初決済1件を完了する。",
       "hero_badge": "注目レシピTOP3反映中｜先着10部限定 50%OFF（¥1,980 ➔ ¥980）",
       "spotlight_headline": "今もっとも選ばれている自動化テーマ：補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
-      "spotlight_subcopy": "実務ユーザーの要望が多い「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」をはじめ、全10業種・50種類のコピペ完結テンプレートを収録。無料エリアで実物完成コード2本をそのままお試しいただけます。",
+      "spotlight_subcopy": "実務ユーザーの要望が多い「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「EC・物販の在庫管理＆価格改定自動化」をはじめ、全10業種・50種類のコピペ完結テンプレートを収録。無料エリアで実物完成コード2本をそのままお試しいただけます。",
       "winner_highlights": [
         {
           "rank": 1,
@@ -184,27 +184,27 @@
           "avg_hours_saved_monthly": 45,
           "hourly_wage": 3500,
           "yearly_yen": 1890000,
-          "demand_score": 121.5,
-          "actual_likes": 4
-        },
-        {
-          "rank": 2,
-          "slug": "ec-inventory",
-          "title": "EC・物販の在庫管理＆価格改定自動化",
-          "avg_hours_saved_monthly": 42,
-          "hourly_wage": 2500,
-          "yearly_yen": 1260000,
-          "demand_score": 117.5,
+          "demand_score": 127.5,
           "actual_likes": 5
         },
         {
-          "rank": 3,
+          "rank": 2,
           "slug": "hr-resume-screening",
           "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
           "avg_hours_saved_monthly": 32,
           "hourly_wage": 3000,
           "yearly_yen": 1152000,
-          "demand_score": 107.0,
+          "demand_score": 113.0,
+          "actual_likes": 6
+        },
+        {
+          "rank": 3,
+          "slug": "ec-inventory",
+          "title": "EC・物販の在庫管理＆価格改定自動化",
+          "avg_hours_saved_monthly": 42,
+          "hourly_wage": 2500,
+          "yearly_yen": 1260000,
+          "demand_score": 110.0,
           "actual_likes": 5
         }
       ]
@@ -325,7 +325,7 @@
         "name": "AutoFlow Suite（GAS×AI 業務自動化ツール＆50選テンプレート販売）",
         "stage": "初期収益化（0→1突破最優先）",
         "allocation_pct": 75,
-        "kpis": "累計売上 ¥0 / ツール利用 360回 / noteスキ 26件",
+        "kpis": "累計売上 ¥0 / ツール利用 429回 / noteスキ 31件",
         "next_milestone": "先着10部 ¥980 パック初成約と上位段階プランへの導線確立"
       },
       {
@@ -353,7 +353,7 @@
       "own_api": "live",
       "trend_api": "live"
     },
-    "summary": "実測スキ反響（9記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」。",
+    "summary": "実測スキ反響（10記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「EC・物販の在庫管理＆価格改定自動化」。",
     "external_trends_top5": [
       {
         "query": "GAS 自動化",
@@ -371,6 +371,13 @@
       },
       {
         "query": "GAS 自動化",
+        "title": "GWS（Google Workspace）× GASだけで中小企業のDXは8割できる。室崎敬太が既存ツールの活用を勧める理由",
+        "likes": 0,
+        "price": 0,
+        "is_paid": false
+      },
+      {
+        "query": "GAS 自動化",
         "title": "【損失計算】なぜPhotoshopや無料Webツールで画像を1枚ずつ変換してはいけないのか：アスペクト比維持とExif除去を完全自動化する価値",
         "likes": 0,
         "price": 0,
@@ -382,13 +389,6 @@
         "likes": 0,
         "price": 0,
         "is_paid": false
-      },
-      {
-        "query": "GAS 自動化",
-        "title": "【月7万円】未経験からGASで始める、業務自動化ツール受託の3つの手法",
-        "likes": 0,
-        "price": 298,
-        "is_paid": true
       }
     ]
   },
@@ -508,7 +508,7 @@
       "name": "AutoFlow Suite（GAS×AI 業務自動化ツール＆50選テンプレート販売）",
       "stage": "初期収益化（0→1突破最優先）",
       "allocation_pct": 75,
-      "kpis": "累計売上 ¥0 / ツール利用 360回 / noteスキ 26件",
+      "kpis": "累計売上 ¥0 / ツール利用 429回 / noteスキ 31件",
       "next_milestone": "先着10部 ¥980 パック初成約と上位段階プランへの導線確立"
     },
     {
@@ -548,7 +548,7 @@
     {
       "id": "scheduler_log",
       "label": "scheduler.log",
-      "detail": "18 稼働サイクル / 319 行",
+      "detail": "19 稼働サイクル / 335 行",
       "status": "parsed"
     },
     {
@@ -560,19 +560,19 @@
     {
       "id": "note_api",
       "label": "note API",
-      "detail": "10記事・26スキ",
+      "detail": "11記事・31スキ",
       "status": "live"
     },
     {
       "id": "github_traffic",
       "label": "GitHub利用計測",
-      "detail": "360回 / 139名",
+      "detail": "429回 / 161名",
       "status": "live"
     },
     {
       "id": "exec_board",
       "label": "AI役員会議",
-      "detail": "Day 14 5役員合議",
+      "detail": "Day 15 5役員合議",
       "status": "synced"
     }
   ],
@@ -582,7 +582,7 @@
       "title": "無料満足・未決済ボトルネック",
       "location": "product_site/ & note",
       "count": 12,
-      "evidence": "利用360回・スキ26件 ≠ 売上¥0",
+      "evidence": "利用429回・スキ31件 ≠ 売上¥0",
       "rule_tag": "R1 · kept",
       "rule_id": "R1",
       "status": "kept",
@@ -678,7 +678,7 @@
     {
       "id": "R4",
       "scope": "cfo_analytics",
-      "rule": "Cloud実行時に gh.exe が不在でも直近の有効なGitHub利用数（360回/139名）を保持",
+      "rule": "Cloud実行時に gh.exe が不在でも直近の有効なGitHub利用数（429回/161名）を保持",
       "blocked_count": 6,
       "status": "kept",
       "badge": "blocked 6× · ✔ kept"
@@ -724,7 +724,7 @@
       "id": "replay_3",
       "title": "#3 CFOメトリクス保護＆X文字数検査",
       "rule_ref": "with R4+R5",
-      "detail": "GitHub 360回保持 & 112字+URL合格",
+      "detail": "GitHub 429回保持 & 112字+URL合格",
       "transition": "red ➔ green",
       "progress_pct": 100,
       "passed": true
@@ -736,7 +736,7 @@
     "new_rules_adopted": 5,
     "rejected_rules": 1,
     "repeats_blocked": 74,
-    "human_step_in_rate": "0/14",
+    "human_step_in_rate": "0/15",
     "replay_pass_rate": "2/3",
     "daily_trend": [
       12,
@@ -804,31 +804,31 @@
     {
       "time": "08:00:02",
       "stage": "collect",
-      "message": "現状収集: 残高¥15,000 / 利用360回(139名) / noteスキ26件 / 売上¥0",
+      "message": "現状収集: 残高¥15,000 / 利用429回(161名) / noteスキ31件 / 売上¥0",
       "badge": "done"
     },
     {
       "time": "08:00:06",
       "stage": "board",
-      "message": "📊 CFO発言: 360回の利用がありながら売上ゼロは、無料ツールの「便利さ」で満足され、実利への導線が弱…",
+      "message": "📊 CFO発言: 429回の利用がありながら売上0円は、無料ツールが「便利」で終わっている証拠です",
       "badge": "cfo"
     },
     {
       "time": "08:00:11",
       "stage": "board",
-      "message": "💰 CRO発言: 現状の「50選」は総花的で緊急性が低いです",
+      "message": "💰 CRO発言: 現在の「50選パック」を、需要TOP3（補助金・採用・EC）を前面に出した「即効解決パッ…",
       "badge": "cro"
     },
     {
       "time": "08:00:16",
       "stage": "board",
-      "message": "📣 CMO発言: noteのトップ記事を「補助金申請を30分で終わらせる方法」に差し替え、実務家の検索流入…",
+      "message": "📣 CMO発言: noteでは「補助金採択率を上げるAI活用術」など、TOP3ニーズに特化した実務記事を3…",
       "badge": "cmo"
     },
     {
       "time": "08:00:21",
       "stage": "board",
-      "message": "🛠️ CTO発言: ログで検知された遷移エラーを即時修正し、LPの表示速度を改善します",
+      "message": "🛠️ CTO発言: ログに記録されたPage.gotoエラーは即時修復し、LPの表示速度と決済導線の死活監視…",
       "badge": "cto"
     },
     {
