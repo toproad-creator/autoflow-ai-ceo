@@ -1,5 +1,5 @@
 {
-  "analyzed_at": "2026-11-18T08:00:04.059637+09:00",
+  "analyzed_at": "2026-11-19T08:00:03.862179+09:00",
   "winner_model": {
     "id": "BM-01",
     "name": "AI業務自動化ROIシミュレーター＆職種別プロンプト・GAS自動生成Webスイート（Programmatic SEO型ツール＋テンプレート販売）",
@@ -93,8 +93,8 @@
       "hourly_wage": 2200,
       "actual_likes": 3,
       "matched_own_articles": 1,
-      "trend_matches": 1,
-      "demand_score": 100.1,
+      "trend_matches": 0,
+      "demand_score": 85.0,
       "status": "growing"
     },
     {
@@ -104,8 +104,8 @@
       "hourly_wage": 2800,
       "actual_likes": 2,
       "matched_own_articles": 1,
-      "trend_matches": 1,
-      "demand_score": 104.8,
+      "trend_matches": 0,
+      "demand_score": 89.7,
       "status": "growing"
     },
     {
@@ -289,10 +289,10 @@
       "title": "スプレッドシート週次売上KPIの自動集計＆Slack/Chatwork毎朝通知",
       "avg_hours_saved_monthly": 19,
       "hourly_wage": 2800,
-      "actual_likes": 2,
-      "matched_own_articles": 1,
+      "actual_likes": 3,
+      "matched_own_articles": 2,
       "trend_matches": 0,
-      "demand_score": 74.7,
+      "demand_score": 80.7,
       "status": "growing"
     }
   ],
@@ -332,12 +332,12 @@
     }
   ],
   "live_needs_radar": {
-    "analyzed_at": "2026-11-18T08:00:04.057751+09:00",
+    "analyzed_at": "2026-11-19T08:00:03.859845+09:00",
     "api_status": {
       "own_api": "live",
-      "trend_api": "fallback"
+      "trend_api": "live"
     },
-    "market_summary": "実測スキ反響（10記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「EC・物販の在庫管理＆価格改定自動化」。",
+    "market_summary": "実測スキ反響（11記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「EC・物販の在庫管理＆価格改定自動化」。",
     "top_winner_niches": [
       {
         "slug": "subsidy-business-plan",
@@ -376,22 +376,22 @@
     "external_trends_top5": [
       {
         "query": "GAS 自動化",
-        "title": "スプレッドシート×GASで請求書・集計作業を完全自動化する実務テンプレート",
-        "likes": 45,
-        "price": 980,
-        "is_paid": true
+        "title": "【開発裏話】「チャット通知の自動化」を自作した人が、API制限と二重送信の嵐で青ざめる理由：指数バックオフと排他制御が握る堅牢化の境界線",
+        "likes": 0,
+        "price": 0,
+        "is_paid": false
       },
       {
-        "query": "AI 業務効率化 プロンプト",
-        "title": "コピペで使えるAI構造化プロンプト＆SNS・営業メール半自動化ガイド",
-        "likes": 38,
-        "price": 980,
+        "query": "GAS 自動化",
+        "title": "【1件1万円の受託から】GAS・Python自動化の副業ロードマップ｜比較表・テンプレ11点つき",
+        "likes": 0,
+        "price": 2980,
         "is_paid": true
       },
       {
         "query": "GAS 自動化",
-        "title": "Googleドライブ請求書整理・LINEステップ・EC在庫通知の時短スクリプト",
-        "likes": 29,
+        "title": "全部自動化できないなら意味ないと思っていたけど、半分だけでもかなり楽だった",
+        "likes": 0,
         "price": 0,
         "is_paid": false
       },
@@ -408,13 +408,6 @@
         "likes": 0,
         "price": 0,
         "is_paid": false
-      },
-      {
-        "query": "GAS 自動化",
-        "title": "【テンプレ付き】スプレッドシートからGmail下書きを一括作成。送信しないGASの作り方",
-        "likes": 0,
-        "price": 0,
-        "is_paid": false
       }
     ],
     "own_articles_performance": [
@@ -423,6 +416,12 @@
         "title": "【先着10部¥980】コピペ5分で毎日のルーティン作業を消滅させる『全10業種・50選 AIプロンプト＆GAS自動実行コード完全版』",
         "likes": 3,
         "price": 980
+      },
+      {
+        "key": "n5f9435e21513",
+        "title": "【無料コピペOK】スプレッドシート週次売上KPIの自動集計＆Slack/Chatwork毎朝通知をAIとGASで自動化して月19時間浮かす実践レシピ",
+        "likes": 1,
+        "price": 0
       },
       {
         "key": "ncafc405d047e",
