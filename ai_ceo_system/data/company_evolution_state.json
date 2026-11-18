@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-11-18T08:01:46.832260+09:00",
+  "generated_at": "2026-11-18T03:59:15.058577+00:00",
   "day": 15,
   "market_needs_insight": {
     "api_status": {
       "own_api": "live",
       "trend_api": "fallback"
     },
-    "summary": "実測スキ反響（10記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「EC・物販の在庫管理＆価格改定自動化」。",
+    "summary": "実測スキ反響（11記事）と外部市場トレンド（3件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」。",
     "external_trends_top5": [
       {
         "query": "GAS 自動化",
@@ -28,27 +28,6 @@
         "likes": 29,
         "price": 0,
         "is_paid": false
-      },
-      {
-        "query": "GAS 自動化",
-        "title": "GWS（Google Workspace）× GASだけで中小企業のDXは8割できる。室崎敬太が既存ツールの活用を勧める理由",
-        "likes": 0,
-        "price": 0,
-        "is_paid": false
-      },
-      {
-        "query": "GAS 自動化",
-        "title": "【損失計算】なぜPhotoshopや無料Webツールで画像を1枚ずつ変換してはいけないのか：アスペクト比維持とExif除去を完全自動化する価値",
-        "likes": 0,
-        "price": 0,
-        "is_paid": false
-      },
-      {
-        "query": "GAS 自動化",
-        "title": "【テンプレ付き】スプレッドシートからGmail下書きを一括作成。送信しないGASの作り方",
-        "likes": 0,
-        "price": 0,
-        "is_paid": false
       }
     ]
   },
@@ -62,17 +41,17 @@
         "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
       },
       {
+        "slug": "ec-inventory",
+        "title": "EC・物販の在庫管理＆価格改定自動化",
+        "demand_score": 123.1,
+        "actual_likes": 5,
+        "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
+      },
+      {
         "slug": "hr-resume-screening",
         "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
         "demand_score": 113.0,
         "actual_likes": 6,
-        "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
-      },
-      {
-        "slug": "ec-inventory",
-        "title": "EC・物販の在庫管理＆価格改定自動化",
-        "demand_score": 110.0,
-        "actual_likes": 5,
         "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
       }
     ],
@@ -95,12 +74,12 @@
     ]
   },
   "dynamic_offer_config": {
-    "updated_at": "2026-11-18T08:01:46.831286+09:00",
+    "updated_at": "2026-11-18T03:59:15.058506+00:00",
     "board_sync_note": "Day 15 経営会議＆市場ニーズ調査をサイト・LPへ自動反映済",
-    "internal_goal_ref": "需要TOP3に特化した「即効解決オファー」への全面刷新により、本日23:59までに初決済1件を完了する。",
+    "internal_goal_ref": "本日23:59までに「補助金・EC・採用」に特化したベネフィット訴求により、初決済1件（¥980）を計上する。",
     "hero_badge": "注目レシピTOP3反映中｜先着10部限定 50%OFF（¥1,980 ➔ ¥980）",
     "spotlight_headline": "今もっとも選ばれている自動化テーマ：補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
-    "spotlight_subcopy": "実務ユーザーの要望が多い「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「EC・物販の在庫管理＆価格改定自動化」をはじめ、全10業種・50種類のコピペ完結テンプレートを収録。無料エリアで実物完成コード2本をそのままお試しいただけます。",
+    "spotlight_subcopy": "実務ユーザーの要望が多い「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」をはじめ、全10業種・50種類のコピペ完結テンプレートを収録。無料エリアで実物完成コード2本をそのままお試しいただけます。",
     "winner_highlights": [
       {
         "rank": 1,
@@ -114,6 +93,16 @@
       },
       {
         "rank": 2,
+        "slug": "ec-inventory",
+        "title": "EC・物販の在庫管理＆価格改定自動化",
+        "avg_hours_saved_monthly": 42,
+        "hourly_wage": 2500,
+        "yearly_yen": 1260000,
+        "demand_score": 123.1,
+        "actual_likes": 5
+      },
+      {
+        "rank": 3,
         "slug": "hr-resume-screening",
         "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
         "avg_hours_saved_monthly": 32,
@@ -121,16 +110,6 @@
         "yearly_yen": 1152000,
         "demand_score": 113.0,
         "actual_likes": 6
-      },
-      {
-        "rank": 3,
-        "slug": "ec-inventory",
-        "title": "EC・物販の在庫管理＆価格改定自動化",
-        "avg_hours_saved_monthly": 42,
-        "hourly_wage": 2500,
-        "yearly_yen": 1260000,
-        "demand_score": 110.0,
-        "actual_likes": 5
       }
     ]
   },
@@ -250,7 +229,7 @@
       "name": "AutoFlow Suite（GAS×AI 業務自動化ツール＆50選テンプレート販売）",
       "stage": "初期収益化（0→1突破最優先）",
       "allocation_pct": 75,
-      "kpis": "累計売上 ¥0 / ツール利用 429回 / noteスキ 31件",
+      "kpis": "累計売上 ¥0 / ツール利用 429回 / noteスキ 32件",
       "next_milestone": "先着10部 ¥980 パック初成約と上位段階プランへの導線確立"
     },
     {
