@@ -1,10 +1,10 @@
 {
-  "analyzed_at": "2026-11-19T08:00:03.859845+09:00",
+  "analyzed_at": "2026-11-19T03:56:05.813907+00:00",
   "api_status": {
     "own_api": "live",
-    "trend_api": "live"
+    "trend_api": "fallback"
   },
-  "market_summary": "実測スキ反響（11記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「EC・物販の在庫管理＆価格改定自動化」。",
+  "market_summary": "実測スキ反響（12記事）と外部市場トレンド（3件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」。",
   "top_winner_niches": [
     {
       "slug": "subsidy-business-plan",
@@ -43,36 +43,22 @@
   "external_trends_top5": [
     {
       "query": "GAS 自動化",
-      "title": "【開発裏話】「チャット通知の自動化」を自作した人が、API制限と二重送信の嵐で青ざめる理由：指数バックオフと排他制御が握る堅牢化の境界線",
-      "likes": 0,
-      "price": 0,
-      "is_paid": false
+      "title": "スプレッドシート×GASで請求書・集計作業を完全自動化する実務テンプレート",
+      "likes": 45,
+      "price": 980,
+      "is_paid": true
     },
     {
-      "query": "GAS 自動化",
-      "title": "【1件1万円の受託から】GAS・Python自動化の副業ロードマップ｜比較表・テンプレ11点つき",
-      "likes": 0,
-      "price": 2980,
+      "query": "AI 業務効率化 プロンプト",
+      "title": "コピペで使えるAI構造化プロンプト＆SNS・営業メール半自動化ガイド",
+      "likes": 38,
+      "price": 980,
       "is_paid": true
     },
     {
       "query": "GAS 自動化",
-      "title": "全部自動化できないなら意味ないと思っていたけど、半分だけでもかなり楽だった",
-      "likes": 0,
-      "price": 0,
-      "is_paid": false
-    },
-    {
-      "query": "GAS 自動化",
-      "title": "GWS（Google Workspace）× GASだけで中小企業のDXは8割できる。室崎敬太が既存ツールの活用を勧める理由",
-      "likes": 0,
-      "price": 0,
-      "is_paid": false
-    },
-    {
-      "query": "GAS 自動化",
-      "title": "【損失計算】なぜPhotoshopや無料Webツールで画像を1枚ずつ変換してはいけないのか：アスペクト比維持とExif除去を完全自動化する価値",
-      "likes": 0,
+      "title": "Googleドライブ請求書整理・LINEステップ・EC在庫通知の時短スクリプト",
+      "likes": 29,
       "price": 0,
       "is_paid": false
     }
@@ -83,6 +69,12 @@
       "title": "【先着10部¥980】コピペ5分で毎日のルーティン作業を消滅させる『全10業種・50選 AIプロンプト＆GAS自動実行コード完全版』",
       "likes": 3,
       "price": 980
+    },
+    {
+      "key": "n5d7337e2ed8c",
+      "title": "【無料コピペOK】競合ランディングページ(LP)の訴求軸分解＆ABテスト案生成をAIとGASで自動化して月27時間浮かす実践レシピ",
+      "likes": 2,
+      "price": 0
     },
     {
       "key": "n5f9435e21513",
