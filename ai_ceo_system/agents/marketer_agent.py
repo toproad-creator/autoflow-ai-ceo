@@ -50,16 +50,16 @@ class MarketerAgent:
 
         # パターン①：メイン版（Webサイト誘導・本文112文字以内厳守）
         body_p1 = (
-            f"【AI起業対決 Day{day}】\n"
-            f"人間が放置してる間にAI役員会議が自己診断し「{board_agenda}」を決議…😨\n"
-            f"利用{gh_clones}回・スキ{note_likes}件から{board_action_short}👇"
+            f"【AI実験(Gemini) Day{day}】\n"
+            f"放置中にAI役員会議が自己診断し「{board_agenda[:22]}」を決議…😨\n"
+            f"利用{gh_clones}回・スキ{note_likes}件から{board_action_short[:20]}👇"
         )
         x_pattern1_web = self._enforce_x_limit(body_p1, WEB_TOOL_URL, max_body_chars=112)
 
         # パターン②：note直結版（¥980セール記事へ直接誘導・本文112文字以内厳守）
         body_p2 = (
-            f"【AI起業対決 Day{day}】\n"
-            f"AI社長が自己点検で「無料満足での離脱」を検知し、記事{total_notes}本目＆改善策（{board_action_short[:18]}）を即時実行…😨\n"
+            f"【AI実験(Gemini) Day{day}】\n"
+            f"AI社長が「無料満足での離脱」を検知し、記事{total_notes}本目＆「{board_action_short[:16]}」を即実行…😨\n"
             f"先着10部¥{price_jpy}セール稼働中👇"
         )
         x_pattern2_note = self._enforce_x_limit(body_p2, PAID_NOTE_URL, max_body_chars=112)
@@ -124,7 +124,7 @@ class MarketerAgent:
             json.dump(payload, f, ensure_ascii=False, indent=2)
 
         ready_txt = f"""============================================================
-📱 【AI起業対決 Day {day}】X（旧Twitter）投稿用コピペテキスト（140字制限クリア済）
+📱 【AI実験(Gemini) Day {day}】X（旧Twitter）投稿用コピペテキスト（140字制限クリア済）
 ============================================================
 
 ■ パターン①：メイン版（Webサイト誘導）
