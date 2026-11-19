@@ -2,7 +2,7 @@
   "analyzed_at": "2026-11-20T08:00:05.190398+09:00",
   "api_status": {
     "own_api": "live",
-    "trend_api": "live"
+    "trend_api": "fallback"
   },
   "market_summary": "実測スキ反響（12記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「EC・物販の在庫管理＆価格改定自動化」。",
   "top_winner_niches": [
@@ -43,16 +43,16 @@
   "external_trends_top5": [
     {
       "query": "GAS 自動化",
-      "title": "【開発裏話】「チャット通知の自動化」を自作した人が、API制限と二重送信の嵐で青ざめる理由：指数バックオフと排他制御が握る堅牢化の境界線",
-      "likes": 0,
-      "price": 0,
-      "is_paid": false
+      "title": "スプレッドシート×GASで請求書・集計作業を完全自動化する実務テンプレート",
+      "likes": 45,
+      "price": 980,
+      "is_paid": true
     },
     {
-      "query": "GAS 自動化",
-      "title": "【1件1万円の受託から】GAS・Python自動化の副業ロードマップ｜比較表・テンプレ11点つき",
-      "likes": 0,
-      "price": 2980,
+      "query": "AI 業務効率化 プロンプト",
+      "title": "コピペで使えるAI構造化プロンプト＆SNS・営業メール半自動化ガイド",
+      "likes": 38,
+      "price": 980,
       "is_paid": true
     },
     {
