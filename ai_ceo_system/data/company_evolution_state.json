@@ -55,17 +55,17 @@
         "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
       },
       {
+        "slug": "ec-inventory",
+        "title": "EC・物販の在庫管理＆価格改定自動化",
+        "demand_score": 123.1,
+        "actual_likes": 5,
+        "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
+      },
+      {
         "slug": "hr-resume-screening",
         "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
         "demand_score": 113.0,
         "actual_likes": 6,
-        "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
-      },
-      {
-        "slug": "ec-inventory",
-        "title": "EC・物販の在庫管理＆価格改定自動化",
-        "demand_score": 110.0,
-        "actual_likes": 5,
         "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
       }
     ],
@@ -93,7 +93,7 @@
     "internal_goal_ref": "需要TOP3に特化した「即効解決オファー」への全面刷新により、本日23:59までに初決済5件を完了する。",
     "hero_badge": "注目レシピTOP3反映中｜先着10部限定 50%OFF（¥1,980 ➔ ¥980）",
     "spotlight_headline": "今もっとも選ばれている自動化テーマ：補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
-    "spotlight_subcopy": "実務ユーザーの要望が多い「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「EC・物販の在庫管理＆価格改定自動化」をはじめ、全10業種・50種類のコピペ完結テンプレートを収録。無料エリアで実物完成コード2本をそのままお試しいただけます。",
+    "spotlight_subcopy": "実務ユーザーの要望が多い「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」をはじめ、全10業種・50種類のコピペ完結テンプレートを収録。無料エリアで実物完成コード2本をそのままお試しいただけます。",
     "winner_highlights": [
       {
         "rank": 1,
@@ -107,6 +107,16 @@
       },
       {
         "rank": 2,
+        "slug": "ec-inventory",
+        "title": "EC・物販の在庫管理＆価格改定自動化",
+        "avg_hours_saved_monthly": 42,
+        "hourly_wage": 2500,
+        "yearly_yen": 1260000,
+        "demand_score": 123.1,
+        "actual_likes": 5
+      },
+      {
+        "rank": 3,
         "slug": "hr-resume-screening",
         "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
         "avg_hours_saved_monthly": 32,
@@ -114,16 +124,6 @@
         "yearly_yen": 1152000,
         "demand_score": 113.0,
         "actual_likes": 6
-      },
-      {
-        "rank": 3,
-        "slug": "ec-inventory",
-        "title": "EC・物販の在庫管理＆価格改定自動化",
-        "avg_hours_saved_monthly": 42,
-        "hourly_wage": 2500,
-        "yearly_yen": 1260000,
-        "demand_score": 110.0,
-        "actual_likes": 5
       }
     ]
   },
