@@ -31,7 +31,7 @@ class DailyShortPipelineAgent:
             try:
                 items = json.loads(UPLOADED_JSON.read_text(encoding="utf-8"))
                 for it in items:
-                    if it.get("day") == day and it.get("status") == "uploaded_public" and it.get("url"):
+                    if it.get("day") == day and it.get("status") in ("uploaded_public", "uploaded_private") and it.get("url"):
                         return it["url"]
             except Exception:
                 pass
