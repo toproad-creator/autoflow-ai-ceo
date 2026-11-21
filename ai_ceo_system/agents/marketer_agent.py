@@ -17,9 +17,9 @@ class MarketerAgent:
     def __init__(self):
         os.makedirs(MARKETING_DIR, exist_ok=True)
 
-    @staticmethod
-    def _balance_brackets(text: str) -> str:
-        """開いたまま閉じられていない括弧や重複括弧を自動で修復し、不自然な途中切れをなくす。"""
+    @classmethod
+    def _balance_brackets_single_line(cls, text: str) -> str:
+        """1行の中で開いたまま閉じられていない括弧や重複括弧を自動で修復する。"""
         pairs = [("「", "」"), ("『", "』"), ("（", "）"), ("(", ")")]
         cleaned = text.strip()
         for op, cl in pairs:
@@ -43,25 +43,34 @@ class MarketerAgent:
         return cleaned.strip("、：・ ")
 
     @classmethod
+    def _balance_brackets(cls, text: str) -> str:
+        """複数行テキストに対して1行ずつ独立して括弧バランスを整える。"""
+        lines = (text or "").strip().splitlines()
+        balanced_lines = [cls._balance_brackets_single_line(ln) for ln in lines if ln.strip()]
+        return "\n".join(balanced_lines)
+
+    @classmethod
     def _clean_phrase_for_x(cls, text: str, max_len: int) -> str:
         """長い文章をX用に自然な区切り・閉じた括弧のまま指定文字数以内へ要約整形する。"""
         s = (text or "").replace("\n", " ").strip()
         for op, cl in [("「", "」"), ("『", "』")]:
             if s.startswith(op) and s.endswith(cl):
                 s = s[1:-1].strip()
+        # 外側の「...」で囲んだときに二重カギ括弧が崩れないよう内部の「」を『』へ変換
+        s = s.replace("「", "『").replace("」", "』")
         if len(s) <= max_len:
-            return cls._balance_brackets(s)
-        cut = s[:max_len]
-        # 句読点や区切り記号があればそこで自然に切る
-        for sep in ("。", "、", "：", "／", "・", " "):
-            pos = cut.rfind(sep)
-            if pos >= max(6, int(max_len * 0.55)):
-                cut = cut[:pos]
-                break
-        res = cls._balance_brackets(cut)
+            res = cls._balance_brackets_single_line(s)
+        else:
+            cut = s[:max_len]
+            for sep in ("。", "、", "：", "／", "・", " "):
+                pos = cut.rfind(sep)
+                if pos >= max(6, int(max_len * 0.55)):
+                    cut = cut[:pos]
+                    break
+            res = cls._balance_brackets_single_line(cut)
         while len(res) > 4 and res[-1] in ("を", "が", "に", "で", "と", "の", "へ", "や", "は", "も"):
             res = res[:-1].rstrip("、・： ")
-        return res
+        return cls._balance_brackets_single_line(res)
 
     @classmethod
     def _enforce_x_limit(cls, body_without_url: str, url: str, max_body_chars: int = 112) -> str:

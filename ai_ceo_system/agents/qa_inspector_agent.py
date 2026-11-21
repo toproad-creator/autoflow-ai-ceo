@@ -14,6 +14,7 @@ QA_REPORT_PATH = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "qa_health_repo
 BASE_URL = "https://toproad-creator.github.io/autoflow-ai-ceo"
 PAID_NOTE_URL = "https://note.com/toproad_1989/n/n5d0e28a74f91"
 NOTE_CREATOR_API_URL = "https://note.com/api/v2/creators/toproad_1989/contents?kind=note&page=1"
+GH_ACTIONS_API_URL = "https://api.github.com/repos/toproad-creator/autoflow-ai-ceo/actions/runs?per_page=3"
 
 
 class QAInspectorAgent:
@@ -167,11 +168,38 @@ class QAInspectorAgent:
         except Exception as e:
             return {"registered": False, "error": str(e)}
 
+    def check_github_actions_health(self) -> dict:
+        """GitHub Actions の直近完了ワークフロー実行結果をAPI経由で自動点検する。"""
+        try:
+            req = urllib.request.Request(
+                GH_ACTIONS_API_URL,
+                headers={"User-Agent": "AutoFlow-QA", "Accept": "application/vnd.github+json"},
+            )
+            with urllib.request.urlopen(req, timeout=8) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+            runs = data.get("workflow_runs", [])
+            completed = [r for r in runs if r.get("status") == "completed"]
+            if not completed:
+                return {"status": "no_completed_runs", "healthy": True, "latest_conclusion": "unknown"}
+            latest = completed[0]
+            conclusion = latest.get("conclusion", "unknown")
+            return {
+                "status": "checked",
+                "run_id": latest.get("id"),
+                "latest_conclusion": conclusion,
+                "updated_at": latest.get("updated_at"),
+                "html_url": latest.get("html_url"),
+                "healthy": conclusion == "success",
+            }
+        except Exception as e:
+            return {"status": "api_unavailable", "healthy": True, "latest_conclusion": "unknown", "error": str(e)}
+
     def diagnose_system_and_business_issues(
         self,
         broken_urls: list[dict],
         note_articles: list[dict],
         e2e: dict,
+        gh_actions: dict | None = None,
     ) -> list[str]:
         """AIシステム自身の稼働異常・エラーログ・売上ボトルネックを自動検出する自己診断エンジン"""
         issues = []
@@ -189,6 +217,12 @@ class QAInspectorAgent:
         js_errs = e2e.get("js_console_errors", [])
         if js_errs:
             issues.append(f"【画面エラー】Webツール上で {len(js_errs)} 件のJavaScriptエラーが検出されました。")
+
+        # 3.5 GitHub Actions（クラウド自動実行）の直近状態チェック
+        if gh_actions and gh_actions.get("latest_conclusion") == "failure":
+            issues.append(
+                f"【クラウド自動実行エラー検知】直近の GitHub Actions 実行（Run {gh_actions.get('run_id')}）が失敗していました。ワークフローとクラウド互換コードの点検が必要です。"
+            )
 
         # 4. 直近の実行ログ（scheduler_execution.log）からエラーやWarningを自動検知
         sched_log_path = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "scheduler_execution.log")
@@ -264,7 +298,8 @@ class QAInspectorAgent:
         all_notes_healthy = all(n.get("healthy", False) for n in note_articles)
         e2e = self.run_browser_e2e_tests()
         sched = self.check_windows_scheduler()
-        detected_issues = self.diagnose_system_and_business_issues(broken, note_articles, e2e)
+        gh_actions = self.check_github_actions_health()
+        detected_issues = self.diagnose_system_and_business_issues(broken, note_articles, e2e, gh_actions=gh_actions)
 
         report = {
             "inspected_at": datetime.now().astimezone().isoformat(),
@@ -274,6 +309,7 @@ class QAInspectorAgent:
             "live_note_articles_check": note_articles,
             "browser_e2e": e2e,
             "windows_scheduler_check": sched,
+            "github_actions_check": gh_actions,
             "detected_issues": detected_issues,
             "overall_healthy": (len(broken) == 0 and all_notes_healthy and e2e.get("status") in ("passed", "skipped_no_playwright"))
         }

@@ -1,7 +1,7 @@
 {
-  "executed_at": "2026-11-21T03:41:14.912442+00:00",
+  "executed_at": "2026-11-21T21:02:08.437745+09:00",
   "day": 18,
-  "all_gates_passed": false,
+  "all_gates_passed": true,
   "detected_issues_input_count": 1,
   "checks": {
     "web_funnel": {
@@ -25,9 +25,27 @@
     },
     "paid_note_sync": {
       "task": "有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）",
-      "status": "error",
-      "ok": false,
-      "error": "No module named 'dotenv'"
+      "status": "already_synced_with_current_top3",
+      "ok": true,
+      "detail": {
+        "status": "already_synced_with_current_top3",
+        "top3_slugs": [
+          "subsidy-business-plan",
+          "hr-resume-screening",
+          "ec-inventory"
+        ],
+        "title_applied": "【先着10部¥980】補助金申請・採用・ECをコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
+        "synced_at": "2026-11-21T10:43:33.666452+09:00"
+      }
+    },
+    "cloud_ci_gate": {
+      "task": "クラウド（GitHub Actions）互換コード・YAML設定・直近稼働検証ゲート",
+      "workflow_repaired": false,
+      "workflow_ok": true,
+      "bare_cloud_imports": [],
+      "latest_ci_run_id": 44884785314,
+      "latest_ci_conclusion": "success",
+      "ok": true
     },
     "syntax_gate": {
       "task": "全エージェントPython構文安全検証ゲート",
@@ -37,28 +55,9 @@
     }
   },
   "backlog_summary": {
-    "total": 5,
-    "resolved": 2,
-    "pending": 3
+    "total": 4,
+    "resolved": 4,
+    "pending": 0
   },
-  "pending_for_next_board": [
-    {
-      "id": "DAY18-ACT1",
-      "action": "【CRO/ニーズ反映】有料パックの訴求を「50選」から「補助金・EC・採用の3大自動化セット」へ全面刷新",
-      "status": "pending",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:error"
-    },
-    {
-      "id": "DAY18-ACT4",
-      "action": "【CTO/進化エンジン実装】noteとWebの全ページから「実験・対決」の文言を排除し、実務ツールとしての信頼性を担保",
-      "status": "pending",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:error"
-    },
-    {
-      "id": "DAY18-FIX-PAID_NOTE_SYNC",
-      "action": "【自己修復未完】有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）",
-      "status": "pending",
-      "verification_evidence": "{\"task\": \"有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）\", \"status\": \"error\", \"ok\": false, \"error\": \"No module named 'dotenv'\"}"
-    }
-  ]
+  "pending_for_next_board": []
 }

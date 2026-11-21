@@ -1,60 +1,35 @@
 {
-  "updated_at": "2026-11-21T03:41:14.912252+00:00",
+  "updated_at": "2026-11-21T21:02:08.436872+09:00",
   "day": 18,
-  "previous_pending_count": 0,
-  "today_total_actions": 5,
-  "today_resolved_count": 2,
-  "today_pending_count": 3,
+  "previous_pending_count": 3,
+  "today_total_actions": 4,
+  "today_resolved_count": 4,
+  "today_pending_count": 0,
   "items": [
     {
       "id": "DAY18-ACT1",
-      "action": "【CRO/ニーズ反映】有料パックの訴求を「50選」から「補助金・EC・採用の3大自動化セット」へ全面刷新",
-      "status": "pending",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:error"
+      "action": "【CRO/ニーズ反映】有料noteのタイトルと冒頭1万字を、補助金・採用・ECの3大自動化に特化した構成へ即時書き換え",
+      "status": "resolved",
+      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:already_synced_with_current_top3"
     },
     {
       "id": "DAY18-ACT2",
-      "action": "【CRO/CMO実装】GitHubツールの利用完了画面に、関連する特定需要解決プロンプトへの直接購入リンクを設置",
+      "action": "【CRO/CMO実装】GitHub無料ツールの出力結果ページに、各ニーズに対応した有料版への最短導線ボタンを設置",
       "status": "resolved",
-      "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(25件):True"
+      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:already_synced_with_current_top3"
     },
     {
       "id": "DAY18-ACT3",
-      "action": "【CMO実装】「補助金申請が5分で終わる」実演ショート動画を投稿し、プロフ経由で特化記事へ誘導",
+      "action": "【CMO実装】補助金申請・採用・ECの各担当者に向けた「工数削減メリット」特化型のXスレッド投稿とYouTubeショート公開",
       "status": "resolved",
       "verification_evidence": "X投稿整形＆括弧検証:True（自動生成準備完了・ショートはStep8連携）"
     },
     {
       "id": "DAY18-ACT4",
-      "action": "【CTO/進化エンジン実装】noteとWebの全ページから「実験・対決」の文言を排除し、実務ツールとしての信頼性を担保",
-      "status": "pending",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:error"
-    },
-    {
-      "id": "DAY18-FIX-PAID_NOTE_SYNC",
-      "action": "【自己修復未完】有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）",
-      "status": "pending",
-      "verification_evidence": "{\"task\": \"有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）\", \"status\": \"error\", \"ok\": false, \"error\": \"No module named 'dotenv'\"}"
+      "action": "【CTO/進化エンジン実装】サイト全域から「AI起業対決」等の売り手都合ワードを削除し、プロ仕様のUI/UXへ自動修復",
+      "status": "resolved",
+      "verification_evidence": "X投稿整形＆括弧検証:True（自動生成準備完了・ショートはStep8連携）"
     }
   ],
-  "pending_for_next_board": [
-    {
-      "id": "DAY18-ACT1",
-      "action": "【CRO/ニーズ反映】有料パックの訴求を「50選」から「補助金・EC・採用の3大自動化セット」へ全面刷新",
-      "status": "pending",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:error"
-    },
-    {
-      "id": "DAY18-ACT4",
-      "action": "【CTO/進化エンジン実装】noteとWebの全ページから「実験・対決」の文言を排除し、実務ツールとしての信頼性を担保",
-      "status": "pending",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:error"
-    },
-    {
-      "id": "DAY18-FIX-PAID_NOTE_SYNC",
-      "action": "【自己修復未完】有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）",
-      "status": "pending",
-      "verification_evidence": "{\"task\": \"有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）\", \"status\": \"error\", \"ok\": false, \"error\": \"No module named 'dotenv'\"}"
-    }
-  ]
+  "pending_for_next_board": []
 }

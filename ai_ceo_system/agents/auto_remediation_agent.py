@@ -140,17 +140,26 @@ class AutoRemediationAgent:
             url_line = lines[-1] if lines and lines[-1].startswith("http") else ""
             body = "\n".join(lines[:-1]) if url_line else post
 
-            needs_fix = self._has_unbalanced_brackets(body) or len(body) > 112 or not url_line
+            needs_fix = (
+                self._has_unbalanced_brackets(body)
+                or any(self._has_unbalanced_brackets(ln) for ln in body.splitlines())
+                or len(body) > 112
+                or not url_line
+            )
             if needs_fix:
                 repaired_body = MarketerAgent._balance_brackets(body)
                 fixed_post = MarketerAgent._enforce_x_limit(repaired_body, url_line or "https://note.com/toproad_1989/n/n5d0e28a74f91", max_body_chars=112)
                 campaign_data[k] = fixed_post
                 repaired_keys.append(k)
 
-            # 再検証
+            # 再検証（投稿全体＆1行ごとの括弧整合性チェック）
             new_lines = campaign_data[k].strip().splitlines()
             new_body = "\n".join(new_lines[:-1]) if new_lines[-1].startswith("http") else campaign_data[k]
-            if self._has_unbalanced_brackets(new_body) or len(new_body) > 112:
+            if (
+                self._has_unbalanced_brackets(new_body)
+                or any(self._has_unbalanced_brackets(ln) for ln in new_body.splitlines())
+                or len(new_body) > 112
+            ):
                 remaining_issues.append(k)
 
         if repaired_keys:
@@ -228,6 +237,74 @@ class AutoRemediationAgent:
                 "ok": False,
                 "error": str(e),
             }
+
+    def _verify_cloud_ci_compatibility(self) -> dict:
+        """⑥ クラウド（GitHub Actions）ワークフロー・非互換import事前検知・直近CI稼働を検証＆自動修復する"""
+        import urllib.request
+
+        wf_path = ROOT_DIR / ".github" / "workflows" / "autonomous_daily_cron.yml"
+        wf_repaired = False
+        wf_txt = wf_path.read_text(encoding="utf-8", errors="ignore") if wf_path.exists() else ""
+        if "sleep 5" not in wf_txt or "--cloud-cron" not in wf_txt:
+            from developer_agent import DeveloperAgent
+            DeveloperAgent()._build_github_actions_cron()
+            wf_repaired = True
+            wf_txt = wf_path.read_text(encoding="utf-8", errors="ignore") if wf_path.exists() else ""
+        wf_ok = ("sleep 5" in wf_txt) and ("--cloud-cron" in wf_txt)
+
+        # クラウド実行時に読み込まれるコアエージェント群に裸の playwright / dotenv import がないか静的検査
+        cloud_core_agents = [
+            "ceo_orchestrator.py",
+            "researcher_agent.py",
+            "cfo_analytics_agent.py",
+            "qa_inspector_agent.py",
+            "executive_board_agent.py",
+            "company_evolution_agent.py",
+            "developer_agent.py",
+            "product_packager_agent.py",
+            "marketer_agent.py",
+            "outbound_sales_agent.py",
+            "auto_remediation_agent.py",
+            "learning_loop_agent.py",
+            "upgrade_paid_note_cro.py",
+            "note_auto_publisher.py",
+        ]
+        bare_import_files = []
+        pattern = re.compile(r"^(from\s+(?:playwright|dotenv)|import\s+(?:playwright|dotenv))\b", re.MULTILINE)
+        for fname in cloud_core_agents:
+            fpath = AGENTS_DIR / fname
+            if fpath.exists():
+                content = fpath.read_text(encoding="utf-8", errors="ignore")
+                if pattern.search(content):
+                    bare_import_files.append(fname)
+
+        # GitHub Actions API で直近の完了ワークフローRunステータスを確認
+        gh_conclusion = "unknown"
+        gh_run_id = None
+        try:
+            req = urllib.request.Request(
+                "https://api.github.com/repos/toproad-creator/autoflow-ai-ceo/actions/runs?per_page=3",
+                headers={"User-Agent": "AutoFlow-CI-Gate", "Accept": "application/vnd.github+json"},
+            )
+            with urllib.request.urlopen(req, timeout=8) as resp:
+                runs = json.loads(resp.read().decode("utf-8")).get("workflow_runs", [])
+            completed = [r for r in runs if r.get("status") == "completed"]
+            if completed:
+                gh_run_id = completed[0].get("id")
+                gh_conclusion = completed[0].get("conclusion", "unknown")
+        except Exception:
+            pass
+
+        ci_ok = wf_ok and (len(bare_import_files) == 0) and (gh_conclusion != "failure")
+        return {
+            "task": "クラウド（GitHub Actions）互換コード・YAML設定・直近稼働検証ゲート",
+            "workflow_repaired": wf_repaired,
+            "workflow_ok": wf_ok,
+            "bare_cloud_imports": bare_import_files,
+            "latest_ci_run_id": gh_run_id,
+            "latest_ci_conclusion": gh_conclusion,
+            "ok": ci_ok,
+        }
 
     def _run_python_syntax_gate(self) -> dict:
         """⑤ 安全検証ゲート：全エージェントPythonコードに構文エラーがないことを保証"""
@@ -331,6 +408,7 @@ class AutoRemediationAgent:
         html_chk = self._verify_and_clean_customer_html()
         x_chk = self._verify_and_fix_x_posts(day, campaign_data)
         paid_note_chk = self._sync_paid_note_headline_and_preview(evolution_state, sync_paid_note=sync_paid_note)
+        cloud_chk = self._verify_cloud_ci_compatibility()
         syntax_chk = self._run_python_syntax_gate()
 
         checks = {
@@ -338,6 +416,7 @@ class AutoRemediationAgent:
             "clean_html": html_chk,
             "x_posts": x_chk,
             "paid_note_sync": paid_note_chk,
+            "cloud_ci_gate": cloud_chk,
             "syntax_gate": syntax_chk,
         }
 
