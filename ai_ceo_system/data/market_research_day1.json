@@ -1,5 +1,5 @@
 {
-  "analyzed_at": "2026-11-21T21:01:29.793170+09:00",
+  "analyzed_at": "2026-11-22T08:00:05.181858+09:00",
   "winner_model": {
     "id": "BM-01",
     "name": "AI業務自動化ROIシミュレーター＆職種別プロンプト・GAS自動生成Webスイート（Programmatic SEO型ツール＋テンプレート販売）",
@@ -179,10 +179,10 @@
       "title": "オウンドメディアSEO記事の構成案・FAQ構造化データ自動生成",
       "avg_hours_saved_monthly": 40,
       "hourly_wage": 2500,
-      "actual_likes": 3,
+      "actual_likes": 5,
       "matched_own_articles": 1,
       "trend_matches": 0,
-      "demand_score": 96.3,
+      "demand_score": 108.3,
       "status": "growing"
     },
     {
@@ -332,7 +332,7 @@
     }
   ],
   "live_needs_radar": {
-    "analyzed_at": "2026-11-21T21:01:29.790823+09:00",
+    "analyzed_at": "2026-11-22T08:00:05.178832+09:00",
     "api_status": {
       "own_api": "live",
       "trend_api": "live"
@@ -444,7 +444,7 @@
       {
         "key": "ncafc405d047e",
         "title": "【無料コピペOK】オウンドメディアSEO記事の構成案・FAQ構造化データ自動生成をAIとGASで自動化して月40時間浮かす実践レシピ",
-        "likes": 3,
+        "likes": 5,
         "price": 0
       },
       {

@@ -1,34 +1,34 @@
 {
-  "updated_at": "2026-11-21T21:02:08.436872+09:00",
-  "day": 18,
-  "previous_pending_count": 3,
+  "updated_at": "2026-11-22T08:01:41.295860+09:00",
+  "day": 19,
+  "previous_pending_count": 0,
   "today_total_actions": 4,
   "today_resolved_count": 4,
   "today_pending_count": 0,
   "items": [
     {
-      "id": "DAY18-ACT1",
-      "action": "【CRO/ニーズ反映】有料noteのタイトルと冒頭1万字を、補助金・採用・ECの3大自動化に特化した構成へ即時書き換え",
+      "id": "DAY19-ACT1",
+      "action": "【CRO/ニーズ反映】note有料記事の冒頭に「補助金・採用・EC」それぞれの具体的な成功事例とGAS実行動画を追加し、実利を可視化する",
       "status": "resolved",
       "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:already_synced_with_current_top3"
     },
     {
-      "id": "DAY18-ACT2",
-      "action": "【CRO/CMO実装】GitHub無料ツールの出力結果ページに、各ニーズに対応した有料版への最短導線ボタンを設置",
+      "id": "DAY19-ACT2",
+      "action": "【CRO/CMO実装】無料ツール利用後の画面に、利用したツールに関連する「TOP3特化型プロンプト」の限定割引オファーをポップアップ表示する",
+      "status": "resolved",
+      "verification_evidence": "全無料ツール利用後レコメンド＆追従バー実装確認:True"
+    },
+    {
+      "id": "DAY19-ACT3",
+      "action": "【CMO実装】Xにて「補助金申請を5分で終わらせる方法」など、TOP3需要に特化した解決策を1時間間隔で予約投稿し、noteへ誘導する",
       "status": "resolved",
       "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:already_synced_with_current_top3"
     },
     {
-      "id": "DAY18-ACT3",
-      "action": "【CMO実装】補助金申請・採用・ECの各担当者に向けた「工数削減メリット」特化型のXスレッド投稿とYouTubeショート公開",
+      "id": "DAY19-ACT4",
+      "action": "【CTO/進化エンジン実装】サイト内の「AI起業」等の文言を「業務自動化ソリューション」へ一括置換し、信頼性を高めるプロ仕様アップデートを完了させる",
       "status": "resolved",
-      "verification_evidence": "X投稿整形＆括弧検証:True（自動生成準備完了・ショートはStep8連携）"
-    },
-    {
-      "id": "DAY18-ACT4",
-      "action": "【CTO/進化エンジン実装】サイト全域から「AI起業対決」等の売り手都合ワードを削除し、プロ仕様のUI/UXへ自動修復",
-      "status": "resolved",
-      "verification_evidence": "X投稿整形＆括弧検証:True（自動生成準備完了・ショートはStep8連携）"
+      "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(25件):True"
     }
   ],
   "pending_for_next_board": []
