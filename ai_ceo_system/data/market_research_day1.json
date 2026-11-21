@@ -1,5 +1,5 @@
 {
-  "analyzed_at": "2026-11-21T10:38:55.367608+09:00",
+  "analyzed_at": "2026-11-21T10:42:02.838799+09:00",
   "winner_model": {
     "id": "BM-01",
     "name": "AI業務自動化ROIシミュレーター＆職種別プロンプト・GAS自動生成Webスイート（Programmatic SEO型ツール＋テンプレート販売）",
@@ -80,10 +80,10 @@
       "title": "EC・物販の在庫管理＆価格改定自動化",
       "avg_hours_saved_monthly": 42,
       "hourly_wage": 2500,
-      "actual_likes": 5,
-      "matched_own_articles": 1,
+      "actual_likes": 8,
+      "matched_own_articles": 2,
       "trend_matches": 0,
-      "demand_score": 110.0,
+      "demand_score": 128.0,
       "status": "winner"
     },
     {
@@ -146,10 +146,10 @@
       "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
       "avg_hours_saved_monthly": 32,
       "hourly_wage": 3000,
-      "actual_likes": 6,
-      "matched_own_articles": 1,
+      "actual_likes": 9,
+      "matched_own_articles": 2,
       "trend_matches": 0,
-      "demand_score": 113.0,
+      "demand_score": 131.0,
       "status": "winner"
     },
     {
@@ -234,10 +234,10 @@
       "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
       "avg_hours_saved_monthly": 45,
       "hourly_wage": 3500,
-      "actual_likes": 5,
-      "matched_own_articles": 1,
+      "actual_likes": 8,
+      "matched_own_articles": 2,
       "trend_matches": 0,
-      "demand_score": 127.5,
+      "demand_score": 145.5,
       "status": "winner"
     },
     {
@@ -302,10 +302,10 @@
       "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
       "avg_hours_saved_monthly": 45,
       "hourly_wage": 3500,
-      "actual_likes": 5,
-      "matched_own_articles": 1,
+      "actual_likes": 8,
+      "matched_own_articles": 2,
       "trend_matches": 0,
-      "demand_score": 127.5,
+      "demand_score": 145.5,
       "status": "winner"
     },
     {
@@ -313,10 +313,10 @@
       "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
       "avg_hours_saved_monthly": 32,
       "hourly_wage": 3000,
-      "actual_likes": 6,
-      "matched_own_articles": 1,
+      "actual_likes": 9,
+      "matched_own_articles": 2,
       "trend_matches": 0,
-      "demand_score": 113.0,
+      "demand_score": 131.0,
       "status": "winner"
     },
     {
@@ -324,15 +324,15 @@
       "title": "EC・物販の在庫管理＆価格改定自動化",
       "avg_hours_saved_monthly": 42,
       "hourly_wage": 2500,
-      "actual_likes": 5,
-      "matched_own_articles": 1,
+      "actual_likes": 8,
+      "matched_own_articles": 2,
       "trend_matches": 0,
-      "demand_score": 110.0,
+      "demand_score": 128.0,
       "status": "winner"
     }
   ],
   "live_needs_radar": {
-    "analyzed_at": "2026-11-21T10:38:55.365557+09:00",
+    "analyzed_at": "2026-11-21T10:42:02.837322+09:00",
     "api_status": {
       "own_api": "live",
       "trend_api": "live"
@@ -344,10 +344,10 @@
         "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
         "avg_hours_saved_monthly": 45,
         "hourly_wage": 3500,
-        "actual_likes": 5,
-        "matched_own_articles": 1,
+        "actual_likes": 8,
+        "matched_own_articles": 2,
         "trend_matches": 0,
-        "demand_score": 127.5,
+        "demand_score": 145.5,
         "status": "winner"
       },
       {
@@ -355,10 +355,10 @@
         "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
         "avg_hours_saved_monthly": 32,
         "hourly_wage": 3000,
-        "actual_likes": 6,
-        "matched_own_articles": 1,
+        "actual_likes": 9,
+        "matched_own_articles": 2,
         "trend_matches": 0,
-        "demand_score": 113.0,
+        "demand_score": 131.0,
         "status": "winner"
       },
       {
@@ -366,10 +366,10 @@
         "title": "EC・物販の在庫管理＆価格改定自動化",
         "avg_hours_saved_monthly": 42,
         "hourly_wage": 2500,
-        "actual_likes": 5,
-        "matched_own_articles": 1,
+        "actual_likes": 8,
+        "matched_own_articles": 2,
         "trend_matches": 0,
-        "demand_score": 110.0,
+        "demand_score": 128.0,
         "status": "winner"
       }
     ],
@@ -413,7 +413,7 @@
     "own_articles_performance": [
       {
         "key": "n5d0e28a74f91",
-        "title": "【先着10部¥980】コピペ5分で毎日のルーティン作業を消滅させる『全10業種・50選 AIプロンプト＆GAS自動実行コード完全版』",
+        "title": "【先着10部¥980】補助金申請・採用・ECをコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
         "likes": 3,
         "price": 980
       },

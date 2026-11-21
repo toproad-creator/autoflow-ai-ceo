@@ -245,26 +245,45 @@ def update_paid_note_and_price(top_winners: list[dict] | None = None) -> dict:
             title_box.fill(new_title)
             time.sleep(1)
 
-        # ProseMirror 内の <paywall-line> より前のHTMLのみを安全に差し替え（有料エリアは一切触らない）
-        replaced = page.evaluate(
+        # ProseMirror 内の <paywall-line> より前を ProseMirror 正規の Selection + Paste で安全に差し替える（有料エリアは保護）
+        body_box = page.locator('.ProseMirror').first
+        body_box.click()
+        time.sleep(0.5)
+
+        prepared = page.evaluate(
+            """() => {
+                const editor = document.querySelector('.ProseMirror');
+                if (!editor) return false;
+                const paywall = editor.querySelector('paywall-line');
+                if (!paywall) return false;
+                editor.focus();
+                const range = document.createRange();
+                range.setStart(editor, 0);
+                range.setEndBefore(paywall);
+                const sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+                return true;
+            }"""
+        )
+        if not prepared:
+            context.close()
+            return {"status": "aborted_selection_failed"}
+
+        time.sleep(0.3)
+        page.keyboard.press("Backspace")
+        time.sleep(1.0)
+
+        pasted_ok = page.evaluate(
             """(newFreeHtml) => {
                 const editor = document.querySelector('.ProseMirror');
                 if (!editor) return false;
                 const paywall = editor.querySelector('paywall-line');
                 if (!paywall) return false;
+                editor.focus();
 
-                while (paywall.previousSibling) {
-                    editor.removeChild(paywall.previousSibling);
-                }
-
-                if (paywall.nextElementSibling && paywall.nextElementSibling.innerText.includes('有料エリアライン')) {
-                    editor.removeChild(paywall.nextElementSibling);
-                }
-
-                const p = document.createElement('p');
-                editor.insertBefore(p, paywall);
                 const range = document.createRange();
-                range.selectNodeContents(p);
+                range.setStart(editor, 0);
                 range.collapse(true);
                 const sel = window.getSelection();
                 sel.removeAllRanges();
@@ -283,12 +302,35 @@ def update_paid_note_and_price(top_winners: list[dict] | None = None) -> dict:
             }""",
             free_preview_html
         )
-        print(f"[CRO Upgrade] Replaced free preview before paywall: {replaced}")
-        time.sleep(4)
+        time.sleep(3.5)
 
-        if not replaced:
+        # 保存前にエディタDOM上の実態検証（無料エリアにTOP3ブロックが反映され、かつ有料エリアが無傷であること）
+        post_check = page.evaluate(
+            """() => {
+                const editor = document.querySelector('.ProseMirror');
+                if (!editor) return { ok: false, reason: 'no_editor_after' };
+                const paywall = editor.querySelector('paywall-line');
+                if (!paywall) return { ok: false, reason: 'paywall_missing_after' };
+                let beforeText = '';
+                let cur = editor.firstChild;
+                while (cur && cur !== paywall) {
+                    beforeText += (cur.textContent || '');
+                    cur = cur.nextSibling;
+                }
+                let afterLen = 0;
+                cur = paywall.nextSibling;
+                while (cur) {
+                    afterLen += (cur.textContent || '').trim().length;
+                    cur = cur.nextSibling;
+                }
+                const hasTop3 = beforeText.includes('3大自動化領域') && beforeText.includes('先着10部');
+                return { ok: hasTop3 && afterLen >= 500, hasTop3, beforeLen: beforeText.length, afterLen };
+            }"""
+        )
+        print(f"[CRO Upgrade] Post-paste editor verify: pasted={pasted_ok} check={post_check}")
+        if not post_check.get("ok"):
             context.close()
-            return {"status": "aborted_replace_failed"}
+            return {"status": "aborted_editor_verify_failed", "detail": post_check}
 
         # 公開設定画面へ進む
         pub_step = page.locator('button:has-text("公開に進む")').first

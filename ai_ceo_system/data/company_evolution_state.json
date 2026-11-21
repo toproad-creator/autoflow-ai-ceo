@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-21T10:39:44.711830+09:00",
+  "generated_at": "2026-11-21T10:42:37.330676+09:00",
   "day": 18,
   "market_needs_insight": {
     "api_status": {
@@ -50,22 +50,22 @@
       {
         "slug": "subsidy-business-plan",
         "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
-        "demand_score": 127.5,
-        "actual_likes": 5,
+        "demand_score": 145.5,
+        "actual_likes": 8,
         "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
       },
       {
         "slug": "hr-resume-screening",
         "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
-        "demand_score": 113.0,
-        "actual_likes": 6,
+        "demand_score": 131.0,
+        "actual_likes": 9,
         "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
       },
       {
         "slug": "ec-inventory",
         "title": "EC・物販の在庫管理＆価格改定自動化",
-        "demand_score": 110.0,
-        "actual_likes": 5,
+        "demand_score": 128.0,
+        "actual_likes": 8,
         "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
       }
     ],
@@ -88,9 +88,9 @@
     ]
   },
   "dynamic_offer_config": {
-    "updated_at": "2026-11-21T10:39:44.711383+09:00",
+    "updated_at": "2026-11-21T10:42:37.330557+09:00",
     "board_sync_note": "Day 18 経営会議＆市場ニーズ調査をサイト・LPへ自動反映済",
-    "internal_goal_ref": "本日23:59までに、需要TOP3に特化した訴求により初決済1件（¥980）を確実に計上する。",
+    "internal_goal_ref": "本日23:59までに、補助金・採用・ECのいずれかの特化訴求により初決済（¥980）を1件以上計上する。",
     "hero_badge": "注目レシピTOP3反映中｜先着10部限定 50%OFF（¥1,980 ➔ ¥980）",
     "spotlight_headline": "今もっとも選ばれている自動化テーマ：補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
     "spotlight_subcopy": "実務ユーザーの要望が多い「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「EC・物販の在庫管理＆価格改定自動化」をはじめ、全10業種・50種類のコピペ完結テンプレートを収録。無料エリアで実物完成コード2本をそのままお試しいただけます。",
@@ -102,8 +102,8 @@
         "avg_hours_saved_monthly": 45,
         "hourly_wage": 3500,
         "yearly_yen": 1890000,
-        "demand_score": 127.5,
-        "actual_likes": 5
+        "demand_score": 145.5,
+        "actual_likes": 8
       },
       {
         "rank": 2,
@@ -112,8 +112,8 @@
         "avg_hours_saved_monthly": 32,
         "hourly_wage": 3000,
         "yearly_yen": 1152000,
-        "demand_score": 113.0,
-        "actual_likes": 6
+        "demand_score": 131.0,
+        "actual_likes": 9
       },
       {
         "rank": 3,
@@ -122,8 +122,8 @@
         "avg_hours_saved_monthly": 42,
         "hourly_wage": 2500,
         "yearly_yen": 1260000,
-        "demand_score": 110.0,
-        "actual_likes": 5
+        "demand_score": 128.0,
+        "actual_likes": 8
       }
     ]
   },

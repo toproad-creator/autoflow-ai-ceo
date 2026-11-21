@@ -189,17 +189,30 @@ class AutoRemediationAgent:
         }
 
     def _sync_paid_note_headline_and_preview(self, evolution_state: dict, sync_paid_note: bool) -> dict:
-        """④ 有料noteの無料エリア冒頭とタイトルを需要TOP3に合わせて安全更新する"""
+        """④ 有料noteの無料エリア冒頭とタイトルを需要TOP3に合わせて安全更新し、公開APIで実反映を検証する"""
         if not sync_paid_note:
             return {"task": "有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期", "status": "skipped_by_flag", "ok": True}
 
         top_winners = evolution_state.get("selection_and_focus", {}).get("winners_top3") or []
         try:
+            import urllib.request
             from upgrade_paid_note_cro import sync_paid_note_safely_if_needed
 
             res = sync_paid_note_safely_if_needed(top_winners=top_winners, force=False)
             st = res.get("status", "")
             ok = st in ("synced", "already_synced_with_current_top3", "skipped_github_actions")
+            if ok and st in ("synced", "already_synced_with_current_top3"):
+                try:
+                    req = urllib.request.Request(f"https://note.com/api/v3/notes/{PAID_NOTE_KEY}", headers={"User-Agent": "Mozilla/5.0"})
+                    with urllib.request.urlopen(req, timeout=8) as resp:
+                        ndata = json.loads(resp.read().decode("utf-8")).get("data", {})
+                    live_body = ndata.get("body", "") or ""
+                    if "3大自動化領域" not in live_body or int(ndata.get("price", 0) or 0) <= 0:
+                        res = sync_paid_note_safely_if_needed(top_winners=top_winners, force=True)
+                        st = res.get("status", "")
+                        ok = st == "synced"
+                except Exception:
+                    pass
             return {
                 "task": "有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）",
                 "status": st,

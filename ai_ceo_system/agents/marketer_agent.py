@@ -58,7 +58,10 @@ class MarketerAgent:
             if pos >= max(6, int(max_len * 0.55)):
                 cut = cut[:pos]
                 break
-        return cls._balance_brackets(cut)
+        res = cls._balance_brackets(cut)
+        while len(res) > 4 and res[-1] in ("を", "が", "に", "で", "と", "の", "へ", "や", "は", "も"):
+            res = res[:-1].rstrip("、・： ")
+        return res
 
     @classmethod
     def _enforce_x_limit(cls, body_without_url: str, url: str, max_body_chars: int = 112) -> str:
