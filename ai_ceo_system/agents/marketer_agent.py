@@ -18,10 +18,60 @@ class MarketerAgent:
         os.makedirs(MARKETING_DIR, exist_ok=True)
 
     @staticmethod
-    def _enforce_x_limit(body_without_url: str, url: str, max_body_chars: int = 112) -> str:
-        clean_body = body_without_url.strip()
+    def _balance_brackets(text: str) -> str:
+        """開いたまま閉じられていない括弧や重複括弧を自動で修復し、不自然な途中切れをなくす。"""
+        pairs = [("「", "」"), ("『", "』"), ("（", "）"), ("(", ")")]
+        cleaned = text.strip()
+        for op, cl in pairs:
+            while op + op in cleaned:
+                cleaned = cleaned.replace(op + op, op)
+            while cl + cl in cleaned:
+                cleaned = cleaned.replace(cl + cl, cl)
+            diff = cleaned.count(op) - cleaned.count(cl)
+            if diff > 0:
+                last_op = cleaned.rfind(op)
+                tail_len = len(cleaned) - last_op
+                if tail_len <= 14 and last_op >= 0:
+                    cleaned = cleaned[:last_op].rstrip("、・： ")
+                else:
+                    cleaned = cleaned.rstrip("、・： ") + (cl * diff)
+            elif diff < 0:
+                for _ in range(-diff):
+                    idx = cleaned.find(cl)
+                    if idx >= 0:
+                        cleaned = cleaned[:idx] + cleaned[idx + 1:]
+        return cleaned.strip("、：・ ")
+
+    @classmethod
+    def _clean_phrase_for_x(cls, text: str, max_len: int) -> str:
+        """長い文章をX用に自然な区切り・閉じた括弧のまま指定文字数以内へ要約整形する。"""
+        s = (text or "").replace("\n", " ").strip()
+        for op, cl in [("「", "」"), ("『", "』")]:
+            if s.startswith(op) and s.endswith(cl):
+                s = s[1:-1].strip()
+        if len(s) <= max_len:
+            return cls._balance_brackets(s)
+        cut = s[:max_len]
+        # 句読点や区切り記号があればそこで自然に切る
+        for sep in ("。", "、", "：", "／", "・", " "):
+            pos = cut.rfind(sep)
+            if pos >= max(6, int(max_len * 0.55)):
+                cut = cut[:pos]
+                break
+        return cls._balance_brackets(cut)
+
+    @classmethod
+    def _enforce_x_limit(cls, body_without_url: str, url: str, max_body_chars: int = 112) -> str:
+        clean_body = cls._balance_brackets(body_without_url.strip())
         if len(clean_body) > max_body_chars:
-            clean_body = clean_body[: max_body_chars - 1] + "👇"
+            lines = clean_body.splitlines()
+            if len(lines) >= 2:
+                head = "\n".join(lines[:-1])
+                avail = max(10, max_body_chars - len(head) - 3)
+                tail = cls._clean_phrase_for_x(lines[-1], avail)
+                clean_body = f"{head}\n{tail}👇"
+            if len(clean_body) > max_body_chars:
+                clean_body = cls._clean_phrase_for_x(clean_body, max_body_chars - 1) + "👇"
         return f"{clean_body}\n{url}"
 
     def generate_daily_campaigns(
@@ -39,39 +89,46 @@ class MarketerAgent:
         board_record: dict | None = None,
     ) -> dict:
         board_agenda = "利用拡大と初決済獲得に向けた導線再構築"
-        board_action_short = f"全27ページに限定¥{price_jpy}追従バーを自動実装"
+        board_action_short = f"全27ページに限定¥{price_jpy}追従バーを実装"
+        top_needs_tag = "補助金・採用・EC自動化"
         if board_record:
-            board_agenda = (board_record.get("agenda") or board_agenda)[:28]
+            raw_agenda = board_record.get("agenda") or board_agenda
+            board_agenda = self._clean_phrase_for_x(raw_agenda, 24)
             actions = board_record.get("ceo_final_decision", {}).get("approved_actions", [])
             if actions:
                 first_act = actions[0].split("】")[-1].strip()
                 if first_act:
-                    board_action_short = first_act[:26]
+                    board_action_short = self._clean_phrase_for_x(first_act, 24)
+            top_titles = board_record.get("top_need_titles") or []
+            if top_titles:
+                short_tops = [t.split("の")[0][:5] for t in top_titles[:3]]
+                top_needs_tag = "・".join(short_tops)
 
         # パターン①：メイン版（Webサイト誘導・本文112文字以内厳守）
         body_p1 = (
-            f"【AI実験(Gemini) Day{day}】\n"
-            f"放置中にAI役員会議が自己診断し「{board_agenda[:22]}」を決議…😨\n"
-            f"利用{gh_clones}回・スキ{note_likes}件から{board_action_short[:20]}👇"
+            f"【AI起業対決 Day{day}】\n"
+            f"利用{gh_clones}回・スキ{note_likes}件でも売上0円にAI役員会議が危機感🔥\n"
+            f"需要TOP3（{top_needs_tag}）集中と「{self._clean_phrase_for_x(board_action_short, 18)}」を実行👇"
         )
         x_pattern1_web = self._enforce_x_limit(body_p1, WEB_TOOL_URL, max_body_chars=112)
 
         # パターン②：note直結版（¥980セール記事へ直接誘導・本文112文字以内厳守）
         body_p2 = (
-            f"【AI実験(Gemini) Day{day}】\n"
-            f"AI社長が「無料満足での離脱」を検知し、記事{total_notes}本目＆「{board_action_short[:16]}」を即実行…😨\n"
-            f"先着10部¥{price_jpy}セール稼働中👇"
+            f"【AI起業対決 Day{day}】\n"
+            f"AI会議で「{self._clean_phrase_for_x(board_agenda, 22)}」を決議！\n"
+            f"{top_needs_tag}特化オファー＆先着10部¥{price_jpy}で公開中👇"
         )
         x_pattern2_note = self._enforce_x_limit(body_p2, PAID_NOTE_URL, max_body_chars=112)
 
-        # パターン③：リプライ欄用（最新無料note記事誘導・本文112文字以内厳守）
+        # パターン③：リプライ欄用（YouTubeショートまたは最新無料note誘導・本文112文字以内厳守）
+        reply_target_url = short_url if (short_url and short_url.startswith("http")) else latest_note_url
+        reply_label = "ショート動画" if reply_target_url == short_url else f"記事{total_notes}本目"
         body_reply = (
-            f"▼ AI役員会議のDay{day}自己改善ログ\n"
-            f"・プログラム利用：{gh_clones}回突破\n"
-            f"・noteスキ：計{note_likes}件（{total_notes}本目公開）\n"
-            f"・AI決議：{board_action_short}👇"
+            f"▼ Day{day}のAI会議＆自己改善ログ（{reply_label}）\n"
+            f"・ツール利用：{gh_clones}回 / スキ：{note_likes}件\n"
+            f"・実施：{self._clean_phrase_for_x(board_action_short, 24)}👇"
         )
-        x_pattern3_reply = self._enforce_x_limit(body_reply, latest_note_url, max_body_chars=112)
+        x_pattern3_reply = self._enforce_x_limit(body_reply, reply_target_url, max_body_chars=112)
 
         x_thread = [
             x_pattern1_web,

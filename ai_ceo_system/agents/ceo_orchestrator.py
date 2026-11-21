@@ -12,6 +12,7 @@ if hasattr(sys.stdout, "reconfigure"):
 
 sys.path.insert(0, os.path.dirname(__file__))
 
+from auto_remediation_agent import AutoRemediationAgent
 from cfo_analytics_agent import CFOAnalyticsAgent
 from company_evolution_agent import CompanyEvolutionAgent
 from developer_agent import DeveloperAgent
@@ -126,37 +127,15 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
     niches = research_report["high_demand_niches"]
     ranked_niches = sorted(niches, key=lambda x: x.get("demand_score", 0), reverse=True)
     log_step(
-        f"[1/8 Research & Needs Radar] Niches: {len(niches)} | "
+        f"[1/9 Research & Needs Radar] Niches: {len(niches)} | "
         f"Top1 Need: {ranked_niches[0]['title']}"
     )
 
-    # 2. Initial CRO & CTO Build (Base 27 Pages before inspection)
-    developer = DeveloperAgent()
-    build_report = developer.build_all(niches)
-    packager = ProductPackagerAgent()
-    pack_report = packager.build_commercial_product_and_lp()
-    log_step(
-        f"[2/8 CRO & CTO Base Build] Built {build_report['tools_count']} Web Tools + "
-        f"{build_report['seo_pages_built']} SEO pages"
-    )
-
-    # 3. CMO Note Auto-Publisher Agent (Local Windows 08:00 scheduler - prioritizes high-demand niches)
-    is_github_actions = os.getenv("GITHUB_ACTIONS", "").lower() == "true"
-    note_pub_result = {"status": "skipped_github_actions"}
-    if not is_github_actions:
-        try:
-            from note_auto_publisher import NoteAutoPublisherAgent
-            note_publisher = NoteAutoPublisherAgent()
-            note_pub_result = note_publisher.publish_daily_lead_if_needed(day=day, niches=ranked_niches)
-            log_step(f"[3/8 CMO Note Publisher] Status: {note_pub_result.get('status')} | URL: {note_pub_result.get('url', '')}")
-        except Exception as e:
-            log_step(f"[3/8 CMO Note Publisher] Warning: {e}\n{traceback.format_exc()}")
-
-    # 4. CFO & Analytics Agent
+    # 2. CFO & Analytics Agent
     metrics = cfo.audit_and_update_metrics(
         day=day,
-        built_pages_count=build_report["seo_pages_built"],
-        deployed_tools_count=build_report["tools_count"]
+        built_pages_count=len(niches),
+        deployed_tools_count=4,
     )
     balance = metrics["financials"]["current_balance"]
     total_revenue = metrics["financials"]["total_revenue"]
@@ -169,7 +148,7 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
     gh_clones = gh_meta.get("clones_14d", 315)
     gh_uniques = gh_meta.get("unique_cloners_14d", 126)
     log_step(
-        f"[4/8 CFO Audit] Balance: ¥{balance:,} | Revenue: ¥{total_revenue:,} | Price: ¥{price_jpy:,} | "
+        f"[2/9 CFO Audit] Balance: ¥{balance:,} | Revenue: ¥{total_revenue:,} | Price: ¥{price_jpy:,} | "
         f"Note Articles: {total_notes} (Likes: {total_likes}) | GitHub Clones: {gh_clones}"
     )
 
@@ -177,16 +156,16 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
     latest_note_url = published_notes[0]["url"] if published_notes else "https://note.com/toproad_1989/n/n5d0e28a74f91"
     latest_note_title = published_notes[0]["title"] if published_notes else "AutoFlow Pro"
 
-    # 5. CTO/QA Self-Diagnostic & E2E Inspector Agent (Find issues BEFORE the Board Meeting)
+    # 3. CTO/QA Self-Diagnostic & E2E Inspector Agent (Find issues BEFORE the Board Meeting)
     qa_agent = QAInspectorAgent()
     qa_report = qa_agent.run_full_inspection(niches)
     detected_issues = qa_report.get("detected_issues", [])
     log_step(
-        f"[5/8 CTO/QA Self-Diagnosis] URLs OK: {qa_report['urls_ok_count']}/{qa_report['total_urls_checked']} | "
+        f"[3/9 CTO/QA Self-Diagnosis] URLs OK: {qa_report['urls_ok_count']}/{qa_report['total_urls_checked']} | "
         f"Issues Detected: {len(detected_issues)} | Healthy: {qa_report['overall_healthy']}"
     )
 
-    # 6. Autonomous Profit Executive Board Meeting (5 Execs + Specialist AI Reports + Needs Radar)
+    # 4. Autonomous Profit Executive Board Meeting (5 Execs + Specialist AI Reports + Needs Radar + Backlog)
     board_agent = ExecutiveBoardAgent()
     board_record = board_agent.hold_daily_profit_board_meeting(
         day=day,
@@ -204,11 +183,11 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
         research_report=research_report,
     )
     log_step(
-        f"[6/8 Executive Board Meeting] Engine: {board_record.get('reasoning_engine')} | "
+        f"[4/9 Executive Board Meeting] Engine: {board_record.get('reasoning_engine')} | "
         f"Primary Goal: {board_record['ceo_final_decision']['primary_goal']}"
     )
 
-    # 6.5 Company Evolution Engine (Selection & Focus + Product Ladder + Dynamic AI Staff + New Business Portfolio)
+    # 5. Company Evolution Engine (Selection & Focus + Product Ladder + Dynamic AI Staff + New Business Portfolio)
     evolution_agent = CompanyEvolutionAgent()
     evolution_state = evolution_agent.run_evolution_cycle(
         day=day,
@@ -218,53 +197,41 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
         board_record=board_record,
     )
     log_step(
-        f"[6.5/8 Company Evolution Engine] AI Staff: {evolution_state['ai_team_roster']['total_headcount']} | "
+        f"[5/9 Company Evolution Engine] AI Staff: {evolution_state['ai_team_roster']['total_headcount']} | "
         f"Top1 Focus: {evolution_state['selection_and_focus']['winners_top3'][0]['title']}"
     )
 
-    # 6.6 Apply Board & Evolution Decisions Immediately to Web Site & Sales LP
+    # 6. Apply Board & Evolution Decisions Immediately to Web Site & Sales LP
+    developer = DeveloperAgent()
     build_report = developer.build_all(niches)
+    packager = ProductPackagerAgent()
     pack_report = packager.build_commercial_product_and_lp()
     log_step(
-        f"[6.6/8 Live Site & Offer Sync] Rebuilt {build_report['tools_count']} Web Tools + "
-        f"{build_report['seo_pages_built']} SEO pages + LP (TOP3 Needs & 3-Step Product Ladder synced)"
+        f"[6/9 Live Site & Offer Build] Rebuilt {build_report['tools_count']} Web Tools + "
+        f"{build_report['seo_pages_built']} SEO pages + LP (TOP3, Recommend Funnel & 3-Step Product Ladder synced)"
     )
 
-    # 6.8 Autonomous Learning Loop Engine (Collect -> Cluster -> Draft -> Replay -> Measure -> Prune -> Gate)
-    learning_agent = LearningLoopAgent()
-    learning_state = learning_agent.run_learning_cycle(day=day)
-    log_step(
-        f"[6.8/8 Learning Loop] Failures: {learning_state['summary']['failures_total']} | "
-        f"Active Rules: {learning_state['summary']['active_rules_count']} | "
-        f"Repeats Blocked: {learning_state['summary']['repeats_blocked']}"
-    )
-
-    # 7. CMO YouTube Short Auto-Generation & Auto-Upload (Local only)
-    latest_short_url = ""
-    if not is_github_actions and build_shorts:
+    # 7. CMO Note Auto-Publisher Agent (Runs AFTER Board Meeting to prioritize latest TOP3 demand niches)
+    is_github_actions = os.getenv("GITHUB_ACTIONS", "").lower() == "true"
+    note_pub_result = {"status": "skipped_github_actions"}
+    if not is_github_actions:
         try:
-            from daily_short_pipeline import DailyShortPipelineAgent
-            short_agent = DailyShortPipelineAgent()
-            # まず前日以前で未作成のショート（例: Day 10）があれば自動補完し、続けて本日分を作成・公開
-            for target_d in range(max(10, day - 1), day + 1):
-                short_res = short_agent.build_and_upload_daily_short(
-                    day=target_d,
-                    balance=balance,
-                    price_jpy=price_jpy,
-                    total_notes=total_notes,
-                    total_likes=total_likes,
-                    gh_clones=gh_clones,
-                    gh_uniques=gh_uniques,
-                    latest_note_title=latest_note_title,
-                    latest_note_thumb_path=note_pub_result.get("thumbnail_path", ""),
-                    auto_upload=True,
-                )
-                latest_short_url = short_res.get("youtube_url", latest_short_url)
-                log_step(f"[7/8 CMO Short Pipeline] Day {target_d} Status: {short_res.get('status')} | URL: {latest_short_url}")
+            from note_auto_publisher import NoteAutoPublisherAgent
+            note_publisher = NoteAutoPublisherAgent()
+            note_pub_result = note_publisher.publish_daily_lead_if_needed(day=day, niches=ranked_niches)
+            log_step(f"[7/9 CMO Note Publisher] Status: {note_pub_result.get('status')} | URL: {note_pub_result.get('url', '')}")
         except Exception as e:
-            log_step(f"[7/8 CMO Short Pipeline] Warning: {e}")
+            log_step(f"[7/9 CMO Note Publisher] Warning: {e}\n{traceback.format_exc()}")
 
-    # 8. CMO X (140-char compliant) Viral Posts reflecting Board Decisions & Outbound IndexNow
+    # Re-fetch published notes so new daily post is reflected in X & status_log
+    published_notes = fetch_all_published_notes() or published_notes
+    if published_notes:
+        latest_note_url = published_notes[0]["url"]
+        latest_note_title = published_notes[0]["title"]
+
+    # 7.2 CMO X Posts (140-char compliant & bracket-balanced) + Outbound IndexNow
+    uploaded_shorts_pre = load_uploaded_shorts()
+    latest_short_url = next((s.get("url", "") for s in reversed(uploaded_shorts_pre) if s.get("day") == day and s.get("url")), "")
     marketer = MarketerAgent()
     campaign_data = marketer.generate_daily_campaigns(
         day=day,
@@ -281,9 +248,59 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
     )
     sales_agent = OutboundSalesAgent()
     sales_report = sales_agent.execute_daily_sales_actions(niches)
-    log_step(f"[8/8 CMO & Sales Agent] Generated Board-Driven 140-char X Posts + Pinged IndexNow ({sales_report['submitted_urls_count']} URLs)")
+    log_step(f"[7.2/9 CMO & Sales Agent] Generated Board-Driven X Posts + Pinged IndexNow ({sales_report['submitted_urls_count']} URLs)")
 
-    # Update root status_log.md dynamically with Needs Radar, Selection & Focus, Product Ladder, Team Roster, Portfolio, Board Decisions, and X Posts
+    # 7.5 Autonomous Remediation & Action Backlog Verification (Self-Repair + Paid Note TOP3 Safe Sync + X Repair + Gates)
+    remediation_agent = AutoRemediationAgent()
+    remediation_report = remediation_agent.run_remediation_cycle(
+        day=day,
+        detected_issues=detected_issues,
+        board_record=board_record,
+        evolution_state=evolution_state,
+        campaign_data=campaign_data,
+        niches=niches,
+        sync_paid_note=("--skip-note-sync" not in sys.argv),
+    )
+    bsum = remediation_report["backlog_summary"]
+    log_step(
+        f"[7.5/9 Auto-Remediation & Verification] All Gates OK: {remediation_report['all_gates_passed']} | "
+        f"Paid Note Sync: {remediation_report['checks']['paid_note_sync'].get('status')} | "
+        f"Backlog Resolved: {bsum['resolved']}/{bsum['total']}"
+    )
+
+    # 7.8 Autonomous Learning Loop Engine (Collect -> Cluster -> Draft -> Replay -> Measure -> Prune -> Gate)
+    learning_agent = LearningLoopAgent()
+    learning_state = learning_agent.run_learning_cycle(day=day)
+    log_step(
+        f"[7.8/9 Learning Loop] Failures: {learning_state['summary']['failures_total']} | "
+        f"Active Rules: {learning_state['summary']['active_rules_count']} | "
+        f"Repeats Blocked: {learning_state['summary']['repeats_blocked']}"
+    )
+
+    # 8. CMO YouTube Short Auto-Generation & Auto-Upload (Local only)
+    if not is_github_actions and build_shorts:
+        try:
+            from daily_short_pipeline import DailyShortPipelineAgent
+            short_agent = DailyShortPipelineAgent()
+            for target_d in range(max(10, day - 1), day + 1):
+                short_res = short_agent.build_and_upload_daily_short(
+                    day=target_d,
+                    balance=balance,
+                    price_jpy=price_jpy,
+                    total_notes=total_notes,
+                    total_likes=total_likes,
+                    gh_clones=gh_clones,
+                    gh_uniques=gh_uniques,
+                    latest_note_title=latest_note_title,
+                    latest_note_thumb_path=note_pub_result.get("thumbnail_path", ""),
+                    auto_upload=True,
+                )
+                latest_short_url = short_res.get("youtube_url", latest_short_url)
+                log_step(f"[8/9 CMO Short Pipeline] Day {target_d} Status: {short_res.get('status')} | URL: {latest_short_url}")
+        except Exception as e:
+            log_step(f"[8/9 CMO Short Pipeline] Warning: {e}")
+
+    # Update root status_log.md dynamically with Remediation & Backlog tracking + Needs Radar + Board Decisions + X Posts
     note_bullets = "\n".join(
         [f"  - {'【有料パック 先着10部¥980】' if n['price'] > 0 else '【無料集客記事】'}{n['title']} (スキ: {n['likes']}件) -> {n['url']}" for n in published_notes]
     )
@@ -293,6 +310,23 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
     )
     issues_bullets = "\n".join([f"  - {iss}" for iss in detected_issues])
     approved_bullets = "\n".join([f"  - {act}" for act in board_record["ceo_final_decision"]["approved_actions"]])
+    rem_checks = remediation_report.get("checks", {})
+    remediation_bullets = "\n".join([
+        f"  - {'✅' if chk.get('ok') else '⏳'} **{chk.get('task')}** （状態: `{chk.get('status', 'ok' if chk.get('ok') else 'pending')}`）"
+        for chk in rem_checks.values()
+    ])
+    backlog_data = {}
+    backlog_file = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "action_backlog.json")
+    if os.path.exists(backlog_file):
+        try:
+            with open(backlog_file, "r", encoding="utf-8") as bf:
+                backlog_data = json.load(bf)
+        except Exception:
+            pass
+    backlog_bullets = "\n".join([
+        f"  - {'✅ [完了]' if it.get('status') == 'resolved' else '⏳ [未完了・翌朝引継]'} **{it.get('id')}**: {it.get('action')} *(根拠: {it.get('verification_evidence')})*"
+        for it in backlog_data.get("items", [])
+    ])
 
     winners_bullets = "\n".join(
         [f"  - **TOP {idx + 1}: {w['title']}** （需要スコア: {w['demand_score']}pt / スキ: {w['actual_likes']}件）→ {w['action']}" for idx, w in enumerate(evolution_state["selection_and_focus"]["winners_top3"])]
@@ -313,15 +347,24 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
     status_md = f"""# 自律型AI CEO ＆ 自己進化AI企業システム 経営ステータスログ (status_log.md)
 
 - **最終自動更新日時:** {datetime.now().astimezone().isoformat()}
-- **現在フェーズ:** Day {day} / 90（5大成長エンジン＆自律役員会議オーケストレーター稼働中）
+- **現在フェーズ:** Day {day} / 90（自律課題解決・自己修復＆AI役員会議オーケストレーター稼働中）
 - **現在残高:** ¥{balance:,}（初期資金 ¥15,000 / 累計支出 ¥0 / 累計売上 ¥{total_revenue:,}）
-- **有料商品ステータス:** 先着10部限定 **¥{price_jpy:,}**（定価 ¥1,980 から50%OFFセール中・無料試し読み10,515字＋実物コード2本公開済）
+- **有料商品ステータス:** 先着10部限定 **¥{price_jpy:,}**（定価 ¥1,980 から50%OFFセール中・無料試し読み＋実物コード2本公開済）
 - **note公開記事ステータス:** 公開記事数 {total_notes}本（有料記事1本 + 無料集客記事 {max(0, total_notes - 1)}本 / 累計スキ数: {total_likes}件）
 {note_bullets}
 - **YouTubeショート自動公開ステータス:** 計 {len(uploaded_shorts)}本 公開中
 {short_bullets}
 - **GitHubトラフィック計測:** 過去14日間クローン数 {gh_clones}回（ユニーク {gh_uniques}名）
 - **全自動E2E動作点検ステータス:** {qa_report['urls_ok_count']}/{qa_report['total_urls_checked']} URL正常稼働（JSエラー: {len(qa_report['browser_e2e'].get('js_console_errors', []))}件）
+
+---
+
+## 🛠️ 本日のAI自己修復 ＆ 会議宿題の実行完了トラッキング（解決済: {bsum['resolved']}/{bsum['total']}件）
+### 自動検証＆自己修復ゲート
+{remediation_bullets}
+
+### 会議決議アクション 実行トラッキング（action_backlog.json）
+{backlog_bullets}
 
 ---
 

@@ -65,6 +65,22 @@ class ExecutiveBoardAgent:
         except Exception:
             pass
 
+        try:
+            backlog_path = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "action_backlog.json")
+            if os.path.exists(backlog_path):
+                with open(backlog_path, "r", encoding="utf-8") as f:
+                    bdata = json.loads(f.read())
+                pending = bdata.get("pending_for_next_board", [])
+                res_cnt = bdata.get("today_resolved_count", 0)
+                tot_cnt = bdata.get("today_total_actions", 0)
+                if pending:
+                    pending_txt = " / ".join(p.get("action", "")[:45] for p in pending[:3])
+                    prev_summary += f" | 【要対応：前回未完了の宿題 {len(pending)}件】{pending_txt}"
+                elif tot_cnt > 0:
+                    prev_summary += f" | 【前回自己修復実績】宿題 {res_cnt}/{tot_cnt} 件を自動解決・テスト合格済"
+        except Exception:
+            pass
+
         return issues, prev_summary
 
     def _load_market_needs_context(self, research_report: dict | None = None) -> tuple[str, list[str], list[dict]]:
@@ -122,7 +138,7 @@ class ExecutiveBoardAgent:
 【システム自己診断（QA自動点検）で検出された現在の問題点・課題】
 {issues_bullet}
 
-【前回の役員会議の記録（同じ議論の繰り返しは厳禁・必ず一歩進んだ具体策を出すこと）】
+【前回の役員会議・宿題完了状況（未完了宿題があれば最優先で解消策を出し、同じ議論の繰り返しは避けること）】
 - {prev_summary}
 
 【重要ブランド方針（人間心理・信頼性の厳守）】

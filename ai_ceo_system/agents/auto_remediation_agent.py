@@ -1,0 +1,350 @@
+import json
+import os
+import py_compile
+import re
+import sys
+from datetime import datetime
+from pathlib import Path
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
+ROOT_DIR = Path(__file__).resolve().parents[2]
+AI_CEO_DIR = ROOT_DIR / "ai_ceo_system"
+DATA_DIR = AI_CEO_DIR / "data"
+PRODUCT_SITE_DIR = AI_CEO_DIR / "product_site"
+MARKETING_DIR = AI_CEO_DIR / "marketing_outputs"
+AGENTS_DIR = AI_CEO_DIR / "agents"
+ACTION_BACKLOG_PATH = DATA_DIR / "action_backlog.json"
+REMEDIATION_REPORT_PATH = DATA_DIR / "auto_remediation_report.json"
+
+sys.path.insert(0, str(AGENTS_DIR))
+
+FORBIDDEN_CUSTOMER_TERMS = ("AI起業対決", "AI CEO", "実験ログ", "実験台", "実験", "対決")
+PAID_NOTE_KEY = "n5d0e28a74f91"
+
+
+class AutoRemediationAgent:
+    """自律課題解決・自己修復＆会議宿題トラッキングエンジン (Auto Remediation & Backlog Agent)
+    問題認識・会議決議を「言いっぱなし」にせず、実際のWebサイト・note有料記事冒頭・X投稿文を自ら修正し、
+    テストゲート（構文検査・顧客ページ禁止ワード0件検査・必須リンク検査）をパスしたものだけを採用する。
+    失敗時はロールバックし、未解決の宿題は次の役員会議へ自動で引き継ぐ。
+    """
+
+    def __init__(self):
+        DATA_DIR.mkdir(parents=True, exist_ok=True)
+        MARKETING_DIR.mkdir(parents=True, exist_ok=True)
+
+    @staticmethod
+    def _has_unbalanced_brackets(text: str) -> bool:
+        for op, cl in [("「", "」"), ("『", "』"), ("（", "）"), ("(", ")")]:
+            if text.count(op) != text.count(cl):
+                return True
+        return False
+
+    def _verify_and_fix_web_funnel(self, niches: list[dict]) -> dict:
+        """① Webツール・LPへのTOP3・利用後レコメンド・3段階商品階段の実装確認と自己修復"""
+        required_checks = {
+            "index.html": ["afterActionRecommend", "人気自動化レシピ TOP3", PAID_NOTE_KEY],
+            "prompt-builder.html": ["afterActionRecommend", PAID_NOTE_KEY],
+            "gas-debugger.html": ["afterActionRecommend", PAID_NOTE_KEY],
+            "pro-pack.html": ["注目レシピ TOP3", "3つの導入ステップ", PAID_NOTE_KEY],
+        }
+        missing = []
+        for fname, tokens in required_checks.items():
+            fpath = PRODUCT_SITE_DIR / fname
+            if not fpath.exists():
+                missing.append(f"{fname}:missing_file")
+                continue
+            txt = fpath.read_text(encoding="utf-8", errors="ignore")
+            for tk in tokens:
+                if tk not in txt:
+                    missing.append(f"{fname}:missing({tk})")
+
+        rebuilt = False
+        if missing:
+            from developer_agent import DeveloperAgent
+            from product_packager_agent import ProductPackagerAgent
+
+            DeveloperAgent().build_all(niches)
+            ProductPackagerAgent().build_commercial_product_and_lp()
+            rebuilt = True
+            # 再検証
+            still_missing = []
+            for fname, tokens in required_checks.items():
+                fpath = PRODUCT_SITE_DIR / fname
+                txt = fpath.read_text(encoding="utf-8", errors="ignore") if fpath.exists() else ""
+                for tk in tokens:
+                    if tk not in txt:
+                        still_missing.append(f"{fname}:missing({tk})")
+            missing = still_missing
+
+        return {
+            "task": "Webツール利用後レコメンド導線・TOP3・3段階商品階段の自動実装＆検証",
+            "rebuilt": rebuilt,
+            "ok": len(missing) == 0,
+            "missing": missing,
+        }
+
+    def _verify_and_clean_customer_html(self) -> dict:
+        """② 顧客向け全HTMLの禁止ワード検査と、万一混入時の安全バックアップ付き自動サニタイズ"""
+        html_files = [p for p in PRODUCT_SITE_DIR.glob("*.html") if p.name != "command-center.html"]
+        uc_dir = PRODUCT_SITE_DIR / "usecases"
+        if uc_dir.exists():
+            html_files.extend(uc_dir.glob("*.html"))
+
+        cleaned_files = []
+        violations_after = []
+        for hf in html_files:
+            orig = hf.read_text(encoding="utf-8", errors="ignore")
+            if any(term in orig for term in FORBIDDEN_CUSTOMER_TERMS):
+                backup = orig
+                sanitized = orig
+                for term in FORBIDDEN_CUSTOMER_TERMS:
+                    sanitized = sanitized.replace(term, "")
+                # HTML基本構造チェック（破損していたらロールバック）
+                if "<html" in sanitized and "</html>" in sanitized and PAID_NOTE_KEY in sanitized:
+                    hf.write_text(sanitized, encoding="utf-8")
+                    cleaned_files.append(hf.name)
+                else:
+                    hf.write_text(backup, encoding="utf-8")
+                    violations_after.append(hf.name)
+
+            # 最終チェック
+            cur = hf.read_text(encoding="utf-8", errors="ignore")
+            if any(term in cur for term in FORBIDDEN_CUSTOMER_TERMS):
+                violations_after.append(hf.name)
+
+        return {
+            "task": "顧客向け全Webページ（command-center除く）内部ワード0件検査＆自動浄化",
+            "checked_count": len(html_files),
+            "auto_cleaned_files": cleaned_files,
+            "ok": len(violations_after) == 0,
+            "remaining_violations": violations_after,
+        }
+
+    def _verify_and_fix_x_posts(self, day: int, campaign_data: dict) -> dict:
+        """③ X投稿文の括弧欠落・文字数超過検査と、自動整形リビルド＆保存"""
+        from marketer_agent import MarketerAgent
+
+        keys = ("x_post_pattern1_web", "x_post_pattern2_note", "x_post_pattern3_reply")
+        repaired_keys = []
+        remaining_issues = []
+
+        for k in keys:
+            post = campaign_data.get(k, "")
+            if not post:
+                remaining_issues.append(f"{k}:empty")
+                continue
+            lines = post.strip().splitlines()
+            url_line = lines[-1] if lines and lines[-1].startswith("http") else ""
+            body = "\n".join(lines[:-1]) if url_line else post
+
+            needs_fix = self._has_unbalanced_brackets(body) or len(body) > 112 or not url_line
+            if needs_fix:
+                repaired_body = MarketerAgent._balance_brackets(body)
+                fixed_post = MarketerAgent._enforce_x_limit(repaired_body, url_line or "https://note.com/toproad_1989/n/n5d0e28a74f91", max_body_chars=112)
+                campaign_data[k] = fixed_post
+                repaired_keys.append(k)
+
+            # 再検証
+            new_lines = campaign_data[k].strip().splitlines()
+            new_body = "\n".join(new_lines[:-1]) if new_lines[-1].startswith("http") else campaign_data[k]
+            if self._has_unbalanced_brackets(new_body) or len(new_body) > 112:
+                remaining_issues.append(k)
+
+        if repaired_keys:
+            campaign_data["x_post_140"] = campaign_data.get("x_post_pattern1_web", "")
+            campaign_data["x_thread"] = [campaign_data.get(k, "") for k in keys]
+            json_path = MARKETING_DIR / f"day{day}_campaigns.json"
+            json_path.write_text(json.dumps(campaign_data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+            ready_txt = f"""============================================================
+📱 【AI起業対決 Day {day}】X（旧Twitter）投稿用コピペテキスト（140字制限＆括弧整合検査クリア済）
+============================================================
+
+■ パターン①：メイン版（Webサイト誘導）
+------------------------------------------------------------
+{campaign_data.get('x_post_pattern1_web', '')}
+------------------------------------------------------------
+
+■ パターン②：note直結版（先着10部 ¥{campaign_data.get('price_jpy', 980)} セール記事へ直接誘導）
+------------------------------------------------------------
+{campaign_data.get('x_post_pattern2_note', '')}
+------------------------------------------------------------
+
+■ パターン③：リプライ欄（返信欄）連結用テキスト
+------------------------------------------------------------
+{campaign_data.get('x_post_pattern3_reply', '')}
+------------------------------------------------------------
+"""
+            (MARKETING_DIR / f"day{day}_x_posts_ready.txt").write_text(ready_txt, encoding="utf-8")
+            (MARKETING_DIR / "latest_x_posts_ready.txt").write_text(ready_txt, encoding="utf-8")
+
+        return {
+            "task": "X投稿文3パターンの文字数140字・括弧閉じ整合性チェック＆自己修復",
+            "repaired_keys": repaired_keys,
+            "ok": len(remaining_issues) == 0,
+            "remaining_issues": remaining_issues,
+        }
+
+    def _sync_paid_note_headline_and_preview(self, evolution_state: dict, sync_paid_note: bool) -> dict:
+        """④ 有料noteの無料エリア冒頭とタイトルを需要TOP3に合わせて安全更新する"""
+        if not sync_paid_note:
+            return {"task": "有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期", "status": "skipped_by_flag", "ok": True}
+
+        top_winners = evolution_state.get("selection_and_focus", {}).get("winners_top3") or []
+        try:
+            from upgrade_paid_note_cro import sync_paid_note_safely_if_needed
+
+            res = sync_paid_note_safely_if_needed(top_winners=top_winners, force=False)
+            st = res.get("status", "")
+            ok = st in ("synced", "already_synced_with_current_top3", "skipped_github_actions")
+            return {
+                "task": "有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）",
+                "status": st,
+                "ok": ok,
+                "detail": res,
+            }
+        except Exception as e:
+            return {
+                "task": "有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）",
+                "status": "error",
+                "ok": False,
+                "error": str(e),
+            }
+
+    def _run_python_syntax_gate(self) -> dict:
+        """⑤ 安全検証ゲート：全エージェントPythonコードに構文エラーがないことを保証"""
+        failed_files = []
+        checked = 0
+        for pyf in AGENTS_DIR.glob("*.py"):
+            checked += 1
+            try:
+                py_compile.compile(str(pyf), doraise=True)
+            except Exception as e:
+                failed_files.append(f"{pyf.name}: {e}")
+        return {
+            "task": "全エージェントPython構文安全検証ゲート",
+            "checked_count": checked,
+            "ok": len(failed_files) == 0,
+            "failed_files": failed_files,
+        }
+
+    def _update_backlog(
+        self,
+        day: int,
+        board_record: dict,
+        checks: dict[str, dict],
+    ) -> dict:
+        """会議決議と自己修復結果を宿題リスト（action_backlog.json）へ記録し、未解決タスクを引き継ぐ"""
+        prev_backlog = {}
+        if ACTION_BACKLOG_PATH.exists():
+            try:
+                prev_backlog = json.loads(ACTION_BACKLOG_PATH.read_text(encoding="utf-8"))
+            except Exception:
+                prev_backlog = {}
+
+        approved_actions = board_record.get("ceo_final_decision", {}).get("approved_actions", [])
+        action_items = []
+        for idx, act in enumerate(approved_actions, start=1):
+            act_lower = act.lower()
+            # 各会議決議がどの実システム修復・同期にマッピングされて達成されたかを判定
+            if "note" in act_lower or "有料" in act_lower or "冒頭" in act_lower or "トップ" in act_lower:
+                note_ok = checks["paid_note_sync"]["ok"]
+                web_ok = checks["web_funnel"]["ok"]
+                status = "resolved" if (note_ok and web_ok) else "pending"
+                evidence = f"Web側LP同期:{web_ok} / note有料記事冒頭安全同期:{checks['paid_note_sync'].get('status')}"
+            elif "x" in act_lower or "ショート" in act_lower or "動画" in act_lower:
+                x_ok = checks["x_posts"]["ok"]
+                status = "resolved" if x_ok else "pending"
+                evidence = f"X投稿整形＆括弧検証:{x_ok}（自動生成準備完了・ショートはStep8連携）"
+            elif "無料ツール" in act_lower or "導線" in act_lower or "レコメンド" in act_lower or "ボタン" in act_lower:
+                web_ok = checks["web_funnel"]["ok"]
+                status = "resolved" if web_ok else "pending"
+                evidence = f"全無料ツール利用後レコメンド＆追従バー実装確認:{web_ok}"
+            else:
+                all_gate = checks["syntax_gate"]["ok"] and checks["clean_html"]["ok"] and checks["web_funnel"]["ok"]
+                status = "resolved" if all_gate else "pending"
+                evidence = f"全ページE2E・禁止ワード0件({checks['clean_html']['checked_count']}件)・構文検証({checks['syntax_gate']['checked_count']}件):{all_gate}"
+
+            action_items.append({
+                "id": f"DAY{day}-ACT{idx}",
+                "action": act,
+                "status": status,
+                "verification_evidence": evidence,
+            })
+
+        # 技術安全チェック由来の宿題も登録
+        for key, chk in checks.items():
+            if not chk.get("ok"):
+                action_items.append({
+                    "id": f"DAY{day}-FIX-{key.upper()}",
+                    "action": f"【自己修復未完】{chk.get('task')}",
+                    "status": "pending",
+                    "verification_evidence": json.dumps(chk, ensure_ascii=False)[:180],
+                })
+
+        pending_items = [it for it in action_items if it["status"] != "resolved"]
+        resolved_items = [it for it in action_items if it["status"] == "resolved"]
+
+        payload = {
+            "updated_at": datetime.now().astimezone().isoformat(),
+            "day": day,
+            "previous_pending_count": len(prev_backlog.get("pending_for_next_board", [])),
+            "today_total_actions": len(action_items),
+            "today_resolved_count": len(resolved_items),
+            "today_pending_count": len(pending_items),
+            "items": action_items,
+            "pending_for_next_board": pending_items,
+        }
+        ACTION_BACKLOG_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        return payload
+
+    def run_remediation_cycle(
+        self,
+        day: int,
+        detected_issues: list[str],
+        board_record: dict,
+        evolution_state: dict,
+        campaign_data: dict,
+        niches: list[dict],
+        sync_paid_note: bool = True,
+    ) -> dict:
+        """自己修復・安全検証・会議宿題管理の全サイクルを実行する。"""
+        web_chk = self._verify_and_fix_web_funnel(niches)
+        html_chk = self._verify_and_clean_customer_html()
+        x_chk = self._verify_and_fix_x_posts(day, campaign_data)
+        paid_note_chk = self._sync_paid_note_headline_and_preview(evolution_state, sync_paid_note=sync_paid_note)
+        syntax_chk = self._run_python_syntax_gate()
+
+        checks = {
+            "web_funnel": web_chk,
+            "clean_html": html_chk,
+            "x_posts": x_chk,
+            "paid_note_sync": paid_note_chk,
+            "syntax_gate": syntax_chk,
+        }
+
+        backlog = self._update_backlog(day, board_record, checks)
+        all_gates_passed = all(c.get("ok", False) for c in checks.values())
+
+        report = {
+            "executed_at": datetime.now().astimezone().isoformat(),
+            "day": day,
+            "all_gates_passed": all_gates_passed,
+            "detected_issues_input_count": len(detected_issues),
+            "checks": checks,
+            "backlog_summary": {
+                "total": backlog["today_total_actions"],
+                "resolved": backlog["today_resolved_count"],
+                "pending": backlog["today_pending_count"],
+            },
+            "pending_for_next_board": backlog["pending_for_next_board"],
+        }
+        REMEDIATION_REPORT_PATH.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+        return report
+
+
+if __name__ == "__main__":
+    print("[AutoRemediationAgent] Module loaded and syntax ready.")

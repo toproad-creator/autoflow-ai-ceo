@@ -67,11 +67,35 @@ class DeveloperAgent:
             "cron_workflow": workflow_file
         }
 
+    def _get_top3_short_label(self) -> str:
+        evo_state = self._load_evolution_state()
+        winners = evo_state.get("dynamic_offer_config", {}).get("winner_highlights") or []
+        if winners:
+            names = [_sanitize_customer_text(w.get("title", "")).split("・")[0][:8] for w in winners[:3]]
+            return "・".join([n for n in names if n]) or "補助金・採用・EC自動化"
+        return "補助金・採用・EC自動化"
+
+    def _after_action_recommend_box(self, context_hint: str) -> str:
+        top3_label = self._get_top3_short_label()
+        return f"""
+        <div id="afterActionRecommend" class="hidden mt-4 bg-gradient-to-r from-amber-500/20 via-orange-500/15 to-indigo-950 border-2 border-amber-400 rounded-xl p-4 shadow-lg">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div>
+              <div class="text-xs font-black text-amber-300">✅ {context_hint}｜この業務をさらに完全自動化したい方へ</div>
+              <p class="text-xs text-slate-200 mt-1">今とくに需要が高い<strong>【{top3_label}】</strong>など全10業種・50本のエラー対策＆自動実行GASコード完全版を、<strong>先着10部限定 ¥980</strong>（即時閲覧可）で公開中です。</p>
+            </div>
+            <a href="{NOTE_URL}" target="_blank" rel="noopener" class="shrink-0 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-4 py-2.5 rounded-lg shadow">
+              ⚡ 完全版(限定¥980)を見る →
+            </a>
+          </div>
+        </div>"""
+
     def _nav_header(self) -> str:
+        top3_label = self._get_top3_short_label()
         return f"""
   <div class="bg-gradient-to-r from-amber-500/20 via-rose-500/20 to-indigo-500/20 border-b border-amber-400/40 py-2 px-4 text-center text-xs">
-    <span class="font-black text-amber-300">🔥 【リリース記念・先着10部限定 50%OFF】</span>
-    <span class="text-slate-200 ml-1">全10業種・50選 AIプロンプト＆GAS完全版パックを <strong>通常¥1,980 ➔ 特別価格【¥980】</strong> で公開中！（無料エリアに実物コード2本全文公開）</span>
+    <span class="font-black text-amber-300">🔥 【先着10部限定枠・50%OFF】</span>
+    <span class="text-slate-200 ml-1">需要TOP3（{top3_label}）含む全50選 AIプロンプト＆GAS完全版を <strong>通常¥1,980 ➔ ¥980</strong> で即時閲覧可（実物2本無料公開）</span>
     <a href="{NOTE_URL}" target="_blank" rel="noopener" class="ml-2 inline-block bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-2.5 py-0.5 rounded">今すぐ見る →</a>
   </div>
   <header class="border-b border-slate-800 py-4 px-6 flex flex-wrap justify-between items-center max-w-6xl mx-auto w-full gap-4">
@@ -92,8 +116,8 @@ class DeveloperAgent:
   <div class="fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur border-t-2 border-amber-400/70 py-2.5 px-4 shadow-2xl">
     <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-2">
       <div class="text-xs">
-        <span class="bg-rose-500 text-white font-black px-2 py-0.5 rounded mr-1.5">先着10部 50%OFF</span>
-        <span class="text-slate-100 font-bold">全10業種・50選 AIプロンプト＆GAS完全版パック（1レシピ19円・実物2本無料試し読みOK）</span>
+        <span class="bg-rose-500 text-white font-black px-2 py-0.5 rounded mr-1.5">先着10部限定枠</span>
+        <span class="text-slate-100 font-bold">【{top3_label}】他 全50選 AIプロンプト＆GAS完全版（1レシピ19円・即時閲覧OK）</span>
       </div>
       <a href="{NOTE_URL}" target="_blank" rel="noopener" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-4 py-2 rounded-lg shadow-lg shrink-0">
         🔥 限定 ¥980 で今すぐ入手する →
@@ -199,7 +223,7 @@ class DeveloperAgent:
         <label class="block text-xs text-slate-400 mb-1">あなたの想定時給換算（円）：<span id="wageLabel" class="text-sky-400 font-bold">¥2,500</span></label>
         <input id="hourlyWage" type="range" min="1200" max="10000" step="100" value="2500" class="w-full accent-sky-400 mb-6" />
 
-        <button onclick="generateAutomation()" class="w-full bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-400 hover:to-indigo-400 text-slate-950 font-black py-3 rounded-xl shadow-lg transition transform active:scale-95">
+        <button onclick="generateAutomation(true)" class="w-full bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-400 hover:to-indigo-400 text-slate-950 font-black py-3 rounded-xl shadow-lg transition transform active:scale-95">
           ⚡ 削減額を計算＆自動化コードを生成する
         </button>
       </div>
@@ -228,6 +252,7 @@ class DeveloperAgent:
             📋 コピー
           </button>
         </div>
+        {self._after_action_recommend_box("自動化コードを出力・コピーしました")}
 
         <div class="mt-6 bg-gradient-to-r from-indigo-950/90 to-slate-900 border border-indigo-500/40 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
@@ -370,9 +395,15 @@ class DeveloperAgent:
       renderCode();
     }}
 
-    function generateAutomation() {{
+    function showAfterActionRecommend() {{
+      const box = document.getElementById('afterActionRecommend');
+      if (box) box.classList.remove('hidden');
+    }}
+
+    function generateAutomation(userTriggered) {{
       calculateROI();
       renderCode();
+      if (userTriggered) showAfterActionRecommend();
     }}
 
     function safeCopyText(text) {{
@@ -397,6 +428,7 @@ class DeveloperAgent:
     function copyCode() {{
       const text = document.getElementById('codeOutput').textContent;
       safeCopyText(text);
+      showAfterActionRecommend();
       const btn = document.getElementById('copyBtn');
       btn.textContent = '✅ コピー完了!';
       setTimeout(() => {{ btn.textContent = '📋 コピー'; }}, 2000);
@@ -478,6 +510,7 @@ class DeveloperAgent:
           <button onclick="copyPrompt()" id="copyPBtn" class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-1 rounded border border-slate-600">📋 コピー</button>
         </div>
         <pre id="promptResult" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-slate-200 overflow-x-auto whitespace-pre-wrap h-72 leading-relaxed"></pre>
+        {self._after_action_recommend_box("構造化プロンプトをコピーしました")}
 
         <div class="mt-6 bg-indigo-950/80 border border-amber-400/50 rounded-xl p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div>
@@ -516,6 +549,8 @@ class DeveloperAgent:
       if (navigator.clipboard && navigator.clipboard.writeText) {{
         navigator.clipboard.writeText(text).catch(() => {{}});
       }}
+      const rec = document.getElementById('afterActionRecommend');
+      if (rec) rec.classList.remove('hidden');
       const btn = document.getElementById('copyPBtn');
       btn.textContent = '✅ コピー完了!';
       setTimeout(() => {{ btn.textContent = '📋 コピー'; }}, 2000);
@@ -735,6 +770,7 @@ function checkEcPriceMargin() {{
           <button onclick="copyFixed()" id="copyFixBtn" class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-1 rounded border border-slate-600">📋 コピー</button>
         </div>
         <pre id="fixedCode" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-slate-200 overflow-x-auto whitespace-pre-wrap h-64"></pre>
+        {self._after_action_recommend_box("修正済み安全GASコードをコピーしました")}
 
         <div class="mt-6 bg-indigo-950/80 border border-amber-400/50 rounded-xl p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div>
@@ -784,6 +820,8 @@ function checkEcPriceMargin() {{
       if (navigator.clipboard && navigator.clipboard.writeText) {{
         navigator.clipboard.writeText(text).catch(() => {{}});
       }}
+      const rec = document.getElementById('afterActionRecommend');
+      if (rec) rec.classList.remove('hidden');
       const btn = document.getElementById('copyFixBtn');
       btn.textContent = '✅ コピー完了!';
       setTimeout(() => {{ btn.textContent = '📋 コピー'; }}, 2000);

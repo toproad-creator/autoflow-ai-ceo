@@ -1,0 +1,60 @@
+{
+  "executed_at": "2026-11-21T10:40:41.260132+09:00",
+  "day": 18,
+  "all_gates_passed": true,
+  "detected_issues_input_count": 1,
+  "checks": {
+    "web_funnel": {
+      "task": "Webツール利用後レコメンド導線・TOP3・3段階商品階段の自動実装＆検証",
+      "rebuilt": false,
+      "ok": true,
+      "missing": []
+    },
+    "clean_html": {
+      "task": "顧客向け全Webページ（command-center除く）内部ワード0件検査＆自動浄化",
+      "checked_count": 25,
+      "auto_cleaned_files": [],
+      "ok": true,
+      "remaining_violations": []
+    },
+    "x_posts": {
+      "task": "X投稿文3パターンの文字数140字・括弧閉じ整合性チェック＆自己修復",
+      "repaired_keys": [],
+      "ok": true,
+      "remaining_issues": []
+    },
+    "paid_note_sync": {
+      "task": "有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）",
+      "status": "synced",
+      "ok": true,
+      "detail": {
+        "synced_at": "2026-11-21T10:40:40.858225+09:00",
+        "top3_slugs": [
+          "subsidy-business-plan",
+          "hr-resume-screening",
+          "ec-inventory"
+        ],
+        "top3_titles": [
+          "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
+          "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
+          "EC・物販の在庫管理＆価格改定自動化"
+        ],
+        "title_applied": "【先着10部¥980】補助金申請・採用・ECをコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
+        "paid_area_chars_preserved": 67259,
+        "status": "synced"
+      }
+    },
+    "syntax_gate": {
+      "task": "全エージェントPython構文安全検証ゲート",
+      "checked_count": 25,
+      "ok": true,
+      "failed_files": []
+    }
+  },
+  "backlog_summary": {
+    "total": 4,
+    "resolved": 4,
+    "pending": 0
+  },
+  "pending_for_next_board": []
+}

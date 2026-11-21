@@ -2,12 +2,15 @@ import json
 import os
 import sys
 import time
+from datetime import datetime
+from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+load_dotenv(os.path.join(ROOT_DIR, ".env"))
 sys.path.insert(0, os.path.dirname(__file__))
 
 from thumbnail_generator import NoteThumbnailGenerator
@@ -15,12 +18,44 @@ from note_auto_publisher import NoteAutoPublisherAgent, PROFILE_DIR
 
 PAID_NOTE_KEY = "n5d0e28a74f91"
 TEMPLATES_JSON = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "autoflow_pro_50_templates.json")
+EVOLUTION_STATE_PATH = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "company_evolution_state.json")
+PAID_NOTE_SYNC_STATE_PATH = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "paid_note_sync_state.json")
 
 
-def build_high_converting_free_preview_html() -> str:
+def _sanitize_note_copy(text: str) -> str:
+    cleaned = text or ""
+    for term in ("AI起業対決", "AI CEO", "実験ログ", "実験台", "実験", "対決"):
+        cleaned = cleaned.replace(term, "")
+    return cleaned.strip()
+
+
+def _resolve_top_winners(top_winners: list[dict] | None = None) -> list[dict]:
+    if top_winners:
+        return top_winners[:3]
+    if os.path.exists(EVOLUTION_STATE_PATH):
+        try:
+            with open(EVOLUTION_STATE_PATH, "r", encoding="utf-8") as f:
+                evo = json.load(f)
+            wins = evo.get("selection_and_focus", {}).get("winners_top3") or []
+            if wins:
+                return wins[:3]
+        except Exception:
+            pass
+    return [
+        {"slug": "subsidy-business-plan", "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成"},
+        {"slug": "hr-resume-screening", "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成"},
+        {"slug": "ec-inventory", "title": "EC・物販の在庫管理＆価格改定自動化"},
+    ]
+
+
+def build_high_converting_free_preview_html(top_winners: list[dict] | None = None) -> str:
     with open(TEMPLATES_JSON, "r", encoding="utf-8") as f:
         data = json.load(f)
     templates = data.get("templates", [])
+    winners = _resolve_top_winners(top_winners)
+    top1 = _sanitize_note_copy(winners[0]["title"]) if len(winners) > 0 else "補助金申請・事業計画書自動作成"
+    top2 = _sanitize_note_copy(winners[1]["title"]) if len(winners) > 1 else "採用・職務経歴書スクリーニング自動化"
+    top3 = _sanitize_note_copy(winners[2]["title"]) if len(winners) > 2 else "EC・物販の在庫管理＆価格改定自動化"
 
     # 全50レシピの完全一覧を生成
     cat_groups = {}
@@ -33,7 +68,8 @@ def build_high_converting_free_preview_html() -> str:
 
     html = f"""
 <p><b>🔥【先着10部限定・50%OFFセール開催中！】</b><br>リリース記念として、通常価格 <b>¥1,980 ➔ 先着10部限定【¥980（1レシピあたり約19円）】</b> で公開しています！（※10部完売時点で ¥1,480 ➔ 定価 ¥1,980 へ段階的に値上げします）</p>
-<p>毎日の仕事で「スプレッドシートへのデータ転記」「営業・返信メールの作成」「SNSやYouTubeの投稿文作成」「請求書PDFの整理」「競合価格や在庫のチェック」に何時間も奪われていませんか？</p>
+<p><b>📈 最新の市場ニーズ調査で特に要望が多い「3大自動化領域」を完全収録！</b><br>① <b>{top1}</b><br>② <b>{top2}</b><br>③ <b>{top3}</b><br>特に需要が集中しているこの3大テーマの即戦力レシピはもちろん、<b>全10業種・50種類すべて</b>をそのまま手に入れていただけます。</p>
+<p>毎日の仕事で「事業計画・書類作成」「採用候補者のスクリーニング」「EC在庫や価格チェック」「請求書PDFの整理」「SNSや営業メール作成」に何時間も奪われていませんか？</p>
 <p>もしあなたが1日60分のルーティン作業を月に22日行っている場合、時給2,500円換算で<b>【年間 607,200円（約243時間）】</b>もの貴重な時間とコストを手作業に溶かしている計算になります。</p>
 <p>本記事『AutoFlow Pro 完全版パッケージ』は、プログラミング知識ゼロ・<b>コピペ5分</b>で今日からすぐに使える<b>【全10業種・計50種類】の「構造化AIプロンプト」と「Googleスプレッドシート自動実行コード（GAS）」</b>をすべて1つにまとめた実践コンプリートパックです。</p>
 <h2>■ なぜ「普通のChatGPTの使い方」では業務が自動化できないのか？</h2>
@@ -128,16 +164,25 @@ def build_high_converting_free_preview_html() -> str:
     return html
 
 
-def update_paid_note_and_price():
+def _build_top3_title(top_winners: list[dict] | None = None) -> str:
+    winners = _resolve_top_winners(top_winners)
+    short_tags = [_sanitize_note_copy(w.get("title", "")).split("・")[0][:6] for w in winners[:3]]
+    tag_str = "・".join([t for t in short_tags if t]) or "補助金・採用・EC"
+    return f"【先着10部¥980】{tag_str}をコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』"
+
+
+def update_paid_note_and_price(top_winners: list[dict] | None = None) -> dict:
     # 1. 新しいサムネイル（¥1,980 -> ¥980 限定セール版）を生成
     thumb_gen = NoteThumbnailGenerator()
     paid_thumb_path = thumb_gen.generate_paid_pack_thumbnail()
     print(f"[CRO Upgrade] Generated new sale thumbnail: {paid_thumb_path}")
 
-    free_preview_html = build_high_converting_free_preview_html()
-    new_title = "【先着10部¥980】コピペ5分で毎日のルーティン作業を消滅させる『全10業種・50選 AIプロンプト＆GAS自動実行コード完全版』"
-
+    winners = _resolve_top_winners(top_winners)
+    free_preview_html = build_high_converting_free_preview_html(winners)
+    new_title = _build_top3_title(winners)
     pub_agent = NoteAutoPublisherAgent()
+    email = os.getenv("NOTE_EMAIL", "")
+    password = os.getenv("NOTE_PASSWORD", "")
 
     with sync_playwright() as p:
         context = p.chromium.launch_persistent_context(
@@ -149,7 +194,46 @@ def update_paid_note_and_price():
         )
         page = context.pages[0] if context.pages else context.new_page()
         page.goto(f"https://editor.note.com/notes/{PAID_NOTE_KEY}/edit/", wait_until="domcontentloaded", timeout=30000)
-        time.sleep(6)
+        time.sleep(5)
+
+        if "login" in page.url and email and password:
+            inputs = page.locator("input")
+            if inputs.count() >= 2:
+                inputs.nth(0).click()
+                inputs.nth(0).press_sequentially(email, delay=40)
+                time.sleep(0.5)
+                inputs.nth(1).click()
+                inputs.nth(1).press_sequentially(password, delay=40)
+                time.sleep(1.0)
+                page.locator('button:has-text("ログイン")').first.click()
+                time.sleep(7)
+                page.goto(f"https://editor.note.com/notes/{PAID_NOTE_KEY}/edit/", wait_until="domcontentloaded", timeout=30000)
+                time.sleep(5)
+
+        if "login" in page.url:
+            context.close()
+            return {"status": "aborted_not_logged_in"}
+
+        # 安全チェック：有料エリア区切り線（paywall-line）と有料エリア本文が確実に存在するか事前確認
+        safety_check = page.evaluate(
+            """() => {
+                const editor = document.querySelector('.ProseMirror');
+                if (!editor) return { ok: false, reason: 'no_editor' };
+                const paywall = editor.querySelector('paywall-line');
+                if (!paywall) return { ok: false, reason: 'no_paywall_line' };
+                let afterLen = 0;
+                let cur = paywall.nextSibling;
+                while (cur) {
+                    afterLen += (cur.textContent || '').trim().length;
+                    cur = cur.nextSibling;
+                }
+                return { ok: afterLen >= 500, afterLen, reason: afterLen >= 500 ? 'ok' : 'paid_area_too_short' };
+            }"""
+        )
+        if not safety_check.get("ok"):
+            context.close()
+            print(f"[CRO Upgrade] ABORTED for safety: {safety_check}")
+            return {"status": "aborted_safety_guard", "detail": safety_check}
 
         # アイキャッチ画像を新しい ¥980 セール版に更新
         pub_agent._upload_eyecatch(page, paid_thumb_path)
@@ -161,7 +245,7 @@ def update_paid_note_and_price():
             title_box.fill(new_title)
             time.sleep(1)
 
-        # ProseMirror 内の <paywall-line> より前のHTMLを高成約セールスレターに差し替え、直後の不要な指示文を削除
+        # ProseMirror 内の <paywall-line> より前のHTMLのみを安全に差し替え（有料エリアは一切触らない）
         replaced = page.evaluate(
             """(newFreeHtml) => {
                 const editor = document.querySelector('.ProseMirror');
@@ -169,17 +253,14 @@ def update_paid_note_and_price():
                 const paywall = editor.querySelector('paywall-line');
                 if (!paywall) return false;
 
-                // paywall より前のノードをすべて削除
                 while (paywall.previousSibling) {
                     editor.removeChild(paywall.previousSibling);
                 }
 
-                // paywall の直後に残っていた作成時メモ「★noteで記事を公開する際...」があれば削除
                 if (paywall.nextElementSibling && paywall.nextElementSibling.innerText.includes('有料エリアライン')) {
                     editor.removeChild(paywall.nextElementSibling);
                 }
 
-                // paywall の先頭にフォーカスを移動し、ClipboardEvent('paste') で ProseMirror に正式認識させる
                 const p = document.createElement('p');
                 editor.insertBefore(p, paywall);
                 const range = document.createRange();
@@ -205,13 +286,16 @@ def update_paid_note_and_price():
         print(f"[CRO Upgrade] Replaced free preview before paywall: {replaced}")
         time.sleep(4)
 
+        if not replaced:
+            context.close()
+            return {"status": "aborted_replace_failed"}
+
         # 公開設定画面へ進む
         pub_step = page.locator('button:has-text("公開に進む")').first
         pub_step.click()
         time.sleep(5)
 
-        # 価格入力欄を探して 1980 -> 980 に変更
-        price_updated = False
+        # 価格入力欄を探して 980 を維持
         inputs = page.locator('input[type="number"], input[type="tel"], input[type="text"]')
         for i in range(inputs.count()):
             inp = inputs.nth(i)
@@ -220,23 +304,19 @@ def update_paid_note_and_price():
                 if val in ("1980", "1,980", "980"):
                     inp.click()
                     inp.fill("980")
-                    price_updated = True
-                    print(f"[CRO Upgrade] Updated price input from {val} to 980!")
+                    print(f"[CRO Upgrade] Confirmed price input: {val} -> 980")
                     break
             except Exception:
                 pass
 
         time.sleep(2)
-        # Step 1: 「有料エリア設定」ボタンがあればクリックして有料ライン確認画面へ進む
         paywall_step_btn = page.locator('button:has-text("有料エリア設定")').first
         if paywall_step_btn.is_visible(timeout=4000):
             paywall_step_btn.click()
-            print("[CRO Upgrade] Clicked 有料エリア設定 button")
             time.sleep(4)
 
         page.screenshot(path=os.path.join(ROOT_DIR, "ai_ceo_system", "data", "paid_note_publish_modal.png"))
 
-        # Step 2: 最終の「投稿する / 更新する / 公開」ボタンをクリック
         final_btn = page.locator('button:has-text("投稿する"), button:has-text("更新する"), button:has-text("公開")').last
         if final_btn.is_visible(timeout=5000):
             final_btn.click()
@@ -246,7 +326,46 @@ def update_paid_note_and_price():
         context.close()
         print("[CRO Upgrade] Paid Note update completed!")
 
+        sync_record = {
+            "synced_at": datetime.now().astimezone().isoformat(),
+            "top3_slugs": [w.get("slug", "") for w in winners[:3]],
+            "top3_titles": [_sanitize_note_copy(w.get("title", "")) for w in winners[:3]],
+            "title_applied": new_title,
+            "paid_area_chars_preserved": safety_check.get("afterLen", 0),
+            "status": "synced",
+        }
+        os.makedirs(os.path.dirname(PAID_NOTE_SYNC_STATE_PATH), exist_ok=True)
+        with open(PAID_NOTE_SYNC_STATE_PATH, "w", encoding="utf-8") as f:
+            json.dump(sync_record, f, ensure_ascii=False, indent=2)
+        return sync_record
+
+
+def sync_paid_note_safely_if_needed(top_winners: list[dict] | None = None, force: bool = False) -> dict:
+    """TOP3構成が変わったとき、または未同期のときだけ安全ガード付きで有料note冒頭とタイトルを更新する。"""
+    if os.getenv("GITHUB_ACTIONS", "").lower() == "true":
+        return {"status": "skipped_github_actions"}
+
+    winners = _resolve_top_winners(top_winners)
+    target_slugs = [w.get("slug", "") for w in winners[:3]]
+    if not force and os.path.exists(PAID_NOTE_SYNC_STATE_PATH):
+        try:
+            with open(PAID_NOTE_SYNC_STATE_PATH, "r", encoding="utf-8") as f:
+                prev = json.load(f)
+            if prev.get("status") == "synced" and prev.get("top3_slugs") == target_slugs:
+                return {
+                    "status": "already_synced_with_current_top3",
+                    "top3_slugs": target_slugs,
+                    "title_applied": prev.get("title_applied", ""),
+                    "synced_at": prev.get("synced_at", ""),
+                }
+        except Exception:
+            pass
+
+    return update_paid_note_and_price(top_winners=winners)
+
 
 if __name__ == "__main__":
-    update_paid_note_and_price()
+    force_flag = "--force" in sys.argv
+    res = sync_paid_note_safely_if_needed(force=force_flag)
+    print(json.dumps(res, ensure_ascii=False, indent=2))
 
