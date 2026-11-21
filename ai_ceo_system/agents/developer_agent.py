@@ -1032,6 +1032,9 @@ jobs:
         with:
           path: 'ai_ceo_system/product_site'
 
+      - name: Wait for Pages artifact metadata propagation
+        run: sleep 5
+
       - name: Deploy to GitHub Pages (24/7 Live Public URL)
         id: deployment
         uses: actions/deploy-pages@v4

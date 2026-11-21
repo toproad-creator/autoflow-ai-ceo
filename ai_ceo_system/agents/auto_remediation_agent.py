@@ -192,6 +192,8 @@ class AutoRemediationAgent:
         """④ 有料noteの無料エリア冒頭とタイトルを需要TOP3に合わせて安全更新し、公開APIで実反映を検証する"""
         if not sync_paid_note:
             return {"task": "有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期", "status": "skipped_by_flag", "ok": True}
+        if os.getenv("GITHUB_ACTIONS", "").lower() == "true":
+            return {"task": "有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）", "status": "skipped_github_actions", "ok": True}
 
         top_winners = evolution_state.get("selection_and_focus", {}).get("winners_top3") or []
         try:

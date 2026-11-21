@@ -6,8 +6,17 @@ import sys
 import time
 import urllib.request
 from datetime import datetime
-from dotenv import load_dotenv
-from playwright.sync_api import sync_playwright
+
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    def load_dotenv(*args, **kwargs):
+        return False
+
+try:
+    from playwright.sync_api import sync_playwright
+except ImportError:
+    sync_playwright = None
 from thumbnail_generator import NoteThumbnailGenerator
 
 if hasattr(sys.stdout, "reconfigure"):

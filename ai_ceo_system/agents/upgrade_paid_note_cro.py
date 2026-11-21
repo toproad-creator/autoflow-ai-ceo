@@ -3,8 +3,17 @@ import os
 import sys
 import time
 from datetime import datetime
-from dotenv import load_dotenv
-from playwright.sync_api import sync_playwright
+
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    def load_dotenv(*args, **kwargs):
+        return False
+
+try:
+    from playwright.sync_api import sync_playwright
+except ImportError:
+    sync_playwright = None
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
