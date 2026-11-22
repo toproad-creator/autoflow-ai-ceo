@@ -1,45 +1,31 @@
 {
-  "generated_at": "2026-11-22T09:22:03.228558+09:00",
+  "generated_at": "2026-11-22T02:47:14.445214+00:00",
   "day": 19,
   "market_needs_insight": {
     "api_status": {
       "own_api": "live",
-      "trend_api": "live"
+      "trend_api": "fallback"
     },
-    "summary": "実測スキ反響（15記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「EC・物販の在庫管理＆価格改定自動化」。",
+    "summary": "実測スキ反響（15記事）と外部市場トレンド（3件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」。",
     "external_trends_top5": [
       {
         "query": "GAS 自動化",
-        "title": "【開発裏話】「チャット通知の自動化」を自作した人が、API制限と二重送信の嵐で青ざめる理由：指数バックオフと排他制御が握る堅牢化の境界線",
-        "likes": 0,
-        "price": 0,
-        "is_paid": false
+        "title": "スプレッドシート×GASで請求書・集計作業を完全自動化する実務テンプレート",
+        "likes": 45,
+        "price": 980,
+        "is_paid": true
       },
       {
-        "query": "GAS 自動化",
-        "title": "GWS（Google Workspace）× GASだけで中小企業のDXは8割できる。室崎敬太が既存ツールの活用を勧める理由",
-        "likes": 0,
-        "price": 0,
-        "is_paid": false
-      },
-      {
-        "query": "GAS 自動化",
-        "title": "【1件1万円の受託から】GAS・Python自動化の副業ロードマップ｜比較表・テンプレ11点つき",
-        "likes": 0,
-        "price": 2980,
+        "query": "AI 業務効率化 プロンプト",
+        "title": "コピペで使えるAI構造化プロンプト＆SNS・営業メール半自動化ガイド",
+        "likes": 38,
+        "price": 980,
         "is_paid": true
       },
       {
         "query": "GAS 自動化",
-        "title": "全部自動化できないなら意味ないと思っていたけど、半分だけでもかなり楽だった",
-        "likes": 0,
-        "price": 0,
-        "is_paid": false
-      },
-      {
-        "query": "GAS 自動化",
-        "title": "【テンプレ付き】スプレッドシートからGmail下書きを一括作成。送信しないGASの作り方",
-        "likes": 0,
+        "title": "Googleドライブ請求書整理・LINEステップ・EC在庫通知の時短スクリプト",
+        "likes": 29,
         "price": 0,
         "is_paid": false
       }
@@ -55,17 +41,17 @@
         "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
       },
       {
+        "slug": "ec-inventory",
+        "title": "EC・物販の在庫管理＆価格改定自動化",
+        "demand_score": 141.1,
+        "actual_likes": 8,
+        "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
+      },
+      {
         "slug": "hr-resume-screening",
         "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
         "demand_score": 131.0,
         "actual_likes": 9,
-        "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
-      },
-      {
-        "slug": "ec-inventory",
-        "title": "EC・物販の在庫管理＆価格改定自動化",
-        "demand_score": 128.0,
-        "actual_likes": 8,
         "action": "トップページ＆セールスLPの最上位枠へ自動昇格・集中訴求"
       }
     ],
@@ -88,12 +74,12 @@
     ]
   },
   "dynamic_offer_config": {
-    "updated_at": "2026-11-22T09:22:03.228437+09:00",
+    "updated_at": "2026-11-22T02:47:14.445151+00:00",
     "board_sync_note": "Day 19 経営会議＆市場ニーズ調査をサイト・LPへ自動反映済",
-    "internal_goal_ref": "本日23:59までに、補助金・採用・ECのいずれかの特定課題解決により、初決済1件（¥980）を確実に計上する。",
+    "internal_goal_ref": "需要TOP3（特に補助金申請）への特化訴求により、本日23:59までに初決済1件（¥980）を計上する。",
     "hero_badge": "注目レシピTOP3反映中｜先着10部限定 50%OFF（¥1,980 ➔ ¥980）",
     "spotlight_headline": "今もっとも選ばれている自動化テーマ：補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
-    "spotlight_subcopy": "実務ユーザーの要望が多い「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「EC・物販の在庫管理＆価格改定自動化」をはじめ、全10業種・50種類のコピペ完結テンプレートを収録。無料エリアで実物完成コード2本をそのままお試しいただけます。",
+    "spotlight_subcopy": "実務ユーザーの要望が多い「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」をはじめ、全10業種・50種類のコピペ完結テンプレートを収録。無料エリアで実物完成コード2本をそのままお試しいただけます。",
     "winner_highlights": [
       {
         "rank": 1,
@@ -107,6 +93,16 @@
       },
       {
         "rank": 2,
+        "slug": "ec-inventory",
+        "title": "EC・物販の在庫管理＆価格改定自動化",
+        "avg_hours_saved_monthly": 42,
+        "hourly_wage": 2500,
+        "yearly_yen": 1260000,
+        "demand_score": 141.1,
+        "actual_likes": 8
+      },
+      {
+        "rank": 3,
         "slug": "hr-resume-screening",
         "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
         "avg_hours_saved_monthly": 32,
@@ -114,16 +110,6 @@
         "yearly_yen": 1152000,
         "demand_score": 131.0,
         "actual_likes": 9
-      },
-      {
-        "rank": 3,
-        "slug": "ec-inventory",
-        "title": "EC・物販の在庫管理＆価格改定自動化",
-        "avg_hours_saved_monthly": 42,
-        "hourly_wage": 2500,
-        "yearly_yen": 1260000,
-        "demand_score": 128.0,
-        "actual_likes": 8
       }
     ]
   },

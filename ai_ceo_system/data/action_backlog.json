@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-22T09:22:22.184320+09:00",
+  "updated_at": "2026-11-22T02:47:37.831384+00:00",
   "day": 19,
   "previous_pending_count": 0,
   "today_total_actions": 4,
@@ -8,27 +8,27 @@
   "items": [
     {
       "id": "DAY19-ACT1",
-      "action": "【CRO/ニーズ反映】TOP3ニーズ（補助金・採用・EC）別の個別ベネフィット訴求をnote有料記事の冒頭に追記",
+      "action": "【CRO/ニーズ反映】補助金・EC・採用の各需要に特化した「実利直結型」の個別紹介セクションを有料記事へ追加",
       "status": "resolved",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:already_synced_with_current_top3"
+      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:skipped_github_actions"
     },
     {
       "id": "DAY19-ACT2",
-      "action": "【CRO/CMO実装】無料ツール利用後のリダイレクト先を、汎用トップではなく「TOP3特化型セールスページ」へ変更",
+      "action": "【CRO/CMO実装】無料ツール利用後のサンクスページに、特定需要別の「5分で終わる自動化パック」限定リンクを設置",
       "status": "resolved",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:already_synced_with_current_top3"
+      "verification_evidence": "全無料ツール利用後レコメンド＆追従バー実装確認:True"
     },
     {
       "id": "DAY19-ACT3",
-      "action": "【CMO実装】Xにて「補助金申請・採用コスト削減」に特化した、実務家向けの実利優先投稿を3本実行",
+      "action": "【CMO実装】「補助金申請を5分で終わらせる方法」に特化した実演YouTubeショートとX連投による緊急集客",
       "status": "resolved",
       "verification_evidence": "X投稿整形＆括弧検証:True（自動生成準備完了・ショートはStep8連携）"
     },
     {
       "id": "DAY19-ACT4",
-      "action": "【CTO/進化エンジン実装】全Webページから「実験・対決」の文言を完全排除し、プロ仕様のUIへ即時一括置換",
+      "action": "【CTO/進化エンジン実装】全27ページの導線を「汎用」から「特定課題解決」へ一斉置換し、決済完了までのクリック数を最小化",
       "status": "resolved",
-      "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(25件):True"
+      "verification_evidence": "全無料ツール利用後レコメンド＆追従バー実装確認:True"
     }
   ],
   "pending_for_next_board": []

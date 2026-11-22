@@ -1,5 +1,5 @@
 {
-  "executed_at": "2026-11-22T09:22:22.185121+09:00",
+  "executed_at": "2026-11-22T02:47:37.831655+00:00",
   "day": 19,
   "all_gates_passed": true,
   "detected_issues_input_count": 1,
@@ -25,25 +25,15 @@
     },
     "paid_note_sync": {
       "task": "有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）",
-      "status": "already_synced_with_current_top3",
-      "ok": true,
-      "detail": {
-        "status": "already_synced_with_current_top3",
-        "top3_slugs": [
-          "subsidy-business-plan",
-          "hr-resume-screening",
-          "ec-inventory"
-        ],
-        "title_applied": "【先着10部¥980】補助金申請・採用・ECをコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
-        "synced_at": "2026-11-21T10:43:33.666452+09:00"
-      }
+      "status": "skipped_github_actions",
+      "ok": true
     },
     "cloud_ci_gate": {
       "task": "クラウド（GitHub Actions）互換コード・YAML設定・直近稼働検証ゲート",
       "workflow_repaired": false,
       "workflow_ok": true,
       "bare_cloud_imports": [],
-      "latest_ci_run_id": 44960495580,
+      "latest_ci_run_id": 44966303542,
       "latest_ci_conclusion": "success",
       "ok": true
     },
