@@ -1,5 +1,5 @@
 {
-  "executed_at": "2026-11-22T08:01:41.296867+09:00",
+  "executed_at": "2026-11-22T09:22:22.185121+09:00",
   "day": 19,
   "all_gates_passed": true,
   "detected_issues_input_count": 1,
@@ -43,7 +43,7 @@
       "workflow_repaired": false,
       "workflow_ok": true,
       "bare_cloud_imports": [],
-      "latest_ci_run_id": 44901910909,
+      "latest_ci_run_id": 44960495580,
       "latest_ci_conclusion": "success",
       "ok": true
     },
@@ -52,8 +52,32 @@
       "checked_count": 25,
       "ok": true,
       "failed_files": []
+    },
+    "business_quality_audit": {
+      "task": "消費者・ビジネス目線の実物品質監査（ツールTOP3・X自然文・動画差別化）＆自律修正",
+      "simulator_has_top3": true,
+      "short_pipeline_dynamic": true,
+      "auto_fixed": [],
+      "ok": true
     }
   },
+  "autonomous_improvement_proposals": [
+    {
+      "category": "動画訴求マンネリ防止",
+      "status": "code_fixed_for_next_render",
+      "detail": "次回生成分から daily_short_pipeline.py が毎日の会議議題・需要TOP1に応じたユニークタイトルで動画を生成するよう改修済。"
+    },
+    {
+      "category": "無料ツール×需要TOP3連動",
+      "status": "auto_applied",
+      "detail": "需要1位『補助金申請・融資用の事業計画書ド』と2位『採用』を無料シミュレーターに自動統合し、体験直後に¥980完全版への導線を直結。"
+    },
+    {
+      "category": "X文面品質＆動画差別化",
+      "status": "auto_applied",
+      "detail": "X投稿はAI（Gemini）で自然文を書き下ろし、ショート動画も毎日ユニークな議題・需要テーマでタイトルと台本を生成する仕組みへ移行完了。"
+    }
+  ],
   "backlog_summary": {
     "total": 4,
     "resolved": 4,

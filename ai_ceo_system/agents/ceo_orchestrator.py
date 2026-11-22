@@ -315,6 +315,10 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
         f"  - {'✅' if chk.get('ok') else '⏳'} **{chk.get('task')}** （状態: `{chk.get('status', 'ok' if chk.get('ok') else 'pending')}`）"
         for chk in rem_checks.values()
     ])
+    proposals_bullets = "\n".join([
+        f"  - **{pr.get('category')}** [`{pr.get('status')}`]: {pr.get('detail')}"
+        for pr in remediation_report.get("autonomous_improvement_proposals", [])
+    ])
     backlog_data = {}
     backlog_file = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "action_backlog.json")
     if os.path.exists(backlog_file):
@@ -362,6 +366,9 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
 ## 🛠️ 本日のAI自己修復 ＆ 会議宿題の実行完了トラッキング（解決済: {bsum['resolved']}/{bsum['total']}件）
 ### 自動検証＆自己修復ゲート
 {remediation_bullets}
+
+### 🧠 本日のAI自律分析・改善提案＆適用結果
+{proposals_bullets}
 
 ### 会議決議アクション 実行トラッキング（action_backlog.json）
 {backlog_bullets}

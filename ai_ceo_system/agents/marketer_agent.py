@@ -1,8 +1,17 @@
 import json
 import os
+import re
+import urllib.request
 from datetime import datetime
 
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    def load_dotenv(*args, **kwargs):
+        return False
+
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+load_dotenv(os.path.join(ROOT_DIR, ".env"))
 MARKETING_DIR = os.path.join(ROOT_DIR, "ai_ceo_system", "marketing_outputs")
 PAID_NOTE_URL = "https://note.com/toproad_1989/n/n5d0e28a74f91"
 WEB_TOOL_URL = "https://toproad-creator.github.io/autoflow-ai-ceo/"
@@ -86,6 +95,66 @@ class MarketerAgent:
                 clean_body = cls._clean_phrase_for_x(clean_body, max_body_chars - 1) + "👇"
         return f"{clean_body}\n{url}"
 
+    @staticmethod
+    def _generate_llm_x_posts(
+        day: int,
+        gh_clones: int,
+        note_likes: int,
+        total_notes: int,
+        price_jpy: int,
+        top_needs_tag: str,
+        board_agenda: str,
+        primary_goal: str,
+        reply_label: str,
+    ) -> dict | None:
+        """Geminiを使い、機械的な途中切れのない自然な日本語でX投稿本文3パターン（各105文字以内・URLなし）を生成する。"""
+        gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
+        if not gemini_key:
+            return None
+
+        prompt = f"""あなたはSNS運用担当（CMO）です。以下のDay {day}の経営データをもとに、X（旧Twitter）投稿用の文章を3パターン作成してください。
+
+【本日の実測データ】
+- 企画: 【AI起業対決 Day{day}】
+- ツール利用: {gh_clones}回 / note記事: {total_notes}本（累計スキ{note_likes}件） / 売上: ¥0
+- 有料商品価格: 先着10部限定 ¥{price_jpy}
+- 今とくに需要が高いTOP3: {top_needs_tag}
+- 本日のAI会議テーマ: {board_agenda}
+- 最優先ゴール: {primary_goal}
+- リプライ先コンテンツ: {reply_label}
+
+【厳守ルール】
+1. 3パターンそれぞれ、URLを含まない本文のみで必ず75〜102文字以内に収めること（文が途中で切れるのを防ぐため）。
+2. 末尾に「👇」を付け、改行やカッコ（「」・『』）は必ず閉じること。
+3. 自然な日本語として読みやすく、クリックしたくなるフックを入れること。
+4. 出力は必ず次のキーを持つJSONのみを返すこと:
+{{
+  "post1_web": "【AI起業対決 Day{day}】で始まる無料Webツール誘導用の本文（102文字以内）",
+  "post2_note": "【AI起業対決 Day{day}】で始まる先着10部¥{price_jpy}有料note誘導用の本文（102文字以内）",
+  "post3_reply": "▼ Day{day}のAI自己進化ログ（{reply_label}）で始まるリプライ連結用の本文（102文字以内）"
+}}"""
+
+        for model_name in ("gemini-3-flash-preview", "gemma-4-31b-it", "gemini-3.1-flash-lite"):
+            try:
+                url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={gemini_key}"
+                body = json.dumps({
+                    "contents": [{"parts": [{"text": prompt}]}],
+                    "generationConfig": {"temperature": 0.45},
+                }).encode("utf-8")
+                req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
+                with urllib.request.urlopen(req, timeout=20) as resp:
+                    payload = json.loads(resp.read().decode("utf-8"))
+                parts = payload["candidates"][0]["content"]["parts"]
+                content = "".join(p.get("text", "") for p in parts if not p.get("thought")) or parts[-1].get("text", "")
+                match = re.search(r"\{.*\}", content, re.S)
+                if match:
+                    parsed = json.loads(match.group(0))
+                    if all(isinstance(parsed.get(k), str) and len(parsed.get(k, "").strip()) >= 30 for k in ("post1_web", "post2_note", "post3_reply")):
+                        return parsed
+            except Exception:
+                continue
+        return None
+
     def generate_daily_campaigns(
         self,
         day: int,
@@ -101,45 +170,56 @@ class MarketerAgent:
         board_record: dict | None = None,
     ) -> dict:
         board_agenda = "利用拡大と初決済獲得に向けた導線再構築"
-        board_action_short = f"全27ページに限定¥{price_jpy}追従バーを実装"
+        primary_goal = f"本日中に先着10部¥{price_jpy}の初決済を達成する"
         top_needs_tag = "補助金・採用・EC自動化"
         if board_record:
             raw_agenda = board_record.get("agenda") or board_agenda
-            board_agenda = self._clean_phrase_for_x(raw_agenda, 24)
-            actions = board_record.get("ceo_final_decision", {}).get("approved_actions", [])
-            if actions:
-                first_act = actions[0].split("】")[-1].strip()
-                if first_act:
-                    board_action_short = self._clean_phrase_for_x(first_act, 24)
+            board_agenda = self._clean_phrase_for_x(raw_agenda, 36)
+            primary_goal = (board_record.get("ceo_final_decision", {}).get("primary_goal") or primary_goal)[:50]
             top_titles = board_record.get("top_need_titles") or []
             if top_titles:
-                short_tops = [t.split("の")[0][:5] for t in top_titles[:3]]
-                top_needs_tag = "・".join(short_tops)
+                short_tops = [t.split("の")[0].split("・")[0][:6] for t in top_titles[:3]]
+                top_needs_tag = "・".join([s for s in short_tops if s])
 
-        # パターン①：メイン版（Webサイト誘導・本文112文字以内厳守）
-        body_p1 = (
-            f"【AI起業対決 Day{day}】\n"
-            f"利用{gh_clones}回・スキ{note_likes}件でも売上0円にAI役員会議が危機感🔥\n"
-            f"需要TOP3（{top_needs_tag}）集中と「{self._clean_phrase_for_x(board_action_short, 18)}」を実行👇"
-        )
-        x_pattern1_web = self._enforce_x_limit(body_p1, WEB_TOOL_URL, max_body_chars=112)
-
-        # パターン②：note直結版（¥980セール記事へ直接誘導・本文112文字以内厳守）
-        body_p2 = (
-            f"【AI起業対決 Day{day}】\n"
-            f"AI会議で「{self._clean_phrase_for_x(board_agenda, 22)}」を決議！\n"
-            f"{top_needs_tag}特化オファー＆先着10部¥{price_jpy}で公開中👇"
-        )
-        x_pattern2_note = self._enforce_x_limit(body_p2, PAID_NOTE_URL, max_body_chars=112)
-
-        # パターン③：リプライ欄用（YouTubeショートまたは最新無料note誘導・本文112文字以内厳守）
         reply_target_url = short_url if (short_url and short_url.startswith("http")) else latest_note_url
         reply_label = "ショート動画" if reply_target_url == short_url else f"記事{total_notes}本目"
-        body_reply = (
-            f"▼ Day{day}のAI会議＆自己改善ログ（{reply_label}）\n"
-            f"・ツール利用：{gh_clones}回 / スキ：{note_likes}件\n"
-            f"・実施：{self._clean_phrase_for_x(board_action_short, 24)}👇"
+
+        llm_posts = self._generate_llm_x_posts(
+            day=day,
+            gh_clones=gh_clones,
+            note_likes=note_likes,
+            total_notes=total_notes,
+            price_jpy=price_jpy,
+            top_needs_tag=top_needs_tag,
+            board_agenda=board_agenda,
+            primary_goal=primary_goal,
+            reply_label=reply_label,
         )
+
+        if llm_posts:
+            body_p1 = llm_posts["post1_web"].strip()
+            body_p2 = llm_posts["post2_note"].strip()
+            body_reply = llm_posts["post3_reply"].strip()
+        else:
+            # 完結した自然なフォールバック文（途中切り抜きなし）
+            body_p1 = (
+                f"【AI起業対決 Day{day}】\n"
+                f"利用{gh_clones}回・スキ{note_likes}件でも売上0円にAI会議が危機感🔥\n"
+                f"人気TOP3（{top_needs_tag}）を無料ツールにも即追加＆導線を強化しました👇"
+            )
+            body_p2 = (
+                f"【AI起業対決 Day{day}】\n"
+                f"「なぜ売れないか」をAI役員9名で分析し、{top_needs_tag}特化へ売り場を刷新🔥\n"
+                f"先着10部限定¥{price_jpy}で50選完全版を公開中👇"
+            )
+            body_reply = (
+                f"▼ Day{day}のAI自己進化ログ（{reply_label}）\n"
+                f"・ツール利用：{gh_clones}回 / スキ：{note_likes}件\n"
+                f"・本日改善：{top_needs_tag}を無料＆有料導線へ反映👇"
+            )
+
+        x_pattern1_web = self._enforce_x_limit(body_p1, WEB_TOOL_URL, max_body_chars=112)
+        x_pattern2_note = self._enforce_x_limit(body_p2, PAID_NOTE_URL, max_body_chars=112)
         x_pattern3_reply = self._enforce_x_limit(body_reply, reply_target_url, max_body_chars=112)
 
         x_thread = [

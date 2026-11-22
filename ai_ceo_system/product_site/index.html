@@ -73,7 +73,9 @@
 
         <label class="block text-xs text-slate-400 mb-1">業務カテゴリ</label>
         <select id="taskCategory" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2.5 text-sm mb-4 focus:outline-none focus:border-sky-400">
-          <option value="ec">EC・物販：在庫監視・価格調査・出品データ整形</option>
+          <option value="subsidy">🔥 人気1位｜補助金・事業計画：申請書ドラフト＆収支表自動作成</option>
+          <option value="hr">🔥 人気2位｜採用・人事：職務経歴書スクリーニング＆面接質問自動生成</option>
+          <option value="ec">🔥 人気3位｜EC・物販：在庫監視・価格調査・出品データ整形</option>
           <option value="sns">SNS運用：X/Threads 毎日投稿・バズ構文生成</option>
           <option value="sales">営業・CS：問い合わせ自動返信・営業メール作成</option>
           <option value="backoffice">経理・事務：請求書データ抽出・スプレッドシート集計</option>
@@ -327,6 +329,18 @@
 
   <script>
     const TEMPLATES = {
+      subsidy: {
+        name: "補助金・事業計画：申請書ドラフト＆収支表自動作成",
+        prompt: `# 命令書\nあなたは補助金申請・認定支援機関レベルの中小企業診断士兼財務アナリストです。\n以下の【事業概要・投資内容】をもとに、採択審査で高く評価される「現状の課題」「補助事業の具体策」「数値根拠付きの売上・利益計画（3〜5年）」を構造化して出力してください。\n\n# 制約条件\n- 抽象表現を避け、KPI・生産性向上率・投資回収期間を必ず数値で示すこと\n- 出力末尾にスプレッドシート収支計画へそのまま貼れるTSVテーブルを付与すること`,
+        gas: `// スプレッドシートの事業計画数値から補助金用の3年・5年収支計画と異常値を自動検証するGAS\nfunction generateSubsidyFinancialPlan() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  const rows = sheet.getDataRange().getValues();\n  const warnings = [];\n  for (let i = 1; i < rows.length; i++) {\n    const [year, sales, cost, subsidy] = rows[i];\n    if (!year) continue;\n    const profit = Number(sales) - Number(cost);\n    const margin = Number(sales) > 0 ? (profit / Number(sales)) * 100 : 0;\n    sheet.getRange(i + 1, 5).setValue(profit);\n    sheet.getRange(i + 1, 6).setValue(margin.toFixed(1) + '%');\n    if (margin < 3) warnings.push(year + '年度の営業利益率が低下しています（要計画見直し）');\n  }\n  if (warnings.length > 0) Logger.log(warnings.join('\n'));\n}`,
+        roadmap: `【Step 1】タブ1のプロンプトに事業メモを貼り付け、申請書の骨子と収支表を3分で出力\n【Step 2】タブ2のGASをスプレッドシートに貼り付け、年間収支と利益率の自動試算・整合チェックを実行\n【Step 3】手書きゼロで提出レベルの申請書ドラフトが完成（作業時間約45時間/月を削減）`
+      },
+      hr: {
+        name: "採用・人事：職務経歴書スクリーニング＆面接質問自動生成",
+        prompt: `# 命令書\nあなたは採用専門のシニアHRマネージャーです。\n以下の【求人要件（必須スキル・歓迎要件）】と【候補者の職務経歴書】を照合し、①要件マッチ度（100点満点）、②強み・懸念点各3点、③一次面接で深掘りすべき具体的質問5選をTSV＋構造化形式で出力してください。`,
+        gas: `// スプレッドシートの応募者リストから高評価候補を自動判定し、面接案内下書きを自動生成するGAS\nfunction screenApplicantsAndDraftInvite() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  const rows = sheet.getDataRange().getValues();\n  for (let i = 1; i < rows.length; i++) {\n    const [name, email, score, status] = rows[i];\n    if (!name || status === 'SENT') continue;\n    if (Number(score) >= 80) {\n      const body = name + '様\nご応募ありがとうございます。一次面接のご案内をお送りします。';\n      GmailApp.createDraft(email, '【一次面接のご案内】', body);\n      sheet.getRange(i + 1, 4).setValue('DRAFTED');\n    }\n  }\n}`,
+        roadmap: `【Step 1】応募者の職務経歴書をタブ1プロンプトに入力し、評価スコアと面接質問を即時生成\n【Step 2】評価結果をスプレッドシートに蓄積し、タブ2のGASで80点以上の候補者へGmail面接案内下書きを自動作成\n【Step 3】書類確認と日程調整のミス・遅延をゼロ化（作業時間約32時間/月を削減）`
+      },
       ec: {
         name: "EC・物販：在庫監視・価格調査・出品データ整形",
         prompt: `# 命令書\nあなたはEC物販のデータアナリスト兼自動化エンジニアです。\n以下の生データ（商品情報・競合価格リスト）から、利益率20%以上を確保できる適正販売価格を算出し、検索SEOに強い商品タイトル（40文字以内）と箇条書き特徴5点をJSON形式で出力してください。\n\n# 制約条件\n- NGワード（最高、絶対、No.1等の景表法リスク語）は自動除外すること\n- 出力は必ず以下のキーを持つJSON配列とすること: [title, suggested_price, profit_margin, bullet_points]`,

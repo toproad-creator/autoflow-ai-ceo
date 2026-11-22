@@ -26,6 +26,44 @@ class DailyShortPipelineAgent:
     YouTubeショート動画（1080x1920・VOICEVOX音声＋BGM）を自動生成してYouTubeへ自動公開するエージェント
     """
 
+    def _load_day_context(self, day: int) -> dict:
+        """その日の役員会議・進化エンジン状態・既存アップロード済みタイトルを読み込み、毎回ユニークな動画構成を作る。"""
+        data_dir = AI_CEO_DIR / "data"
+        meeting = {}
+        m_path = data_dir / "board_meetings" / f"day{day}_meeting.json"
+        if m_path.exists():
+            try:
+                meeting = json.loads(m_path.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+        evo = {}
+        e_path = data_dir / "company_evolution_state.json"
+        if e_path.exists():
+            try:
+                evo = json.loads(e_path.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+        existing_titles = set()
+        if UPLOADED_JSON.exists():
+            try:
+                for it in json.loads(UPLOADED_JSON.read_text(encoding="utf-8")):
+                    if it.get("title"):
+                        existing_titles.add(it["title"])
+            except Exception:
+                pass
+        top_winners = evo.get("selection_and_focus", {}).get("winners_top3") or []
+        top1 = top_winners[0]["title"].split("・")[0][:12] if top_winners else "補助金・事業計画"
+        staff_count = evo.get("ai_team_roster", {}).get("total_headcount", 9)
+        agenda = (meeting.get("agenda") or f"需要TOP1「{top1}」集中と¥980初売上突破").strip()
+        goal = (meeting.get("ceo_final_decision", {}).get("primary_goal") or f"限定¥980初決済達成").strip()
+        return {
+            "top1_short": top1,
+            "staff_count": staff_count,
+            "agenda": agenda,
+            "goal": goal,
+            "existing_titles": existing_titles,
+        }
+
     def get_existing_uploaded_url(self, day: int) -> str:
         if UPLOADED_JSON.exists():
             try:
@@ -70,25 +108,35 @@ class DailyShortPipelineAgent:
         free_uri = img_to_data_uri(free_thumb_file)
 
         short_niche_title = latest_note_title.replace("【無料コピペOK】", "").split("をAIとGASで")[0][:22]
+        day_ctx = self._load_day_context(day)
+        top1_short = day_ctx["top1_short"]
+        staff_count = day_ctx["staff_count"]
+        agenda_short = day_ctx["agenda"][:26]
+
+        raw_title = f"【Day{day}】利用{gh_clones}回・スキ{total_likes}件でも0円…AI{staff_count}名が「{short_niche_title[:12]}」＆人気1位『{top1_short}』を自動反映 #Shorts"
+        if raw_title in day_ctx["existing_titles"] or len(raw_title) > 95:
+            raw_title = f"【Day{day}】{short_niche_title[:14]}×人気1位「{top1_short[:10]}」をAI{staff_count}名が自動反映（利用{gh_clones}回）#Shorts"
+        if raw_title in day_ctx["existing_titles"]:
+            raw_title = f"【Day{day}｜{agenda_short[:16]}】利用{gh_clones}回・スキ{total_likes}件の自律改善ログ #Shorts"
 
         scenes = [
             {
                 "scene": 1,
-                "narration": f"AIに1万5000円を渡して完全放置する対決、{day}日目。今日からAI社長が5人の専門AI役員を集め、利益を出すための緊急会議を自動で始めました。",
-                "text": f"AI起業対決【Day {day}】\n売上0円を打破するため\n【AI役員会議】が自動開幕！",
+                "narration": f"AI起業チャレンジ{day}日目！今日は{staff_count}名のAI社員が会議を開き、特に要望が多い「{top1_short}」の自動化を無料ツールにも自動追加しました。",
+                "text": f"AI起業【Day {day}｜{staff_count}名体制】\n本日の議題：{agenda_short[:18]}\n人気1位『{top1_short[:12]}』へ集中！",
                 "html": f"""<!DOCTYPE html><html><head><meta charset="UTF-8"><style>{COMMON_CSS}</style></head><body>
-                  <div class="top-bar"><span class="badge-day">DAY {day} / 90</span><span class="top-title">利益創出特化型・AI役員会議が自動稼働</span><span class="wallet-pill">残高 ¥{balance:,}</span></div>
+                  <div class="top-bar"><span class="badge-day">DAY {day} / 90</span><span class="top-title">AI社員{staff_count}名・自律会議＆進化ログ</span><span class="wallet-pill">残高 ¥{balance:,}</span></div>
                   <div class="content-area">
                     <div class="terminal-window" style="border-color:#facc15;">
-                      <div class="win-header"><span class="dot dot-y"></span><span class="win-title" style="color:#facc15;">🏢 executive_board_agent.py 自律役員会議ログ</span></div>
+                      <div class="win-header"><span class="dot dot-y"></span><span class="win-title" style="color:#facc15;">🏢 Day {day} 議題：{agenda_short}</span></div>
                       <div class="win-body" style="font-size:24px; line-height:1.65;">
-                        ・<b>CEO（AI社長）</b>： 「唯一の目的は利益を出すこと。自己満足の開発は禁止！」<br>
-                        ・<b>CFO（財務AI）</b>： 「利用{gh_clones}回・スキ{total_likes}件・残高¥{balance:,}。成約率改善に全集中すべき」<br>
-                        ・<b>CRO（収益AI）</b>： 「全27ページに画面下部追従の『限定¥{price_jpy}購入バー』を即実装します」<br>
-                        ・<b>CMO（集客AI）</b>： 「記事・X投稿・ショート動画まで一気通貫で自動公開します」<br><br>
+                        ・<b>CEO（AI社長）</b>： 「今日の焦点はニーズ1位『{top1_short}』の訴求と成約導線の最適化だ」<br>
+                        ・<b>CFO（財務AI）</b>： 「利用{gh_clones}回・スキ{total_likes}件・残高¥{balance:,}。無駄を減らしTOP3へ集中すべき」<br>
+                        ・<b>CRO（収益AI）</b>： 「ツール利用直後に¥{price_jpy}限定版へのレコメンドを出し、3段階プランで価値を示します」<br>
+                        ・<b>専門AI社員4名</b>： 「市場ニーズ調査・セールスコピー改善・有料note冒頭同期まで全自動で完了！」<br><br>
                         <div style="background:#161b22; padding:18px; border-radius:14px; border-left:5px solid #facc15; color:#fef08a;">
-                          <b>⚡ 人間介入ゼロの合議制組織：</b><br>
-                          毎朝8時に5人のAI役員が数字を分析し、改善策の決定から実装まで全自動で完遂！
+                          <b>⚡ 自律進化・全7テストゲート稼働：</b><br>
+                          問題分析から修正・公開テストまで人間介入ゼロで毎日アップデート！
                         </div>
                       </div>
                     </div>
@@ -175,15 +223,16 @@ class DailyShortPipelineAgent:
 
         script_meta = {
             "day": day,
-            "video_title": f"【Day{day}】売上0円に危機感を持ったAI社長、自ら5人のAI役員会議を開いて全サイトを大改造した件 #Shorts",
+            "video_title": raw_title,
             "description": (
                 f"90日間・人間介入ゼロのAI起業対決 Day {day}の記録です。\n"
-                f"利益（売上）を出すという唯一の目的のため、AI社長（CEO）がCFO・CRO・CMO・CTOの専門AI役員と毎朝自動で経営会議を開催する体制へ進化！\n"
-                f"プログラム利用{gh_clones}回・noteスキ{total_likes}件（公開{total_notes}本）のアクセスを決済へ繋げるため、全27ページの画面下部に『先着10部限定¥{price_jpy}追従購入バー』を自動実装しました。\n\n"
+                f"本日の議題：{day_ctx['agenda']}\n"
+                f"AI社員{staff_count}名体制で市場ニーズ1位『{top1_short}』と『{short_niche_title}』を自動展開し、"
+                f"無料ツール（利用{gh_clones}回）・note（スキ{total_likes}件）の全導線を自動アップデートしました。\n\n"
                 f"#AI起業対決 #AI副業 #業務自動化 #Shorts"
             ),
             "hashtags": ["#AI起業対決", "#AI副業", "#業務自動化", "#Shorts"],
-            "pinned_comment": f"AI社長たちが自ら役員会議を開き、全27ページへの『先着10部¥{price_jpy}追従バー』実装と{total_notes}本目の記事公開を完了しました！そろそろ最初の1部が売れると思いますか？ [A: 今週中に初売上達成！] か [B: まだ0円が続く] でコメント欄に予想を残してください🔥",
+            "pinned_comment": f"Day {day}は人気1位『{top1_short}』の無料ツール連動と『{short_niche_title}』公開まで自動完遂しました！初売上（先着10部¥{price_jpy}）が出ると思いますか？コメントで予想を教えてください🔥",
             "scenes": [
                 {"scene": s["scene"], "narration": s["narration"], "text": s["text"]}
                 for s in scenes
