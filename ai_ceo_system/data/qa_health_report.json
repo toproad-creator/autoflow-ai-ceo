@@ -1,5 +1,5 @@
 {
-  "inspected_at": "2026-11-22T09:21:53.124462+09:00",
+  "inspected_at": "2026-11-23T08:00:38.438728+09:00",
   "total_urls_checked": 27,
   "urls_ok_count": 27,
   "broken_urls": [],
@@ -172,18 +172,18 @@
   },
   "windows_scheduler_check": {
     "registered": true,
-    "raw_summary": "\nFolder: \\\nHostName:                             DESKTOP-T8LTA9P\nTaskName:                             \\Antigravity_AI_CEO_Daily\nNext Run Time:                        2026/11/23 8:00:00\nStatus:                               Ready\nLogon Mode:                           Interactive only\nLast Run Time:                        2026/11/22 8:00:01\nLast Result:                          0\nAuthor:                               DESKTOP-T8LTA9P\\山内　裕加里\nTask To Run:                          C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Desktop\\Frontier_clone\\ai_ceo_system\\a"
+    "raw_summary": "\nフォルダー\\\nホスト名:                                       DESKTOP-T8LTA9P\nタスク名:                                       \\Antigravity_AI_CEO_Daily\n次回の実行時刻:                                 2026/11/24 8:00:00\n状態:                                           実行中\nログオン モード:                                対話型のみ\n前回の実行時刻:                                 2026/11/23 8:00:01\n前回の結果:                                     267009\n作成者:                                         DESKTOP-T8LTA9P\\山内　裕加里\n実行するタスク:                                 C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Deskt"
   },
   "github_actions_check": {
     "status": "checked",
-    "run_id": 44960495580,
+    "run_id": 44977621193,
     "latest_conclusion": "success",
-    "updated_at": "2026-11-21T23:11:41Z",
-    "html_url": "https://github.com/toproad-creator/autoflow-ai-ceo/actions/runs/44960495580",
+    "updated_at": "2026-11-22T02:47:55Z",
+    "html_url": "https://github.com/toproad-creator/autoflow-ai-ceo/actions/runs/44977621193",
     "healthy": true
   },
   "detected_issues": [
-    "【最重要課題：未収益】ツール利用399回・note累計スキ43件（有料記事スキ3件）に対し売上が¥0です。無料満足で離脱させず、有料版でしか手に入らない具体的な実利と緊急性を提示する必要があります。"
+    "【最重要課題：未収益】ツール利用382回・note累計スキ43件（有料記事スキ3件）に対し売上が¥0です。無料満足で離脱させず、有料版でしか手に入らない具体的な実利と緊急性を提示する必要があります。"
   ],
   "overall_healthy": true
 }

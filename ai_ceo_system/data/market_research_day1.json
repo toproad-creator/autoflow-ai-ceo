@@ -1,5 +1,5 @@
 {
-  "analyzed_at": "2026-11-22T09:21:32.689245+09:00",
+  "analyzed_at": "2026-11-23T08:00:05.262652+09:00",
   "winner_model": {
     "id": "BM-01",
     "name": "AI業務自動化ROIシミュレーター＆職種別プロンプト・GAS自動生成Webスイート（Programmatic SEO型ツール＋テンプレート販売）",
@@ -332,7 +332,7 @@
     }
   ],
   "live_needs_radar": {
-    "analyzed_at": "2026-11-22T09:21:32.687185+09:00",
+    "analyzed_at": "2026-11-23T08:00:05.259149+09:00",
     "api_status": {
       "own_api": "live",
       "trend_api": "live"

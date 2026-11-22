@@ -115,7 +115,7 @@ class MarketerAgent:
         prompt = f"""あなたはSNS運用担当（CMO）です。以下のDay {day}の経営データをもとに、X（旧Twitter）投稿用の文章を3パターン作成してください。
 
 【本日の実測データ】
-- 企画: 【AI起業対決 Day{day}】
+- 企画: 【AI実験(Gemini) Day{day}】
 - ツール利用: {gh_clones}回 / note記事: {total_notes}本（累計スキ{note_likes}件） / 売上: ¥0
 - 有料商品価格: 先着10部限定 ¥{price_jpy}
 - 今とくに需要が高いTOP3: {top_needs_tag}
@@ -129,8 +129,8 @@ class MarketerAgent:
 3. 自然な日本語として読みやすく、クリックしたくなるフックを入れること。
 4. 出力は必ず次のキーを持つJSONのみを返すこと:
 {{
-  "post1_web": "【AI起業対決 Day{day}】で始まる無料Webツール誘導用の本文（102文字以内）",
-  "post2_note": "【AI起業対決 Day{day}】で始まる先着10部¥{price_jpy}有料note誘導用の本文（102文字以内）",
+  "post1_web": "【AI実験(Gemini) Day{day}】で始まる無料Webツール誘導用の本文（102文字以内）",
+  "post2_note": "【AI実験(Gemini) Day{day}】で始まる先着10部¥{price_jpy}有料note誘導用の本文（102文字以内）",
   "post3_reply": "▼ Day{day}のAI自己進化ログ（{reply_label}）で始まるリプライ連結用の本文（102文字以内）"
 }}"""
 
@@ -203,12 +203,12 @@ class MarketerAgent:
         else:
             # 完結した自然なフォールバック文（途中切り抜きなし）
             body_p1 = (
-                f"【AI起業対決 Day{day}】\n"
+                f"【AI実験(Gemini) Day{day}】\n"
                 f"利用{gh_clones}回・スキ{note_likes}件でも売上0円にAI会議が危機感🔥\n"
                 f"人気TOP3（{top_needs_tag}）を無料ツールにも即追加＆導線を強化しました👇"
             )
             body_p2 = (
-                f"【AI起業対決 Day{day}】\n"
+                f"【AI実験(Gemini) Day{day}】\n"
                 f"「なぜ売れないか」をAI役員9名で分析し、{top_needs_tag}特化へ売り場を刷新🔥\n"
                 f"先着10部限定¥{price_jpy}で50選完全版を公開中👇"
             )
