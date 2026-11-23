@@ -29,6 +29,17 @@
       "status": "winner"
     },
     {
+      "slug": "ec-inventory",
+      "title": "EC・物販の在庫管理＆価格改定自動化",
+      "avg_hours_saved_monthly": 42,
+      "hourly_wage": 2500,
+      "actual_likes": 8,
+      "matched_own_articles": 3,
+      "trend_matches": 1,
+      "demand_score": 141.1,
+      "status": "winner"
+    },
+    {
       "slug": "hr-resume-screening",
       "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
       "avg_hours_saved_monthly": 32,
