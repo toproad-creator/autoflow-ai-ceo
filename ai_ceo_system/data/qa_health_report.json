@@ -1,5 +1,5 @@
 {
-  "inspected_at": "2026-11-23T10:44:26.727874+09:00",
+  "inspected_at": "2026-11-24T08:00:48.313963+09:00",
   "total_urls_checked": 27,
   "urls_ok_count": 27,
   "broken_urls": [],
@@ -19,7 +19,7 @@
       "title": "【無料コピペOK】ECショップの発送連絡・返品問い合わせAI自動一次返",
       "has_thumbnail": true,
       "clickable_links_count": 3,
-      "likes": 0,
+      "likes": 1,
       "healthy": true
     },
     {
@@ -181,18 +181,18 @@
   },
   "windows_scheduler_check": {
     "registered": true,
-    "raw_summary": "\nFolder: \\\nHostName:                             DESKTOP-T8LTA9P\nTaskName:                             \\Antigravity_AI_CEO_Daily\nNext Run Time:                        2026/11/24 8:00:00\nStatus:                               Ready\nLogon Mode:                           Interactive only\nLast Run Time:                        2026/11/23 8:00:01\nLast Result:                          0\nAuthor:                               DESKTOP-T8LTA9P\\山内　裕加里\nTask To Run:                          C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Desktop\\Frontier_clone\\ai_ceo_system\\a"
+    "raw_summary": "\nフォルダー\\\nホスト名:                                       DESKTOP-T8LTA9P\nタスク名:                                       \\Antigravity_AI_CEO_Daily\n次回の実行時刻:                                 2026/11/25 8:00:00\n状態:                                           実行中\nログオン モード:                                対話型のみ\n前回の実行時刻:                                 2026/11/24 8:00:01\n前回の結果:                                     267009\n作成者:                                         DESKTOP-T8LTA9P\\山内　裕加里\n実行するタスク:                                 C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Deskt"
   },
   "github_actions_check": {
     "status": "checked",
-    "run_id": 45081809720,
+    "run_id": 45105856870,
     "latest_conclusion": "success",
-    "updated_at": "2026-11-22T23:11:47Z",
-    "html_url": "https://github.com/toproad-creator/autoflow-ai-ceo/actions/runs/45081809720",
+    "updated_at": "2026-11-23T03:26:06Z",
+    "html_url": "https://github.com/toproad-creator/autoflow-ai-ceo/actions/runs/45105856870",
     "healthy": true
   },
   "detected_issues": [
-    "【最重要課題：未収益】ツール利用382回・note累計スキ43件（有料記事スキ3件）に対し売上が¥0です。無料満足で離脱させず、有料版でしか手に入らない具体的な実利と緊急性を提示する必要があります。"
+    "【最重要課題：未収益】ツール利用357回・note累計スキ44件（有料記事スキ3件）に対し売上が¥0です。無料満足で離脱させず、有料版でしか手に入らない具体的な実利と緊急性を提示する必要があります。"
   ],
   "overall_healthy": true
 }

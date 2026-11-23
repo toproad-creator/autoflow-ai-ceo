@@ -1,6 +1,6 @@
 {
-  "executed_at": "2026-11-23T10:46:06.507635+09:00",
-  "day": 20,
+  "executed_at": "2026-11-24T08:03:27.319301+09:00",
+  "day": 21,
   "all_gates_passed": true,
   "detected_issues_input_count": 1,
   "checks": {
@@ -25,17 +25,23 @@
     },
     "paid_note_sync": {
       "task": "有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）",
-      "status": "already_synced_with_current_top3",
+      "status": "synced",
       "ok": true,
       "detail": {
-        "status": "already_synced_with_current_top3",
+        "synced_at": "2026-11-24T08:02:59.898966+09:00",
         "top3_slugs": [
+          "ec-inventory",
           "subsidy-business-plan",
-          "hr-resume-screening",
-          "ec-inventory"
+          "hr-resume-screening"
         ],
-        "title_applied": "【先着10部¥980】補助金申請・採用・ECをコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
-        "synced_at": "2026-11-21T10:43:33.666452+09:00"
+        "top3_titles": [
+          "EC・物販の在庫管理＆価格改定自動化",
+          "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
+          "採用・人事の職務経歴書スクリーニング＆面接質問自動生成"
+        ],
+        "title_applied": "【先着10部¥980】EC・補助金申請・採用をコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
+        "paid_area_chars_preserved": 73629,
+        "status": "synced"
       }
     },
     "cloud_ci_gate": {
@@ -43,7 +49,7 @@
       "workflow_repaired": false,
       "workflow_ok": true,
       "bare_cloud_imports": [],
-      "latest_ci_run_id": 45081809720,
+      "latest_ci_run_id": 45105856870,
       "latest_ci_conclusion": "success",
       "ok": true
     },
@@ -58,10 +64,10 @@
       "simulator_has_top3": true,
       "short_script_valid": true,
       "short_script_regenerated": true,
-      "short_script_concept": "手作業損失ビフォーアフター比較回",
+      "short_script_concept": "時短ノウハウ実演回",
       "short_script_reasons": [],
       "auto_fixed": [
-        "Day20 YouTubeショート台本の不具合・重複を検出し、ユニーク台本へ即座に自動再生成完了"
+        "Day21 YouTubeショート台本の不具合・重複を検出し、ユニーク台本へ即座に自動再生成完了"
       ],
       "ok": true
     }
@@ -70,12 +76,12 @@
     {
       "category": "無料ツール×需要TOP3連動",
       "status": "auto_applied",
-      "detail": "需要1位『補助金申請・融資用の事業計画書ド』と2位『採用』を無料シミュレーターに自動統合し、体験直後に¥980完全版への導線を直結。"
+      "detail": "需要1位『EC・物販の在庫管理＆価格改定自』と2位『採用』を無料シミュレーターに自動統合し、体験直後に¥980完全版への導線を直結。"
     },
     {
       "category": "X文面品質＆YouTubeショート実物監査",
       "status": "repaired",
-      "detail": "Day20動画は『手作業損失ビフォーアフター比較回』テーマで有料切れ端0・旧固定文0・前日重複0を実物検査で合格済み（タイトル: 【Day20】発送連絡に月42時間も捨ててない？AIで時給換算10万円分の損失を止める裏…）。"
+      "detail": "Day21動画は『時短ノウハウ実演回』テーマで有料切れ端0・旧固定文0・前日重複0を実物検査で合格済み（タイトル: 【Day21】月42時間の契約書チェックを30秒に。AI役員9人が仕掛けるEC特化の逆転…）。"
     }
   ],
   "backlog_summary": {
