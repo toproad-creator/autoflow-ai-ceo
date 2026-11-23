@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-23T10:46:06.506277+09:00",
+  "updated_at": "2026-11-23T03:25:47.226508+00:00",
   "day": 20,
   "previous_pending_count": 0,
   "today_total_actions": 4,
@@ -8,27 +8,27 @@
   "items": [
     {
       "id": "DAY20-ACT1",
-      "action": "【CRO/ニーズ反映】補助金・融資用書類作成に特化した「実利直結型」のセールスコピーへ有料記事を全面改修",
+      "action": "【CRO/ニーズ反映】「補助金・事業計画書作成」に特化した専用オファーをnote冒頭と無料記事末尾に設置",
       "status": "resolved",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:already_synced_with_current_top3"
+      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:skipped_github_actions"
     },
     {
       "id": "DAY20-ACT2",
-      "action": "【CRO/CMO実装】無料記事16本の末尾に、需要TOP3別の「有料版でしか手に入らない具体的メリット」比較表を挿入",
+      "action": "【CRO/CMO実装】無料ツール利用後のサンクスページから有料版限定特典（EC在庫管理GAS等）への直接リンクを強化",
       "status": "resolved",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:already_synced_with_current_top3"
+      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:skipped_github_actions"
     },
     {
       "id": "DAY20-ACT3",
-      "action": "【CMO実装】YouTubeショートで「補助金申請書を3分で書くAI」の実演動画を投稿し、特化記事へ誘導",
+      "action": "【CMO実装】YouTubeショートで「補助金AI作成」の実演動画を公開し、プロ版の威力を視覚的に訴求してnoteへ誘導",
       "status": "resolved",
-      "verification_evidence": "X投稿整形＆括弧検証:True（自動生成準備完了・ショートはStep8連携）"
+      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:skipped_github_actions"
     },
     {
       "id": "DAY20-ACT4",
-      "action": "【CTO/進化エンジン実装】GitHubの無料ツール利用後のリダイレクト先を、最も関連性の高い有料note記事へ自動遷移させる",
+      "action": "【CTO/進化エンジン実装】全Webページのコンバージョンボタンを「TOP3需要」に最適化した文言へ一斉置換し、決済導線を最短化",
       "status": "resolved",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:already_synced_with_current_top3"
+      "verification_evidence": "全無料ツール利用後レコメンド＆追従バー実装確認:True"
     }
   ],
   "pending_for_next_board": []

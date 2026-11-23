@@ -1,5 +1,5 @@
 {
-  "inspected_at": "2026-11-23T10:44:26.727874+09:00",
+  "inspected_at": "2026-11-23T03:25:28.810390+00:00",
   "total_urls_checked": 27,
   "urls_ok_count": 27,
   "broken_urls": [],
@@ -150,45 +150,17 @@
     }
   ],
   "browser_e2e": {
-    "status": "passed",
-    "js_console_errors": [],
-    "tools_tested": {
-      "index_tool": {
-        "title": "AutoFlow AI | 30秒で業務削減額を算出＆自動化プロンプト/GASコード即時生成ツール",
-        "rendered_ok": true,
-        "note_cta_count": 5
-      },
-      "prompt_builder_tool": {
-        "title": "AutoPrompt Studio | 1行の指示を「深津式・構造化プロンプト」へ0秒変換する無料ジェネレーター",
-        "interactive_buttons": 1,
-        "note_cta_count": 5
-      },
-      "gas_debugger_tool": {
-        "title": "AutoFix AI | Google Apps Script(GAS)エラー＆AIプロンプト3秒診断・自動修正ツール",
-        "interactive_buttons": 1,
-        "note_cta_count": 5
-      },
-      "free_templates_page": {
-        "title": "無料サンプル5選 vs 完全版50選 | AutoFlow AI プロンプト＆GAS自動化レシピ",
-        "sample_copy_buttons": 5,
-        "note_cta_count": 4
-      },
-      "sales_lp": {
-        "title": "AutoFlow Pro Pack | 全職種対応50種AIプロンプト＆GAS自動化テンプレート完全版 (先着10部限定 ¥980)",
-        "note_cta_count": 3
-      }
-    }
+    "status": "skipped_no_playwright"
   },
   "windows_scheduler_check": {
-    "registered": true,
-    "raw_summary": "\nFolder: \\\nHostName:                             DESKTOP-T8LTA9P\nTaskName:                             \\Antigravity_AI_CEO_Daily\nNext Run Time:                        2026/11/24 8:00:00\nStatus:                               Ready\nLogon Mode:                           Interactive only\nLast Run Time:                        2026/11/23 8:00:01\nLast Result:                          0\nAuthor:                               DESKTOP-T8LTA9P\\山内　裕加里\nTask To Run:                          C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Desktop\\Frontier_clone\\ai_ceo_system\\a"
+    "status": "cloud_linux_env"
   },
   "github_actions_check": {
     "status": "checked",
-    "run_id": 45081809720,
+    "run_id": 45096425405,
     "latest_conclusion": "success",
-    "updated_at": "2026-11-22T23:11:47Z",
-    "html_url": "https://github.com/toproad-creator/autoflow-ai-ceo/actions/runs/45081809720",
+    "updated_at": "2026-11-23T01:47:46Z",
+    "html_url": "https://github.com/toproad-creator/autoflow-ai-ceo/actions/runs/45096425405",
     "healthy": true
   },
   "detected_issues": [
