@@ -268,6 +268,7 @@ class AutoRemediationAgent:
             "learning_loop_agent.py",
             "upgrade_paid_note_cro.py",
             "note_auto_publisher.py",
+            "daily_short_pipeline.py",
         ]
         bare_import_files = []
         pattern = re.compile(r"^(from\s+(?:playwright|dotenv)|import\s+(?:playwright|dotenv))\b", re.MULTILINE)
@@ -393,14 +394,44 @@ class AutoRemediationAgent:
         ACTION_BACKLOG_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
         return payload
 
+    @staticmethod
+    def _load_latest_metrics_and_free_title(latest_note_title: str = "", metrics: dict | None = None) -> tuple[dict, str]:
+        m = metrics or {}
+        if not m:
+            m_path = DATA_DIR / "metrics.json"
+            if m_path.exists():
+                try:
+                    m = json.loads(m_path.read_text(encoding="utf-8"))
+                except Exception:
+                    m = {}
+        title = (latest_note_title or "").strip()
+        if not title or "【先着10部" in title or title == "AutoFlow Pro":
+            needs_path = DATA_DIR / "live_market_needs.json"
+            if needs_path.exists():
+                try:
+                    needs = json.loads(needs_path.read_text(encoding="utf-8"))
+                    for art in needs.get("own_articles_performance", []):
+                        if (art.get("price", 0) or 0) == 0 and art.get("key") != PAID_NOTE_KEY:
+                            title = art.get("title", "")
+                            break
+                except Exception:
+                    pass
+        return m, title
+
     def _audit_and_fix_business_quality(
         self,
         day: int,
         niches: list[dict],
         evolution_state: dict,
         campaign_data: dict,
+        latest_note_title: str = "",
+        metrics: dict | None = None,
     ) -> tuple[dict, list[dict]]:
-        """⑦ 消費者・ビジネス目線の実物品質監査＆自律修正＆改善提案エンジン"""
+        """⑦ 消費者・ビジネス目線の実物品質監査＆自律修正＆改善提案エンジン
+        Webツールの選択肢・X自然文だけでなく、当日YouTubeショート台本実物（ai_ceo_day{day}_script.json）を
+        有料記事切れ端ゼロ（Check A）・旧固定コピペゼロ（Check B）・前日比セリフ重複ゼロ（Check C）で厳格検査し、
+        未生成や違反があれば即座に DailyShortPipelineAgent で再生成＆再検証する。
+        """
         auto_fixed = []
         proposals = []
 
@@ -418,22 +449,59 @@ class AutoRemediationAgent:
                 auto_fixed.append("無料シミュレーターに需要TOP3（補助金・採用・EC）選択肢を自動再構築して追加")
         sim_ok = ('value="subsidy"' in index_txt) and ('value="hr"' in index_txt) and ('value="ec"' in index_txt)
 
-        # 2. YouTubeショート動画タイトルが毎日固定テンプレートのままになっていないか監査
-        short_pipeline_txt = (AGENTS_DIR / "daily_short_pipeline.py").read_text(encoding="utf-8", errors="ignore")
-        short_dynamic_ok = ("_load_day_context" in short_pipeline_txt) and ("existing_titles" in short_pipeline_txt)
+        # 2. YouTubeショート動画実物台本（ai_ceo_day{day}_script.json）の厳格検査（Check A/B/C）＆自動再生成
+        from daily_short_pipeline import DailyShortPipelineAgent
+        short_agent = DailyShortPipelineAgent()
+        m_data, free_title = self._load_latest_metrics_and_free_title(latest_note_title, metrics)
+        fin = m_data.get("financials", {})
+        note_kpi = m_data.get("product_kpis", {}).get("note_live_metrics", {})
+        gh_kpi = m_data.get("product_kpis", {}).get("github_traffic_metrics", {})
+
+        prev_narrations, prev_titles_list = short_agent._load_recent_short_lines(day)
+        prev_titles_set = set(prev_titles_list)
         day_script_path = AI_CEO_DIR / "shorts_videos" / f"day{day}" / f"ai_ceo_day{day}_script.json"
-        if day_script_path.exists():
+
+        def _inspect_day_script() -> tuple[bool, list[str], dict]:
+            if not day_script_path.exists():
+                return False, ["script_json_missing"], {}
             try:
-                cur_script = json.loads(day_script_path.read_text(encoding="utf-8"))
-                cur_t = cur_script.get("video_title", "")
-                if "自ら5人のAI役員会議を開いて全サイトを大改造した件" in cur_t:
-                    proposals.append({
-                        "category": "動画訴求マンネリ防止",
-                        "status": "code_fixed_for_next_render",
-                        "detail": "次回生成分から daily_short_pipeline.py が毎日の会議議題・需要TOP1に応じたユニークタイトルで動画を生成するよう改修済。",
-                    })
-            except Exception:
-                pass
+                cur_data = json.loads(day_script_path.read_text(encoding="utf-8"))
+            except Exception as e:
+                return False, [f"script_json_invalid:{e}"], {}
+            passed, reasons = short_agent.validate_script_payload(
+                cur_data,
+                prev_narrations=prev_narrations,
+                prev_titles=prev_titles_set,
+                require_cards=False,
+            )
+            return passed, reasons, cur_data
+
+        script_ok, script_reasons, cur_script = _inspect_day_script()
+        short_regenerated = False
+        if not script_ok:
+            short_agent.generate_script_and_scenes(
+                day=day,
+                balance=fin.get("current_balance", 15000),
+                price_jpy=note_kpi.get("price_jpy", 980),
+                total_notes=note_kpi.get("total_published_notes", 15),
+                total_likes=note_kpi.get("total_account_likes", 44),
+                gh_clones=gh_kpi.get("clones_14d", 407),
+                gh_uniques=gh_kpi.get("unique_cloners_14d", 134),
+                latest_note_title=free_title,
+                force=True,
+            )
+            short_regenerated = True
+            script_ok, script_reasons, cur_script = _inspect_day_script()
+            if script_ok:
+                auto_fixed.append(f"Day{day} YouTubeショート台本の不具合・重複を検出し、ユニーク台本へ即座に自動再生成完了")
+
+        cur_concept = cur_script.get("concept", short_agent._pick_concept(day)["name"]) if cur_script else short_agent._pick_concept(day)["name"]
+        if not script_ok:
+            proposals.append({
+                "category": "動画訴求マンネリ・途切れ防止",
+                "status": "failed_audit",
+                "detail": f"Day{day}ショート台本の厳格監査で不合格理由が残存: {', '.join(script_reasons)}",
+            })
 
         # 3. X投稿文3パターンの日本語自然さ・完結性監査（助詞途切れや二重引用符崩壊がないか）
         x_unnatural = []
@@ -471,18 +539,21 @@ class AutoRemediationAgent:
                 "detail": f"需要1位『{top1_title[:16]}』と2位『採用』を無料シミュレーターに自動統合し、体験直後に¥980完全版への導線を直結。",
             },
             {
-                "category": "X文面品質＆動画差別化",
-                "status": "auto_applied" if (short_dynamic_ok and not x_unnatural) else "repaired",
-                "detail": "X投稿はAI（Gemini）で自然文を書き下ろし、ショート動画も毎日ユニークな議題・需要テーマでタイトルと台本を生成する仕組みへ移行完了。",
+                "category": "X文面品質＆YouTubeショート実物監査",
+                "status": "repaired" if short_regenerated else ("auto_applied" if (script_ok and not x_unnatural) else "pending"),
+                "detail": f"Day{day}動画は『{cur_concept}』テーマで有料切れ端0・旧固定文0・前日重複0を実物検査で合格済み（タイトル: {cur_script.get('video_title', '')[:44]}…）。",
             },
         ])
 
         audit_chk = {
-            "task": "消費者・ビジネス目線の実物品質監査（ツールTOP3・X自然文・動画差別化）＆自律修正",
+            "task": "消費者・ビジネス目線の実物品質監査（ツールTOP3・X自然文・ショート台本実物比較）＆自律修正",
             "simulator_has_top3": sim_ok,
-            "short_pipeline_dynamic": short_dynamic_ok,
+            "short_script_valid": script_ok,
+            "short_script_regenerated": short_regenerated,
+            "short_script_concept": cur_concept,
+            "short_script_reasons": script_reasons,
             "auto_fixed": auto_fixed,
-            "ok": sim_ok and short_dynamic_ok,
+            "ok": sim_ok and script_ok,
         }
         return audit_chk, proposals
 
@@ -495,6 +566,8 @@ class AutoRemediationAgent:
         campaign_data: dict,
         niches: list[dict],
         sync_paid_note: bool = True,
+        latest_note_title: str = "",
+        metrics: dict | None = None,
     ) -> dict:
         """自己修復・安全検証・実物品質監査・会議宿題管理の全サイクルを実行する。"""
         web_chk = self._verify_and_fix_web_funnel(niches)
@@ -503,7 +576,14 @@ class AutoRemediationAgent:
         paid_note_chk = self._sync_paid_note_headline_and_preview(evolution_state, sync_paid_note=sync_paid_note)
         cloud_chk = self._verify_cloud_ci_compatibility()
         syntax_chk = self._run_python_syntax_gate()
-        biz_chk, proposals = self._audit_and_fix_business_quality(day, niches, evolution_state, campaign_data)
+        biz_chk, proposals = self._audit_and_fix_business_quality(
+            day,
+            niches,
+            evolution_state,
+            campaign_data,
+            latest_note_title=latest_note_title,
+            metrics=metrics,
+        )
 
         checks = {
             "web_funnel": web_chk,

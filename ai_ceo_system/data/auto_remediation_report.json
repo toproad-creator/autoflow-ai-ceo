@@ -1,5 +1,5 @@
 {
-  "executed_at": "2026-11-23T08:02:07.064257+09:00",
+  "executed_at": "2026-11-23T10:46:06.507635+09:00",
   "day": 20,
   "all_gates_passed": true,
   "detected_issues_input_count": 1,
@@ -25,15 +25,25 @@
     },
     "paid_note_sync": {
       "task": "有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）",
-      "status": "skipped_github_actions",
-      "ok": true
+      "status": "already_synced_with_current_top3",
+      "ok": true,
+      "detail": {
+        "status": "already_synced_with_current_top3",
+        "top3_slugs": [
+          "subsidy-business-plan",
+          "hr-resume-screening",
+          "ec-inventory"
+        ],
+        "title_applied": "【先着10部¥980】補助金申請・採用・ECをコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
+        "synced_at": "2026-11-21T10:43:33.666452+09:00"
+      }
     },
     "cloud_ci_gate": {
       "task": "クラウド（GitHub Actions）互換コード・YAML設定・直近稼働検証ゲート",
       "workflow_repaired": false,
       "workflow_ok": true,
       "bare_cloud_imports": [],
-      "latest_ci_run_id": 44977621193,
+      "latest_ci_run_id": 45081809720,
       "latest_ci_conclusion": "success",
       "ok": true
     },
@@ -44,10 +54,15 @@
       "failed_files": []
     },
     "business_quality_audit": {
-      "task": "消費者・ビジネス目線の実物品質監査（ツールTOP3・X自然文・動画差別化）＆自律修正",
+      "task": "消費者・ビジネス目線の実物品質監査（ツールTOP3・X自然文・ショート台本実物比較）＆自律修正",
       "simulator_has_top3": true,
-      "short_pipeline_dynamic": true,
-      "auto_fixed": [],
+      "short_script_valid": true,
+      "short_script_regenerated": true,
+      "short_script_concept": "手作業損失ビフォーアフター比較回",
+      "short_script_reasons": [],
+      "auto_fixed": [
+        "Day20 YouTubeショート台本の不具合・重複を検出し、ユニーク台本へ即座に自動再生成完了"
+      ],
       "ok": true
     }
   },
@@ -58,9 +73,9 @@
       "detail": "需要1位『補助金申請・融資用の事業計画書ド』と2位『採用』を無料シミュレーターに自動統合し、体験直後に¥980完全版への導線を直結。"
     },
     {
-      "category": "X文面品質＆動画差別化",
-      "status": "auto_applied",
-      "detail": "X投稿はAI（Gemini）で自然文を書き下ろし、ショート動画も毎日ユニークな議題・需要テーマでタイトルと台本を生成する仕組みへ移行完了。"
+      "category": "X文面品質＆YouTubeショート実物監査",
+      "status": "repaired",
+      "detail": "Day20動画は『手作業損失ビフォーアフター比較回』テーマで有料切れ端0・旧固定文0・前日重複0を実物検査で合格済み（タイトル: 【Day20】発送連絡に月42時間も捨ててない？AIで時給換算10万円分の損失を止める裏…）。"
     }
   ],
   "backlog_summary": {

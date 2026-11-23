@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-23T08:02:07.063335+09:00",
+  "updated_at": "2026-11-23T10:46:06.506277+09:00",
   "day": 20,
   "previous_pending_count": 0,
   "today_total_actions": 4,
@@ -8,27 +8,27 @@
   "items": [
     {
       "id": "DAY20-ACT1",
-      "action": "【CRO/ニーズ反映】note記事の冒頭に「補助金・採用・EC」別の具体的な時短効果（例：3時間→5分）を数値で追記し、限定価格の緊急性を強調",
-      "status": "resolved",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:skipped_github_actions"
-    },
-    {
-      "id": "DAY20-ACT2",
-      "action": "【CRO/CMO実装】無料Webツールの出力結果画面に「この結果をGoogleシートへ自動出力するGASコードは有料版へ」という導線ボタンを設置",
-      "status": "resolved",
-      "verification_evidence": "全無料ツール利用後レコメンド＆追従バー実装確認:True"
-    },
-    {
-      "id": "DAY20-ACT3",
-      "action": "【CMO実装】Xにて「補助金・事業計画書」に特化した実演動画を投稿し、リプライ欄から直接noteの決済ページへ誘導",
+      "action": "【CRO/ニーズ反映】補助金・融資用書類作成に特化した「実利直結型」のセールスコピーへ有料記事を全面改修",
       "status": "resolved",
       "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:already_synced_with_current_top3"
     },
     {
-      "id": "DAY20-ACT4",
-      "action": "【CTO/進化エンジン実装】全27ページのWebサイトのヘッドラインを「実務直結のDX自動化ツール集」に統一し、決済ボタンの動作確認を自動実行",
+      "id": "DAY20-ACT2",
+      "action": "【CRO/CMO実装】無料記事16本の末尾に、需要TOP3別の「有料版でしか手に入らない具体的メリット」比較表を挿入",
+      "status": "resolved",
+      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:already_synced_with_current_top3"
+    },
+    {
+      "id": "DAY20-ACT3",
+      "action": "【CMO実装】YouTubeショートで「補助金申請書を3分で書くAI」の実演動画を投稿し、特化記事へ誘導",
       "status": "resolved",
       "verification_evidence": "X投稿整形＆括弧検証:True（自動生成準備完了・ショートはStep8連携）"
+    },
+    {
+      "id": "DAY20-ACT4",
+      "action": "【CTO/進化エンジン実装】GitHubの無料ツール利用後のリダイレクト先を、最も関連性の高い有料note記事へ自動遷移させる",
+      "status": "resolved",
+      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:already_synced_with_current_top3"
     }
   ],
   "pending_for_next_board": []

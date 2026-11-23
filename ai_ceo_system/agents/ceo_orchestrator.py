@@ -80,6 +80,14 @@ def fetch_all_published_notes() -> list[dict]:
     return all_notes
 
 
+def pick_latest_free_note(notes: list[dict]) -> dict | None:
+    """固定表示されている有料パック記事を除外し、最新の無料集客note記事を返す。"""
+    for n in notes:
+        if (n.get("price", 0) or 0) == 0 and n.get("key") != "n5d0e28a74f91":
+            return n
+    return notes[0] if notes else None
+
+
 def load_uploaded_shorts() -> list[dict]:
     if os.path.exists(SHORTS_URLS_JSON):
         try:
@@ -153,8 +161,9 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
     )
 
     published_notes = fetch_all_published_notes()
-    latest_note_url = published_notes[0]["url"] if published_notes else "https://note.com/toproad_1989/n/n5d0e28a74f91"
-    latest_note_title = published_notes[0]["title"] if published_notes else "AutoFlow Pro"
+    latest_free_note = pick_latest_free_note(published_notes)
+    latest_note_url = latest_free_note["url"] if latest_free_note else "https://note.com/toproad_1989/n/n5d0e28a74f91"
+    latest_note_title = latest_free_note["title"] if latest_free_note else "AutoFlow Pro"
 
     # 3. CTO/QA Self-Diagnostic & E2E Inspector Agent (Find issues BEFORE the Board Meeting)
     qa_agent = QAInspectorAgent()
@@ -225,9 +234,10 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
 
     # Re-fetch published notes so new daily post is reflected in X & status_log
     published_notes = fetch_all_published_notes() or published_notes
-    if published_notes:
-        latest_note_url = published_notes[0]["url"]
-        latest_note_title = published_notes[0]["title"]
+    latest_free_note = pick_latest_free_note(published_notes)
+    if latest_free_note:
+        latest_note_url = latest_free_note["url"]
+        latest_note_title = latest_free_note["title"]
 
     # 7.2 CMO X Posts (140-char compliant & bracket-balanced) + Outbound IndexNow
     uploaded_shorts_pre = load_uploaded_shorts()
@@ -260,6 +270,8 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
         campaign_data=campaign_data,
         niches=niches,
         sync_paid_note=("--skip-note-sync" not in sys.argv),
+        latest_note_title=latest_note_title,
+        metrics=metrics,
     )
     bsum = remediation_report["backlog_summary"]
     log_step(
