@@ -76,7 +76,9 @@ class QAInspectorAgent:
                 body_html = n_data.get("body", "") or ""
                 link_count = len(re.findall(r"<a href=", body_html))
                 has_thumb = bool(item.get("eyecatch"))
-                is_paid = item.get("price", 0) > 0
+                price_val = item.get("price", 0) or 0
+                is_paid = price_val > 0
+                is_thin_boilerplate = (not is_paid) and ("スプレッドシートへそのまま貼り付け可能なタブ区切り（TSV）形式で構造化して出力してください" in body_html)
                 results.append({
                     "key": key,
                     "url": f"https://note.com/toproad_1989/n/{key}",
@@ -84,7 +86,10 @@ class QAInspectorAgent:
                     "has_thumbnail": has_thumb,
                     "clickable_links_count": link_count,
                     "likes": item.get("likeCount", 0),
-                    "healthy": has_thumb and (is_paid or link_count >= 1)
+                    "price": price_val,
+                    "is_paid": is_paid,
+                    "is_thin_boilerplate": is_thin_boilerplate,
+                    "healthy": has_thumb and (is_paid or link_count >= 1),
                 })
         except Exception as e:
             results.append({"error": str(e), "healthy": False})
@@ -256,20 +261,34 @@ class QAInspectorAgent:
             except Exception:
                 pass
 
-        # 6. ビジネス数値（metrics.json）からのボトルネック自動診断
+        # 6. ビジネス数値（metrics.json）＆公開記事コンテンツ実態からのボトルネック自動診断
+        thin_free = [n for n in note_articles if n.get("is_thin_boilerplate")]
+        if thin_free:
+            issues.append(
+                f"【無料記事コンテンツ改善】公開note記事のうち {len(thin_free)} 本が旧来の簡易短文構成のままです。"
+                "スキ数の多い人気記事から順に、実務専用プロンプト＋GAS完成コード付きの本格解説へ差し替えることで有料版への信頼を高められます。"
+            )
+
         metrics_path = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "metrics.json")
         if os.path.exists(metrics_path):
             try:
                 with open(metrics_path, "r", encoding="utf-8") as f:
                     m = json.loads(f.read())
                 rev = m.get("financials", {}).get("total_revenue", 0)
-                clones = m.get("product_kpis", {}).get("github_traffic_metrics", {}).get("clones_14d", 0)
-                likes = m.get("product_kpis", {}).get("note_live_metrics", {}).get("total_account_likes", 0)
-                paid_likes = m.get("product_kpis", {}).get("note_live_metrics", {}).get("paid_article_likes", 0)
+                gh_kpi = m.get("product_kpis", {}).get("github_traffic_metrics", {})
+                repo_uniques = gh_kpi.get("repo_uniques_14d", 0)
+                note_kpi = m.get("product_kpis", {}).get("note_live_metrics", {})
+                likes = note_kpi.get("total_account_likes", 0)
+                paid_likes = note_kpi.get("total_paid_likes", note_kpi.get("paid_article_likes", 0))
+                paid_cnt = note_kpi.get("paid_notes_count", 1)
+                total_notes = note_kpi.get("total_published_notes", 0)
+                top_free = note_kpi.get("top_liked_free_notes") or []
+                top_free_tag = top_free[0].get("title", "採用・補助金")[:22] if top_free else "採用・補助金"
                 if rev == 0:
                     issues.append(
-                        f"【最重要課題：未収益】ツール利用{clones}回・note累計スキ{likes}件（有料記事スキ{paid_likes}件）に対し売上が¥0です。"
-                        "無料満足で離脱させず、有料版でしか手に入らない具体的な実利と緊急性を提示する必要があります。"
+                        f"【最重要課題：未収益】実ユーザー反響は note {total_notes}本（累計スキ{likes}件 / 有料{paid_cnt}本・スキ{paid_likes}件）・"
+                        f"GitHubページ訪問{repo_uniques}名（自動clone除く）に対し売上¥0。"
+                        f"最上位反応テーマ『{top_free_tag}』からの¥500単品決済および¥980完全版への納得導線強化が必要です。"
                     )
             except Exception:
                 pass

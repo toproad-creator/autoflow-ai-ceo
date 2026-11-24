@@ -1,5 +1,5 @@
 {
-  "inspected_at": "2026-11-24T08:00:48.313963+09:00",
+  "inspected_at": "2026-11-24T13:20:02.562841+09:00",
   "total_urls_checked": 27,
   "urls_ok_count": 27,
   "broken_urls": [],
@@ -7,10 +7,37 @@
     {
       "key": "n5d0e28a74f91",
       "url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
-      "title": "【先着10部¥980】補助金申請・採用・ECをコピペ5分で自動化！『全",
+      "title": "【先着10部¥980】EC・補助金申請・採用をコピペ5分で自動化！『全",
       "has_thumbnail": true,
       "clickable_links_count": 0,
       "likes": 3,
+      "price": 980,
+      "is_paid": true,
+      "is_thin_boilerplate": false,
+      "healthy": true
+    },
+    {
+      "key": "n26ebbea33691",
+      "url": "https://note.com/toproad_1989/n/n26ebbea33691",
+      "title": "【単品¥500】補助金申請・融資の事業計画書＆5カ年収支表をコピペ自動",
+      "has_thumbnail": true,
+      "clickable_links_count": 1,
+      "likes": 1,
+      "price": 500,
+      "is_paid": true,
+      "is_thin_boilerplate": false,
+      "healthy": true
+    },
+    {
+      "key": "nf8dd1c6c63ee",
+      "url": "https://note.com/toproad_1989/n/nf8dd1c6c63ee",
+      "title": "【無料コピペOK】業務委託契約書・NDAの不利条項チェック＆修正案プロ",
+      "has_thumbnail": true,
+      "clickable_links_count": 3,
+      "likes": 1,
+      "price": 0,
+      "is_paid": false,
+      "is_thin_boilerplate": true,
       "healthy": true
     },
     {
@@ -20,6 +47,9 @@
       "has_thumbnail": true,
       "clickable_links_count": 3,
       "likes": 1,
+      "price": 0,
+      "is_paid": false,
+      "is_thin_boilerplate": true,
       "healthy": true
     },
     {
@@ -29,6 +59,9 @@
       "has_thumbnail": true,
       "clickable_links_count": 3,
       "likes": 1,
+      "price": 0,
+      "is_paid": false,
+      "is_thin_boilerplate": true,
       "healthy": true
     },
     {
@@ -36,8 +69,11 @@
       "url": "https://note.com/toproad_1989/n/nace6344e241f",
       "title": "【無料コピペOK】商談・社内会議の文字起こし要約＆タスク自動割り振りを",
       "has_thumbnail": true,
-      "clickable_links_count": 3,
+      "clickable_links_count": 6,
       "likes": 3,
+      "price": 0,
+      "is_paid": false,
+      "is_thin_boilerplate": false,
       "healthy": true
     },
     {
@@ -47,6 +83,9 @@
       "has_thumbnail": true,
       "clickable_links_count": 3,
       "likes": 2,
+      "price": 0,
+      "is_paid": false,
+      "is_thin_boilerplate": true,
       "healthy": true
     },
     {
@@ -56,6 +95,9 @@
       "has_thumbnail": true,
       "clickable_links_count": 3,
       "likes": 3,
+      "price": 0,
+      "is_paid": false,
+      "is_thin_boilerplate": true,
       "healthy": true
     },
     {
@@ -65,6 +107,9 @@
       "has_thumbnail": true,
       "clickable_links_count": 3,
       "likes": 1,
+      "price": 0,
+      "is_paid": false,
+      "is_thin_boilerplate": true,
       "healthy": true
     },
     {
@@ -72,8 +117,11 @@
       "url": "https://note.com/toproad_1989/n/ncafc405d047e",
       "title": "【無料コピペOK】オウンドメディアSEO記事の構成案・FAQ構造化デー",
       "has_thumbnail": true,
-      "clickable_links_count": 3,
+      "clickable_links_count": 6,
       "likes": 5,
+      "price": 0,
+      "is_paid": false,
+      "is_thin_boilerplate": false,
       "healthy": true
     },
     {
@@ -81,8 +129,11 @@
       "url": "https://note.com/toproad_1989/n/n45f6c425ee66",
       "title": "【無料コピペOK】補助金申請・融資用の事業計画書ドラフト＆収支表自動作",
       "has_thumbnail": true,
-      "clickable_links_count": 3,
+      "clickable_links_count": 6,
       "likes": 5,
+      "price": 0,
+      "is_paid": false,
+      "is_thin_boilerplate": false,
       "healthy": true
     },
     {
@@ -90,8 +141,11 @@
       "url": "https://note.com/toproad_1989/n/n129393b66060",
       "title": "【無料コピペOK】採用・人事の職務経歴書スクリーニング＆面接質問自動生",
       "has_thumbnail": true,
-      "clickable_links_count": 3,
+      "clickable_links_count": 6,
       "likes": 6,
+      "price": 0,
+      "is_paid": false,
+      "is_thin_boilerplate": false,
       "healthy": true
     },
     {
@@ -101,6 +155,9 @@
       "has_thumbnail": true,
       "clickable_links_count": 3,
       "likes": 1,
+      "price": 0,
+      "is_paid": false,
+      "is_thin_boilerplate": true,
       "healthy": true
     },
     {
@@ -110,6 +167,9 @@
       "has_thumbnail": true,
       "clickable_links_count": 3,
       "likes": 1,
+      "price": 0,
+      "is_paid": false,
+      "is_thin_boilerplate": true,
       "healthy": true
     },
     {
@@ -119,6 +179,9 @@
       "has_thumbnail": true,
       "clickable_links_count": 3,
       "likes": 2,
+      "price": 0,
+      "is_paid": false,
+      "is_thin_boilerplate": true,
       "healthy": true
     },
     {
@@ -128,6 +191,9 @@
       "has_thumbnail": true,
       "clickable_links_count": 3,
       "likes": 2,
+      "price": 0,
+      "is_paid": false,
+      "is_thin_boilerplate": true,
       "healthy": true
     },
     {
@@ -137,6 +203,9 @@
       "has_thumbnail": true,
       "clickable_links_count": 3,
       "likes": 3,
+      "price": 0,
+      "is_paid": false,
+      "is_thin_boilerplate": true,
       "healthy": true
     },
     {
@@ -144,28 +213,59 @@
       "url": "https://note.com/toproad_1989/n/n70171b631e61",
       "title": "【無料コピペOK】EC・物販の在庫管理＆価格改定自動化をAIとGASで",
       "has_thumbnail": true,
-      "clickable_links_count": 3,
+      "clickable_links_count": 6,
       "likes": 5,
+      "price": 0,
+      "is_paid": false,
+      "is_thin_boilerplate": false,
       "healthy": true
     }
   ],
   "browser_e2e": {
-    "status": "skipped_no_playwright"
+    "status": "passed",
+    "js_console_errors": [],
+    "tools_tested": {
+      "index_tool": {
+        "title": "AutoFlow AI | 30秒で業務削減額を算出＆自動化プロンプト/GASコード即時生成ツール",
+        "rendered_ok": true,
+        "note_cta_count": 5
+      },
+      "prompt_builder_tool": {
+        "title": "AutoPrompt Studio | 1行の指示を「深津式・構造化プロンプト」へ0秒変換する無料ジェネレーター",
+        "interactive_buttons": 1,
+        "note_cta_count": 5
+      },
+      "gas_debugger_tool": {
+        "title": "AutoFix AI | Google Apps Script(GAS)エラー＆AIプロンプト3秒診断・自動修正ツール",
+        "interactive_buttons": 1,
+        "note_cta_count": 5
+      },
+      "free_templates_page": {
+        "title": "無料サンプル5選 vs 完全版50選 | AutoFlow AI プロンプト＆GAS自動化レシピ",
+        "sample_copy_buttons": 5,
+        "note_cta_count": 4
+      },
+      "sales_lp": {
+        "title": "AutoFlow Pro Pack | 全職種対応50種AIプロンプト＆GAS自動化テンプレート完全版 (先着10部限定 ¥980)",
+        "note_cta_count": 3
+      }
+    }
   },
   "windows_scheduler_check": {
     "registered": true,
-    "raw_summary": "\nフォルダー\\\nホスト名:                                       DESKTOP-T8LTA9P\nタスク名:                                       \\Antigravity_AI_CEO_Daily\n次回の実行時刻:                                 2026/11/25 8:00:00\n状態:                                           実行中\nログオン モード:                                対話型のみ\n前回の実行時刻:                                 2026/11/24 8:00:01\n前回の結果:                                     267009\n作成者:                                         DESKTOP-T8LTA9P\\山内　裕加里\n実行するタスク:                                 C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Deskt"
+    "raw_summary": "\nFolder: \\\nHostName:                             DESKTOP-T8LTA9P\nTaskName:                             \\Antigravity_AI_CEO_Daily\nNext Run Time:                        2026/11/25 8:00:00\nStatus:                               Ready\nLogon Mode:                           Interactive only\nLast Run Time:                        2026/11/24 8:00:01\nLast Result:                          0\nAuthor:                               DESKTOP-T8LTA9P\\山内　裕加里\nTask To Run:                          C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Desktop\\Frontier_clone\\ai_ceo_system\\a"
   },
   "github_actions_check": {
     "status": "checked",
-    "run_id": 45105856870,
+    "run_id": 45286612253,
     "latest_conclusion": "success",
-    "updated_at": "2026-11-23T03:26:06Z",
-    "html_url": "https://github.com/toproad-creator/autoflow-ai-ceo/actions/runs/45105856870",
+    "updated_at": "2026-11-23T23:13:10Z",
+    "html_url": "https://github.com/toproad-creator/autoflow-ai-ceo/actions/runs/45286612253",
     "healthy": true
   },
   "detected_issues": [
-    "【最重要課題：未収益】ツール利用357回・note累計スキ44件（有料記事スキ3件）に対し売上が¥0です。無料満足で離脱させず、有料版でしか手に入らない具体的な実利と緊急性を提示する必要があります。"
+    "【無料記事コンテンツ改善】公開note記事のうち 11 本が旧来の簡易短文構成のままです。スキ数の多い人気記事から順に、実務専用プロンプト＋GAS完成コード付きの本格解説へ差し替えることで有料版への信頼を高められます。",
+    "【最重要課題：未収益】実ユーザー反響は note 18本（累計スキ46件 / 有料2本・スキ4件）・GitHubページ訪問89名（自動clone除く）に対し売上¥0。最上位反応テーマ『【無料コピペOK】採用・人事の職務経歴書スク』からの¥500単品決済および¥980完全版への納得導線強化が必要です。"
   ],
   "overall_healthy": true
 }

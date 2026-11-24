@@ -33,28 +33,43 @@ PAID_NOTE_SYNC_STATE_PATH = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "pai
 
 def _sanitize_note_copy(text: str) -> str:
     cleaned = text or ""
-    for term in ("AI起業対決", "AI CEO", "実験ログ", "実験台", "実験", "対決"):
-        cleaned = cleaned.replace(term, "")
+    replacements = [
+        ("AI起業対決", ""),
+        ("AI CEO", ""),
+        ("実証実験", "導入検証"),
+        ("実験ログ", "運用記録"),
+        ("実験台", "検証環境"),
+        ("実験", "検証"),
+        ("対決", "比較"),
+    ]
+    for src, dst in replacements:
+        cleaned = cleaned.replace(src, dst)
     return cleaned.strip()
 
 
 def _resolve_top_winners(top_winners: list[dict] | None = None) -> list[dict]:
-    if top_winners:
-        return top_winners[:3]
-    if os.path.exists(EVOLUTION_STATE_PATH):
+    raw_list = list(top_winners) if top_winners else []
+    if not raw_list and os.path.exists(EVOLUTION_STATE_PATH):
         try:
             with open(EVOLUTION_STATE_PATH, "r", encoding="utf-8") as f:
                 evo = json.load(f)
-            wins = evo.get("selection_and_focus", {}).get("winners_top3") or []
-            if wins:
-                return wins[:3]
+            raw_list = list(evo.get("selection_and_focus", {}).get("winners_top3") or [])
         except Exception:
-            pass
-    return [
-        {"slug": "subsidy-business-plan", "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成"},
-        {"slug": "hr-resume-screening", "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成"},
-        {"slug": "ec-inventory", "title": "EC・物販の在庫管理＆価格改定自動化"},
-    ]
+            raw_list = []
+    if not raw_list:
+        raw_list = [
+            {"slug": "subsidy-business-plan", "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成"},
+            {"slug": "hr-resume-screening", "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成"},
+            {"slug": "ec-inventory", "title": "EC・物販の在庫管理＆価格改定自動化"},
+        ]
+    deduped = []
+    seen_slugs = set()
+    for w in raw_list:
+        sl = w.get("slug") or w.get("title", "")
+        if sl and sl not in seen_slugs:
+            seen_slugs.add(sl)
+            deduped.append(w)
+    return deduped[:3]
 
 
 def build_high_converting_free_preview_html(top_winners: list[dict] | None = None) -> str:
@@ -66,7 +81,6 @@ def build_high_converting_free_preview_html(top_winners: list[dict] | None = Non
     top2 = _sanitize_note_copy(winners[1]["title"]) if len(winners) > 1 else "採用・職務経歴書スクリーニング自動化"
     top3 = _sanitize_note_copy(winners[2]["title"]) if len(winners) > 2 else "EC・物販の在庫管理＆価格改定自動化"
 
-    # 全50レシピの完全一覧を生成
     cat_groups = {}
     for t in templates:
         cat_groups.setdefault(t["category"], []).append(f"{t['id']}：{t['title']}")
@@ -77,97 +91,109 @@ def build_high_converting_free_preview_html(top_winners: list[dict] | None = Non
 
     html = f"""
 <p><b>🔥【先着10部限定・50%OFFセール開催中！】</b><br>リリース記念として、通常価格 <b>¥1,980 ➔ 先着10部限定【¥980（1レシピあたり約19円）】</b> で公開しています！（※10部完売時点で ¥1,480 ➔ 定価 ¥1,980 へ段階的に値上げします）</p>
-<p><b>📈 最新の市場ニーズ調査で特に要望が多い「3大自動化領域」を完全収録！</b><br>① <b>{top1}</b><br>② <b>{top2}</b><br>③ <b>{top3}</b><br>特に需要が集中しているこの3大テーマの即戦力レシピはもちろん、<b>全10業種・50種類すべて</b>をそのまま手に入れていただけます。</p>
-<p>毎日の仕事で「事業計画・書類作成」「採用候補者のスクリーニング」「EC在庫や価格チェック」「請求書PDFの整理」「SNSや営業メール作成」に何時間も奪われていませんか？</p>
-<p>もしあなたが1日60分のルーティン作業を月に22日行っている場合、時給2,500円換算で<b>【年間 607,200円（約243時間）】</b>もの貴重な時間とコストを手作業に溶かしている計算になります。</p>
-<p>本記事『AutoFlow Pro 完全版パッケージ』は、プログラミング知識ゼロ・<b>コピペ5分</b>で今日からすぐに使える<b>【全10業種・計50種類】の「構造化AIプロンプト」と「Googleスプレッドシート自動実行コード（GAS）」</b>をすべて1つにまとめた実践コンプリートパックです。</p>
-<h2>■ なぜ「普通のChatGPTの使い方」では業務が自動化できないのか？</h2>
-<p>多くの方が「ChatGPTに毎回プロンプトを手打ちして、出てきた文章をコピーしてスプレッドシートやメールに貼り付ける」という作業を繰り返しています。しかし、これでは結局<b>「人間がコピペする手間」</b>が残ってしまいます。</p>
-<p>本当にルーティン業務を消滅させるには、以下の2つをセットで使う必要があります。</p>
-<p><b>① 出力形式（TSVやJSON）を完全に固定した「業務特化型の構造化AIプロンプト」</b><br><b>② Googleスプレッドシート上で毎日決まった時間に自動で動き、メール通知や記帳まで終わらせる「Google Apps Script (GAS) 完成コード」</b></p>
-<p>本パックでは、この「プロンプト」と「GAS完成コード」のペアを<b>全10業種・50業務分すべて作成済み</b>の状態で収録しています。あなたは該当する番号のコードをコピーして貼り付けるだけで、今日からすぐに自動化の仕組みを稼働させることができます。</p>
-<h2>■ 購入前にクオリティをご確認ください！【実物サンプル2本を無料丸ごと公開】</h2>
-<p>「本当にコピペだけで使えるの？」「どんなコードが入っているの？」という不安をゼロにするため、有料エリアに収録されている全50本の中から、特に人気の高い<b>2本の実物レシピ（TPL-01・TPL-16）をこの無料エリアで丸ごと公開</b>します！</p>
-<p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><b>🎁 無料実物サンプル①：TPL-01 [EC・物販] 競合価格の毎朝自動取得＆値下げアラート</b><br>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
-<p><b>【① コピペ用・構造化AIプロンプト（ChatGPT / Claude / Gemini 対応）】</b></p>
+<p><b>📈 いま特に読者から強く求められている「3大自動化テーマ」を完全収録！</b><br>① <b>{top1}</b><br>② <b>{top2}</b><br>③ <b>{top3}</b><br>需要が集中しているこの3大領域の即戦力セットはもちろん、<b>経理・営業・SNS・YouTube・店舗集客まで全10業種・50種類すべて</b>をそのまま手に入れていただけます。</p>
+<p>もし1日60分の手作業を月22日続けている場合、時給2,500円換算で<b>【年間 607,200円（約243時間）】</b>を定型作業に費やしていることになります。本パックは、コピペ5分で今日から稼働させられる「構造化AIプロンプト50本」＋「Google Apps Script (GAS) 自動実行コード50本」を1つにまとめた実務資産パッケージです。</p>
+<h2>■ なぜ「普通のChatGPTの使い方」では業務が減らないのか？</h2>
+<p>ChatGPTに毎回文章を打ち、出てきた回答をコピーしてスプレッドシートやメールに貼り直す作業は、結局<b>「人間が手作業を仲介する負担」</b>が消えません。本当に業務時間をゼロに近づけるには、<b>①出力形式（TSV/JSON）を固定した業務専用プロンプト</b>と、<b>②スプレッドシート上で定時自動実行＆メール通知まで完結するGAS完成コード</b>の両輪が不可欠です。</p>
+<h2>■ 購入前にクオリティをご確認いただける【TOP3領域 実物サンプル完全公開】</h2>
+<p>「自分の業種でそのまま使えるレベルなのか？」を一切の疑問なく確かめていただけるよう、いま最も問い合わせが多い<b>3大テーマの実物レシピ（プロンプト＋GAS完成コード）</b>をこの無料エリアでそのまま公開します！</p>
+
+<p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><b>🎁 無料実物サンプル①：補助金申請・融資用の事業計画書ドラフト＆5カ年収支表チェック</b><br>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+<p><b>【① コピペ用・構造化AIプロンプト（採択基準・審査員視点組込済）】</b></p>
 <pre><code># 命令書
-あなたは「EC・物販」領域のトップデータアナリスト兼業務自動化エキスパートです。
-目的：「競合価格の毎朝自動取得＆値下げアラート」を人間の手作業ゼロ・最高精度で完結させること。
-以下の【入力データ】を解析し、下記の【出力ルール】に従って即座に実務利用可能な形式で出力してください。
+あなたは認定経営革新等支援機関レベルの補助金・事業計画書コンサルタント兼財務モデラーです。
+以下の自社情報をもとに、補助事業計画書（現状と課題／補助事業の具体的内容／投資回収効果／5カ年数値目標）を審査員が採点しやすい論理構成で作成してください。
 
-# 出力ルール
-1. 曖昧な表現を排除し、スプレッドシートへそのまま貼り付けられるタブ区切り（TSV）形式で出力すること（列：商品名 / 自社価格 / 競合最安値 / 価格差 / 推奨改定価格 / 判定ステータス）。
-2. 競合が自社より5%以上安い項目には先頭に [要価格改定] タグを付与すること。
-3. 利益率を守りながら勝つための価格改定アクションを末尾に3行以内で提案すること。
+# 厳守出力ルール
+1. 【投資回収・付加価値額】は「売上増加根拠×粗利率−追加経費」の数式と前提条件を必ず併記すること。
+2. 審査で減点されやすい曖昧表現（「大幅に増加」「積極活用」）を禁止し、KPI数値・実施月・担当体制で書くこと。
+3. 末尾にGoogleスプレッドシート収支計画シートへ貼れるTSV形式の5カ年計画表（年度／売上高／原価／販管費／営業利益／補助対象投資回収メモ）を出力すること。
 
-# 入力データ
-（ここに比較したい商品リストや競合価格テキストを貼り付けてください）</code></pre>
-<p><b>【② 自動実行 Google Apps Script (GAS) 完成コード】</b><br>※Googleスプレッドシートの「拡張機能 ＞ Apps Script」にそのまま貼り付けて使えます。</p>
-<pre><code>function autoExecute_TPL_01() {{
-  // 対象業務: 競合価格の毎朝自動取得＆値下げアラート自動通知
+# 自社情報・計画メモ
+（事業概要・導入予定設備・投資額・狙う市場を貼り付けてください）</code></pre>
+<p><b>【② 自動実行 GAS コード：収支目標達成率・未記入項目アラート自動監査】</b></p>
+<pre><code>function auditSubsidyPlanSheet() {{
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = ss.getActiveSheet();
+  const sheet = ss.getSheetByName('事業計画収支') || ss.getActiveSheet();
   const rows = sheet.getDataRange().getValues();
-  const alertEntries = [];
-
+  const alerts = [];
   for (let i = 1; i &lt; rows.length; i++) {{
-    const [itemName, myPrice, rivalPrice, status] = rows[i];
-    if (itemName &amp;&amp; status !== 'DONE' &amp;&amp; Number(rivalPrice) &lt; Number(myPrice)) {{
-      const diff = Number(myPrice) - Number(rivalPrice);
-      alertEntries.push('【値下げ検知】' + itemName + ' (自社:' + myPrice + '円 / 競合:' + rivalPrice + '円 / 差額:-' + diff + '円)');
-      sheet.getRange(i + 1, 4).setValue('DONE');
-      sheet.getRange(i + 1, 5).setValue(new Date().toLocaleString('ja-JP'));
+    const [yearLabel, sales, cost, sga, opProfit, noteMemo] = rows[i];
+    if (!yearLabel) continue;
+    const growth = Number(opProfit) / Math.max(1, Number(sales));
+    if (!noteMemo || String(noteMemo).trim().length &lt; 8) {{
+      alerts.push(yearLabel + '：根拠メモが短すぎます（審査員減点リスク）');
+    }}
+    if (growth &lt; 0.03) {{
+      alerts.push(yearLabel + '：営業利益率が' + (growth * 100).toFixed(1) + '%です。付加価値額3%以上の要件を確認してください');
     }}
   }}
-
-  if (alertEntries.length &gt; 0) {{
-    MailApp.sendEmail(
-      Session.getActiveUser().getEmail(),
-      '【AutoFlow自動アラート】競合値下げ検知レポート（' + alertEntries.length + '件）',
-      alertEntries.join('\\n')
-    );
+  if (alerts.length &gt; 0) {{
+    MailApp.sendEmail(Session.getActiveUser().getEmail(), '【事業計画セルフ監査】要修正ポイント（' + alerts.length + '件）', alerts.join('\\n'));
   }}
 }}</code></pre>
-<p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><b>🎁 無料実物サンプル②：TPL-16 [経理・バックオフィス] 請求書PDFテキストからのインボイス対応TSV抽出＆台帳記帳</b><br>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
-<p><b>【① コピペ用・構造化AIプロンプト】</b></p>
-<pre><code># 命令書
-あなたは経理・インボイス制度対応の専門AI監査アシスタントです。
-以下の請求書・領収書テキストから必要項目を正確に抽出し、スプレッドシート記帳用のTSV形式で出力してください。
 
-# 出力ルール
-1. 出力列：取引日(YYYY-MM-DD) / 支払先名 / 登録番号(T+13桁) / 税抜金額 / 消費税額(10%/8%) / 税込合計 / 推奨勘定科目 / 摘要
-2. 適格請求書発行事業者の登録番号（Tから始まる13桁）が欠落している場合は [要確認：登録番号なし] と明記すること。</code></pre>
-<p><b>【② 自動実行 Google Apps Script (GAS) 完成コード】</b></p>
-<pre><code>function autoExecute_TPL_16() {{
-  // 対象業務: 請求書データの自動台帳記帳＆未確認インボイス通知
+<p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><b>🎁 無料実物サンプル②：採用・人事の職務経歴書スクリーニング＆面接質問自動生成</b><br>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+<p><b>【① コピペ用・構造化AIプロンプト（再現性見極め・深掘り質問付）】</b></p>
+<pre><code># 命令書
+あなたは年間200名の採用面接設計を担当する人事マネージャー兼評価アナリストです。
+以下の応募者レジュメと募集要件（必須スキル・歓迎要件・NG条件）を照合し、構造化評価を行ってください。
+
+# 厳守出力ルール
+1. スプレッドシート貼付用TSVで1行要約を出力（応募者名／総合マッチ度100点満点／強みTOP2／懸念点／面接優先ランクA-C）。
+2. 「自走力」「課題解決」を確かめるための一次面接用・深掘り質問を3問（「過去どのような制約下で何を実行したか」を引き出す質問）作成すること。
+3. 年齢・性別・出身地などのバイアス情報を排除し、職務実績ベースのみで判定すること。</code></pre>
+<p><b>【② 自動実行 GAS コード：Aランク候補者検知＆面接調整通知オートメーション】</b></p>
+<pre><code>function notifyHighMatchCandidates() {{
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   const rows = sheet.getDataRange().getValues();
-  const missingInvoiceList = [];
-
+  const priorityList = [];
   for (let i = 1; i &lt; rows.length; i++) {{
-    const [dateStr, vendor, invoiceId, amount, status] = rows[i];
-    if (vendor &amp;&amp; status !== 'RECORDED') {{
-      if (!String(invoiceId).startsWith('T') || String(invoiceId).length !== 14) {{
-        missingInvoiceList.push('・' + vendor + '（金額: ' + amount + '円 / 登録番号要確認）');
-      }}
-      sheet.getRange(i + 1, 5).setValue('RECORDED');
+    const [name, score, summary, rank, notified] = rows[i];
+    if (name &amp;&amp; rank === 'A' &amp;&amp; notified !== 'SENT') {{
+      priorityList.push('・' + name + '（スコア:' + score + '点）｜' + summary);
+      sheet.getRange(i + 1, 5).setValue('SENT');
+      sheet.getRange(i + 1, 6).setValue(new Date().toLocaleString('ja-JP'));
     }}
   }}
-
-  if (missingInvoiceList.length &gt; 0) {{
-    MailApp.sendEmail(
-      Session.getActiveUser().getEmail(),
-      '【経理アラート】インボイス番号の要確認取引先リスト',
-      missingInvoiceList.join('\\n')
-    );
+  if (priorityList.length &gt; 0) {{
+    MailApp.sendEmail(Session.getActiveUser().getEmail(), '【採用速報】Aランク候補者を即時通知（' + priorityList.length + '名）', priorityList.join('\\n'));
   }}
 }}</code></pre>
+
+<p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br><b>🎁 無料実物サンプル③：EC・物販の競合価格監視＆粗利下限ガード付き値下げアラート</b><br>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+<p><b>【② 自動実行 GAS コード（粗利割れ防止チェック付）】</b></p>
+<pre><code>function autoPriceGuard_EC() {{
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const rows = sheet.getDataRange().getValues();
+  const alerts = [];
+  for (let i = 1; i &lt; rows.length; i++) {{
+    const [sku, myPrice, costPlusFee, rivalPrice, status] = rows[i];
+    const minSafePrice = Math.ceil(Number(costPlusFee) * 1.15);
+    if (sku &amp;&amp; status !== 'DONE' &amp;&amp; Number(rivalPrice) &lt; Number(myPrice)) {{
+      const action = Number(rivalPrice) &gt;= minSafePrice ? '推奨改定¥' + (Number(rivalPrice) - 10) : '追従停止(粗利下限¥' + minSafePrice + '未満)';
+      alerts.push(sku + '｜自社¥' + myPrice + ' vs 競合¥' + rivalPrice + ' ➔ ' + action);
+      sheet.getRange(i + 1, 5).setValue('DONE');
+    }}
+  }}
+  if (alerts.length &gt; 0) {{
+    MailApp.sendEmail(Session.getActiveUser().getEmail(), '【EC価格監視レポート】' + alerts.length + '商品に変動あり', alerts.join('\\n'));
+  }}
+}}</code></pre>
+
+<h2>■ 無料記事と「完全版パック（¥980）」の決定的な違い</h2>
+<p>・<b>無料記事（1本ずつ手動設定）：</b> 1テーマの基本コードのみ／エラー通知や複数シート連携は自分で調整。<br>・<b>AutoFlow Pro 完全版パック（限定 ¥980）：</b> ①補助金・採用・ECを含む<b>全10業種50レシピ</b>すべて収録（1本あたり<b>約19円</b>）、②最初から<b>try-catch エラー通知・自動タイムスタンプ更新・6分制限回避</b>を組込済、③スプレッドシート初心者でも迷わない<b>3分導入チェックリスト付</b>。</p>
+
+<h2>■ 購入前のよくある質問（FAQ）</h2>
+<p><b>Q1. プログラミングの知識がまったくなくても使えますか？</b><br>はい。スプレッドシートの「拡張機能 ＞ Apps Script」を開き、コードをそのままコピー＆ペーストして保存ボタンを押すだけです（画像なしでも迷わない3ステップ手順を冒頭に明記しています）。</p>
+<p><b>Q2. 無料版の ChatGPT や Gemini でも動きますか？</b><br>はい、本パックのプロンプトはすべて ChatGPT（無料版含む）・Gemini・Claude のどれでもそのまま動作する汎用構造化フォーマットで設計しています。</p>
+<p><b>Q3. 購入後の追加料金や月額課金はありますか？</b><br>一切ありません。<b>¥980の買い切り</b>で、全50本＋今後のアップデート記載分をすべて永続的にご覧いただけます。</p>
+
 <h2>■ 本パックに収録されている「全10業種・50種類」の完全一覧リスト</h2>
-<p>有料エリアには、上記と同じく<b>「コピペ用・構造化AIプロンプト」と「GAS自動実行コード（＋初心者向け3分導入ガイド）」が50業務分すべてフルセットで収録</b>されています（合計64,000文字超の圧倒的ボリュームです）。</p>
+<p>有料エリアには、上記の実物サンプルと同等・またはそれ以上の詳細仕様で<b>50業務分すべてのプロンプト＆GAS完成コード</b>をすべて掲載しています（合計64,000文字超）。</p>
 {toc_html}
 <h2>■ 先着10部限定！ランチ1回分（¥980）で一生モノの自動化資産を</h2>
-<p>・通常価格：¥1,980<br>・<b>現在価格：先着10部限定【¥980（税込・買い切り・追加費用一切なし）】</b><br>・1レシピあたりの単価：<b>わずか約19円</b></p>
-<p>時給2,500円の方なら、本パックのどれか1つのレシピを使って<b>「たった24分」の作業が浮くだけで、今日中に100%元が取れます。</b><br>先着10部が売り切れ次第、自動的に ¥1,480 ➔ ¥1,980 へ価格を改定しますので、最安値の今のうちにぜひ手に入れて毎日のルーティン作業を消滅させてください！</p>
+<p>・通常価格：¥1,980<br>・<b>現在価格：先着10部限定【¥980（税込・買い切り・追加費用一切なし）】</b><br>・時給2,500円の方なら、50本のうちたった1つを使って<b>「24分」の作業が浮くだけで100%元が取れます。</b>先着10部が完売次第、自動的に ¥1,480 ➔ ¥1,980 へ価格を改定しますので、最安値の今のうちにぜひ手に入れてください！</p>
 <h2>▼ ここから下が有料エリア（全50種類のプロンプト＆GASコード完全版・約61,000文字）です ▼</h2>
 """.strip()
     return html
@@ -332,7 +358,7 @@ def update_paid_note_and_price(top_winners: list[dict] | None = None) -> dict:
                     afterLen += (cur.textContent || '').trim().length;
                     cur = cur.nextSibling;
                 }
-                const hasTop3 = beforeText.includes('3大自動化領域') && beforeText.includes('先着10部');
+                const hasTop3 = (beforeText.includes('3大自動化テーマ') || beforeText.includes('3大自動化領域')) && beforeText.includes('先着10部');
                 return { ok: hasTop3 && afterLen >= 500, hasTop3, beforeLen: beforeText.length, afterLen };
             }"""
         )
@@ -379,6 +405,7 @@ def update_paid_note_and_price(top_winners: list[dict] | None = None) -> dict:
 
         sync_record = {
             "synced_at": datetime.now().astimezone().isoformat(),
+            "preview_schema_version": 2,
             "top3_slugs": [w.get("slug", "") for w in winners[:3]],
             "top3_titles": [_sanitize_note_copy(w.get("title", "")) for w in winners[:3]],
             "title_applied": new_title,
@@ -392,7 +419,7 @@ def update_paid_note_and_price(top_winners: list[dict] | None = None) -> dict:
 
 
 def sync_paid_note_safely_if_needed(top_winners: list[dict] | None = None, force: bool = False) -> dict:
-    """TOP3構成が変わったとき、または未同期のときだけ安全ガード付きで有料note冒頭とタイトルを更新する。"""
+    """TOP3構成が変わったとき、またはスキーマ更新・未同期のときだけ安全ガード付きで有料note冒頭とタイトルを更新する。"""
     if os.getenv("GITHUB_ACTIONS", "").lower() == "true":
         return {"status": "skipped_github_actions"}
 
@@ -402,7 +429,7 @@ def sync_paid_note_safely_if_needed(top_winners: list[dict] | None = None, force
         try:
             with open(PAID_NOTE_SYNC_STATE_PATH, "r", encoding="utf-8") as f:
                 prev = json.load(f)
-            if prev.get("status") == "synced" and prev.get("top3_slugs") == target_slugs:
+            if prev.get("status") == "synced" and prev.get("top3_slugs") == target_slugs and prev.get("preview_schema_version", 1) >= 2:
                 return {
                     "status": "already_synced_with_current_top3",
                     "top3_slugs": target_slugs,

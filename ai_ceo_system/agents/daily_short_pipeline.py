@@ -37,6 +37,10 @@ LEGACY_SHORT_CLICHES = (
     "オーケストレーターが全自動で回しています",
     "自ら5人のAI役員会議を開いて全サイトを大改造した件",
     "全27ページの画面下部に\n【先着10部",
+    "コメント欄のリンク",
+    "概要欄のリンク",
+    "リンクから詳細をチェック",
+    "リンクの先にあります",
 )
 
 CONCEPT_ROTATION = (
@@ -309,17 +313,18 @@ class DailyShortPipelineAgent:
 - 今いちばん需要が高いテーマ1位: 『{day_ctx['top1_short']}』
 - 本日のAI役員会議（{day_ctx['staff_count']}名体制）議題: {day_ctx['agenda'][:60]}
 - 最優先目標: {day_ctx['goal'][:50]}
-- 累計GitHubプログラム利用: {metrics_ctx['gh_clones']}回（{metrics_ctx['gh_uniques']}名） / note記事: {metrics_ctx['total_notes']}本（合計スキ{metrics_ctx['total_likes']}件）
-- 限定有料パック価格: 先着10部 ¥{metrics_ctx['price_jpy']:,}
+- note公開記事: {metrics_ctx['total_notes']}本（累計スキ{metrics_ctx['total_likes']}件）
+- 限定有料パック価格: 単品¥500特化キット / 全50選パック 先着10部 ¥{metrics_ctx['price_jpy']:,}
 
 【絶対厳守ルール】
 1. `video_title` は82文字以内・括弧バランス完璧・末尾に必ず ` #Shorts` を付け、視聴者の好奇心を引くこと。先着10部などの途切れ表記や、過去動画と同じテンプレは厳禁。
-2. 5シーンすべての `narration`・`text`・画面表示カード（`card`）を本日固有の内容として新しく書き下ろすこと。定型文の使い回しは厳禁。
-3. 以下の過去回タイトルおよびセリフと一字一句同じ文は絶対に使わないこと：
+2. YouTubeショートの仕様上、概要欄やコメント欄のURLは押せないため、「コメント欄のリンク」「概要欄のリンク」「リンクから詳細をチェック」という表現は絶対に使わないこと。代わりに誘導先を示すときは必ず「チャンネル画面のリンク」または「noteで『AutoFlow』と検索」と案内すること。
+3. 5シーンすべての `narration`・`text`・画面表示カード（`card`）を本日固有の内容として新しく書き下ろすこと。定型文の使い回しは厳禁。
+4. 以下の過去回タイトルおよびセリフと一字一句同じ文は絶対に使わないこと：
 過去タイトル: {prev_titles_sample}
 過去セリフ抜粋:
 {prev_narr_sample}
-4. 各シーンの `narration` は話し言葉で40〜68文字（約5〜7秒で読み切れるテンポ）。Scene 1は衝撃のフック、Scene 2は具体データ/損失、Scene 3は無料記事『{clean_niche_title}』実演、Scene 4は裏側のAI改善打ち手、Scene 5は2択コメント誘導CTA（[A: ...] [B: ...]）。
+5. 各シーンの `narration` は話し言葉で40〜68文字（約5〜7秒で読み切れるテンポ）。Scene 1は衝撃のフック、Scene 2は具体データ/損失、Scene 3は無料記事『{clean_niche_title}』実演（チャンネルプロフィールのnoteへ誘導）、Scene 4は裏側のAI改善打ち手、Scene 5は2択コメント誘導CTA（[A: ...] [B: ...]）＋プロフィール検索誘導。
 5. 出力は次のスキーマの純粋なJSONのみ（説明文不要）を返すこと：
 {{
   "video_title": "【Day{day}】... #Shorts",
@@ -431,7 +436,7 @@ class DailyShortPipelineAgent:
                         "headline": f"{clean_niche_title} 実践ガイド",
                         "bullets": ["そのまま貼り付けて動くプロンプト全文", "現場で迷わないエラー回避のチェック表"],
                         "highlight_label": "無料レシピ入手方法",
-                        "highlight_body": f"プロフィール欄・概要欄のnote最新記事（{total_notes}本目）から即コピー可能",
+                        "highlight_body": f"チャンネルトップのURLか、noteで「AutoFlow」と検索（{total_notes}本目）",
                     },
                 },
                 {
@@ -525,8 +530,8 @@ class DailyShortPipelineAgent:
                 },
             ]
         else:
-            vt = f"【Day{day}】手作業で月{hrs}時間損してる人へ！『{clean_niche_title[:15]}』をAI化する比較実験 #Shorts"
-            pinned = f"手作業で消耗している業務、1つ減らすならどれを選びますか？ [A: {clean_niche_title[:14]}] [B: {top1[:14]}] コメントで教えてください！"
+            vt = f"【Day{day}】手作業で月{hrs}時間損してる人へ！『{clean_niche_title[:15]}』をAI化する時短比較 #Shorts"
+            pinned = f"手作業で消耗している業務、1つ減らすならどれを選びますか？ [A: {clean_niche_title[:14]}] [B: {top1[:14]}] チャンネル欄のURLから無料レシピも見れます！"
             scenes = [
                 {
                     "scene": 1,
@@ -583,8 +588,8 @@ class DailyShortPipelineAgent:
                     "card": {
                         "card_title": f"DAY {day} BEFORE / AFTER POLL",
                         "headline": f"本格50本パックも限定¥{price_jpy}で公開中",
-                        "bullets": [f"無料記事{total_notes}本公開済み / スキ{total_likes}件", f"実験残高 ¥{metrics_ctx['balance']:,}（90日挑戦中）"],
-                        "highlight_label": "コメントで1番減らしたい作業を教えて👇",
+                        "bullets": [f"無料記事{total_notes}本公開済み / スキ{total_likes}件", f"チャンネル名横のリンクから即利用OK"],
+                        "highlight_label": "チャンネル画面のリンク／note検索で取得👇",
                         "highlight_body": f"[A: {clean_niche_title[:16]}] or [B: {top1[:16]}]",
                     },
                 },
@@ -740,7 +745,8 @@ class DailyShortPipelineAgent:
                 f"90日間AI事業構築ドキュメント Day {day}（{concept['name']}）\n"
                 f"本日の注目無料レシピ：『{clean_niche_title}』 / 需要1位：『{day_ctx['top1_short']}』\n"
                 f"本日の会議テーマ：{day_ctx['agenda']}\n"
-                f"公開note計{total_notes}本（スキ{total_likes}件）・GitHub利用{gh_clones}回・厳選50本パック先着10部¥{price_jpy}\n\n"
+                f"▼ 無料レシピ・単品¥500キット・50選¥{price_jpy}パックはチャンネルプロフィール欄のURLからご覧ください\n"
+                f"（公開note計{total_notes}本・累計スキ{total_likes}件）\n\n"
                 f"#AI副業 #業務自動化 #GAS自動化 #AI起業対決 #Shorts"
             ),
             "hashtags": ["#AI副業", "#業務自動化", "#GAS自動化", "#Shorts"],

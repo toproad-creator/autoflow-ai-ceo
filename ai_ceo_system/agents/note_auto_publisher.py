@@ -17,7 +17,11 @@ try:
     from playwright.sync_api import sync_playwright
 except ImportError:
     sync_playwright = None
-from thumbnail_generator import NoteThumbnailGenerator
+
+try:
+    from thumbnail_generator import NoteThumbnailGenerator
+except ImportError:
+    NoteThumbnailGenerator = None
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -25,23 +29,40 @@ if hasattr(sys.stdout, "reconfigure"):
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 load_dotenv(os.path.join(ROOT_DIR, ".env"))
 
+DATA_DIR = os.path.join(ROOT_DIR, "ai_ceo_system", "data")
 MARKETING_DIR = os.path.join(ROOT_DIR, "ai_ceo_system", "marketing_outputs")
-PROFILE_DIR = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "note_browser_profile")
-SCREENSHOT_PATH = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "note_autopost_latest.png")
+PROFILE_DIR = os.path.join(DATA_DIR, "note_browser_profile")
+SCREENSHOT_PATH = os.path.join(DATA_DIR, "note_autopost_latest.png")
+UPGRADED_STATE_PATH = os.path.join(DATA_DIR, "upgraded_free_notes_state.json")
+SPECIALIST_STATE_PATH = os.path.join(DATA_DIR, "specialist_paid_notes.json")
 PAID_NOTE_URL = "https://note.com/toproad_1989/n/n5d0e28a74f91"
 WEB_TOOL_URL = "https://toproad-creator.github.io/autoflow-ai-ceo/"
 NOTE_CREATOR_API_URL = "https://note.com/api/v2/creators/toproad_1989/contents?kind=note&page=1"
+THIN_BOILERPLATE_MARKER = "スプレッドシートへそのまま貼り付け可能なタブ区切り（TSV）形式で構造化して出力してください"
+
+
+def _sanitize_customer_note(text: str) -> str:
+    cleaned = text or ""
+    for src, dst in (
+        ("AI起業対決", ""),
+        ("AI CEO", ""),
+        ("実証実験", "導入検証"),
+        ("実験ログ", "運用記録"),
+        ("実験台", "検証環境"),
+        ("実験", "検証"),
+        ("対決", "比較"),
+    ):
+        cleaned = cleaned.replace(src, dst)
+    return cleaned.strip()
 
 
 class NoteAutoPublisherAgent:
-    """noteタイムライン集客用・無料お役立ち記事＆1280x670サムネイル画像の自動生成・自動投稿エージェント
-    .env の NOTE_EMAIL / NOTE_PASSWORD を使用して、全自動ログイン＆アイキャッチ画像設定＆クリック可能なリンク付き記事公開を行う。
-    """
+    """noteタイムライン集客用・本格実践レシピ記事＆1280x670サムネイル画像の自動生成・自動投稿・過去人気記事リノベーションエージェント"""
 
     def __init__(self):
         os.makedirs(MARKETING_DIR, exist_ok=True)
         os.makedirs(PROFILE_DIR, exist_ok=True)
-        self.thumb_gen = NoteThumbnailGenerator()
+        self.thumb_gen = NoteThumbnailGenerator() if NoteThumbnailGenerator else None
 
     def fetch_published_titles(self) -> list[dict]:
         all_items = []
@@ -56,6 +77,8 @@ class NoteAutoPublisherAgent:
                         "key": c.get("key"),
                         "title": c.get("name"),
                         "eyecatch": c.get("eyecatch"),
+                        "price": c.get("price", 0) or 0,
+                        "likes": c.get("likeCount", 0) or 0,
                         "created_at": c.get("publishAt", ""),
                         "url": f"https://note.com/toproad_1989/n/{c.get('key')}"
                     })
@@ -65,71 +88,287 @@ class NoteAutoPublisherAgent:
             pass
         return all_items
 
-    def generate_daily_free_lead_article(self, day: int, niche: dict) -> dict:
-        title = f"【無料コピペOK】{niche['title']}をAIとGASで自動化して月{niche['avg_hours_saved_monthly']}時間浮かす実践レシピ"
-        yearly_yen = niche["avg_hours_saved_monthly"] * 12 * niche["hourly_wage"]
+    @staticmethod
+    def _load_specialist_match(slug: str) -> dict | None:
+        if os.path.exists(SPECIALIST_STATE_PATH):
+            try:
+                with open(SPECIALIST_STATE_PATH, "r", encoding="utf-8") as f:
+                    items = json.load(f).get("items", [])
+                for it in items:
+                    if it.get("url") and (it.get("slug") == slug):
+                        return it
+                for it in items:
+                    if it.get("url"):
+                        return it
+            except Exception:
+                pass
+        return None
 
-        body = f"""毎日のルーティン業務で「{niche['title']}」に時間を奪われていませんか？
+    @staticmethod
+    def _generate_llm_practitioner_article(niche: dict) -> dict | None:
+        gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
+        if not gemini_key:
+            return None
 
-「毎回ChatGPTに文章を打って、結果をコピーしてスプレッドシートに貼り付ける…」という手作業は、もう今日で終わりにできます。
+        n_title = _sanitize_customer_note(niche.get("title", "業務自動化"))
+        hrs = niche.get("avg_hours_saved_monthly", 30)
+        prompt = f"""あなたは業務自動化コンサルタント兼Google Apps Scriptエンジニアです。
+note読者が無料で読んで「ここまで具体的で即動くなら、有料パックも間違いなく価値がある」と感動する実務解説コンテンツをJSONで出力してください。
 
-「構造化AIプロンプト」と「Googleスプレッドシートの自動実行スクリプト（GAS）」を組み合わせれば、こうした毎日の定型業務も85%以上を仕組み化して自動化できます。
+【テーマ】{n_title}（想定削減：月{hrs}時間）
 
-月間平均で【約{niche['avg_hours_saved_monthly']}時間】、時給{niche['hourly_wage']:,}円換算で【年間 約{yearly_yen:,}円相当】の時間を生み出す具体的な手順を、この記事で無料公開します。
+【禁止事項】
+- 「AI起業対決」「AI CEO」「実験」という語は一切使わないこと。
+- 中身の薄い汎用文ではなく、このテーマ固有の列名・チェック基準・エラー対策が入ったコードを書くこと。
 
-■ 1. まずはあなたの業務削減額を30秒で無料診断
-「自分の作業時間だと年間いくら浮くのか？」を0秒で計算し、その場で専用コードを出力できる無料Webシミュレーターを公開しています（登録不要・完全無料）👇
+【出力JSON仕様（これのみ出力）】
+{{
+  "pain_points": ["現場の具体的な悩み1", "悩み2", "悩み3"],
+  "sheet_columns": ["A列見出し", "B列見出し", "C列見出し", "D列見出し", "E列見出し", "F列見出し"],
+  "expert_prompt": "18行以上の実務特化プロンプト全文（前提役割・厳守判定基準・出力列・例外時の[要確認]ルール・入力例を含む）",
+  "gas_code": "22行以上の実用Google Apps Script完成コード（function runAutoWorkflow() で始まり、SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getDataRange().getValues()、行ループ処理、ステータス更新、try-catch、MailApp.sendEmailを含む有効なJavaScript）",
+  "pitfalls": ["実運用でハマりやすい罠と解決策1", "罠と解決策2"],
+  "domain_hashtags": ["AI活用", "業務効率化", "GAS", "スプレッドシート自動化", "テーマ別タグ"]
+}}"""
+
+        for model_name in ("gemini-3-flash-preview", "gemma-4-31b-it", "gemini-3.1-flash-lite"):
+            try:
+                url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={gemini_key}"
+                body = json.dumps({
+                    "contents": [{"parts": [{"text": prompt}]}],
+                    "generationConfig": {"temperature": 0.45},
+                }).encode("utf-8")
+                req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
+                with urllib.request.urlopen(req, timeout=30) as resp:
+                    payload = json.loads(resp.read().decode("utf-8"))
+                parts = payload["candidates"][0]["content"]["parts"]
+                content = "".join(p.get("text", "") for p in parts if not p.get("thought")) or parts[-1].get("text", "")
+                match = re.search(r"\{.*\}", content, re.S)
+                if not match:
+                    continue
+                parsed = json.loads(match.group(0))
+                ep = parsed.get("expert_prompt", "")
+                gc = parsed.get("gas_code", "")
+                if (
+                    isinstance(parsed.get("pain_points"), list) and len(parsed["pain_points"]) >= 2
+                    and isinstance(parsed.get("sheet_columns"), list) and len(parsed["sheet_columns"]) >= 4
+                    and len(ep) >= 220 and THIN_BOILERPLATE_MARKER not in ep
+                    and "function " in gc and "SpreadsheetApp" in gc and len(gc) >= 260
+                ):
+                    return parsed
+            except Exception:
+                continue
+        return None
+
+    @staticmethod
+    def _build_rich_fallback_article_parts(niche: dict) -> dict:
+        n_title = _sanitize_customer_note(niche.get("title", "定型業務の自動化"))
+        slug = niche.get("slug", "workflow")
+        cols_map = {
+            "subsidy-business-plan": ["年度/施策名", "対象投資額", "期待売上増", "粗利率(%)", "要確認メモ", "監査ステータス"],
+            "hr-resume-screening": ["応募者名", "応募職種", "AIマッチ度", "判定ランク", "深掘り質問メモ", "通知ステータス"],
+            "ec-inventory": ["SKUコード", "商品名", "現在庫数", "自社価格", "競合最安価格", "対応ステータス"],
+            "seo-article-outline": ["対策KW", "想定検索意図", "記事ステータス", "構造化要約メモ", "公開URL", "リライト判定"],
+            "accounting-invoice": ["取引日", "支払先名", "登録番号(T13桁)", "税込金額", "勘定科目", "記帳ステータス"],
+        }
+        cols = cols_map.get(slug, ["管理ID", "対象業務データ", "重要度判定", "AIチェック要約", "処理日時", "完了ステータス"])
+        fn_slug = re.sub(r"[^a-zA-Z0-9]", "", slug.title()) or "Workflow"
+
+        expert_prompt = (
+            f"# 命令書（{n_title} 実務専用アナリスト）\n"
+            f"あなたは「{n_title}」を長年担当する熟練マネージャー兼業務設計の専門家です。\n"
+            f"以下の【入力データ】をもとに、実務上の抜け漏れ・判断ミスをゼロにする構造化レビューと処理結果を作成してください。\n\n"
+            f"# 絶対厳守ルール\n"
+            f"1. 推測で数値を埋めず、根拠不足や例外パターンには必ず `[要確認：理由]` タグを先頭に付与すること。\n"
+            f"2. Googleスプレッドシートへそのまま貼れるタブ区切り（TSV）形式で以下の列を出力すること：\n"
+            f"   列構成：{' / '.join(cols)}\n"
+            f"3. 確認工数を減らすため、最優先で対応すべき上位3件の具体アクションを末尾に箇条書きすること。\n\n"
+            f"# 入力データ\n"
+            f"（ここに処理対象のテキスト・箇条書き・CSVデータをそのまま貼り付けてください）"
+        )
+        gas_code = (
+            f"// {n_title} 自動仕分け＆完了通知スクリプト\n"
+            f"function runAutoFlow_{fn_slug}() {{\n"
+            f"  const ss = SpreadsheetApp.getActiveSpreadsheet();\n"
+            f"  const sheet = ss.getActiveSheet();\n"
+            f"  const rows = sheet.getDataRange().getValues();\n"
+            f"  const alerts = [];\n"
+            f"  try {{\n"
+            f"    for (let i = 1; i < rows.length; i++) {{\n"
+            f"      const [colA, colB, colC, colD, colE, status] = rows[i];\n"
+            f"      if (!colA || status === 'DONE') continue;\n"
+            f"      const summary = colA + '｜' + String(colB || '').slice(0, 40);\n"
+            f"      if (String(colC).indexOf('要確認') !== -1 || !colD) {{\n"
+            f"        alerts.push('[要確認] ' + summary);\n"
+            f"      }} else {{\n"
+            f"        alerts.push('[処理済] ' + summary);\n"
+            f"      }}\n"
+            f"      sheet.getRange(i + 1, 5).setValue(new Date().toLocaleString('ja-JP'));\n"
+            f"      sheet.getRange(i + 1, 6).setValue('DONE');\n"
+            f"    }}\n"
+            f"    if (alerts.length > 0) {{\n"
+            f"      MailApp.sendEmail(\n"
+            f"        Session.getActiveUser().getEmail(),\n"
+            f"        '【自動処理レポート】{n_title}（' + alerts.length + '件）',\n"
+            f"        alerts.join('\\n')\n"
+            f"      );\n"
+            f"    }}\n"
+            f"  }} catch (err) {{\n"
+            f"    MailApp.sendEmail(Session.getActiveUser().getEmail(), '【エラー通知】{n_title}', err.message);\n"
+            f"    throw err;\n"
+            f"  }}\n"
+            f"}}"
+        )
+        return {
+            "pain_points": [
+                "毎回ゼロから文章や確認事項を考えてしまい、担当者によって品質がバラつく",
+                "ChatGPTの回答をコピーしてスプレッドシートへ手作業転記する時間が積み重なっている",
+                "見落とし・記入漏れが発生したとき、確認連絡が遅れて後工程が止まってしまう",
+            ],
+            "sheet_columns": cols,
+            "expert_prompt": expert_prompt,
+            "gas_code": gas_code,
+            "pitfalls": [
+                "AIに丸投げして「要確認フラグ」を指定しないと、もっともらしく誤った箇所を見落としやすくなります。必ずルールで `[要確認]` を出させてください。",
+                "GASのトリガーを「毎日午前8時」に1回設定するだけで、毎回スクリプトを開く手間自体がゼロになります。",
+            ],
+            "domain_hashtags": ["AI活用", "業務効率化", "GAS", "スプレッドシート", "ChatGPT"],
+        }
+
+    def generate_daily_free_lead_article(
+        self,
+        day: int,
+        niche: dict,
+        render_thumbnail: bool = True,
+    ) -> dict:
+        n_title = _sanitize_customer_note(niche["title"])
+        hrs = niche.get("avg_hours_saved_monthly", 30)
+        wage = niche.get("hourly_wage", 2500)
+        yearly_yen = hrs * 12 * wage
+        title = _sanitize_customer_note(f"【無料コピペOK】{n_title}をAIとGASで自動化して月{hrs}時間浮かす実践レシピ")
+
+        parts = self._generate_llm_practitioner_article(niche) or self._build_rich_fallback_article_parts(niche)
+        pains_md = "\n".join(f"・{_sanitize_customer_note(p)}" for p in parts["pain_points"][:3])
+        cols_str = " ｜ ".join(_sanitize_customer_note(c) for c in parts["sheet_columns"][:6])
+        pitfalls_md = "\n".join(f"・{_sanitize_customer_note(p)}" for p in parts["pitfalls"][:3])
+        expert_prompt = _sanitize_customer_note(parts["expert_prompt"].strip())
+        gas_code = _sanitize_customer_note(parts["gas_code"].strip())
+
+        specialist_note = self._load_specialist_match(niche.get("slug", ""))
+        specialist_cta = ""
+        if specialist_note and specialist_note.get("url"):
+            specialist_cta = (
+                f"\nまずは今回の領域だけを深く自動化したい方向けに、単品ワンコイン版（¥{int(specialist_note.get('price', 500)):,}）も公開しています👇\n"
+                f"{specialist_note['url']}\n"
+            )
+
+        related_links_md = (
+            "■ あわせて読まれている実践ガイド（すべて無料）\n"
+            "・採用・人事の職務経歴書スクリーニング自動化：https://note.com/toproad_1989/n/n129393b66060\n"
+            "・補助金申請・事業計画書＆収支表自動化：https://note.com/toproad_1989/n/n45f6c425ee66\n"
+        )
+
+        body = f"""「{n_title}」に毎月どれくらいの時間を使っていますか？
+
+実務の現場では、次のようなロスが起きやすい業務です。
+{pains_md}
+
+1つひとつの確認作業は15分でも、積み重なると月平均で約{hrs}時間（時給{wage:,}円換算で【年間 約{yearly_yen:,}円相当】）を消費します。この記事では、ChatGPT・Geminiなどで即使える専用プロンプトだけでなく、Googleスプレッドシート上で通知・記録まで自動化するGAS完成コードもそのまま無料公開します。
+
+■ 1. まず準備するスプレッドシート列設計（これだけで動きます）
+Googleスプレッドシートの1行目（A〜F列）に以下の見出しを用意します。
+【列構成】{cols_str}
+
+■ 2. コピペで使える！「{n_title}」専用・実務プロンプト
+以下をそのままコピーして、対象データを貼り付けて実行してください（[要確認]フラグで人の目チェックが必要な行だけを浮き彫りにします）。
+
+```text
+{expert_prompt}
+```
+
+■ 3. スプレッドシート自動処理＆メール通知 GAS 完成コード
+スプレッドシート上部メニューの「拡張機能」＞「Apps Script」を開き、下記のコードを貼り付けて保存してください。トリガー（毎日午前8時など）を設定すれば、確認漏れ・処理完了が自動でメール通知されます。
+
+```javascript
+{gas_code}
+```
+
+■ 4. 現場導入でつまずかない2つのポイント＆無料診断ツール
+{pitfalls_md}
+
+「自分の職場だと年間いくら時間を削減できるか」の試算と追加コード生成は、登録不要の無料Webツールでも30秒で試せます👇
 {WEB_TOOL_URL}
 
-■ 2. コピペで使える！「{niche['title']}」専用AIプロンプト
-ChatGPT / Claude / Gemini のどれでも使える構造化プロンプトです。以下のテキストをそのままコピーしてAIに貼り付けてください。
-
-【命令書】
-あなたは「{niche['title']}」の専門データアナリスト兼業務自動化エキスパートです。
-以下の入力データを解析し、スプレッドシートへそのまま貼り付け可能なタブ区切り（TSV）形式で構造化して出力してください。
-1. 前置きや挨拶は一切省き、データのみを出力すること
-2. 異常値や確認が必要な項目には先頭に [要確認] タグを付与すること
-3. 末尾に業務改善のネクストアクションを3行以内で提案すること
-
-■ 3. GASでエラーが出た時の「3秒診断ツール」も無料公開中
-「AIが出したGASコードをスプレッドシートに貼ったら赤字のエラー（TypeErrorや6分制限）が出た…」という方のために、エラー原因と修正済みコードを3秒で出力する無料ツールも公開しています👇
+GASの貼り付けエラーを3秒で解決する無料デバッガーはこちら👇
 https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
 
-■ 4. 【リリース記念・先着10部限定 50%OFF】全10業種・50選の完全版パック
-「最初からエラー対策・自動メール通知まで組み込まれた完成品50種類をまとめて手に入れたい」という方向けに、全10カテゴリ・50選の完全版パッケージを公開しています。
-現在、リリース記念として【先着10部限定で半額の ¥980（定価¥1,980・1レシピあたり約19円）】で公開中です。たった24分の作業短縮で100%元が取れます。
-購入前にクオリティをご確認いただけるよう、無料試し読みエリアに「全50レシピ完全一覧」と「実物完成コード2本（プロンプト＋GAS全文）」を丸ごと公開していますので、ぜひ一度チェックしてみてください👇
+{related_links_md}
+■ 5. 【先着10部限定 ¥980】エラー対策＆全10業種50選をまとめて現場導入したい方へ
+「補助金計画・採用選考・EC在庫・請求書経理・営業返信」まで含め、最初からエラー通知・6分制限回避を組み込んだ50業務すべての完全版パッケージを公開しています。
+通常価格 ¥1,980 のところ、先着10部限定で【半額 ¥980（1レシピあたり約19円）】です。無料エリアに「補助金・採用・EC」の実物コードもそのまま掲載しているので、品質を確かめたうえでぜひご活用ください👇
 {PAID_NOTE_URL}
-"""
-        hashtags = ["AI", "ChatGPT", "業務効率化", "GAS", "プロンプト"]
+{specialist_cta}"""
+
+        raw_tags = parts.get("domain_hashtags") or ["AI活用", "業務効率化", "GAS", "スプレッドシート", "プロンプト"]
+        hashtags = [_sanitize_customer_note(str(h)).replace("#", "").strip() for h in raw_tags[:5] if str(h).strip()]
+        if "GAS" not in hashtags:
+            hashtags.append("GAS")
+
         out_file = os.path.join(MARKETING_DIR, f"free_note_lead_day{day}.txt")
         with open(out_file, "w", encoding="utf-8") as f:
             f.write(f"【タイトル】\n{title}\n\n【ハッシュタグ】\n{' '.join('#'+h for h in hashtags)}\n\n【本文】\n{body}")
 
-        thumb_path = self.thumb_gen.generate_free_article_thumbnail(niche, day=day)
+        thumb_path = ""
+        if render_thumbnail and self.thumb_gen and sync_playwright is not None:
+            thumb_path = self.thumb_gen.generate_free_article_thumbnail(niche, day=day)
+
         return {
             "day": day,
             "title": title,
             "hashtags": hashtags,
             "file_path": out_file,
             "thumbnail_path": thumb_path,
-            "body": body
+            "body": body,
         }
 
     def _body_to_rich_html(self, body_text: str) -> str:
-        paragraphs = []
-        for line in body_text.strip().split("\n"):
-            escaped = html_lib.escape(line.strip())
-            if not escaped:
-                paragraphs.append("<p><br></p>")
+        """トリプルバッククォートのコードブロックを <pre><code> に、URLをクリック可能リンクに変換する。"""
+        blocks = []
+        lines = body_text.strip().split("\n")
+        in_code = False
+        code_buf = []
+
+        for raw_ln in lines:
+            stripped = raw_ln.strip()
+            if stripped.startswith("```"):
+                if in_code:
+                    blocks.append(f"<pre><code>{html_lib.escape(chr(10).join(code_buf))}</code></pre>")
+                    code_buf = []
+                    in_code = False
+                else:
+                    in_code = True
+                continue
+
+            if in_code:
+                code_buf.append(raw_ln.rstrip())
+                continue
+
+            if not stripped:
+                blocks.append("<p><br></p>")
+            elif stripped.startswith("■ "):
+                blocks.append(f"<h2>{html_lib.escape(stripped)}</h2>")
             else:
+                escaped = html_lib.escape(stripped)
                 linked = re.sub(
                     r"(https://[^\s<]+)",
                     r'<a href="\1" target="_blank" rel="noopener">\1</a>',
-                    escaped
+                    escaped,
                 )
-                paragraphs.append(f"<p>{linked}</p>")
-        return "".join(paragraphs)
+                blocks.append(f"<p>{linked}</p>")
+
+        if in_code and code_buf:
+            blocks.append(f"<pre><code>{html_lib.escape(chr(10).join(code_buf))}</code></pre>")
+        return "".join(blocks)
 
     def _insert_rich_body(self, page, body_text: str, replace_existing: bool = False):
         body_box = page.locator('.ProseMirror, div[contenteditable="true"]').first
@@ -561,6 +800,131 @@ https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
 
         art = self.generate_daily_free_lead_article(day=day, niche=target_niche)
         return self.auto_publish_headless(art)
+
+    @staticmethod
+    def _match_niche_for_article(title: str, niches: list[dict]) -> dict:
+        clean = re.sub(r"【[^】]*】", "", title or "").split("をAIとGASで")[0].strip()
+        for n in niches:
+            nt = n.get("title", "")
+            if clean and (clean in nt or nt in clean or clean[:10] in nt):
+                return n
+        hrs_m = re.search(r"月(\d+)時間", title or "")
+        hrs = int(hrs_m.group(1)) if hrs_m else 30
+        return {
+            "slug": "custom-workflow",
+            "title": clean or "定型業務のAI自動化",
+            "avg_hours_saved_monthly": hrs,
+            "hourly_wage": 2500,
+        }
+
+    def upgrade_popular_thin_free_articles(self, niches: list[dict], max_upgrades: int = 5) -> dict:
+        """スキが多い人気記事や直近公開済みの旧短文無料記事を特定し、本格GAS＆プロンプト記事へアップグレードする。"""
+        if os.getenv("GITHUB_ACTIONS", "").lower() == "true":
+            return {"status": "skipped_github_actions", "upgraded": []}
+        if sync_playwright is None:
+            return {"status": "skipped_no_playwright", "upgraded": []}
+
+        upgraded_state = {}
+        if os.path.exists(UPGRADED_STATE_PATH):
+            try:
+                with open(UPGRADED_STATE_PATH, "r", encoding="utf-8") as f:
+                    upgraded_state = json.load(f)
+            except Exception:
+                upgraded_state = {}
+        done_keys = set(upgraded_state.get("upgraded_keys", []))
+
+        items = self.fetch_published_titles()
+        free_items = [it for it in items if (it.get("price", 0) or 0) == 0 and it.get("key") != "n5d0e28a74f91"]
+        # 高スキ順 + 未アップグレードかつ実本文に薄型マーカーが残る記事を優先
+        candidates = []
+        for it in sorted(free_items, key=lambda x: (x.get("likes", 0), x.get("created_at", "")), reverse=True):
+            key = it.get("key")
+            if not key or key in done_keys:
+                continue
+            try:
+                req = urllib.request.Request(f"https://note.com/api/v3/notes/{key}", headers={"User-Agent": "Mozilla/5.0"})
+                with urllib.request.urlopen(req, timeout=8) as resp:
+                    body_html = json.loads(resp.read().decode("utf-8")).get("data", {}).get("body", "") or ""
+                if THIN_BOILERPLATE_MARKER in body_html or "SpreadsheetApp" not in body_html:
+                    candidates.append(it)
+            except Exception:
+                continue
+            if len(candidates) >= max_upgrades:
+                break
+
+        if not candidates:
+            return {"status": "all_free_articles_already_rich", "upgraded": []}
+
+        email = os.getenv("NOTE_EMAIL", "").strip()
+        password = os.getenv("NOTE_PASSWORD", "").strip()
+        prepared = []
+        for idx, it in enumerate(candidates, start=101):
+            niche = self._match_niche_for_article(it.get("title", ""), niches)
+            art = self.generate_daily_free_lead_article(day=idx, niche=niche, render_thumbnail=False)
+            prepared.append((it["key"], it.get("title", ""), art))
+
+        upgraded_results = []
+        with sync_playwright() as p:
+            context = p.chromium.launch_persistent_context(
+                user_data_dir=PROFILE_DIR,
+                channel="chrome",
+                headless=False,
+                args=["--disable-blink-features=AutomationControlled", "--start-maximized"],
+                no_viewport=True,
+            )
+            page = context.pages[0] if context.pages else context.new_page()
+
+            for note_key, orig_title, art in prepared:
+                edit_url = f"https://editor.note.com/notes/{note_key}/edit/"
+                print(f"[Note Upgrade] Upgrading thin free note {note_key} ({orig_title[:24]}...)...")
+                page.goto(edit_url, wait_until="domcontentloaded", timeout=30000)
+                time.sleep(4)
+                if "login" in page.url and email and password:
+                    inputs = page.locator("input")
+                    if inputs.count() >= 2:
+                        inputs.nth(0).click()
+                        inputs.nth(0).press_sequentially(email, delay=40)
+                        time.sleep(0.5)
+                        inputs.nth(1).click()
+                        inputs.nth(1).press_sequentially(password, delay=40)
+                        time.sleep(1.0)
+                        page.locator('button:has-text("ログイン")').first.click()
+                        time.sleep(7)
+                        page.goto(edit_url, wait_until="domcontentloaded", timeout=30000)
+                        time.sleep(4)
+
+                if "login" in page.url:
+                    print("[Note Upgrade] Not logged in, stopping batch.")
+                    break
+
+                body_box = page.locator('.ProseMirror, div[contenteditable="true"]').first
+                body_box.wait_for(state="visible", timeout=20000)
+                self._insert_rich_body(page, art["body"], replace_existing=True)
+
+                pub_step = page.locator('button:has-text("公開に進む")').first
+                pub_step.click()
+                time.sleep(3.5)
+                final_btn = page.locator('button:has-text("更新する"), button:has-text("投稿する")').first
+                if final_btn.is_visible(timeout=5000):
+                    final_btn.click()
+                    time.sleep(5)
+
+                done_keys.add(note_key)
+                upgraded_results.append({
+                    "key": note_key,
+                    "title": orig_title,
+                    "url": f"https://note.com/toproad_1989/n/{note_key}",
+                    "body_chars": len(art["body"]),
+                })
+
+            context.close()
+
+        upgraded_state["upgraded_keys"] = sorted(done_keys)
+        upgraded_state["last_updated"] = datetime.now().astimezone().isoformat()
+        with open(UPGRADED_STATE_PATH, "w", encoding="utf-8") as f:
+            json.dump(upgraded_state, f, ensure_ascii=False, indent=2)
+
+        return {"status": "upgraded", "upgraded": upgraded_results}
 
 
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
 {
-  "executed_at": "2026-11-24T08:03:27.319301+09:00",
+  "executed_at": "2026-11-24T13:24:40.563987+09:00",
   "day": 21,
   "all_gates_passed": true,
-  "detected_issues_input_count": 1,
+  "detected_issues_input_count": 2,
   "checks": {
     "web_funnel": {
       "task": "Webツール利用後レコメンド導線・TOP3・3段階商品階段の自動実装＆検証",
@@ -28,18 +28,19 @@
       "status": "synced",
       "ok": true,
       "detail": {
-        "synced_at": "2026-11-24T08:02:59.898966+09:00",
+        "synced_at": "2026-11-24T13:24:29.079721+09:00",
+        "preview_schema_version": 2,
         "top3_slugs": [
-          "ec-inventory",
           "subsidy-business-plan",
+          "ec-inventory",
           "hr-resume-screening"
         ],
         "top3_titles": [
-          "EC・物販の在庫管理＆価格改定自動化",
           "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
+          "EC・物販の在庫管理＆価格改定自動化",
           "採用・人事の職務経歴書スクリーニング＆面接質問自動生成"
         ],
-        "title_applied": "【先着10部¥980】EC・補助金申請・採用をコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
+        "title_applied": "【先着10部¥980】補助金申請・EC・採用をコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
         "paid_area_chars_preserved": 73629,
         "status": "synced"
       }
@@ -49,25 +50,29 @@
       "workflow_repaired": false,
       "workflow_ok": true,
       "bare_cloud_imports": [],
-      "latest_ci_run_id": 45105856870,
+      "latest_ci_run_id": 45286612253,
       "latest_ci_conclusion": "success",
       "ok": true
     },
     "syntax_gate": {
       "task": "全エージェントPython構文安全検証ゲート",
-      "checked_count": 25,
+      "checked_count": 26,
       "ok": true,
       "failed_files": []
     },
     "business_quality_audit": {
-      "task": "消費者・ビジネス目線の実物品質監査（ツールTOP3・X自然文・ショート台本実物比較）＆自律修正",
+      "task": "消費者・ビジネス目線の実物品質監査（ツールTOP3・X自然文・ショート台本・無料記事コード・会議重複防止）＆自律修正",
       "simulator_has_top3": true,
       "short_script_valid": true,
-      "short_script_regenerated": true,
+      "short_script_regenerated": false,
       "short_script_concept": "時短ノウハウ実演回",
       "short_script_reasons": [],
+      "board_agenda_unique": true,
+      "board_agenda_reason": "ok",
+      "free_note_rich_code": true,
+      "free_note_reason": "ok",
       "auto_fixed": [
-        "Day21 YouTubeショート台本の不具合・重複を検出し、ユニーク台本へ即座に自動再生成完了"
+        "Day21無料note原稿をGAS完成コード入りの本格実践記事へ再生成完了"
       ],
       "ok": true
     }
@@ -76,12 +81,17 @@
     {
       "category": "無料ツール×需要TOP3連動",
       "status": "auto_applied",
-      "detail": "需要1位『EC・物販の在庫管理＆価格改定自』と2位『採用』を無料シミュレーターに自動統合し、体験直後に¥980完全版への導線を直結。"
+      "detail": "需要1位『補助金申請・融資用の事業計画書ド』と2位『採用』を無料シミュレーターに自動統合し、体験直後に¥980完全版への導線を直結。"
     },
     {
       "category": "X文面品質＆YouTubeショート実物監査",
-      "status": "repaired",
-      "detail": "Day21動画は『時短ノウハウ実演回』テーマで有料切れ端0・旧固定文0・前日重複0を実物検査で合格済み（タイトル: 【Day21】月42時間の契約書チェックを30秒に。AI役員9人が仕掛けるEC特化の逆転…）。"
+      "status": "auto_applied",
+      "detail": "Day21動画は『時短ノウハウ実演回』テーマで有料切れ端0・クリック不可誘導0・前日重複0を実物検査で合格済み（タイトル: 【Day21】月42時間の契約書チェックを30秒に。AI役員9人が仕掛けるEC特化の逆転…）。"
+    },
+    {
+      "category": "会議議題マンネリ排除＆無料note実物コード監査",
+      "status": "auto_applied",
+      "detail": "会議議題の重複検査=True(ok) / 無料note記事の実用GASコード検査=True(ok)。"
     }
   ],
   "backlog_summary": {

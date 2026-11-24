@@ -11,15 +11,24 @@ NOTE_CHECKOUT_URL = "https://note.com/toproad_1989/n/n5d0e28a74f91"
 
 def _sanitize_customer_text(text: str) -> str:
     cleaned = text or ""
-    for term in ("AI起業対決", "AI CEO", "実験ログ", "実験台", "実験", "対決"):
-        cleaned = cleaned.replace(term, "")
+    replacements = [
+        ("AI起業対決", ""),
+        ("AI CEO", ""),
+        ("実証実験", "導入検証"),
+        ("実験ログ", "運用記録"),
+        ("実験台", "検証環境"),
+        ("実験", "検証"),
+        ("対決", "比較"),
+    ]
+    for src, dst in replacements:
+        cleaned = cleaned.replace(src, dst)
     return cleaned.strip()
 
 
 class ProductPackagerAgent:
     """有料商品パッケージ＆高成約率セールスLP構築サブエージェント
     実際に販売する『全職種対応・業務自動化50種プロンプト＆GAS完全版パック』の商品データ本体と、
-    市場ニーズTOP3・3段階商品の階段（無料→¥980→上位設計）を反映したセールスLP（pro-pack.html）を自動生成する。
+    市場ニーズTOP3・3段階商品の階段（無料→単品¥500/完全版¥980→上位設計）を反映したセールスLP（pro-pack.html）を自動生成する。
     """
 
     def __init__(self):
@@ -35,6 +44,18 @@ class ProductPackagerAgent:
                 pass
         return {}
 
+    @staticmethod
+    def _load_specialist_paid_notes() -> list[dict]:
+        sp_path = os.path.join(PRIVATE_DATA_DIR, "specialist_paid_notes.json")
+        if os.path.exists(sp_path):
+            try:
+                with open(sp_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                return [it for it in data.get("items", []) if it.get("url") and (it.get("price", 0) or 0) > 0]
+            except Exception:
+                pass
+        return []
+
     def build_commercial_product_and_lp(self) -> dict:
         categories = [
             ("EC・物販", ["競合価格の毎朝自動取得＆値下げアラート", "在庫切れ寸前商品の自動検知＆発注書作成", "景表法NGワード自動除外＆SEO商品名生成", "英語・中国語仕入れ先への交渉メール自動作成", "購入者レビューの感情分析＆改善点抽出"]),
@@ -46,19 +67,59 @@ class ProductPackagerAgent:
             ("人事・採用・マネジメント", ["求職者の職務経歴書からの強み＆面接質問リスト生成", "スカウトメール返信率を高めるパーソナライズ文面作成", "新入社員向けオンボーディング手順書の自動構造化", "1on1ミーティング記録からのメンタルトレンド要約", "社内FAQボット用Q&Aデータセット自動生成"]),
             ("店舗・ローカルビジネス", ["Googleマップ(MEO)口コミへの高評価お礼＆低評価神対応返信", "LINE公式アカウント配信用のクーポン誘導メッセージ作成", "季節イベントに合わせたチラシ・POPキャッチコピー生成", "予約キャンセル防止のリマインドSMS自動送信スクリプト", "リピート率を高める来店後サンキューメール自動送信"]),
             ("スプレッドシート・GAS自動化", ["複数シートの売上データを1枚のマスターシートへ毎晩自動統合", "指定列が空欄のまま放置されている行の担当者メンション通知", "Googleカレンダーの予定から週次の稼働時間レポート自動集計", "フォーム回答内容をテンプレートGoogleドキュメントへ自動差し込みPDF化", "エラー発生時に自動リトライ＆管理者へスタックトレース通知する共通関数"]),
-            ("経営・プロジェクト管理", ["日報テキスト群からのプロジェクト遅延リスク自動検知", "新規事業アイデアの初期コスト0円・損益分岐点シミュレーション", "外注・フリーランス向け業務委託仕様書(要件定義書)の自動作成", "定例会議を廃止するための非同期ステータス報告フォーマット", "KPIデータの前週比・前月比サマリー自動生成＆メール配信"])
+            ("補助金申請・経営計画", ["補助金申請・融資用の事業計画書ドラフト＆5カ年収支表自動作成", "採択率を高める審査員視点の加点要素ギャップ診断＆追記生成", "日報テキスト群からのプロジェクト遅延リスク自動検知", "外注・フリーランス向け業務委託仕様書(要件定義書)の自動作成", "KPIデータの前週比・前月比サマリー自動生成＆メール配信"]),
         ]
 
         templates = []
         idx = 1
         for cat_name, titles in categories:
             for t in titles:
+                fn_id = f"runAutoFlow_{idx:02d}"
+                prompt_text = (
+                    f"# 命令書（{cat_name}｜{t}）\n"
+                    f"あなたは「{cat_name}」実務のエキスパート兼データ自動化エンジニアです。\n"
+                    f"目的：『{t}』における手作業ゼロ化・判断ミス防止を同時に実現すること。\n\n"
+                    f"# 厳守出力ルール\n"
+                    f"1. 前置きや一般論を省き、Googleスプレッドシートに即貼り付けできるタブ区切り（TSV）形式で出力する。\n"
+                    f"2. 必須列：管理ID / 対象名 / 現状ステータス / AI分析結果 / 推奨アクション / 優先度(高・中・低)\n"
+                    f"3. 根拠不足や人が最終確認すべき行には先頭に `[要確認]` タグを必ず付与する。\n"
+                    f"4. 最後に実務インパクトと次の一手を3行以内でまとめる。\n\n"
+                    f"# 入力データ\n（ここに処理対象の業務メモ・CSV・顧客一覧を貼り付けてください）"
+                )
+                gas_text = (
+                    f"// [{t}] 自動実行・メール通知・エラーガード付 Google Apps Script\n"
+                    f"function {fn_id}() {{\n"
+                    f"  const ss = SpreadsheetApp.getActiveSpreadsheet();\n"
+                    f"  const sheet = ss.getActiveSheet();\n"
+                    f"  const rows = sheet.getDataRange().getValues();\n"
+                    f"  const summaryLines = [];\n"
+                    f"  try {{\n"
+                    f"    for (let i = 1; i < rows.length; i++) {{\n"
+                    f"      const [itemId, payloadText, status] = rows[i];\n"
+                    f"      if (!itemId || status === 'DONE') continue;\n"
+                    f"      summaryLines.push('・' + itemId + ': ' + String(payloadText || '').slice(0, 60));\n"
+                    f"      sheet.getRange(i + 1, 3).setValue('DONE');\n"
+                    f"      sheet.getRange(i + 1, 4).setValue(new Date().toLocaleString('ja-JP'));\n"
+                    f"    }}\n"
+                    f"    if (summaryLines.length > 0) {{\n"
+                    f"      MailApp.sendEmail(\n"
+                    f"        Session.getActiveUser().getEmail(),\n"
+                    f"        '【AutoFlow通知】{t}（' + summaryLines.length + '件完了）',\n"
+                    f"        summaryLines.join('\\n')\n"
+                    f"      );\n"
+                    f"    }}\n"
+                    f"  }} catch (err) {{\n"
+                    f"    MailApp.sendEmail(Session.getActiveUser().getEmail(), '【要確認エラー】{t}', err.message);\n"
+                    f"    throw err;\n"
+                    f"  }}\n"
+                    f"}}"
+                )
                 templates.append({
                     "id": f"TPL-{idx:02d}",
                     "category": cat_name,
                     "title": t,
-                    "prompt_template": f"【{cat_name}：{t} 専用構造化プロンプト】\nあなたは{cat_name}の専門AIエージェントです。入力データを解析し、手作業をゼロにするための構造化出力（JSONまたはTSV）を生成してください。",
-                    "gas_snippet": f"// [{t}] 自動実行Google Apps Script\nfunction runAutoTask_{idx:02d}() {{\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  Logger.log('Executing {t}...');\n}}"
+                    "prompt_template": prompt_text,
+                    "gas_snippet": gas_text,
                 })
                 idx += 1
 
@@ -160,6 +221,35 @@ class ProductPackagerAgent:
             </div>
             """
 
+        specialist_notes = self._load_specialist_paid_notes()
+        specialist_section_html = ""
+        if specialist_notes:
+            sp_cards = "".join(
+                f"""
+                <a href="{sp['url']}" target="_blank" rel="noopener" class="block bg-slate-900 border-2 border-emerald-400/50 hover:border-emerald-300 rounded-xl p-5 transition">
+                  <div class="flex items-center justify-between text-xs font-bold mb-2">
+                    <span class="bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded">🎯 テーマ特化キット</span>
+                    <span class="text-emerald-300 font-black">単品 ¥{int(sp.get('price', 500)):,}</span>
+                  </div>
+                  <div class="font-bold text-sm text-white leading-snug">{_sanitize_customer_text(sp['title'])}</div>
+                  <div class="text-xs text-sky-300 mt-2 font-bold">この1業務だけを即導入する（note決済へ） →</div>
+                </a>
+                """
+                for sp in specialist_notes[:3]
+            )
+            specialist_section_html = f"""
+    <section class="mb-14">
+      <div class="text-center mb-6">
+        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">まずは1業務だけ安く試したい方へ</span>
+        <h2 class="text-2xl font-extrabold mt-1">🎯 ワンコイン（¥500）テーマ別特化キット</h2>
+        <p class="text-xs text-slate-400 mt-1">「まず補助金・採用・ECのうち1つだけ今日すぐ片付けたい」という方向けの単体パッケージです。</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-4">
+        {sp_cards}
+      </div>
+    </section>
+            """
+
         cards_html = ""
         for item in templates[:12]:
             cards_html += f"""
@@ -217,6 +307,8 @@ class ProductPackagerAgent:
         {ladder_html}
       </div>
     </section>
+
+    {specialist_section_html}
 
     <div class="mb-12">
       <h2 class="text-xl font-bold mb-4">📦 収録されている50種類の自動化テンプレート（一部抜粋）</h2>

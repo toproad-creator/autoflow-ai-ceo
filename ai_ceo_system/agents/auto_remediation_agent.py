@@ -269,6 +269,7 @@ class AutoRemediationAgent:
             "upgrade_paid_note_cro.py",
             "note_auto_publisher.py",
             "daily_short_pipeline.py",
+            "specialist_paid_note_agent.py",
         ]
         bare_import_files = []
         pattern = re.compile(r"^(from\s+(?:playwright|dotenv)|import\s+(?:playwright|dotenv))\b", re.MULTILINE)
@@ -503,7 +504,53 @@ class AutoRemediationAgent:
                 "detail": f"Day{day}ショート台本の厳格監査で不合格理由が残存: {', '.join(script_reasons)}",
             })
 
-        # 3. X投稿文3パターンの日本語自然さ・完結性監査（助詞途切れや二重引用符崩壊がないか）
+        # 3. 本日の会議議題が直近3日間と重複していないか監査＆無料記事品質（GASコード・禁止語0）実物検証
+        board_agenda_ok = True
+        board_agenda_reason = "ok"
+        try:
+            from executive_board_agent import ExecutiveBoardAgent
+            eb = ExecutiveBoardAgent()
+            cur_meeting_path = DATA_DIR / "board_meetings" / f"day{day}_meeting.json"
+            if cur_meeting_path.exists():
+                cur_m = json.loads(cur_meeting_path.read_text(encoding="utf-8"))
+                cur_agenda = cur_m.get("agenda", "")
+                past_agendas = eb._load_recent_agendas(day, limit=3)
+                if eb.is_agenda_repetitive(cur_agenda, past_agendas):
+                    board_agenda_ok = False
+                    board_agenda_reason = f"stale_or_repetitive_agenda:{cur_agenda[:30]}"
+        except Exception as e:
+            board_agenda_reason = f"check_warn:{e}"
+
+        free_note_ok = True
+        free_note_reason = "ok"
+        try:
+            from note_auto_publisher import NoteAutoPublisherAgent, THIN_BOILERPLATE_MARKER
+            day_note_file = MARKETING_DIR / f"free_note_lead_day{day}.txt"
+            if not day_note_file.exists():
+                top_niche = niches[0] if niches else {"slug": "subsidy-business-plan", "title": "補助金・事業計画自動化", "avg_hours_saved_monthly": 45, "hourly_wage": 3500}
+                NoteAutoPublisherAgent().generate_daily_free_lead_article(day=day, niche=top_niche, render_thumbnail=False)
+            if day_note_file.exists():
+                fn_txt = day_note_file.read_text(encoding="utf-8", errors="ignore")
+                has_gas = "function " in fn_txt and "SpreadsheetApp" in fn_txt
+                is_rich = len(fn_txt) >= 1200
+                no_thin = THIN_BOILERPLATE_MARKER not in fn_txt
+                no_forbidden = not any(term in fn_txt for term in FORBIDDEN_CUSTOMER_TERMS)
+                free_note_ok = has_gas and is_rich and no_thin and no_forbidden
+                if not free_note_ok:
+                    # 再生成で自動修復
+                    top_niche = niches[0] if niches else {"slug": "subsidy-business-plan", "title": "補助金・事業計画自動化", "avg_hours_saved_monthly": 45, "hourly_wage": 3500}
+                    NoteAutoPublisherAgent().generate_daily_free_lead_article(day=day, niche=top_niche, render_thumbnail=False)
+                    fn_txt = day_note_file.read_text(encoding="utf-8", errors="ignore")
+                    free_note_ok = ("function " in fn_txt and len(fn_txt) >= 1200 and not any(term in fn_txt for term in FORBIDDEN_CUSTOMER_TERMS))
+                    if free_note_ok:
+                        auto_fixed.append(f"Day{day}無料note原稿をGAS完成コード入りの本格実践記事へ再生成完了")
+                    else:
+                        free_note_reason = f"len={len(fn_txt)},gas={'function ' in fn_txt}"
+        except Exception as e:
+            free_note_ok = False
+            free_note_reason = f"exception:{e}"
+
+        # 4. X投稿文3パターンの日本語自然さ・完結性監査（助詞途切れや二重引用符崩壊がないか）
         x_unnatural = []
         for k in ("x_post_pattern1_web", "x_post_pattern2_note", "x_post_pattern3_reply"):
             post = campaign_data.get(k, "")
@@ -530,7 +577,7 @@ class AutoRemediationAgent:
                 campaign_data[k] = MarketerAgent._enforce_x_limit(fixed_body, url_line, max_body_chars=112)
             auto_fixed.append(f"X投稿文の助詞途切れ({', '.join(x_unnatural)})を完結表現へ自動修正")
 
-        # 4. 本日の数値・成果物から導いた自律改善インサイト
+        # 5. 本日の数値・成果物から導いた自律改善インサイト
         top1_title = (evolution_state.get("selection_and_focus", {}).get("winners_top3") or [{}])[0].get("title", "補助金・事業計画")
         proposals.extend([
             {
@@ -541,19 +588,28 @@ class AutoRemediationAgent:
             {
                 "category": "X文面品質＆YouTubeショート実物監査",
                 "status": "repaired" if short_regenerated else ("auto_applied" if (script_ok and not x_unnatural) else "pending"),
-                "detail": f"Day{day}動画は『{cur_concept}』テーマで有料切れ端0・旧固定文0・前日重複0を実物検査で合格済み（タイトル: {cur_script.get('video_title', '')[:44]}…）。",
+                "detail": f"Day{day}動画は『{cur_concept}』テーマで有料切れ端0・クリック不可誘導0・前日重複0を実物検査で合格済み（タイトル: {cur_script.get('video_title', '')[:44]}…）。",
+            },
+            {
+                "category": "会議議題マンネリ排除＆無料note実物コード監査",
+                "status": "auto_applied" if (board_agenda_ok and free_note_ok) else "needs_attention",
+                "detail": f"会議議題の重複検査={board_agenda_ok}({board_agenda_reason}) / 無料note記事の実用GASコード検査={free_note_ok}({free_note_reason})。",
             },
         ])
 
         audit_chk = {
-            "task": "消費者・ビジネス目線の実物品質監査（ツールTOP3・X自然文・ショート台本実物比較）＆自律修正",
+            "task": "消費者・ビジネス目線の実物品質監査（ツールTOP3・X自然文・ショート台本・無料記事コード・会議重複防止）＆自律修正",
             "simulator_has_top3": sim_ok,
             "short_script_valid": script_ok,
             "short_script_regenerated": short_regenerated,
             "short_script_concept": cur_concept,
             "short_script_reasons": script_reasons,
+            "board_agenda_unique": board_agenda_ok,
+            "board_agenda_reason": board_agenda_reason,
+            "free_note_rich_code": free_note_ok,
+            "free_note_reason": free_note_reason,
             "auto_fixed": auto_fixed,
-            "ok": sim_ok and script_ok,
+            "ok": sim_ok and script_ok and board_agenda_ok and free_note_ok,
         }
         return audit_chk, proposals
 

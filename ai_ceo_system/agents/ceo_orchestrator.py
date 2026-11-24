@@ -149,15 +149,18 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
     total_revenue = metrics["financials"]["total_revenue"]
     note_meta = metrics["product_kpis"].get("note_live_metrics", {})
     price_jpy = note_meta.get("price_jpy", 980)
-    paid_likes = note_meta.get("paid_article_likes", 3)
+    paid_likes = note_meta.get("total_paid_likes", note_meta.get("paid_article_likes", 3))
+    paid_notes_count = note_meta.get("paid_notes_count", 1)
+    likes_delta = note_meta.get("likes_delta", 0)
     total_notes = note_meta.get("total_published_notes", 7)
     total_likes = note_meta.get("total_account_likes", 15)
     gh_meta = metrics["product_kpis"].get("github_traffic_metrics", {})
     gh_clones = gh_meta.get("clones_14d", 315)
     gh_uniques = gh_meta.get("unique_cloners_14d", 126)
+    human_uniques = gh_meta.get("human_web_visitors_14d", gh_meta.get("repo_uniques_14d", 89))
     log_step(
         f"[2/9 CFO Audit] Balance: ¥{balance:,} | Revenue: ¥{total_revenue:,} | Price: ¥{price_jpy:,} | "
-        f"Note Articles: {total_notes} (Likes: {total_likes}) | GitHub Clones: {gh_clones}"
+        f"Note Articles: {total_notes} (Likes: {total_likes} [{likes_delta:+d}] | Paid SKUs: {paid_notes_count}) | Web Uniques: {human_uniques}"
     )
 
     published_notes = fetch_all_published_notes()
@@ -190,6 +193,9 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
         latest_note_title=latest_note_title,
         detected_issues=detected_issues,
         research_report=research_report,
+        human_uniques=human_uniques,
+        paid_notes_count=paid_notes_count,
+        likes_delta=likes_delta,
     )
     log_step(
         f"[4/9 Executive Board Meeting] Engine: {board_record.get('reasoning_engine')} | "
@@ -231,6 +237,23 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
             log_step(f"[7/9 CMO Note Publisher] Status: {note_pub_result.get('status')} | URL: {note_pub_result.get('url', '')}")
         except Exception as e:
             log_step(f"[7/9 CMO Note Publisher] Warning: {e}\n{traceback.format_exc()}")
+
+        # 7.1 単品¥500特化有料キット安全公開（paywall確認できた場合のみ公開）
+        try:
+            from specialist_paid_note_agent import SpecialistPaidNoteAgent
+            sp_agent = SpecialistPaidNoteAgent()
+            sp_res = sp_agent.publish_one_specialist_note_safely()
+            log_step(f"[7.1/9 Specialist Paid Note] Status: {sp_res.get('status')}")
+        except Exception as e:
+            log_step(f"[7.1/9 Specialist Paid Note] Warning: {e}")
+
+        # 7.15 過去人気スキ記事の実用GASコード付きプロ品質への自動リノベーション（1日最大2本ずつ着実更新）
+        try:
+            from note_auto_publisher import NoteAutoPublisherAgent
+            up_res = NoteAutoPublisherAgent().upgrade_popular_thin_free_articles(niches=ranked_niches, max_upgrades=2)
+            log_step(f"[7.15/9 Free Note Upgrade] Status: {up_res.get('status')} | Count: {len(up_res.get('upgraded', []))}")
+        except Exception as e:
+            log_step(f"[7.15/9 Free Note Upgrade] Warning: {e}")
 
     # Re-fetch published notes so new daily post is reflected in X & status_log
     published_notes = fetch_all_published_notes() or published_notes
@@ -314,7 +337,7 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
 
     # Update root status_log.md dynamically with Remediation & Backlog tracking + Needs Radar + Board Decisions + X Posts
     note_bullets = "\n".join(
-        [f"  - {'【有料パック 先着10部¥980】' if n['price'] > 0 else '【無料集客記事】'}{n['title']} (スキ: {n['likes']}件) -> {n['url']}" for n in published_notes]
+        [f"  - {('【有料パック ¥' + str(n['price']) + '】') if n['price'] > 0 else '【無料集客記事】'}{n['title']} (スキ: {n['likes']}件) -> {n['url']}" for n in published_notes]
     )
     uploaded_shorts = load_uploaded_shorts()
     short_bullets = "\n".join(
@@ -365,12 +388,12 @@ def run_autonomous_day_cycle(day: int | None = None, cloud_cron: bool = False, b
 - **最終自動更新日時:** {datetime.now().astimezone().isoformat()}
 - **現在フェーズ:** Day {day} / 90（自律課題解決・自己修復＆AI役員会議オーケストレーター稼働中）
 - **現在残高:** ¥{balance:,}（初期資金 ¥15,000 / 累計支出 ¥0 / 累計売上 ¥{total_revenue:,}）
-- **有料商品ステータス:** 先着10部限定 **¥{price_jpy:,}**（定価 ¥1,980 から50%OFFセール中・無料試し読み＋実物コード2本公開済）
-- **note公開記事ステータス:** 公開記事数 {total_notes}本（有料記事1本 + 無料集客記事 {max(0, total_notes - 1)}本 / 累計スキ数: {total_likes}件）
+- **有料商品ステータス:** 公開有料商品 {paid_notes_count}本（主力50選パック 先着10部限定 **¥{price_jpy:,}**／定価¥1,980＋テーマ別単品¥500キット順次展開）
+- **note公開記事ステータス:** 公開記事数 {total_notes}本（有料 {paid_notes_count}本 + 無料集客記事 {max(0, total_notes - paid_notes_count)}本 / 累計スキ数: {total_likes}件 [{likes_delta:+d}]）
 {note_bullets}
 - **YouTubeショート自動公開ステータス:** 計 {len(uploaded_shorts)}本 公開中
 {short_bullets}
-- **GitHubトラフィック計測:** 過去14日間クローン数 {gh_clones}回（ユニーク {gh_uniques}名）
+- **Web＆GitHubアクセス実態:** 実ページ訪問ユニーク {human_uniques}名（14日間）※GitHub Actions自動clone含む合計 {gh_clones}回
 - **全自動E2E動作点検ステータス:** {qa_report['urls_ok_count']}/{qa_report['total_urls_checked']} URL正常稼働（JSエラー: {len(qa_report['browser_e2e'].get('js_console_errors', []))}件）
 
 ---

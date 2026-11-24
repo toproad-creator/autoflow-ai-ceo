@@ -1,6 +1,11 @@
+import html as html_lib
 import os
 import sys
-from playwright.sync_api import sync_playwright
+
+try:
+    from playwright.sync_api import sync_playwright
+except ImportError:
+    sync_playwright = None
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -563,6 +568,55 @@ class NoteThumbnailGenerator:
         out_path = os.path.join(THUMB_DIR, "note_profile_header.png")
         html = self.build_profile_header_html()
         return self.render_html_to_png(html, out_path, width=1920, height=1006)
+
+    def build_specialist_paid_html(self, title: str, price_jpy: int = 500, topic_tag: str = "業務自動化") -> str:
+        safe_title = html_lib.escape(title.replace("【単品¥500】", "")[:46])
+        safe_tag = html_lib.escape(topic_tag)
+        return f"""<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700;900&display=swap');
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{
+    width: 1280px; height: 670px;
+    font-family: 'Noto Sans JP', 'Meiryo', sans-serif;
+    background: radial-gradient(circle at 80% 20%, #065f46 0%, #0f172a 55%, #020617 100%);
+    color: #ffffff;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 56px 68px; position: relative; overflow: hidden;
+  }}
+  .left {{ width: 760px; display: flex; flex-direction: column; gap: 22px; z-index: 2; }}
+  .badge {{ display: inline-block; width: fit-content; background: linear-gradient(135deg, #facc15, #f59e0b); color: #020617; font-size: 25px; font-weight: 900; padding: 8px 24px; border-radius: 999px; }}
+  .tag {{ color: #6ee7b7; font-size: 24px; font-weight: 900; }}
+  .title {{ font-size: 50px; font-weight: 900; line-height: 1.28; color: #f8fafc; }}
+  .sub {{ font-size: 23px; color: #cbd5e1; font-weight: 700; }}
+  .price-box {{ width: 350px; background: rgba(15, 23, 42, 0.92); border: 3px solid #34d399; border-radius: 26px; padding: 34px 26px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.6); z-index: 2; }}
+  .p-label {{ font-size: 21px; color: #34d399; font-weight: 900; margin-bottom: 10px; }}
+  .p-val {{ font-size: 76px; font-weight: 900; color: #fde047; line-height: 1.05; }}
+  .p-inc {{ font-size: 20px; color: #e2e8f0; font-weight: 700; margin-top: 16px; line-height: 1.5; }}
+</style>
+</head>
+<body>
+  <div class="left">
+    <span class="badge">ワンコイン特化キット｜買い切り</span>
+    <div class="tag">🎯 テーマ集中：『{safe_tag}』実務パック</div>
+    <div class="title">{safe_title}</div>
+    <div class="sub">専用AIプロンプト5本 ＋ コピペGAS完成コード3本 ＋ 3分導入手順書</div>
+  </div>
+  <div class="price-box">
+    <div class="p-label">今すぐ現場で使える</div>
+    <div class="p-val">¥{price_jpy}</div>
+    <div class="p-inc">✔ テンプレート自動構築GAS付<br>✔ エラー監視＆通知完備<br>✔ 追加課金なし・永続利用</div>
+  </div>
+</body>
+</html>"""
+
+    def generate_specialist_paid_thumbnail(self, slug: str, title: str, price_jpy: int = 500, topic_tag: str = "業務自動化") -> str:
+        out_path = os.path.join(THUMB_DIR, f"thumb_specialist_{slug}.png")
+        html = self.build_specialist_paid_html(title=title, price_jpy=price_jpy, topic_tag=topic_tag)
+        return self.render_html_to_png(html, out_path)
 
 
 if __name__ == "__main__":

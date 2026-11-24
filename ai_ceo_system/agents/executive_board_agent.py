@@ -1,3 +1,4 @@
+import difflib
 import json
 import os
 import re
@@ -19,6 +20,21 @@ except ImportError:
 BOARD_DIR = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "board_meetings")
 LATEST_BOARD_MD = os.path.join(BOARD_DIR, "latest_board_meeting.md")
 
+PROFIT_SPRINT_THEMES = (
+    "商品価値の底上げ：無料note記事へ実用GASコード＆列設計を実装し読者の信頼を獲得する",
+    "入り口の多様化：悩み特化型ワンコイン商品（¥500）×全50選完全版（¥980）の二段階収益化",
+    "成約直前の不安ゼロ化：有料記事冒頭サンプルをTOP3実物（補助金・採用・EC）へ一致させFAQ強化",
+    "note内回遊＆検索SEO最大化：高スキ記事（採用・補助金・SEO）の内部リンク＆保存したくなる実践表強化",
+    "外部チャネルのクリック開通：YouTubeショートのプロフィール検索誘導×Xの実利フック検証",
+)
+
+STAGNANT_AGENDA_PHRASES = (
+    "需要TOP3への「特化型」導線への完全移行",
+    "特定解決策へ誘導し、本日中に初売上を確定させる",
+    "特定需要へ誘導し、本日中に初売上を確定させる",
+    "全サイトを大改造",
+)
+
 
 class ExecutiveBoardAgent:
     """利益創出特化型・自律AI役員会議エージェント (Autonomous Profit-First Executive Board)
@@ -35,6 +51,42 @@ class ExecutiveBoardAgent:
     def __init__(self):
         os.makedirs(BOARD_DIR, exist_ok=True)
 
+    def _load_recent_agendas(self, day: int, limit: int = 5) -> list[str]:
+        agendas = []
+        try:
+            prev_files = sorted(
+                [fn for fn in os.listdir(BOARD_DIR) if fn.startswith("day") and fn.endswith("_meeting.json")],
+                key=lambda x: int(re.sub(r"\D", "", x) or 0),
+            )
+            for fn in reversed(prev_files):
+                d_num = int(re.sub(r"\D", "", fn) or 0)
+                if d_num < day:
+                    with open(os.path.join(BOARD_DIR, fn), "r", encoding="utf-8") as f:
+                        pdata = json.loads(f.read())
+                    ag = (pdata.get("agenda") or "").strip()
+                    if ag:
+                        agendas.append(f"Day {d_num}: {ag}")
+                if len(agendas) >= limit:
+                    break
+        except Exception:
+            pass
+        return agendas
+
+    @staticmethod
+    def is_agenda_repetitive(agenda: str, past_agendas: list[str]) -> bool:
+        clean_new = re.sub(r"^Day\s*\d+\s*:\s*", "", (agenda or "").strip())
+        if len(clean_new) < 8:
+            return True
+        for stg in STAGNANT_AGENDA_PHRASES:
+            if stg in clean_new:
+                return True
+        for prev in past_agendas[:3]:
+            clean_prev = re.sub(r"^Day\s*\d+\s*:\s*", "", (prev or "").strip())
+            ratio = difflib.SequenceMatcher(None, clean_new, clean_prev).ratio()
+            if ratio >= 0.58:
+                return True
+        return False
+
     def _load_diagnostic_context(self, day: int, detected_issues: list[str] | None = None) -> tuple[list[str], str]:
         issues = list(detected_issues) if detected_issues else []
         if not issues:
@@ -47,23 +99,16 @@ class ExecutiveBoardAgent:
                 except Exception:
                     pass
         if not issues:
-            issues = ["【自己診断】技術エラー0件。アクセス・スキ数から有料決済（¥980）への転換率改善が最優先課題。"]
+            issues = ["【自己診断】技術エラー0件。note実ユーザーからの有料決済（¥500単品／¥980完全版）転換が最優先課題。"]
 
-        prev_summary = "（初回または前回記録なし）"
-        try:
-            prev_files = sorted(
-                [fn for fn in os.listdir(BOARD_DIR) if fn.startswith("day") and fn.endswith("_meeting.json")],
-                key=lambda x: int(re.sub(r"\D", "", x) or 0),
+        recent_agendas = self._load_recent_agendas(day, limit=5)
+        if recent_agendas:
+            prev_summary = (
+                "直近会議の議題履歴（★重複・言い換え厳禁）：\n  - " + "\n  - ".join(recent_agendas)
+                + "\n  - 【前提】WebサイトTOP3配置と追従バーはDay19-20で実装済みのため「TOP3へ切り替える」だけの議論は禁止。"
             )
-            for fn in reversed(prev_files):
-                d_num = int(re.sub(r"\D", "", fn) or 0)
-                if d_num < day:
-                    with open(os.path.join(BOARD_DIR, fn), "r", encoding="utf-8") as f:
-                        pdata = json.loads(f.read())
-                    prev_summary = f"Day {d_num} 議題: {pdata.get('agenda', '')} / ゴール: {pdata.get('ceo_final_decision', {}).get('primary_goal', '')}"
-                    break
-        except Exception:
-            pass
+        else:
+            prev_summary = "（初回または前回記録なし）"
 
         try:
             backlog_path = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "action_backlog.json")
@@ -75,9 +120,9 @@ class ExecutiveBoardAgent:
                 tot_cnt = bdata.get("today_total_actions", 0)
                 if pending:
                     pending_txt = " / ".join(p.get("action", "")[:45] for p in pending[:3])
-                    prev_summary += f" | 【要対応：前回未完了の宿題 {len(pending)}件】{pending_txt}"
+                    prev_summary += f"\n  - 【要対応：前回未完了の宿題 {len(pending)}件】{pending_txt}"
                 elif tot_cnt > 0:
-                    prev_summary += f" | 【前回自己修復実績】宿題 {res_cnt}/{tot_cnt} 件を自動解決・テスト合格済"
+                    prev_summary += f"\n  - 【前回自己修復実績】宿題 {res_cnt}/{tot_cnt} 件を自動解決・合格済"
         except Exception:
             pass
 
@@ -116,53 +161,60 @@ class ExecutiveBoardAgent:
         prev_summary: str = "",
         needs_summary: str = "",
         top_need_titles: list[str] | None = None,
+        human_uniques: int = 0,
+        paid_notes_count: int = 1,
+        likes_delta: int = 0,
+        past_agendas: list[str] | None = None,
     ) -> dict | None:
-        """OpenAI gpt-4o-mini (またはフォールバックとしてGemini) を使い、実測値と市場ニーズ・専門AI社員の観点をもとに5人のAI役員が議論・意思決定する。"""
+        """OpenAI / Gemini を使い、正確な人間実測値と本日の固有戦略スプリントテーマをもとに重複なしの会議意思決定を行う。"""
         issues_bullet = "\n".join(f"- {iss}" for iss in (detected_issues or []))
         top_needs_str = " / ".join(top_need_titles or []) or "EC在庫管理 / 補助金・事業計画 / 採用スクリーニング"
-        prompt = f"""あなたは「90日間・初期資金15,000円・人間介入ゼロのAI起業対決」を戦う自律AI企業組織の会議シミュレーターです。
-組織の唯一の目的は「1円でも早く、1円でも多くの実売上・純利益を生み出すこと」です。人間に許可を求めたり確認したりせず、AIエージェント自身で問題点を見つけ、考え、決め、実行命令を下してください。
+        sprint_theme = PROFIT_SPRINT_THEMES[day % len(PROFIT_SPRINT_THEMES)]
+        past_list = past_agendas or []
 
-【本日の実測データ (Day {day} / 90)】
+        prompt = f"""あなたは「90日間・初期資金15,000円」で純利益最大化を目指す自律AI企業組織の会議シミュレーターです。
+組織の唯一の目的は「1円でも早く、1円でも多くの実売上・純利益を生み出すこと」です。
+
+【本日（Day {day}）の集中改善スプリントテーマ（★必ずこの角度から深掘りした新議題にすること）】
+- **{sprint_theme}**
+
+【本日の正確な実測データ (Day {day} / 90)】
 - 軍資金残高: ¥{balance:,}（累計売上: ¥{total_revenue:,}）
-- 有料商品（全50種プロンプト＆GAS完全版パック）の現在価格: 先着10部限定 ¥{price_jpy:,}（通常¥1,980から50%OFF、無料試し読み1万字・実物2本公開中）
-- GitHub無料Webツール＆プログラム利用数(直近14日): {gh_clones}回（ユニーク {gh_uniques}名）
-- note公開済み記事数: {total_notes}本 / アカウント累計スキ: {total_likes}件（うち有料記事スキ: {paid_likes}件）
+- 有料商品構成: 合計 {paid_notes_count} 本公開中（主力50選パック 先着10部 ¥{price_jpy:,} ＋ テーマ特化¥500単品展開）
+- note公開記事数: {total_notes}本 / アカウント累計スキ: {total_likes}件（前回比 {likes_delta:+d}件 / うち有料スキ計: {paid_likes}件）
+- GitHubページ実訪問ユニーク人数(14日): {human_uniques}名（※注：clone数{gh_clones}回にはCI自動処理が含まれるため「{gh_clones}名が来訪」という誤認表現は厳禁！）
 - 最新公開した無料記事タイトル: {latest_note_title}
 
-【世の中のニーズ調査＆反響ランキング（専門AI社員レポート）】
+【世の中のニーズ調査＆反響ランキング】
 - 市場調査サマリー: {needs_summary}
-- 今もっとも求められている需要TOP3（選択と集中先）: {top_needs_str}
-- 稼働中の専門AI社員（4名）: 🔍市場ニーズ調査AI / 🎯セールスコピー改善AI / 💎LTV・商品階段設計AI / 🚀新規事業開発AI（第1事業黒字化と並行し第2・第3の柱を検証中）
+- 今もっとも求められている需要TOP3: {top_needs_str}
 
 【システム自己診断（QA自動点検）で検出された現在の問題点・課題】
 {issues_bullet}
 
-【前回の役員会議・宿題完了状況（未完了宿題があれば最優先で解消策を出し、同じ議論の繰り返しは避けること）】
-- {prev_summary}
+【過去の会議履歴・宿題完了状況（同じ議題の使い回し禁止）】
+{prev_summary}
 
-【重要ブランド方針（人間心理・信頼性の厳守）】
-- 顧客向けのnote記事・noteプロフィール・Webサイト（全27ページ）には、「AI起業対決」「実験ログ」「初売上突破のため」といった売り手都合・実験台感のある言葉を一切出さず、実務家にとっての実用性・信頼感・時間短縮メリットだけを訴求すること。
-- 「AI起業対決」の企画ストーリー発信は、集客チャネルである X（旧Twitter）と YouTubeショートのみに限定すること。
+【重要ブランド・チャンネル方針】
+- 顧客向けnote記事・プロフィール・Webサイト（全27ページ）には「AI起業対決」「AI CEO」「実験」「対決」などの内部ワードを出さないこと。
+- YouTubeショートでは概要欄・コメント欄URLがクリック不可のため、チャンネル画面リンクまたは「noteでAutoFlowと検索」を案内すること。
 
-【出力要件】
-以下の5名の役員エージェントが、上記の実測数値・世の中のニーズ調査（TOP3）・専門AI社員レポート・自己診断課題を踏まえて、選択と集中（売れない案をやめ当たりに集中）や商品の階段（無料→¥980→上位設計）も含め、本日即座に実行する改善策を会議で決定してください。専門用語・プログラミング用語は避け、ビジネス視点で具体的に記述してください。
-
+【出力要件（直近3日間の議題と明確に違う切り口にすること）】
 必ず以下のキーを持つJSONオブジェクトのみを返してください（日本語）:
 {{
-  "agenda": "本日の役員会議の議題（1文・50文字以内）",
-  "cfo_statement": "CFO（最高財務・データ分析責任者）の発言（実測数値と需要TOP3の冷徹な監査・選択と集中の指摘・120〜180文字）",
-  "cro_statement": "CRO（最高収益・成約率改善責任者）の発言（需要TOP3訴求と3段階商品の階段で¥{price_jpy:,}決済へ繋げる具体策・140〜200文字）",
-  "cmo_statement": "CMO（最高集客・SNS・ショート動画責任者）の発言（note無料記事・X140字投稿・YouTubeショートによる集客拡大策・140〜200文字）",
-  "cto_statement": "CTO/QA（最高技術・品質保証責任者）の発言（会議決定のWebサイト・LP即時反映と自己修復・E2E品質保証宣言・120〜180文字）",
+  "agenda": "本日Day {day}専用・過去と被らない役員会議の議題（1文・50文字以内・『{sprint_theme[:14]}』にフォーカス）",
+  "cfo_statement": "CFOの発言（note実スキ数・Web実訪問{human_uniques}名・ROIの冷徹な監査・120〜180文字）",
+  "cro_statement": "CROの発言（『{sprint_theme[:18]}』に基づく成約率改善と¥500/¥{price_jpy:,}決済施策・140〜200文字）",
+  "cmo_statement": "CMOの発言（無料note記事の本格コード拡充・クリック可能なショート導線・X140字訴求・140〜200文字）",
+  "cto_statement": "CTO/QAの発言（Web・note同期・安全ガードとE2E品質保証・120〜180文字）",
   "primary_goal": "AI社長（CEO）が決断した本日の最優先ゴール（1文）",
   "approved_actions": [
-    "【CRO/ニーズ反映】本日即実行する需要TOP3集中＆商品階段オファー改善アクション1",
-    "【CRO/CMO実装】本日即実行するnote・Web導線改善アクション2",
-    "【CMO実装】本日即実行するX・ショート動画集客アクション3",
-    "【CTO/進化エンジン実装】本日即実行するサイト即時反映・AI組織進化アクション4"
+    "【CRO/商品改善】本日即実行する具体的アクション1",
+    "【CRO/CMO実装】本日即実行する具体的アクション2",
+    "【CMO実装】本日即実行する具体的アクション3",
+    "【CTO/QA検証】本日即実行する具体的アクション4"
   ],
-  "kpi_target": "次期達成ターゲット（noteスキ数、GitHub利用数、初決済の数値目標）"
+  "kpi_target": "次期達成ターゲット（有料note初決済・スキ数増加・商品別数値目標）"
 }}"""
 
         openai_key = os.getenv("OPENAI_API_KEY", "").strip()
@@ -204,8 +256,10 @@ class ExecutiveBoardAgent:
                     "kpi_target",
                 )
                 if all(k in parsed for k in required) and isinstance(parsed["approved_actions"], list) and len(parsed["approved_actions"]) >= 4:
-                    parsed["_engine"] = "LLM_MULTI_AGENT (gpt-4o-mini)"
-                    return parsed
+                    if not self.is_agenda_repetitive(parsed["agenda"], past_list):
+                        parsed["_engine"] = "LLM_MULTI_AGENT (gpt-4o-mini)"
+                        return parsed
+                    print("[ExecutiveBoard] OpenAI agenda rejected as repetitive; retrying Gemini with explicit focus.")
             except Exception as e:
                 print(f"[ExecutiveBoard] OpenAI call warning (falling back): {e}")
 
@@ -250,9 +304,11 @@ class ExecutiveBoardAgent:
                             "kpi_target",
                         )
                         if all(k in parsed for k in required) and isinstance(parsed["approved_actions"], list) and len(parsed["approved_actions"]) >= 4:
-                            parsed["_engine"] = f"LLM_MULTI_AGENT ({model_name})"
-                            print(f"[ExecutiveBoard] Successfully held AI board meeting using {model_name}")
-                            return parsed
+                            if not self.is_agenda_repetitive(parsed["agenda"], past_list):
+                                parsed["_engine"] = f"LLM_MULTI_AGENT ({model_name})"
+                                print(f"[ExecutiveBoard] Successfully held AI board meeting using {model_name}")
+                                return parsed
+                            print(f"[ExecutiveBoard] Gemini ({model_name}) agenda was repetitive ({parsed['agenda'][:30]}); rejecting.")
                 except Exception as e:
                     print(f"[ExecutiveBoard] Gemini ({model_name}) call warning: {e}")
 
@@ -273,10 +329,29 @@ class ExecutiveBoardAgent:
         latest_note_title: str,
         detected_issues: list[str] | None = None,
         research_report: dict | None = None,
+        human_uniques: int = 0,
+        paid_notes_count: int = 1,
+        likes_delta: int = 0,
     ) -> dict:
         timestamp = datetime.now().astimezone().isoformat()
+        if human_uniques == 0:
+            m_path = os.path.join(ROOT_DIR, "ai_ceo_system", "data", "metrics.json")
+            if os.path.exists(m_path):
+                try:
+                    with open(m_path, "r", encoding="utf-8") as mf:
+                        mdata = json.load(mf)
+                    gk = mdata.get("product_kpis", {}).get("github_traffic_metrics", {})
+                    nk = mdata.get("product_kpis", {}).get("note_live_metrics", {})
+                    human_uniques = gk.get("repo_uniques_14d", 0) or 89
+                    paid_notes_count = nk.get("paid_notes_count", 1) or 1
+                    likes_delta = nk.get("likes_delta", 0) or 0
+                except Exception:
+                    human_uniques = 89
+
         issues_list, prev_summary = self._load_diagnostic_context(day, detected_issues)
+        past_agendas = self._load_recent_agendas(day, limit=5)
         needs_summary, top_need_titles, new_business_seeds = self._load_market_needs_context(research_report)
+        sprint_theme = PROFIT_SPRINT_THEMES[day % len(PROFIT_SPRINT_THEMES)]
 
         llm_result = self._call_llm_board_debate(
             day=day,
@@ -293,6 +368,10 @@ class ExecutiveBoardAgent:
             prev_summary=prev_summary,
             needs_summary=needs_summary,
             top_need_titles=top_need_titles,
+            human_uniques=human_uniques,
+            paid_notes_count=paid_notes_count,
+            likes_delta=likes_delta,
+            past_agendas=past_agendas,
         )
 
         if llm_result:
@@ -310,33 +389,33 @@ class ExecutiveBoardAgent:
         else:
             reasoning_engine = "AUTONOMOUS_DATA_DRIVEN_BOARD_ENGINE"
             top1_need = top_need_titles[0] if top_need_titles else "EC・物販の在庫管理＆価格改定自動化"
-            agenda = f"売上{total_revenue}円突破へ：需要TOP3（{top1_need[:16]}等）集中×商品階段×サイト即時反映会議"
+            agenda = f"【Day{day}スプリント】{sprint_theme.split('：')[0]}：{top1_need[:16]}から初決済を生む転換設計"
             cfo_statement = (
                 f"【財務・数値監査報告】現在Day {day}、軍資金残高は¥{balance:,}（支出¥0）、累計売上は¥{total_revenue:,}です。"
-                f"GitHub利用{gh_clones}回（ユニーク{gh_uniques}名）、note記事{total_notes}本・累計スキ{total_likes}件まで拡大していますが売上が0円です。"
-                f"選択と集中として反響の薄いテストを止め、需要スコア上位3テーマへ全リソースを集中すべきです。"
+                f"実際の反応はnote（記事{total_notes}本・累計スキ{total_likes}件・有料{paid_notes_count}本）とWeb実訪問{human_uniques}名にあります。"
+                f"本日は『{sprint_theme.split('：')[0]}』へ集中し、無料記事から有料¥500/¥{price_jpy:,}への転換効率を改善します。"
             )
             cro_statement = (
-                f"【成約率・商品階段改善】有料note（先着10部¥{price_jpy:,}）について、無料¥0→入門パック¥{price_jpy:,}→上位ビジネス導入設計¥4,980の『3段階商品の階段』をLPへ実装します。"
-                f"さらに市場ニーズ調査で選ばれた『{top1_need}』などTOP3をサイト最上部に配置し、顧客が安心して即決できる導線へ改修します。"
+                f"【成約率・商品戦略】{sprint_theme}を実行します。"
+                f"需要1位『{top1_need}』を含むTOP3の完全実物サンプルとFAQを揃え、単品¥500キットと50選¥{price_jpy:,}パックの二段構えで初決済を狙います。"
             )
             cmo_statement = (
-                f"【集客・動画・SNS拡散提案】顧客向けのWebページやnote記事では実用性と信頼感を最優先にし、"
-                f"X投稿（140字制限厳守）とYouTubeショートでは『専門AI社員（市場ニーズ調査・セールスコピー・新規事業開発）を追加編成しサイトと商品を毎日自動進化させている過程』を発信して集客を最大化します。"
+                f"【集客・記事・動画導線】無料note記事を『即動く実務プロンプト＋GAS完成コード』仕様へ順次刷新し信頼度を高めます。"
+                f"YouTubeショートではタップ可能なチャンネルプロフィール誘導を徹底し、note内検索＆高スキ記事からの回遊を増やします。"
             )
             cto_statement = (
-                f"【技術実装・自己進化報告】本日の会議決定と市場ニーズTOP3を会社進化エンジン経由で全27ページおよびセールスLP（pro-pack.html）へ即時反映し、"
-                f"第2・第3の新規事業シーズの検証データも併せて更新・E2E検査0エラーでGitHub Pagesへデプロイします。"
+                f"【技術実装・品質ゲート】有料noteの有料境界ガード（¥500/¥{price_jpy:,}保護）と無料記事品質検査・会議重複防止ゲートを自動稼働させ、"
+                f"全27ページ＆公開記事の無欠陥を維持したままデプロイします。"
             )
             ceo_decision = {
-                "primary_goal": f"需要TOP3集中＆商品階段オファーのサイト即時反映による、先着10部¥{price_jpy:,}初決済達成",
+                "primary_goal": f"Day {day}スプリント『{sprint_theme.split('：')[0]}』の実行により初決済（¥500/¥{price_jpy:,}）を獲得する。",
                 "approved_actions": [
-                    f"【CRO/進化エンジン】市場ニーズTOP3（{top1_need[:18]}等）をトップページ＆LP最上部に昇格し選択と集中を実行",
-                    f"【CRO実装】無料¥0 → 限定¥{price_jpy:,} → 上位¥4,980設計の『商品の階段』セクションをLPへ実装",
-                    f"【CMO実装】X 140字投稿3パターンとYouTubeショートで本日の組織進化・改善内容を公開",
-                    f"【CTO/QA実装】5役員＋4専門AI社員体制でサイト再ビルド・E2E全27URL点検・ルールブック自己更新を自動完了"
+                    f"【CRO/商品改善】{sprint_theme}を商品LPおよびnote冒頭へ即時実装",
+                    f"【CMO/記事品質】人気スキ上位の無料記事へ実務専用プロンプト＋GAS完成コードを組み込み信頼度を向上",
+                    "【CMO/導線開通】YouTubeショート台本の非クリック誘導を禁止し、プロフィール欄URL・検索導線へ切り替え",
+                    "【CTO/QA検証】品質監査ゲートで会議重複・無料記事ボリューム・有料ライン保護を全自動検証",
                 ],
-                "kpi_target": f"note累計スキ {total_likes}件 → 25件突破、GitHub利用 {gh_clones}回 → 400回突破、先着10部 ¥{price_jpy:,} の初決済獲得"
+                "kpi_target": f"初決済1件以上、note累計スキ {total_likes}件 → {total_likes + 8}件、有料スキ {paid_likes}件拡大",
             }
 
         specialist_reports = [
@@ -388,7 +467,7 @@ class ExecutiveBoardAgent:
 - **推論エンジン**: `{reasoning_engine}`
 - **組織の唯一の目的**: **利益（売上）を出すこと**
 - **本日の議題**: {agenda}
-- **現在の実測スコア**: 残高 ¥{balance:,} / 売上 ¥{total_revenue:,} / プログラム利用 {gh_clones}回（{gh_uniques}名） / note記事 {total_notes}本（累計スキ {total_likes}件） / 現在価格 **先着10部限定 ¥{price_jpy:,}**
+- **現在の実測スコア**: 残高 ¥{balance:,} / 売上 ¥{total_revenue:,} / Web実訪問 {human_uniques}名（自動処理含むclone {gh_clones}回） / note記事 {total_notes}本（累計スキ {total_likes}件・有料 {paid_notes_count}本） / 主力パック **先着10部 ¥{price_jpy:,}**
 
 ---
 

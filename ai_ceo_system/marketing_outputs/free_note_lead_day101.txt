@@ -1,0 +1,126 @@
+【タイトル】
+【無料コピペOK】競合ランディングページ(LP)の訴求軸分解＆ABテスト案生成をAIとGASで自動化して月27時間浮かす実践レシピ
+
+【ハッシュタグ】
+#LPO #競合調査 #GAS #スプレッドシート自動化 #ABテスト
+
+【本文】
+「競合ランディングページ(LP)の訴求軸分解＆ABテスト案生成」に毎月どれくらいの時間を使っていますか？
+
+実務の現場では、次のようなロスが起きやすい業務です。
+・競合LPの分析が属人化しており、担当者によって「訴求軸」の解釈がバラバラで再現性がない
+・1件のLP分析とABテスト案の作成に平均90分かかり、主要競合20社の追跡だけで月27時間以上を浪費している
+・競合の弱点（訴求の甘さ）を言語化できず、自社のABテストが「なんとなく」の微修正に留まっている
+
+1つひとつの確認作業は15分でも、積み重なると月平均で約27時間（時給3,000円換算で【年間 約972,000円相当】）を消費します。この記事では、ChatGPT・Geminiなどで即使える専用プロンプトだけでなく、Googleスプレッドシート上で通知・記録まで自動化するGAS完成コードもそのまま無料公開します。
+
+■ 1. まず準備するスプレッドシート列設計（これだけで動きます）
+Googleスプレッドシートの1行目（A〜F列）に以下の見出しを用意します。
+【列構成】調査対象URL ｜ ターゲット・悩み分解 ｜ ベネフィット・解決策 ｜ 信頼性・権威性エビデンス ｜ 競合の弱点・突ける隙 ｜ 自社ABテスト案（仮説・構成）
+
+■ 2. コピペで使える！「競合ランディングページ(LP)の訴求軸分解＆ABテスト案生成」専用・実務プロンプト
+以下をそのままコピーして、対象データを貼り付けて実行してください（[要確認]フラグで人の目チェックが必要な行だけを浮き彫りにします）。
+
+```text
+あなたは10年以上のキャリアを持つLPO（ランディングページ最適化）スペシャリスト兼コピーライターです。
+以下の入力テキスト（競合LPの構成要素）を分析し、指定のフォーマットで出力してください。
+
+### 厳守判定基準
+1. 【ターゲット】は「誰の、どんな深い悩みか」を心理的背景まで含めて言語化すること。
+2. 【ベネフィット】は機能の羅列ではなく、そのサービスを使った後の「感情的変化」を記述すること。
+3. 【弱点】は、顧客が抱くであろう「一歩引いた視点での懸念（例：価格が高い、実績が不明確など）」を特定すること。
+4. 【ABテスト案】は、競合の弱点を逆手に取った「勝てる仮説」と「具体的なキャッチコピー案」をセットで提示すること。
+
+### 出力列（各項目を以下の形式で出力）
+[ターゲット]：
+[ベネフィット]：
+[エビデンス]：
+[弱点]：
+[ABテスト案]：
+
+### 例外時の[要確認]ルール
+- 入力テキストがLPとして成立していない（404エラーやログイン画面等）場合は、理由を添えて「[要確認] 分析対象外のページです」とだけ出力してください。
+- 訴求軸が複数混在し、1つに絞れない場合は、最も強調されているメイン訴求を優先し、サブ訴求を「[要確認] 複数訴求あり」として追記してください。
+
+### 入力データ
+URL: {{URL}}
+コンテンツテキスト: {{TEXT}}
+```
+
+■ 3. スプレッドシート自動処理＆メール通知 GAS 完成コード
+スプレッドシート上部メニューの「拡張機能」＞「Apps Script」を開き、下記のコードを貼り付けて保存してください。トリガー（毎日午前8時など）を設定すれば、確認漏れ・処理完了が自動でメール通知されます。
+
+```javascript
+function runAutoWorkflow() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data = sheet.getDataRange().getValues();
+  const apiKey = PropertiesService.getScriptProperties().getProperty('OPENAI_API_KEY');
+  
+  for (let i = 1; i < data.length; i++) {
+    const [url, , , , , , status] = data[i];
+    if (status === '完了' || !url) continue;
+
+    try {
+      // LPのテキスト情報を取得（簡易スクレイピング）
+      const response = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+      const html = response.getContentText();
+      const textContent = html.replace(/<[^>]+>/g, ' ').substring(0, 3000); // 3000文字制限
+
+      const prompt = `あなたはプロのLPO担当者です。以下のLPを分析してください。\nURL: ${url}\n内容: ${textContent}`;
+      
+      const payload = {
+        model: "gpt-4-turbo",
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.7
+      };
+
+      const apiResponse = UrlFetchApp.fetch("https://api.openai.com/v1/chat/completions", {
+        method: "post",
+        headers: { "Authorization": "Bearer " + apiKey, "Content-Type": "application/json" },
+        payload: JSON.stringify(payload)
+      });
+
+      const result = JSON.parse(apiResponse.getContentText()).choices[0].message.content;
+      const parsedData = parseResult(result);
+
+      sheet.getRange(i + 1, 2, 1, 5).setValues([parsedData]);
+      sheet.getRange(i + 1, 7).setValue('完了');
+      
+    } catch (e) {
+      sheet.getRange(i + 1, 7).setValue('エラー: ' + e.message);
+    }
+  }
+  MailApp.sendEmail(Session.getActiveUser().getEmail(), "【自動化完了】競合LP分析レポート", "スプレッドシートの更新が完了しました。");
+}
+
+function parseResult(text) {
+  const tags = ['[ターゲット]', '[ベネフィット]', '[エビデンス]', '[弱点]', '[ABテスト案]'];
+  return tags.map(tag => {
+    const start = text.indexOf(tag) + tag.length + 1;
+    const end = tags[tags.indexOf(tag) + 1] ? text.indexOf(tags[tags.indexOf(tag) + 1]) : text.length;
+    return text.substring(start, end).trim();
+  });
+}
+```
+
+■ 4. 現場導入でつまずかない2つのポイント＆無料診断ツール
+・LPが画像主体（テキストが少ない）の場合、スクレイピングで情報を拾えず分析精度が落ちるため、その際は手動で主要コピーを「備考欄」に入力してそれを読み込むロジックへの変更が必要
+・OpenAI APIのトークン制限により、長大なLPを一度に送るとエラーになる。対策として、HTMLから不要なscriptタグやstyleタグを除去する前処理をGAS側で実装済みだが、それでもエラーが出る場合は文字数をさらに絞る必要がある
+
+「自分の職場だと年間いくら時間を削減できるか」の試算と追加コード生成は、登録不要の無料Webツールでも30秒で試せます👇
+https://toproad-creator.github.io/autoflow-ai-ceo/
+
+GASの貼り付けエラーを3秒で解決する無料デバッガーはこちら👇
+https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
+
+■ あわせて読まれている実践ガイド（すべて無料）
+・採用・人事の職務経歴書スクリーニング自動化：https://note.com/toproad_1989/n/n129393b66060
+・補助金申請・事業計画書＆収支表自動化：https://note.com/toproad_1989/n/n45f6c425ee66
+
+■ 5. 【先着10部限定 ¥980】エラー対策＆全10業種50選をまとめて現場導入したい方へ
+「補助金計画・採用選考・EC在庫・請求書経理・営業返信」まで含め、最初からエラー通知・6分制限回避を組み込んだ50業務すべての完全版パッケージを公開しています。
+通常価格 ¥1,980 のところ、先着10部限定で【半額 ¥980（1レシピあたり約19円）】です。無料エリアに「補助金・採用・EC」の実物コードもそのまま掲載しているので、品質を確かめたうえでぜひご活用ください👇
+https://note.com/toproad_1989/n/n5d0e28a74f91
+
+まずは今回の領域だけを深く自動化したい方向けに、単品ワンコイン版（¥500）も公開しています👇
+https://note.com/toproad_1989/n/n26ebbea33691

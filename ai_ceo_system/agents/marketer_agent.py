@@ -112,26 +112,25 @@ class MarketerAgent:
         if not gemini_key:
             return None
 
-        prompt = f"""あなたはSNS運用担当（CMO）です。以下のDay {day}の経営データをもとに、X（旧Twitter）投稿用の文章を3パターン作成してください。
+        prompt = f"""あなたはSNS運用担当（CMO）です。以下のDay {day}のデータをもとに、実務家とAI開発ウォッチャーの両方がクリックしたくなるX（旧Twitter）投稿用の文章を3パターン作成してください。
 
 【本日の実測データ】
 - 企画: 【AI実験(Gemini) Day{day}】
-- ツール利用: {gh_clones}回 / note記事: {total_notes}本（累計スキ{note_likes}件） / 売上: ¥0
-- 有料商品価格: 先着10部限定 ¥{price_jpy}
-- 今とくに需要が高いTOP3: {top_needs_tag}
+- note公開記事: {total_notes}本（累計スキ{note_likes}件・反応集中領域：{top_needs_tag}）
+- 有料ラインナップ: 全50選完全版 先着10部 ¥{price_jpy}（＋特定業務向け単品¥500キットも順次展開）
 - 本日のAI会議テーマ: {board_agenda}
 - 最優先ゴール: {primary_goal}
 - リプライ先コンテンツ: {reply_label}
 
 【厳守ルール】
 1. 3パターンそれぞれ、URLを含まない本文のみで必ず75〜102文字以内に収めること（文が途中で切れるのを防ぐため）。
-2. 末尾に「👇」を付け、改行やカッコ（「」・『』）は必ず閉じること。
-3. 自然な日本語として読みやすく、クリックしたくなるフックを入れること。
+2. 「ツール利用{gh_clones}回」といった水増しに聞こえる数字ではなく、「コピペで動くGAS＋AI」「月30〜45時間削減」「noteスキ{note_likes}件」など実利で訴求すること。
+3. 末尾に「👇」を付け、改行やカッコ（「」・『』）は必ず閉じること。
 4. 出力は必ず次のキーを持つJSONのみを返すこと:
 {{
   "post1_web": "【AI実験(Gemini) Day{day}】で始まる無料Webツール誘導用の本文（102文字以内）",
-  "post2_note": "【AI実験(Gemini) Day{day}】で始まる先着10部¥{price_jpy}有料note誘導用の本文（102文字以内）",
-  "post3_reply": "▼ Day{day}のAI自己進化ログ（{reply_label}）で始まるリプライ連結用の本文（102文字以内）"
+  "post2_note": "【AI実験(Gemini) Day{day}】で始まる有料note（¥{price_jpy}完全版/単品キット）誘導用の本文（102文字以内）",
+  "post3_reply": "▼ Day{day}の改善ログ（{reply_label}）で始まるリプライ連結用の本文（102文字以内）"
 }}"""
 
         for model_name in ("gemini-3-flash-preview", "gemma-4-31b-it", "gemini-3.1-flash-lite"):
@@ -201,21 +200,19 @@ class MarketerAgent:
             body_p2 = llm_posts["post2_note"].strip()
             body_reply = llm_posts["post3_reply"].strip()
         else:
-            # 完結した自然なフォールバック文（途中切り抜きなし）
+            # 完結した自然なフォールバック文（実利重視・途中切り抜きなし）
             body_p1 = (
                 f"【AI実験(Gemini) Day{day}】\n"
-                f"利用{gh_clones}回・スキ{note_likes}件でも売上0円にAI会議が危機感🔥\n"
-                f"人気TOP3（{top_needs_tag}）を無料ツールにも即追加＆導線を強化しました👇"
+                f"note累計スキ{note_likes}件突破🔥 需要TOP3『{top_needs_tag}』の時短効果とGASコードを無料30秒診断👇"
             )
             body_p2 = (
                 f"【AI実験(Gemini) Day{day}】\n"
-                f"「なぜ売れないか」をAI役員9名で分析し、{top_needs_tag}特化へ売り場を刷新🔥\n"
-                f"先着10部限定¥{price_jpy}で50選完全版を公開中👇"
+                f"無料試し読みに補助金・採用・ECの実物GASを追加！全50選が先着10部¥{price_jpy}で即使えます👇"
             )
             body_reply = (
-                f"▼ Day{day}のAI自己進化ログ（{reply_label}）\n"
-                f"・ツール利用：{gh_clones}回 / スキ：{note_likes}件\n"
-                f"・本日改善：{top_needs_tag}を無料＆有料導線へ反映👇"
+                f"▼ Day{day}の改善ログ（{reply_label}）\n"
+                f"・公開記事{total_notes}本＆GAS完全コード拡充中\n"
+                f"・本日強化：{top_needs_tag}の実践レシピ公開👇"
             )
 
         x_pattern1_web = self._enforce_x_limit(body_p1, WEB_TOOL_URL, max_body_chars=112)

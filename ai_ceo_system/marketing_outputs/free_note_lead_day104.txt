@@ -1,0 +1,130 @@
+【タイトル】
+【無料コピペOK】EC・物販の在庫管理＆価格改定自動化をAIとGASで自動化して月42時間浮かす実践レシピ
+
+【ハッシュタグ】
+#EC運営 #在庫管理 #GAS #スプレッドシート自動化 #価格改定
+
+【本文】
+「EC・物販の在庫管理＆価格改定自動化」に毎月どれくらいの時間を使っていますか？
+
+実務の現場では、次のようなロスが起きやすい業務です。
+・毎日3回、主要モール（Amazon/楽天/Yahoo）の競合価格を目視確認し、手動でスプレッドシートを更新する作業に忙殺されている。
+・仕入れ原価の高騰に価格改定が追いつかず、気づかないうちに「売れば売るほど赤字」の商品が混じってしまっている。
+・価格を下げすぎて利益率が損なわれるのを防ぎたいが、一律の計算式では対応できず、結局一つずつ判断が必要で自動化を諦めている。
+
+1つひとつの確認作業は15分でも、積み重なると月平均で約42時間（時給2,500円換算で【年間 約1,260,000円相当】）を消費します。この記事では、ChatGPT・Geminiなどで即使える専用プロンプトだけでなく、Googleスプレッドシート上で通知・記録まで自動化するGAS完成コードもそのまま無料公開します。
+
+■ 1. まず準備するスプレッドシート列設計（これだけで動きます）
+Googleスプレッドシートの1行目（A〜F列）に以下の見出しを用意します。
+【列構成】SKU管理番号 ｜ 商品名 ｜ 仕入原価 ｜ 競合最安値 ｜ 現在販売価格 ｜ 改定提案価格
+
+■ 2. コピペで使える！「EC・物販の在庫管理＆価格改定自動化」専用・実務プロンプト
+以下をそのままコピーして、対象データを貼り付けて実行してください（[要確認]フラグで人の目チェックが必要な行だけを浮き彫りにします）。
+
+```text
+あなたはEC専門の価格戦略コンサルタントです。以下の厳格な基準に基づき、在庫商品の「改定提案価格」を決定してください。
+
+### 前提条件
+- 目標最低利益率：15%
+- 競合追従ルール：競合最安値より1円安く設定する
+
+### 判定・算出アルゴリズム
+1. [利益確保の原則]: 提案価格 = MAX(競合最安値 - 1, 仕入原価 / 0.85)
+2. [赤字回避アラート]: もし「競合最安値 - 1」が「仕入原価 * 1.1」を下回る場合は、競合に合わせず「仕入原価 * 1.15」を提案価格とし、ステータスに[要確認:利益薄]と付与すること。
+3. [データ欠損対応]: 競合最安値が0または空欄の場合は、現在販売価格を維持し、ステータスを[競合不在]とすること。
+4. [異常値検知]: 競合最安値が現在価格の50%以下、または200%以上の場合は、入力ミスの可能性があるため改定を行わず[要確認:異常値]とすること。
+
+### 出力形式
+以下の列に対応する値を、カンマ区切りのJSON配列形式で返してください。
+[改定提案価格, 想定利益率, 処理ステータス]
+
+### 入力例
+SKU: A101, 原価: 5000, 競合最安値: 6500, 現在価格: 6800
+出力例: [6499, 23.1, "自動改定対象"]
+```
+
+■ 3. スプレッドシート自動処理＆メール通知 GAS 完成コード
+スプレッドシート上部メニューの「拡張機能」＞「Apps Script」を開き、下記のコードを貼り付けて保存してください。トリガー（毎日午前8時など）を設定すれば、確認漏れ・処理完了が自動でメール通知されます。
+
+```javascript
+function runAutoWorkflow() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data = sheet.getDataRange().getValues();
+  const header = data.shift(); // ヘッダー行を除去
+  
+  let updateCount = 0;
+  let alertCount = 0;
+  const now = new Date();
+
+  try {
+    data.forEach((row, index) => {
+      const rowIndex = index + 2;
+      const sku = row[0];
+      const costPrice = parseFloat(row[2]);
+      const compPrice = parseFloat(row[3]);
+      const currentPrice = parseFloat(row[4]);
+
+      if (!sku) return;
+
+      let targetPrice, status, margin;
+
+      // 実務的なロジック判定（簡易版）
+      if (compPrice <= 0 || isNaN(compPrice)) {
+        targetPrice = currentPrice;
+        status = "[競合不在]";
+      } else if (compPrice < costPrice * 1.1) {
+        targetPrice = Math.floor(costPrice * 1.15);
+        status = "[要確認:利益薄]";
+        alertCount++;
+      } else {
+        targetPrice = compPrice - 1;
+        status = "完了";
+      }
+
+      margin = (((targetPrice - costPrice) / targetPrice) * 100).toFixed(1);
+
+      // シートへの書き込み
+      sheet.getRange(rowIndex, 6, 1, 4).setValues([[
+        targetPrice,
+        margin,
+        status,
+        Utilities.formatDate(now, "JST", "yyyy-MM-dd HH:mm")
+      ]]);
+      updateCount++;
+    });
+
+    // 完了通知メールの送信
+    MailApp.sendEmail({
+      to: Session.getActiveUser().getEmail(),
+      subject: "【自動通知】在庫価格改定ワークフロー完了",
+      body: `処理が完了しました。\n処理件数: ${updateCount}件\n要確認アラート: ${alertCount}件\nスプレッドシートを確認してください。`
+    });
+
+  } catch (e) {
+    console.error("エラー発生: " + e.toString());
+    MailApp.sendEmail(Session.getActiveUser().getEmail(), "【エラー】価格改定スクリプト", e.toString());
+  }
+}
+```
+
+■ 4. 現場導入でつまずかない2つのポイント＆無料診断ツール
+・APIやスクレイピングで競合価格を取得する際、送料設定（送料込か別か）を無視して計算すると、実質価格で競合に負けて売上が急落する。必ず「送料込み価格」を比較対象にする必要がある。
+・深夜の自動更新中、仕入れサイトのメンテナンス等で原価が「0」として取得された場合、異常な安値で出品されるリスクがある。スクリプト内で「原価が一定額以下なら処理を中断する」ガードレールが必須。
+
+「自分の職場だと年間いくら時間を削減できるか」の試算と追加コード生成は、登録不要の無料Webツールでも30秒で試せます👇
+https://toproad-creator.github.io/autoflow-ai-ceo/
+
+GASの貼り付けエラーを3秒で解決する無料デバッガーはこちら👇
+https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
+
+■ あわせて読まれている実践ガイド（すべて無料）
+・採用・人事の職務経歴書スクリーニング自動化：https://note.com/toproad_1989/n/n129393b66060
+・補助金申請・事業計画書＆収支表自動化：https://note.com/toproad_1989/n/n45f6c425ee66
+
+■ 5. 【先着10部限定 ¥980】エラー対策＆全10業種50選をまとめて現場導入したい方へ
+「補助金計画・採用選考・EC在庫・請求書経理・営業返信」まで含め、最初からエラー通知・6分制限回避を組み込んだ50業務すべての完全版パッケージを公開しています。
+通常価格 ¥1,980 のところ、先着10部限定で【半額 ¥980（1レシピあたり約19円）】です。無料エリアに「補助金・採用・EC」の実物コードもそのまま掲載しているので、品質を確かめたうえでぜひご活用ください👇
+https://note.com/toproad_1989/n/n5d0e28a74f91
+
+まずは今回の領域だけを深く自動化したい方向けに、単品ワンコイン版（¥500）も公開しています👇
+https://note.com/toproad_1989/n/n26ebbea33691
