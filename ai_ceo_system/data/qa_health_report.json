@@ -1,5 +1,5 @@
 {
-  "inspected_at": "2026-11-24T13:20:02.562841+09:00",
+  "inspected_at": "2026-11-24T06:38:59.526192+00:00",
   "total_urls_checked": 27,
   "urls_ok_count": 27,
   "broken_urls": [],
@@ -7,11 +7,23 @@
     {
       "key": "n5d0e28a74f91",
       "url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
-      "title": "【先着10部¥980】EC・補助金申請・採用をコピペ5分で自動化！『全",
+      "title": "【先着10部¥980】補助金申請・EC・採用をコピペ5分で自動化！『全",
       "has_thumbnail": true,
       "clickable_links_count": 0,
       "likes": 3,
       "price": 980,
+      "is_paid": true,
+      "is_thin_boilerplate": false,
+      "healthy": true
+    },
+    {
+      "key": "nfc0f1324e42d",
+      "url": "https://note.com/toproad_1989/n/nfc0f1324e42d",
+      "title": "【単品¥500】採用の書類選考・候補者スコアリング＆面接質問を自動化す",
+      "has_thumbnail": true,
+      "clickable_links_count": 1,
+      "likes": 0,
+      "price": 500,
       "is_paid": true,
       "is_thin_boilerplate": false,
       "healthy": true
@@ -22,7 +34,7 @@
       "title": "【単品¥500】補助金申請・融資の事業計画書＆5カ年収支表をコピペ自動",
       "has_thumbnail": true,
       "clickable_links_count": 1,
-      "likes": 1,
+      "likes": 0,
       "price": 500,
       "is_paid": true,
       "is_thin_boilerplate": false,
@@ -93,11 +105,11 @@
       "url": "https://note.com/toproad_1989/n/n5d7337e2ed8c",
       "title": "【無料コピペOK】競合ランディングページ(LP)の訴求軸分解＆ABテス",
       "has_thumbnail": true,
-      "clickable_links_count": 3,
+      "clickable_links_count": 6,
       "likes": 3,
       "price": 0,
       "is_paid": false,
-      "is_thin_boilerplate": true,
+      "is_thin_boilerplate": false,
       "healthy": true
     },
     {
@@ -201,11 +213,11 @@
       "url": "https://note.com/toproad_1989/n/n9a7bd90cf282",
       "title": "【無料コピペOK】X/Threads 毎日投稿＆バズ構文自動生成をAI",
       "has_thumbnail": true,
-      "clickable_links_count": 3,
+      "clickable_links_count": 6,
       "likes": 3,
       "price": 0,
       "is_paid": false,
-      "is_thin_boilerplate": true,
+      "is_thin_boilerplate": false,
       "healthy": true
     },
     {
@@ -222,50 +234,22 @@
     }
   ],
   "browser_e2e": {
-    "status": "passed",
-    "js_console_errors": [],
-    "tools_tested": {
-      "index_tool": {
-        "title": "AutoFlow AI | 30秒で業務削減額を算出＆自動化プロンプト/GASコード即時生成ツール",
-        "rendered_ok": true,
-        "note_cta_count": 5
-      },
-      "prompt_builder_tool": {
-        "title": "AutoPrompt Studio | 1行の指示を「深津式・構造化プロンプト」へ0秒変換する無料ジェネレーター",
-        "interactive_buttons": 1,
-        "note_cta_count": 5
-      },
-      "gas_debugger_tool": {
-        "title": "AutoFix AI | Google Apps Script(GAS)エラー＆AIプロンプト3秒診断・自動修正ツール",
-        "interactive_buttons": 1,
-        "note_cta_count": 5
-      },
-      "free_templates_page": {
-        "title": "無料サンプル5選 vs 完全版50選 | AutoFlow AI プロンプト＆GAS自動化レシピ",
-        "sample_copy_buttons": 5,
-        "note_cta_count": 4
-      },
-      "sales_lp": {
-        "title": "AutoFlow Pro Pack | 全職種対応50種AIプロンプト＆GAS自動化テンプレート完全版 (先着10部限定 ¥980)",
-        "note_cta_count": 3
-      }
-    }
+    "status": "skipped_no_playwright"
   },
   "windows_scheduler_check": {
-    "registered": true,
-    "raw_summary": "\nFolder: \\\nHostName:                             DESKTOP-T8LTA9P\nTaskName:                             \\Antigravity_AI_CEO_Daily\nNext Run Time:                        2026/11/25 8:00:00\nStatus:                               Ready\nLogon Mode:                           Interactive only\nLast Run Time:                        2026/11/24 8:00:01\nLast Result:                          0\nAuthor:                               DESKTOP-T8LTA9P\\山内　裕加里\nTask To Run:                          C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Desktop\\Frontier_clone\\ai_ceo_system\\a"
+    "status": "cloud_linux_env"
   },
   "github_actions_check": {
     "status": "checked",
-    "run_id": 45286612253,
+    "run_id": 45326213889,
     "latest_conclusion": "success",
-    "updated_at": "2026-11-23T23:13:10Z",
-    "html_url": "https://github.com/toproad-creator/autoflow-ai-ceo/actions/runs/45286612253",
+    "updated_at": "2026-11-24T04:25:57Z",
+    "html_url": "https://github.com/toproad-creator/autoflow-ai-ceo/actions/runs/45326213889",
     "healthy": true
   },
   "detected_issues": [
-    "【無料記事コンテンツ改善】公開note記事のうち 11 本が旧来の簡易短文構成のままです。スキ数の多い人気記事から順に、実務専用プロンプト＋GAS完成コード付きの本格解説へ差し替えることで有料版への信頼を高められます。",
-    "【最重要課題：未収益】実ユーザー反響は note 18本（累計スキ46件 / 有料2本・スキ4件）・GitHubページ訪問89名（自動clone除く）に対し売上¥0。最上位反応テーマ『【無料コピペOK】採用・人事の職務経歴書スク』からの¥500単品決済および¥980完全版への納得導線強化が必要です。"
+    "【無料記事コンテンツ改善】公開note記事のうち 9 本が旧来の簡易短文構成のままです。スキ数の多い人気記事から順に、実務専用プロンプト＋GAS完成コード付きの本格解説へ差し替えることで有料版への信頼を高められます。",
+    "【最重要課題：未収益】実ユーザー反響は note 19本（累計スキ45件 / 有料3本・スキ3件）・GitHubページ訪問89名（自動clone除く）に対し売上¥0。最上位反応テーマ『【無料コピペOK】採用・人事の職務経歴書スク』からの¥500単品決済および¥980完全版への納得導線強化が必要です。"
   ],
   "overall_healthy": true
 }
