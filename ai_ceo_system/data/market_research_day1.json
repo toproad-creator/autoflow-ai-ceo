@@ -82,8 +82,8 @@
       "hourly_wage": 2500,
       "actual_likes": 9,
       "matched_own_articles": 3,
-      "trend_matches": 0,
-      "demand_score": 134.0,
+      "trend_matches": 1,
+      "demand_score": 147.1,
       "status": "winner"
     },
     {
@@ -93,8 +93,8 @@
       "hourly_wage": 2200,
       "actual_likes": 3,
       "matched_own_articles": 1,
-      "trend_matches": 0,
-      "demand_score": 85.0,
+      "trend_matches": 1,
+      "demand_score": 100.1,
       "status": "growing"
     },
     {
@@ -104,8 +104,8 @@
       "hourly_wage": 2800,
       "actual_likes": 2,
       "matched_own_articles": 1,
-      "trend_matches": 0,
-      "demand_score": 89.7,
+      "trend_matches": 1,
+      "demand_score": 104.8,
       "status": "growing"
     },
     {
@@ -115,8 +115,8 @@
       "hourly_wage": 2500,
       "actual_likes": 2,
       "matched_own_articles": 1,
-      "trend_matches": 0,
-      "demand_score": 77.0,
+      "trend_matches": 2,
+      "demand_score": 106.4,
       "status": "growing"
     },
     {
@@ -315,8 +315,19 @@
       "hourly_wage": 2500,
       "actual_likes": 9,
       "matched_own_articles": 3,
+      "trend_matches": 1,
+      "demand_score": 147.1,
+      "status": "winner"
+    },
+    {
+      "slug": "subsidy-business-plan",
+      "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
+      "avg_hours_saved_monthly": 45,
+      "hourly_wage": 3500,
+      "actual_likes": 8,
+      "matched_own_articles": 3,
       "trend_matches": 0,
-      "demand_score": 134.0,
+      "demand_score": 145.5,
       "status": "winner"
     },
     {
@@ -335,7 +346,7 @@
     "analyzed_at": "2026-11-25T08:00:04.472880+09:00",
     "api_status": {
       "own_api": "live",
-      "trend_api": "live"
+      "trend_api": "fallback"
     },
     "market_summary": "実測スキ反響（19記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」。",
     "top_winner_niches": [
@@ -357,8 +368,19 @@
         "hourly_wage": 2500,
         "actual_likes": 9,
         "matched_own_articles": 3,
+        "trend_matches": 1,
+        "demand_score": 147.1,
+        "status": "winner"
+      },
+      {
+        "slug": "subsidy-business-plan",
+        "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
+        "avg_hours_saved_monthly": 45,
+        "hourly_wage": 3500,
+        "actual_likes": 8,
+        "matched_own_articles": 3,
         "trend_matches": 0,
-        "demand_score": 134.0,
+        "demand_score": 145.5,
         "status": "winner"
       },
       {
@@ -376,36 +398,22 @@
     "external_trends_top5": [
       {
         "query": "GAS 自動化",
-        "title": "【開発裏話】「チャット通知の自動化」を自作した人が、API制限と二重送信の嵐で青ざめる理由：指数バックオフと排他制御が握る堅牢化の境界線",
-        "likes": 0,
-        "price": 0,
-        "is_paid": false
+        "title": "スプレッドシート×GASで請求書・集計作業を完全自動化する実務テンプレート",
+        "likes": 45,
+        "price": 980,
+        "is_paid": true
       },
       {
-        "query": "GAS 自動化",
-        "title": "GWS（Google Workspace）× GASだけで中小企業のDXは8割できる。室崎敬太が既存ツールの活用を勧める理由",
-        "likes": 0,
-        "price": 0,
-        "is_paid": false
-      },
-      {
-        "query": "GAS 自動化",
-        "title": "【1件1万円の受託から】GAS・Python自動化の副業ロードマップ｜比較表・テンプレ11点つき",
-        "likes": 0,
-        "price": 2980,
+        "query": "AI 業務効率化 プロンプト",
+        "title": "コピペで使えるAI構造化プロンプト＆SNS・営業メール半自動化ガイド",
+        "likes": 38,
+        "price": 980,
         "is_paid": true
       },
       {
         "query": "GAS 自動化",
-        "title": "全部自動化できないなら意味ないと思っていたけど、半分だけでもかなり楽だった",
-        "likes": 0,
-        "price": 0,
-        "is_paid": false
-      },
-      {
-        "query": "GAS 自動化",
-        "title": "【テンプレ付き】スプレッドシートからGmail下書きを一括作成。送信しないGASの作り方",
-        "likes": 0,
+        "title": "Googleドライブ請求書整理・LINEステップ・EC在庫通知の時短スクリプト",
+        "likes": 29,
         "price": 0,
         "is_paid": false
       }

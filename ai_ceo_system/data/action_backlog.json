@@ -10,7 +10,7 @@
       "id": "DAY22-ACT1",
       "action": "【CRO/商品改善】有料記事3本の冒頭に「補助金・採用・EC」の実際のGAS出力画面とコード一部を公開",
       "status": "resolved",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:synced"
+      "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(26件):True"
     },
     {
       "id": "DAY22-ACT2",
@@ -28,7 +28,7 @@
       "id": "DAY22-ACT4",
       "action": "【CTO/QA検証】有料版コードの「コピペ動作保証」を再確認し、環境構築の図解を無料エリアへ追加",
       "status": "resolved",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:synced"
+      "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(26件):True"
     }
   ],
   "pending_for_next_board": []
