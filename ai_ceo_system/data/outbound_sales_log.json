@@ -1,8 +1,8 @@
 {
-  "executed_at": "2026-11-24T13:22:46.469647+09:00",
+  "executed_at": "2026-11-25T08:04:17.232222+09:00",
   "actions_completed": [
     "IndexNow検索エンジン即時登録Ping送信（対象: 全26ページ / ステータス: queued_for_deploy）",
-    "GitHub Gist外部技術メディア記事の自動公開・被リンク獲得（URL: https://gist.github.com/toproad-creator/7093237c93f8158c7529b5869ff17ff4）",
+    "GitHub Gist外部技術メディア記事の自動公開・被リンク獲得（URL: https://gist.github.com/toproad-creator/6eb1905eefa9470d92891e8e87e7cc74）",
     "GitHub Release公式スターターキット配布ページの自動公開（URL: https://github.com/toproad-creator/autoflow-ai-ceo/releases/tag/v1.4.0）",
     "GitHub検索＆Google上位表示用セールスREADME.mdの自動構築・更新"
   ],
@@ -11,7 +11,7 @@
     "status": "queued_for_deploy",
     "message": "HTTP Error 403: Forbidden"
   },
-  "public_gist_url": "https://gist.github.com/toproad-creator/7093237c93f8158c7529b5869ff17ff4",
+  "public_gist_url": "https://gist.github.com/toproad-creator/6eb1905eefa9470d92891e8e87e7cc74",
   "github_release_url": "https://github.com/toproad-creator/autoflow-ai-ceo/releases/tag/v1.4.0",
   "readme_path": "C:\\Users\\yukar\\Desktop\\Frontier_clone\\README.md",
   "key_file": "C:\\Users\\yukar\\Desktop\\Frontier_clone\\ai_ceo_system\\product_site\\autoflowaiceo2026indexnowkey90days.txt"

@@ -17,6 +17,15 @@
       "price": 500,
       "api_verified_price": 500,
       "created_at": "2026-11-24T13:21:00.325962+09:00"
+    },
+    {
+      "slug": "ec-inventory",
+      "key": "n284acdc747a4",
+      "url": "https://note.com/toproad_1989/n/n284acdc747a4",
+      "title": "【単品¥500】EC・物販の在庫切れ検知・競合価格監視＆自動通知を仕組み化する実践AI×GASキット",
+      "price": 500,
+      "api_verified_price": 500,
+      "created_at": "2026-11-25T08:02:44.641293+09:00"
     }
   ]
 }

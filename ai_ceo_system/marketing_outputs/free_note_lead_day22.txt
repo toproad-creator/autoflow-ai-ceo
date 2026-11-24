@@ -1,0 +1,113 @@
+【タイトル】
+【無料コピペOK】Google広告・Meta広告の検索見出し15本＆説明文一括ジェネレーターをAIとGASで自動化して月21時間浮かす実践レシピ
+
+【ハッシュタグ】
+#AI活用 #業務効率化 #GAS #リスティング広告 #Google広告
+
+【本文】
+「Google広告・Meta広告の検索見出し15本＆説明文一括ジェネレーター」に毎月どれくらいの時間を使っていますか？
+
+実務の現場では、次のようなロスが起きやすい業務です。
+・レスポンシブ検索広告（RSA）の見出し15本を毎回捻り出すのが苦痛で、クリエイティブな思考が停止している
+・全角15文字（半角30文字）という厳格な文字数制限を守りつつ、訴求軸をバラけさせる作業に1件あたり1時間以上溶かしている
+・LPの内容と広告文の整合性を保ちつつ、クリック率（CTR）を高めるための「問いかけ」や「ベネフィット」の出し分けが属人化している
+
+1つひとつの確認作業は15分でも、積み重なると月平均で約21時間（時給2,900円換算で【年間 約730,800円相当】）を消費します。この記事では、ChatGPT・Geminiなどで即使える専用プロンプトだけでなく、Googleスプレッドシート上で通知・記録まで自動化するGAS完成コードもそのまま無料公開します。
+
+■ 1. まず準備するスプレッドシート列設計（これだけで動きます）
+Googleスプレッドシートの1行目（A〜F列）に以下の見出しを用意します。
+【列構成】商材名/ターゲット ｜ 訴求ポイント・LP要約 ｜ 必須キーワード ｜ 生成ステータス ｜ 生成結果（見出し15・説明文4） ｜ エラーログ
+
+■ 2. コピペで使える！「Google広告・Meta広告の検索見出し15本＆説明文一括ジェネレーター」専用・実務プロンプト
+以下をそのままコピーして、対象データを貼り付けて実行してください（[要確認]フラグで人の目チェックが必要な行だけを浮き彫りにします）。
+
+```text
+あなたは獲得効率を最大化させる運用型広告専門のシニアコピーライターです。
+以下の制約条件を厳守し、Google広告・Meta広告用の広告文を生成してください。
+
+### 入力データ
+- 商材名：{A列}
+- 訴求軸：{B列}
+- 必須キーワード：{C列}
+
+### 厳守ルール
+1. 見出し(Headline): 厳密に15本生成すること。全角15文字（半角30文字）以内を絶対死守。
+2. 説明文(Description): 厳密に4本生成すること。全角45文字（半角90文字）以内を絶対死守。
+3. 重複禁止: 15本すべて異なる訴求（価格、品質、信頼、限定性、悩み解決等）にバラけさせること。
+4. 記号制限: 「！」「？」は1つまで。使用不可記号（【】、◎、※）は絶対に使わないこと。
+5. 必須キーワード: C列の単語を必ず3本以上の見出しに含めること。
+
+### 出力形式（JSON形式のみ）
+{
+  "headlines": ["見出し1", "見出し2", ... "見出し15"],
+  "descriptions": ["説明文1", ... "説明文4"]
+}
+
+### 例外処理
+文字数制限をどうしても超える場合は、意味が通じる範囲で省略し、[要確認]というフラグを末尾に付けてください。
+出力はJSON以外の解説テキストを一切含めないでください。
+```
+
+■ 3. スプレッドシート自動処理＆メール通知 GAS 完成コード
+スプレッドシート上部メニューの「拡張機能」＞「Apps Script」を開き、下記のコードを貼り付けて保存してください。トリガー（毎日午前8時など）を設定すれば、確認漏れ・処理完了が自動でメール通知されます。
+
+```javascript
+function runAutoWorkflow() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data = sheet.getDataRange().getValues();
+  const API_KEY = 'YOUR_OPENAI_API_KEY';
+  const API_URL = 'https://api.openai.com/v1/chat/completions';
+
+  for (let i = 1; i < data.length; i++) {
+    const [product, point, keyword, status] = [data[i][0], data[i][1], data[i][2], data[i][3]];
+    if (status === '完了' || !product) continue;
+
+    try {
+      const prompt = `商材:${product}, 訴求:${point}, キーワード:${keyword} に基づき広告文を生成せよ。`; // 詳細はexpert_prompt参照
+      const payload = {
+        model: 'gpt-4o',
+        messages: [{role: 'system', content: '広告コピーライターとしてJSONで回答します。'}, {role: 'user', content: prompt}],
+        response_format: { type: 'json_object' }
+      };
+
+      const response = UrlFetchApp.fetch(API_URL, {
+        method: 'post',
+        contentType: 'application/json',
+        headers: { Authorization: 'Bearer ' + API_KEY },
+        payload: JSON.stringify(payload)
+      });
+
+      const result = JSON.parse(response.getContentText());
+      sheet.getRange(i + 1, 5).setValue(JSON.stringify(result.choices[0].message.content));
+      sheet.getRange(i + 1, 4).setValue('完了');
+      sheet.getRange(i + 1, 6).clearContent();
+    } catch (e) {
+      sheet.getRange(i + 1, 4).setValue('エラー');
+      sheet.getRange(i + 1, 6).setValue(e.toString());
+    }
+  }
+  MailApp.sendEmail(Session.getActiveUser().getEmail(), '広告文生成ジョブ完了', 'スプレッドシートの生成が完了しました。確認してください。');
+}
+```
+
+■ 4. 現場導入でつまずかない2つのポイント＆無料診断ツール
+・OpenAIのAPIは稀に文字数を正確にカウントできないため、GAS側で `length` チェックを行い、30文字を超えているセルを赤くハイライトする条件付き書式を併用するのが実務上のコツです。
+・一度に100行以上処理するとGASの実行時間制限（6分）に抵触するため、30行ごとにトリガー実行するか、ステータス列が空の行だけを処理するフィルタリングが必須です。
+
+「自分の職場だと年間いくら時間を削減できるか」の試算と追加コード生成は、登録不要の無料Webツールでも30秒で試せます👇
+https://toproad-creator.github.io/autoflow-ai-ceo/
+
+GASの貼り付けエラーを3秒で解決する無料デバッガーはこちら👇
+https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
+
+■ あわせて読まれている実践ガイド（すべて無料）
+・採用・人事の職務経歴書スクリーニング自動化：https://note.com/toproad_1989/n/n129393b66060
+・補助金申請・事業計画書＆収支表自動化：https://note.com/toproad_1989/n/n45f6c425ee66
+
+■ 5. 【先着10部限定 ¥980】エラー対策＆全10業種50選をまとめて現場導入したい方へ
+「補助金計画・採用選考・EC在庫・請求書経理・営業返信」まで含め、最初からエラー通知・6分制限回避を組み込んだ50業務すべての完全版パッケージを公開しています。
+通常価格 ¥1,980 のところ、先着10部限定で【半額 ¥980（1レシピあたり約19円）】です。無料エリアに「補助金・採用・EC」の実物コードもそのまま掲載しているので、品質を確かめたうえでぜひご活用ください👇
+https://note.com/toproad_1989/n/n5d0e28a74f91
+
+まずは今回の領域だけを深く自動化したい方向けに、単品ワンコイン版（¥500）も公開しています👇
+https://note.com/toproad_1989/n/n26ebbea33691

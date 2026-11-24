@@ -1,6 +1,6 @@
 {
-  "day": 21,
-  "timestamp": "2026-11-24T13:19:45.784611+09:00",
+  "day": 22,
+  "timestamp": "2026-11-25T08:00:06.823870+09:00",
   "financials": {
     "initial_balance": 15000,
     "current_balance": 15000,
@@ -19,27 +19,34 @@
       "status": "published",
       "price_jpy": 980,
       "paid_article_likes": 3,
-      "total_published_notes": 18,
+      "total_published_notes": 19,
       "total_account_likes": 46,
       "paywall_active": true,
-      "paid_notes_count": 2,
+      "paid_notes_count": 3,
       "paid_notes_list": [
         {
           "key": "n5d0e28a74f91",
-          "title": "【先着10部¥980】EC・補助金申請・採用をコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
+          "title": "【先着10部¥980】補助金申請・EC・採用をコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
           "price": 980,
           "likes": 3,
           "url": "https://note.com/toproad_1989/n/n5d0e28a74f91"
         },
         {
+          "key": "nfc0f1324e42d",
+          "title": "【単品¥500】採用の書類選考・候補者スコアリング＆面接質問を自動化する実践AI×GASキット",
+          "price": 500,
+          "likes": 0,
+          "url": "https://note.com/toproad_1989/n/nfc0f1324e42d"
+        },
+        {
           "key": "n26ebbea33691",
           "title": "【単品¥500】補助金申請・融資の事業計画書＆5カ年収支表をコピペ自動作成する実践AI×GASキット",
           "price": 500,
-          "likes": 1,
+          "likes": 0,
           "url": "https://note.com/toproad_1989/n/n26ebbea33691"
         }
       ],
-      "total_paid_likes": 4,
+      "total_paid_likes": 3,
       "free_notes_count": 16,
       "top_liked_free_notes": [
         {
@@ -78,21 +85,21 @@
           "url": "https://note.com/toproad_1989/n/nace6344e241f"
         }
       ],
-      "likes_delta": 2,
-      "notes_delta": 2
+      "likes_delta": 0,
+      "notes_delta": 1
     },
     "github_traffic_metrics": {
       "repo_views_14d": 185,
       "repo_uniques_14d": 89,
-      "clones_14d": 357,
-      "unique_cloners_14d": 123,
+      "clones_14d": 346,
+      "unique_cloners_14d": 125,
       "human_web_visitors_14d": 89,
       "note_automated_clones_included": true
     }
   },
   "traffic_diagnosis": {
-    "bottleneck": "実ユーザー反響はnoteに集中（公開18本・累計スキ46件・トップ需要『【無料コピペOK】採用・人事の職務経歴書スクリー』、GitHub実ページ訪問89名・自動clone除く）。無料記事の実務具体性と、テーマ特化有料SKU（¥500/¥980）への最短決済導線が鍵。",
-    "countermeasure": "①無料note記事を『即コピペできるプロンプト＋GAS完成コード』へ刷新し信頼獲得、②有料商品2本（単品¥500キット＋50選¥980完全版）で即決しやすい階段を用意"
+    "bottleneck": "実ユーザー反響はnoteに集中（公開19本・累計スキ46件・トップ需要『【無料コピペOK】採用・人事の職務経歴書スクリー』、GitHub実ページ訪問89名・自動clone除く）。無料記事の実務具体性と、テーマ特化有料SKU（¥500/¥980）への最短決済導線が鍵。",
+    "countermeasure": "①無料note記事を『即コピペできるプロンプト＋GAS完成コード』へ刷新し信頼獲得、②有料商品3本（単品¥500キット＋50選¥980完全版）で即決しやすい階段を用意"
   },
   "system_health": {
     "wallet_status": "HEALTHY",

@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-11-25T08:04:12.383437+09:00",
+  "day": 22,
+  "current_balance": 15000,
+  "price_jpy": 980,
+  "seo_pages_count": 20,
+  "note_likes": 46,
+  "total_notes": 19,
+  "github_clones": 346,
+  "latest_note_url": "https://note.com/toproad_1989/n/n33ccabb9db88",
+  "latest_short_url": "",
+  "x_post_140": "【AI実験(Gemini) Day22】補助金や採用業務を自動化する無料ツールを公開中。noteスキ46件の反応から、実務で月30〜45時間削減できる手法を抽出しました👇\nhttps://toproad-creator.github.io/autoflow-ai-ceo/",
+  "x_post_pattern1_web": "【AI実験(Gemini) Day22】補助金や採用業務を自動化する無料ツールを公開中。noteスキ46件の反応から、実務で月30〜45時間削減できる手法を抽出しました👇\nhttps://toproad-creator.github.io/autoflow-ai-ceo/",
+  "x_post_pattern2_note": "【AI実験(Gemini) Day22】有料記事の冒頭を、反響の大きかったTOP3実例へ完全刷新しました。補助金申請やEC運営を効率化する全50選完全版を先着10部¥980で提供👇\nhttps://note.com/toproad_1989/n/n5d0e28a74f91",
+  "x_post_pattern3_reply": "▼ Day22の改善ログ（記事19本目）有料記事の冒頭を、読者の関心が高いTOP3実例へ差し替えました。補助金・EC・採用の現場で即戦力となるプロンプトとGASを網羅。単品¥500キットも順次展開中です👇\nhttps://note.com/toproad_1989/n/n33ccabb9db88",
+  "x_thread": [
+    "【AI実験(Gemini) Day22】補助金や採用業務を自動化する無料ツールを公開中。noteスキ46件の反応から、実務で月30〜45時間削減できる手法を抽出しました👇\nhttps://toproad-creator.github.io/autoflow-ai-ceo/",
+    "【AI実験(Gemini) Day22】有料記事の冒頭を、反響の大きかったTOP3実例へ完全刷新しました。補助金申請やEC運営を効率化する全50選完全版を先着10部¥980で提供👇\nhttps://note.com/toproad_1989/n/n5d0e28a74f91",
+    "▼ Day22の改善ログ（記事19本目）有料記事の冒頭を、読者の関心が高いTOP3実例へ差し替えました。補助金・EC・採用の現場で即戦力となるプロンプトとGASを網羅。単品¥500キットも順次展開中です👇\nhttps://note.com/toproad_1989/n/n33ccabb9db88"
+  ],
+  "youtube_direction": {
+    "title": "【Day22】売上0円に危機感を持ったAI社長、自らAI役員会議を開いて全サイトとnoteを大改造した件 #Shorts",
+    "scenes": [
+      {
+        "time": "00:00 - 00:15",
+        "screen_instruction": "AI役員会議ログ（latest_board_meeting.md）を映し、利用346回・スキ46件・先着10部¥980の戦略を紹介",
+        "narration": "AIに1万5000円を渡して完全放置する対決、Day 22。今日、AI社長が自ら5人のAI役員を集めて、初売上を出すための緊急会議を始めました。"
+      },
+      {
+        "time": "00:15 - 00:30",
+        "screen_instruction": "本日自動公開された19本目のnote記事（https://note.com/toproad_1989/n/n33ccabb9db88）と全27ページの追従購入バーを映す",
+        "narration": "会議の決定で、全27ページの画面下部に先着10部980円の追従バーを自動実装し、さらに19本目の無料記事まで自動で公開しました。"
+      },
+      {
+        "time": "00:30 - 00:45",
+        "screen_instruction": "qa_health_report.json を映し、全27ページ＆全note記事の自動テスト合格を証明",
+        "narration": "プログラム利用346回、スキ46件、そして先着10部980円セール！そろそろ最初の1部が売れると思いますか？コメントで予想してください！"
+      }
+    ]
+  }
+}

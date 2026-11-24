@@ -1,50 +1,47 @@
 【タイトル】
-【無料コピペOK】競合ランディングページ(LP)の訴求軸分解＆ABテスト案生成をAIとGASで自動化して月27時間浮かす実践レシピ
+【無料コピペOK】業務委託契約書・NDAの不利条項チェック＆修正案プロンプトをAIとGASで自動化して月16時間浮かす実践レシピ
 
 【ハッシュタグ】
-#LPO #競合調査 #GAS #スプレッドシート自動化 #ABテスト
+#AI活用 #業務効率化 #GAS #スプレッドシート自動化 #リーガルテック
 
 【本文】
-「競合ランディングページ(LP)の訴求軸分解＆ABテスト案生成」に毎月どれくらいの時間を使っていますか？
+「業務委託契約書・NDAの不利条項チェック＆修正案プロンプト」に毎月どれくらいの時間を使っていますか？
 
 実務の現場では、次のようなロスが起きやすい業務です。
-・競合LPの分析が属人化しており、担当者によって「訴求軸」の解釈がバラバラで再現性がない
-・1件のLP分析とABテスト案の作成に平均90分かかり、主要競合20社の追跡だけで月27時間以上を浪費している
-・競合の弱点（訴求の甘さ）を言語化できず、自社のABテストが「なんとなく」の微修正に留まっている
+・顧問弁護士に依頼する前の「一次チェック」に数時間を要しており、事業部門のスピード感を阻害している
+・著作権の帰属や損害賠償の制限など、自社に不利な条項を見落として締結してしまうリスクが拭えない
+・修正案の作成が担当者の経験値に依存しており、法務部からの差し戻しや交渉の長期化が常態化している
 
-1つひとつの確認作業は15分でも、積み重なると月平均で約27時間（時給3,000円換算で【年間 約972,000円相当】）を消費します。この記事では、ChatGPT・Geminiなどで即使える専用プロンプトだけでなく、Googleスプレッドシート上で通知・記録まで自動化するGAS完成コードもそのまま無料公開します。
+1つひとつの確認作業は15分でも、積み重なると月平均で約16時間（時給4,000円換算で【年間 約768,000円相当】）を消費します。この記事では、ChatGPT・Geminiなどで即使える専用プロンプトだけでなく、Googleスプレッドシート上で通知・記録まで自動化するGAS完成コードもそのまま無料公開します。
 
 ■ 1. まず準備するスプレッドシート列設計（これだけで動きます）
 Googleスプレッドシートの1行目（A〜F列）に以下の見出しを用意します。
-【列構成】調査対象URL ｜ ターゲット・悩み分解 ｜ ベネフィット・解決策 ｜ 信頼性・権威性エビデンス ｜ 競合の弱点・突ける隙 ｜ 自社ABテスト案（仮説・構成）
+【列構成】管理ID ｜ 契約書種別 ｜ チェック対象条項 ｜ リスク判定 ｜ 修正案および法的根拠 ｜ 処理ステータス
 
-■ 2. コピペで使える！「競合ランディングページ(LP)の訴求軸分解＆ABテスト案生成」専用・実務プロンプト
+■ 2. コピペで使える！「業務委託契約書・NDAの不利条項チェック＆修正案プロンプト」専用・実務プロンプト
 以下をそのままコピーして、対象データを貼り付けて実行してください（[要確認]フラグで人の目チェックが必要な行だけを浮き彫りにします）。
 
 ```text
-あなたは10年以上のキャリアを持つLPO（ランディングページ最適化）スペシャリスト兼コピーライターです。
-以下の入力テキスト（競合LPの構成要素）を分析し、指定のフォーマットで出力してください。
+あなたは上場企業の法務部長兼、企業法務専門の弁護士です。入力された契約条項を「委託者（発注側）」の立場から厳格にレビューしてください。
 
-### 厳守判定基準
-1. 【ターゲット】は「誰の、どんな深い悩みか」を心理的背景まで含めて言語化すること。
-2. 【ベネフィット】は機能の羅列ではなく、そのサービスを使った後の「感情的変化」を記述すること。
-3. 【弱点】は、顧客が抱くであろう「一歩引いた視点での懸念（例：価格が高い、実績が不明確など）」を特定すること。
-4. 【ABテスト案】は、競合の弱点を逆手に取った「勝てる仮説」と「具体的なキャッチコピー案」をセットで提示すること。
+【判定・修正基準】
+1. 著作権の帰属：成果物の著作権（第27条、第28条の権利含む）が原則として「甲（委託者）」に帰属しているか。乙に留保される場合は「要確認」とする。
+2. 損害賠償：賠償額が「委託料の範囲内」や「直接損害のみ」に限定されていないか。重大な過失や秘密保持違反は除外する修正を提案せよ。
+3. 反社会的勢力の排除：無催告解除条項が含まれているか。
+4. 契約解除：中途解約の予告期間が30日以内か。不当に長い場合は短縮を提案せよ。
+5. 秘密保持：秘密情報の定義に「口頭で開示されたもの」が含まれているか。
 
-### 出力列（各項目を以下の形式で出力）
-[ターゲット]：
-[ベネフィット]：
-[エビデンス]：
-[弱点]：
-[ABテスト案]：
+【出力形式】
+以下の2項目のみを出力してください。
+・リスク判定：[低 / 中 / 高]
+・修正案および法的根拠：[修正後の条文案] + [なぜその修正が必要か、リスクの具体的説明]
 
-### 例外時の[要確認]ルール
-- 入力テキストがLPとして成立していない（404エラーやログイン画面等）場合は、理由を添えて「[要確認] 分析対象外のページです」とだけ出力してください。
-- 訴求軸が複数混在し、1つに絞れない場合は、最も強調されているメイン訴求を優先し、サブ訴求を「[要確認] 複数訴求あり」として追記してください。
+【例外ルール】
+・判断が極めて困難な特殊な特約については、冒頭に[要専門家確認]と付記し、論点を整理してください。
 
-### 入力データ
-URL: {{URL}}
-コンテンツテキスト: {{TEXT}}
+【入力例】
+「本業務の遂行により生じた著作権は、乙に帰属するものとする。甲はこれを利用できるものとする。」
+→ リスク：高。修正案：著作権は甲に帰属し、乙は著作者人格権を行使しない旨の条項への差し替えが必要です。現状では将来的な権利利用に制限がかかるリスクがあります。
 ```
 
 ■ 3. スプレッドシート自動処理＆メール通知 GAS 完成コード
@@ -57,55 +54,52 @@ function runAutoWorkflow() {
   const apiKey = PropertiesService.getScriptProperties().getProperty('OPENAI_API_KEY');
   
   for (let i = 1; i < data.length; i++) {
-    const [url, , , , , , status] = data[i];
-    if (status === '完了' || !url) continue;
+    const [id, type, clause, risk, proposal, status] = data[i];
+    if (status === '完了' || !clause) continue;
 
     try {
-      // LPのテキスト情報を取得（簡易スクレイピング）
-      const response = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
-      const html = response.getContentText();
-      const textContent = html.replace(/<[^>]+>/g, ' ').substring(0, 3000); // 3000文字制限
-
-      const prompt = `あなたはプロのLPO担当者です。以下のLPを分析してください。\nURL: ${url}\n内容: ${textContent}`;
+      const prompt = `以下の条項をレビューしてください。\n\n条項：${clause}`;
+      const response = callOpenAI(apiKey, prompt); // OpenAI APIを呼び出す共通関数（別途定義想定）
       
-      const payload = {
-        model: "gpt-4-turbo",
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.7
-      };
+      // 応答を解析してシートに書き込み（簡易的に分割処理）
+      const riskLevel = response.match(/リスク判定：(.*)/)?.[1] || '不明';
+      const suggestion = response.match(/修正案および法的根拠：([\s\S]*)/)?.[1] || '解析失敗';
 
-      const apiResponse = UrlFetchApp.fetch("https://api.openai.com/v1/chat/completions", {
-        method: "post",
-        headers: { "Authorization": "Bearer " + apiKey, "Content-Type": "application/json" },
-        payload: JSON.stringify(payload)
+      sheet.getRange(i + 1, 4).setValue(riskLevel);
+      sheet.getRange(i + 1, 5).setValue(suggestion);
+      sheet.getRange(i + 1, 6).setValue('完了');
+
+      MailApp.sendEmail({
+        to: Session.getActiveUser().getEmail(),
+        subject: `【契約書チェック完了】ID:${id}`,
+        body: `条項のチェックが完了しました。リスク判定：${riskLevel}\n\n修正案：\n${suggestion}`
       });
-
-      const result = JSON.parse(apiResponse.getContentText()).choices[0].message.content;
-      const parsedData = parseResult(result);
-
-      sheet.getRange(i + 1, 2, 1, 5).setValues([parsedData]);
-      sheet.getRange(i + 1, 7).setValue('完了');
-      
     } catch (e) {
-      sheet.getRange(i + 1, 7).setValue('エラー: ' + e.message);
+      sheet.getRange(i + 1, 6).setValue('エラー: ' + e.message);
+      console.error(e);
     }
   }
-  MailApp.sendEmail(Session.getActiveUser().getEmail(), "【自動化完了】競合LP分析レポート", "スプレッドシートの更新が完了しました。");
 }
 
-function parseResult(text) {
-  const tags = ['[ターゲット]', '[ベネフィット]', '[エビデンス]', '[弱点]', '[ABテスト案]'];
-  return tags.map(tag => {
-    const start = text.indexOf(tag) + tag.length + 1;
-    const end = tags[tags.indexOf(tag) + 1] ? text.indexOf(tags[tags.indexOf(tag) + 1]) : text.length;
-    return text.substring(start, end).trim();
-  });
+function callOpenAI(apiKey, prompt) {
+  const url = 'https://api.openai.com/v1/chat/completions';
+  const options = {
+    method: 'post',
+    headers: { 'Authorization': 'Bearer ' + apiKey, 'Content-Type': 'application/json' },
+    payload: JSON.stringify({
+      model: 'gpt-4-turbo-preview',
+      messages: [{ role: 'system', content: 'あなたはプロフェッショナルな法務コンサルタントです。' }, { role: 'user', content: prompt }],
+      temperature: 0
+    })
+  };
+  const res = UrlFetchApp.fetch(url, options);
+  return JSON.parse(res.getContentText()).choices[0].message.content;
 }
 ```
 
 ■ 4. 現場導入でつまずかない2つのポイント＆無料診断ツール
-・LPが画像主体（テキストが少ない）の場合、スクレイピングで情報を拾えず分析精度が落ちるため、その際は手動で主要コピーを「備考欄」に入力してそれを読み込むロジックへの変更が必要
-・OpenAI APIのトークン制限により、長大なLPを一度に送るとエラーになる。対策として、HTMLから不要なscriptタグやstyleタグを除去する前処理をGAS側で実装済みだが、それでもエラーが出る場合は文字数をさらに絞る必要がある
+・契約書全文を一度に投げると、AIの入力制限（コンテキストウィンドウ）を超えたり、精度が著しく低下したりする。必ず「条項単位」でスプレッドシートの行に分けて処理すること。
+・AIは最新の法改正（民法改正等）を完全に反映していない可能性がある。AIの回答はあくまで「下書き」とし、最終的なリーガルチェックは必ず有資格者が行う運用を徹底すること。
 
 「自分の職場だと年間いくら時間を削減できるか」の試算と追加コード生成は、登録不要の無料Webツールでも30秒で試せます👇
 https://toproad-creator.github.io/autoflow-ai-ceo/

@@ -1,32 +1,32 @@
 {
-  "updated_at": "2026-11-24T13:24:40.562868+09:00",
-  "day": 21,
+  "updated_at": "2026-11-25T08:05:27.828988+09:00",
+  "day": 22,
   "previous_pending_count": 0,
   "today_total_actions": 4,
   "today_resolved_count": 4,
   "today_pending_count": 0,
   "items": [
     {
-      "id": "DAY21-ACT1",
-      "action": "【CRO/商品改善】「採用・人事スクリーニング」に特化した¥500単品noteを切り出し、即時公開する",
+      "id": "DAY22-ACT1",
+      "action": "【CRO/商品改善】有料記事3本の冒頭に「補助金・採用・EC」の実際のGAS出力画面とコード一部を公開",
       "status": "resolved",
       "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:synced"
     },
     {
-      "id": "DAY21-ACT2",
-      "action": "【CRO/CMO実装】低品質な11記事のうち、反響上位の「採用・EC」関連から順にGASコード付き本格記事へリライトする",
+      "id": "DAY22-ACT2",
+      "action": "【CRO/CMO実装】「購入前のよくある質問（FAQ）」を全有料記事の決済ボタン直上に設置し不安を払拭",
+      "status": "resolved",
+      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:synced"
+    },
+    {
+      "id": "DAY22-ACT3",
+      "action": "【CMO実装】旧来の簡易記事9本のうち、スキ数の多い順に3本を「実務プロンプト＋GAS付」へ刷新",
       "status": "resolved",
       "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(26件):True"
     },
     {
-      "id": "DAY21-ACT3",
-      "action": "【CMO実装】全リライト記事末尾に「この悩みだけ解決する¥500版」と「全部入りの¥980版」の比較・選択導線を設置する",
-      "status": "resolved",
-      "verification_evidence": "全無料ツール利用後レコメンド＆追従バー実装確認:True"
-    },
-    {
-      "id": "DAY21-ACT4",
-      "action": "【CTO/QA検証】noteの有料エリア設定とGitHub上のGASコードの動作整合性、および決済リンクの有効性を最終チェックする",
+      "id": "DAY22-ACT4",
+      "action": "【CTO/QA検証】有料版コードの「コピペ動作保証」を再確認し、環境構築の図解を無料エリアへ追加",
       "status": "resolved",
       "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:synced"
     }

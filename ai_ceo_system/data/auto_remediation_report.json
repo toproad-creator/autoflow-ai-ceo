@@ -1,6 +1,6 @@
 {
-  "executed_at": "2026-11-24T13:24:40.563987+09:00",
-  "day": 21,
+  "executed_at": "2026-11-25T08:05:27.829971+09:00",
+  "day": 22,
   "all_gates_passed": true,
   "detected_issues_input_count": 2,
   "checks": {
@@ -28,7 +28,7 @@
       "status": "synced",
       "ok": true,
       "detail": {
-        "synced_at": "2026-11-24T13:24:29.079721+09:00",
+        "synced_at": "2026-11-25T08:05:12.957500+09:00",
         "preview_schema_version": 2,
         "top3_slugs": [
           "subsidy-business-plan",
@@ -50,7 +50,7 @@
       "workflow_repaired": false,
       "workflow_ok": true,
       "bare_cloud_imports": [],
-      "latest_ci_run_id": 45286612253,
+      "latest_ci_run_id": 45341961029,
       "latest_ci_conclusion": "success",
       "ok": true
     },
@@ -64,15 +64,15 @@
       "task": "消費者・ビジネス目線の実物品質監査（ツールTOP3・X自然文・ショート台本・無料記事コード・会議重複防止）＆自律修正",
       "simulator_has_top3": true,
       "short_script_valid": true,
-      "short_script_regenerated": false,
-      "short_script_concept": "時短ノウハウ実演回",
+      "short_script_regenerated": true,
+      "short_script_concept": "リアル経営ドキュメンタリー回",
       "short_script_reasons": [],
       "board_agenda_unique": true,
       "board_agenda_reason": "ok",
       "free_note_rich_code": true,
       "free_note_reason": "ok",
       "auto_fixed": [
-        "Day21無料note原稿をGAS完成コード入りの本格実践記事へ再生成完了"
+        "Day22 YouTubeショート台本の不具合・重複を検出し、ユニーク台本へ即座に自動再生成完了"
       ],
       "ok": true
     }
@@ -85,8 +85,8 @@
     },
     {
       "category": "X文面品質＆YouTubeショート実物監査",
-      "status": "auto_applied",
-      "detail": "Day21動画は『時短ノウハウ実演回』テーマで有料切れ端0・クリック不可誘導0・前日重複0を実物検査で合格済み（タイトル: 【Day21】月42時間の契約書チェックを30秒に。AI役員9人が仕掛けるEC特化の逆転…）。"
+      "status": "repaired",
+      "detail": "Day22動画は『リアル経営ドキュメンタリー回』テーマで有料切れ端0・クリック不可誘導0・前日重複0を実物検査で合格済み（タイトル: 【Day22】売上0円の絶望。AI役員9人が仕掛ける「購入心理の破壊」で初決済を狙う #…）。"
     },
     {
       "category": "会議議題マンネリ排除＆無料note実物コード監査",
