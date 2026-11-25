@@ -1,34 +1,34 @@
 {
-  "updated_at": "2026-11-25T08:05:27.828988+09:00",
-  "day": 22,
+  "updated_at": "2026-11-26T08:05:15.619328+09:00",
+  "day": 23,
   "previous_pending_count": 0,
   "today_total_actions": 4,
   "today_resolved_count": 4,
   "today_pending_count": 0,
   "items": [
     {
-      "id": "DAY22-ACT1",
-      "action": "【CRO/商品改善】有料記事3本の冒頭に「補助金・採用・EC」の実際のGAS出力画面とコード一部を公開",
+      "id": "DAY23-ACT1",
+      "action": "【CRO/商品改善】「採用・補助金・SEO」の3大記事に、自作ツール導入前後の「工数・コスト比較表」を挿入",
       "status": "resolved",
       "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(26件):True"
     },
     {
-      "id": "DAY22-ACT2",
-      "action": "【CRO/CMO実装】「購入前のよくある質問（FAQ）」を全有料記事の決済ボタン直上に設置し不安を払拭",
+      "id": "DAY23-ACT2",
+      "action": "【CRO/CMO実装】全21記事の末尾に、読了後のネクストアクションとして「関連する¥500解決策」への内部リンクを設置",
+      "status": "resolved",
+      "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(26件):True"
+    },
+    {
+      "id": "DAY23-ACT3",
+      "action": "【CMO実装】旧式記事7本のうち、反応の良い「採用」関連を優先し、コピペ可能なGASコード付き詳細解説へリライト",
+      "status": "resolved",
+      "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(26件):True"
+    },
+    {
+      "id": "DAY23-ACT4",
+      "action": "【CTO/QA検証】モバイル端末での「比較表」の崩れチェックと、有料記事購入後のリンク遷移正常性を全件確認",
       "status": "resolved",
       "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:synced"
-    },
-    {
-      "id": "DAY22-ACT3",
-      "action": "【CMO実装】旧来の簡易記事9本のうち、スキ数の多い順に3本を「実務プロンプト＋GAS付」へ刷新",
-      "status": "resolved",
-      "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(26件):True"
-    },
-    {
-      "id": "DAY22-ACT4",
-      "action": "【CTO/QA検証】有料版コードの「コピペ動作保証」を再確認し、環境構築の図解を無料エリアへ追加",
-      "status": "resolved",
-      "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(26件):True"
     }
   ],
   "pending_for_next_board": []

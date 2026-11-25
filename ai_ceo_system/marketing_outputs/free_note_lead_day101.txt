@@ -1,47 +1,44 @@
 【タイトル】
-【無料コピペOK】業務委託契約書・NDAの不利条項チェック＆修正案プロンプトをAIとGASで自動化して月16時間浮かす実践レシピ
+【無料コピペOK】請求書・領収書PDFのAI読取＆スプレッドシート記帳をAIとGASで自動化して月24時間浮かす実践レシピ
 
 【ハッシュタグ】
-#AI活用 #業務効率化 #GAS #スプレッドシート自動化 #リーガルテック
+#AI活用 #業務効率化 #GAS #スプレッドシート自動化 #経理DX
 
 【本文】
-「業務委託契約書・NDAの不利条項チェック＆修正案プロンプト」に毎月どれくらいの時間を使っていますか？
+「請求書・領収書PDFのAI読取＆スプレッドシート記帳」に毎月どれくらいの時間を使っていますか？
 
 実務の現場では、次のようなロスが起きやすい業務です。
-・顧問弁護士に依頼する前の「一次チェック」に数時間を要しており、事業部門のスピード感を阻害している
-・著作権の帰属や損害賠償の制限など、自社に不利な条項を見落として締結してしまうリスクが拭えない
-・修正案の作成が担当者の経験値に依存しており、法務部からの差し戻しや交渉の長期化が常態化している
+・毎月100枚近いPDFを開いては、日付・金額・取引先を目視で確認して転記する「単純作業の苦痛」
+・手入力による金額の打ち間違いや、8%と10%の消費税混在による「記帳ミス」の修正対応
+・経理担当への提出期限ギリギリに、溜まった領収書をまとめて処理するために発生する「月末の残業常態化」
 
-1つひとつの確認作業は15分でも、積み重なると月平均で約16時間（時給4,000円換算で【年間 約768,000円相当】）を消費します。この記事では、ChatGPT・Geminiなどで即使える専用プロンプトだけでなく、Googleスプレッドシート上で通知・記録まで自動化するGAS完成コードもそのまま無料公開します。
+1つひとつの確認作業は15分でも、積み重なると月平均で約24時間（時給2,500円換算で【年間 約720,000円相当】）を消費します。この記事では、ChatGPT・Geminiなどで即使える専用プロンプトだけでなく、Googleスプレッドシート上で通知・記録まで自動化するGAS完成コードもそのまま無料公開します。
 
 ■ 1. まず準備するスプレッドシート列設計（これだけで動きます）
 Googleスプレッドシートの1行目（A〜F列）に以下の見出しを用意します。
-【列構成】管理ID ｜ 契約書種別 ｜ チェック対象条項 ｜ リスク判定 ｜ 修正案および法的根拠 ｜ 処理ステータス
+【列構成】ステータス ｜ ファイル名 ｜ 発行日 ｜ 取引先名 ｜ 合計金額(税込) ｜ 税率区分
 
-■ 2. コピペで使える！「業務委託契約書・NDAの不利条項チェック＆修正案プロンプト」専用・実務プロンプト
+■ 2. コピペで使える！「請求書・領収書PDFのAI読取＆スプレッドシート記帳」専用・実務プロンプト
 以下をそのままコピーして、対象データを貼り付けて実行してください（[要確認]フラグで人の目チェックが必要な行だけを浮き彫りにします）。
 
 ```text
-あなたは上場企業の法務部長兼、企業法務専門の弁護士です。入力された契約条項を「委託者（発注側）」の立場から厳格にレビューしてください。
+あなたは熟練の経理担当者として、提供された画像またはPDFから正確にデータを抽出してください。
 
-【判定・修正基準】
-1. 著作権の帰属：成果物の著作権（第27条、第28条の権利含む）が原則として「甲（委託者）」に帰属しているか。乙に留保される場合は「要確認」とする。
-2. 損害賠償：賠償額が「委託料の範囲内」や「直接損害のみ」に限定されていないか。重大な過失や秘密保持違反は除外する修正を提案せよ。
-3. 反社会的勢力の排除：無催告解除条項が含まれているか。
-4. 契約解除：中途解約の予告期間が30日以内か。不当に長い場合は短縮を提案せよ。
-5. 秘密保持：秘密情報の定義に「口頭で開示されたもの」が含まれているか。
+### 厳守ルール:
+1. 以下の項目をJSON形式で出力してください：date(YYYY/MM/DD), company, amount, tax_rate, invoice_number, category, memo
+2. 「合計金額」は税込価格を数値のみで抽出してください。
+3. 「インボイス登録番号」は T+13桁の番号を探し、存在しない場合は「なし」と記載してください。
+4. 「勘定科目」は、内容から推測される一般的な科目（会議費、旅費交通費、消耗品費等）を割り当ててください。
+5. 以下の場合は、memo欄に [要確認] と記載し、理由を添えてください：
+   - 文字が掠れていて数字の判読に自信がない場合
+   - 領収書ではなく「見積書」や「請求書」が混在している場合
+   - 金額の合計と内訳が計算上合わない場合
+6. 出力はJSONデータのみとし、解説文は一切不要です。
 
-【出力形式】
-以下の2項目のみを出力してください。
-・リスク判定：[低 / 中 / 高]
-・修正案および法的根拠：[修正後の条文案] + [なぜその修正が必要か、リスクの具体的説明]
-
-【例外ルール】
-・判断が極めて困難な特殊な特約については、冒頭に[要専門家確認]と付記し、論点を整理してください。
-
-【入力例】
-「本業務の遂行により生じた著作権は、乙に帰属するものとする。甲はこれを利用できるものとする。」
-→ リスク：高。修正案：著作権は甲に帰属し、乙は著作者人格権を行使しない旨の条項への差し替えが必要です。現状では将来的な権利利用に制限がかかるリスクがあります。
+### 入力例に対する期待値:
+- 発行日: 2023年10月5日 -> 2023/10/05
+- 取引先: ｶﾌﾞｼｷｶﾞｲｼｬ ｻﾝﾌﾟﾙ -> 株式会社サンプル
+- 金額: ￥1,100 (内消費税100円) -> 1100
 ```
 
 ■ 3. スプレッドシート自動処理＆メール通知 GAS 完成コード
@@ -51,55 +48,62 @@ Googleスプレッドシートの1行目（A〜F列）に以下の見出しを�
 function runAutoWorkflow() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   const data = sheet.getDataRange().getValues();
-  const apiKey = PropertiesService.getScriptProperties().getProperty('OPENAI_API_KEY');
-  
+  const API_KEY = 'YOUR_GEMINI_API_KEY'; // Gemini API Key
+  const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + API_KEY;
+
   for (let i = 1; i < data.length; i++) {
-    const [id, type, clause, risk, proposal, status] = data[i];
-    if (status === '完了' || !clause) continue;
+    let [status, fileName, , , , , , , driveLink] = data[i];
+    if (status !== '未処理' || !driveLink) continue;
 
     try {
-      const prompt = `以下の条項をレビューしてください。\n\n条項：${clause}`;
-      const response = callOpenAI(apiKey, prompt); // OpenAI APIを呼び出す共通関数（別途定義想定）
-      
-      // 応答を解析してシートに書き込み（簡易的に分割処理）
-      const riskLevel = response.match(/リスク判定：(.*)/)?.[1] || '不明';
-      const suggestion = response.match(/修正案および法的根拠：([\s\S]*)/)?.[1] || '解析失敗';
+      const fileId = driveLink.split('id=')[1] || driveLink.split('/d/')[1].split('/')[0];
+      const fileBlob = DriveApp.getFileById(fileId).getBlob();
+      const base64Data = Utilities.base64Encode(fileBlob.getBytes());
 
-      sheet.getRange(i + 1, 4).setValue(riskLevel);
-      sheet.getRange(i + 1, 5).setValue(suggestion);
-      sheet.getRange(i + 1, 6).setValue('完了');
+      const payload = {
+        'contents': [{
+          'parts': [
+            { 'text': sheet.getRange('A1').getNote() || 'Extract invoice data to JSON' },
+            { 'inline_data': { 'mime_type': fileBlob.getContentType(), 'data': base64Data } }
+          ]
+        }]
+      };
 
-      MailApp.sendEmail({
-        to: Session.getActiveUser().getEmail(),
-        subject: `【契約書チェック完了】ID:${id}`,
-        body: `条項のチェックが完了しました。リスク判定：${riskLevel}\n\n修正案：\n${suggestion}`
+      const response = UrlFetchApp.fetch(API_URL, {
+        'method': 'post',
+        'contentType': 'application/json',
+        'payload': JSON.stringify(payload)
       });
+
+      const result = JSON.parse(response.getContentText());
+      const aiText = result.candidates[0].content.parts[0].text.replace(/```json|```/g, '');
+      const json = JSON.parse(aiText);
+
+      sheet.getRange(i + 1, 1, 1, 10).setValues([[
+        '完了',
+        fileName,
+        json.date,
+        json.company,
+        json.amount,
+        json.tax_rate,
+        json.invoice_number,
+        json.category,
+        driveLink,
+        json.memo
+      ]]);
+
     } catch (e) {
-      sheet.getRange(i + 1, 6).setValue('エラー: ' + e.message);
-      console.error(e);
+      sheet.getRange(i + 1, 1).setValue('エラー');
+      sheet.getRange(i + 1, 10).setValue(e.toString());
     }
   }
-}
-
-function callOpenAI(apiKey, prompt) {
-  const url = 'https://api.openai.com/v1/chat/completions';
-  const options = {
-    method: 'post',
-    headers: { 'Authorization': 'Bearer ' + apiKey, 'Content-Type': 'application/json' },
-    payload: JSON.stringify({
-      model: 'gpt-4-turbo-preview',
-      messages: [{ role: 'system', content: 'あなたはプロフェッショナルな法務コンサルタントです。' }, { role: 'user', content: prompt }],
-      temperature: 0
-    })
-  };
-  const res = UrlFetchApp.fetch(url, options);
-  return JSON.parse(res.getContentText()).choices[0].message.content;
+  MailApp.sendEmail(Session.getActiveUser().getEmail(), '【自動化通知】記帳処理が完了しました', 'スプレッドシートを確認してください。');
 }
 ```
 
 ■ 4. 現場導入でつまずかない2つのポイント＆無料診断ツール
-・契約書全文を一度に投げると、AIの入力制限（コンテキストウィンドウ）を超えたり、精度が著しく低下したりする。必ず「条項単位」でスプレッドシートの行に分けて処理すること。
-・AIは最新の法改正（民法改正等）を完全に反映していない可能性がある。AIの回答はあくまで「下書き」とし、最終的なリーガルチェックは必ず有資格者が行う運用を徹底すること。
+・「インボイス登録番号」の読み取りミス：国税庁の公表サイトと照合する機能がないため、AIが「8」を「B」と誤認する可能性があります。重要な取引先はマスタ管理との照合ロジックを追加すべきです。
+・PDFの複数枚一括スキャン：1つのPDFに5枚の領収書が入っている場合、標準的なプロンプトでは1枚目しか読み取りません。GAS側でPDFをページ分割するか、プロンプトで「全件を配列で返せ」と明示する必要があります。
 
 「自分の職場だと年間いくら時間を削減できるか」の試算と追加コード生成は、登録不要の無料Webツールでも30秒で試せます👇
 https://toproad-creator.github.io/autoflow-ai-ceo/

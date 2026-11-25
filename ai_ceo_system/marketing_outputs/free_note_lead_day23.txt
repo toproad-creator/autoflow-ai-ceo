@@ -1,0 +1,122 @@
+【タイトル】
+【無料コピペOK】Amazon・楽天の競合商品レビュー分析＆改善アイデア抽出をAIとGASで自動化して月22時間浮かす実践レシピ
+
+【ハッシュタグ】
+#AI活用 #業務効率化 #GAS #スプレッドシート自動化 #EC運営
+
+【本文】
+「Amazon・楽天の競合商品レビュー分析＆改善アイデア抽出」に毎月どれくらいの時間を使っていますか？
+
+実務の現場では、次のようなロスが起きやすい業務です。
+・競合他社のレビューを1件ずつ目視で確認し、Excelにコピペするだけで1日が終わってしまう
+・「使いにくい」という抽象的な不満から、自社商品で修正すべき具体的な設計数値を導き出せない
+・楽天・Amazon特有の「配送が早い」等の本質的でないレビューがノイズになり、真の製品欠陥が見落とされる
+
+1つひとつの確認作業は15分でも、積み重なると月平均で約22時間（時給2,600円換算で【年間 約686,400円相当】）を消費します。この記事では、ChatGPT・Geminiなどで即使える専用プロンプトだけでなく、Googleスプレッドシート上で通知・記録まで自動化するGAS完成コードもそのまま無料公開します。
+
+■ 1. まず準備するスプレッドシート列設計（これだけで動きます）
+Googleスプレッドシートの1行目（A〜F列）に以下の見出しを用意します。
+【列構成】商品名 ｜ レビュー原文 ｜ 分析ステータス ｜ 不満の核心（AI） ｜ 具体的改善案（AI） ｜ 優先度判定
+
+■ 2. コピペで使える！「Amazon・楽天の競合商品レビュー分析＆改善アイデア抽出」専用・実務プロンプト
+以下をそのままコピーして、対象データを貼り付けて実行してください（[要確認]フラグで人の目チェックが必要な行だけを浮き彫りにします）。
+
+```text
+あなたは10年以上のキャリアを持つ製品開発コンサルタントです。入力された競合商品のレビュー原文を分析し、自社商品の優位性を築くための改善案を抽出してください。
+
+【厳守判定基準】
+1. 「配送が早い」「梱包が丁寧」といった物流面の評価は、製品改善に寄与しないため無視すること。
+2. 「壊れやすい」「重い」といった抽象的な表現は、可能な限り「どの部位が」「何g以下なら許容されるか」を文脈から推測して具体化すること。
+3. 感情的な批判ではなく、機能・性能・デザイン・価格の4観点で論理的に分析すること。
+
+【出力列と形式】
+- 不満の核心：ユーザーが最もストレスを感じているポイントを15文字以内で要約。
+- 具体的改善案：自社商品で採用すべきスペック変更や新機能を、エンジニアが理解できるレベルで記述。
+- 優先度判定：[高・中・低]の3段階。安全性や基本機能に関わる不満は[高]とする。
+
+【例外時の[要確認]ルール】
+- レビューが10文字未満、または「特になし」等の無意味な内容の場合は、全項目に[要確認: 情報不足]と出力してください。
+- 外国語のレビューが混入している場合は、日本語に翻訳した上で分析を行ってください。
+
+【入力例】
+商品名：ワイヤレスイヤホン
+レビュー原文：音質は良いが、30分のランニングで耳から落ちそうになる。シリコンの質感が滑りやすい気がする。
+```
+
+■ 3. スプレッドシート自動処理＆メール通知 GAS 完成コード
+スプレッドシート上部メニューの「拡張機能」＞「Apps Script」を開き、下記のコードを貼り付けて保存してください。トリガー（毎日午前8時など）を設定すれば、確認漏れ・処理完了が自動でメール通知されます。
+
+```javascript
+function runAutoWorkflow() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data = sheet.getDataRange().getValues();
+  const apiKey = PropertiesService.getScriptProperties().getProperty('OPENAI_API_KEY');
+  const apiUrl = 'https://api.openai.com/v1/chat/completions';
+
+  for (let i = 1; i < data.length; i++) {
+    const [productName, reviewText, status] = data[i];
+    if (status === '完了' || !reviewText) continue;
+
+    try {
+      const prompt = `以下のレビューを分析してください。\n商品名：${productName}\nレビュー：${reviewText}`;
+      const payload = {
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: 'あなたは製品開発コンサルタントです。JSON形式で回答してください。キーは "core_pain", "improvement", "priority" です。' },
+          { role: 'user', content: prompt }
+        ],
+        response_format: { type: 'json_object' }
+      };
+
+      const response = UrlFetchApp.fetch(apiUrl, {
+        method: 'post',
+        contentType: 'application/json',
+        headers: { Authorization: `Bearer ${apiKey}` },
+        payload: JSON.stringify(payload)
+      });
+
+      const result = JSON.parse(response.getContentText());
+      const content = JSON.parse(result.choices[0].message.content);
+
+      sheet.getRange(i + 1, 3, 1, 4).setValues([[
+        '完了',
+        content.core_pain,
+        content.improvement,
+        content.priority
+      ]]);
+      
+      SpreadsheetApp.flush();
+    } catch (e) {
+      sheet.getRange(i + 1, 3).setValue('エラー: ' + e.message);
+    }
+  }
+
+  MailApp.sendEmail({
+    to: Session.getActiveUser().getEmail(),
+    subject: '【自動化完了】競合レビュー分析が終了しました',
+    body: 'スプレッドシートを確認してください。'
+  });
+}
+```
+
+■ 4. 現場導入でつまずかない2つのポイント＆無料診断ツール
+・Amazon等のレビューを直接UrlFetchAppで取得しようとすると、スクレイピング対策でブロックされる。対策として、一度ブラウザ拡張機能等でCSV出力したものをシートに貼り付ける運用を推奨。
+・OpenAI APIの無料枠や低ティアでは、大量の行を一気に処理するとレートリミット（回数制限）に抵触する。対策として、Utilities.sleep(2000)をループ内に挿入し、実行間隔を調整すること。
+
+「自分の職場だと年間いくら時間を削減できるか」の試算と追加コード生成は、登録不要の無料Webツールでも30秒で試せます👇
+https://toproad-creator.github.io/autoflow-ai-ceo/
+
+GASの貼り付けエラーを3秒で解決する無料デバッガーはこちら👇
+https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
+
+■ あわせて読まれている実践ガイド（すべて無料）
+・採用・人事の職務経歴書スクリーニング自動化：https://note.com/toproad_1989/n/n129393b66060
+・補助金申請・事業計画書＆収支表自動化：https://note.com/toproad_1989/n/n45f6c425ee66
+
+■ 5. 【先着10部限定 ¥980】エラー対策＆全10業種50選をまとめて現場導入したい方へ
+「補助金計画・採用選考・EC在庫・請求書経理・営業返信」まで含め、最初からエラー通知・6分制限回避を組み込んだ50業務すべての完全版パッケージを公開しています。
+通常価格 ¥1,980 のところ、先着10部限定で【半額 ¥980（1レシピあたり約19円）】です。無料エリアに「補助金・採用・EC」の実物コードもそのまま掲載しているので、品質を確かめたうえでぜひご活用ください👇
+https://note.com/toproad_1989/n/n5d0e28a74f91
+
+まずは今回の領域だけを深く自動化したい方向けに、単品ワンコイン版（¥500）も公開しています👇
+https://note.com/toproad_1989/n/n26ebbea33691

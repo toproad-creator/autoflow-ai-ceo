@@ -1,6 +1,6 @@
 {
-  "day": 22,
-  "timestamp": "2026-11-25T08:00:06.823870+09:00",
+  "day": 23,
+  "timestamp": "2026-11-26T08:00:06.968777+09:00",
   "financials": {
     "initial_balance": 15000,
     "current_balance": 15000,
@@ -19,10 +19,10 @@
       "status": "published",
       "price_jpy": 980,
       "paid_article_likes": 3,
-      "total_published_notes": 19,
-      "total_account_likes": 46,
+      "total_published_notes": 21,
+      "total_account_likes": 50,
       "paywall_active": true,
-      "paid_notes_count": 3,
+      "paid_notes_count": 4,
       "paid_notes_list": [
         {
           "key": "n5d0e28a74f91",
@@ -30,6 +30,13 @@
           "price": 980,
           "likes": 3,
           "url": "https://note.com/toproad_1989/n/n5d0e28a74f91"
+        },
+        {
+          "key": "n284acdc747a4",
+          "title": "【単品¥500】EC・物販の在庫切れ検知・競合価格監視＆自動通知を仕組み化する実践AI×GASキット",
+          "price": 500,
+          "likes": 0,
+          "url": "https://note.com/toproad_1989/n/n284acdc747a4"
         },
         {
           "key": "nfc0f1324e42d",
@@ -47,27 +54,27 @@
         }
       ],
       "total_paid_likes": 3,
-      "free_notes_count": 16,
+      "free_notes_count": 17,
       "top_liked_free_notes": [
         {
           "key": "n129393b66060",
           "title": "【無料コピペOK】採用・人事の職務経歴書スクリーニング＆面接質問自動生成をAIとGASで自動化して月32時間浮かす実践レシピ",
           "price": 0,
-          "likes": 6,
+          "likes": 7,
           "url": "https://note.com/toproad_1989/n/n129393b66060"
         },
         {
           "key": "ncafc405d047e",
           "title": "【無料コピペOK】オウンドメディアSEO記事の構成案・FAQ構造化データ自動生成をAIとGASで自動化して月40時間浮かす実践レシピ",
           "price": 0,
-          "likes": 5,
+          "likes": 6,
           "url": "https://note.com/toproad_1989/n/ncafc405d047e"
         },
         {
           "key": "n45f6c425ee66",
           "title": "【無料コピペOK】補助金申請・融資用の事業計画書ドラフト＆収支表自動作成をAIとGASで自動化して月45時間浮かす実践レシピ",
           "price": 0,
-          "likes": 5,
+          "likes": 6,
           "url": "https://note.com/toproad_1989/n/n45f6c425ee66"
         },
         {
@@ -85,21 +92,21 @@
           "url": "https://note.com/toproad_1989/n/nace6344e241f"
         }
       ],
-      "likes_delta": 0,
-      "notes_delta": 1
+      "likes_delta": 4,
+      "notes_delta": 2
     },
     "github_traffic_metrics": {
       "repo_views_14d": 185,
       "repo_uniques_14d": 89,
-      "clones_14d": 346,
-      "unique_cloners_14d": 125,
+      "clones_14d": 345,
+      "unique_cloners_14d": 127,
       "human_web_visitors_14d": 89,
       "note_automated_clones_included": true
     }
   },
   "traffic_diagnosis": {
-    "bottleneck": "実ユーザー反響はnoteに集中（公開19本・累計スキ46件・トップ需要『【無料コピペOK】採用・人事の職務経歴書スクリー』、GitHub実ページ訪問89名・自動clone除く）。無料記事の実務具体性と、テーマ特化有料SKU（¥500/¥980）への最短決済導線が鍵。",
-    "countermeasure": "①無料note記事を『即コピペできるプロンプト＋GAS完成コード』へ刷新し信頼獲得、②有料商品3本（単品¥500キット＋50選¥980完全版）で即決しやすい階段を用意"
+    "bottleneck": "実ユーザー反響はnoteに集中（公開21本・累計スキ50件・トップ需要『【無料コピペOK】採用・人事の職務経歴書スクリー』、GitHub実ページ訪問89名・自動clone除く）。無料記事の実務具体性と、テーマ特化有料SKU（¥500/¥980）への最短決済導線が鍵。",
+    "countermeasure": "①無料note記事を『即コピペできるプロンプト＋GAS完成コード』へ刷新し信頼獲得、②有料商品4本（単品¥500キット＋50選¥980完全版）で即決しやすい階段を用意"
   },
   "system_health": {
     "wallet_status": "HEALTHY",

@@ -1,50 +1,52 @@
 【タイトル】
-【無料コピペOK】Instagramリール・TikTok縦型ショート動画のバズ台本量産をAIとGASで自動化して月34時間浮かす実践レシピ
+【無料コピペOK】BtoB営業リスト抽出＆パーソナライズ文面自動化をAIとGASで自動化して月35時間浮かす実践レシピ
 
 【ハッシュタグ】
-#AI活用 #Instagram運用 #TikTok攻略 #GAS #業務自動化
+#AI活用 #業務効率化 #GAS #スプレッドシート自動化 #B2B営業
 
 【本文】
-「Instagramリール・TikTok縦型ショート動画のバズ台本量産」に毎月どれくらいの時間を使っていますか？
+「BtoB営業リスト抽出＆パーソナライズ文面自動化」に毎月どれくらいの時間を使っていますか？
 
 実務の現場では、次のようなロスが起きやすい業務です。
-・競合リサーチに毎日2時間以上費やしており、肝心の動画編集や撮影に手が回らない
-・冒頭2秒の『フック』がマンネリ化し、視聴維持率が15%以下で低迷している
-・ターゲット属性に合わせたトーン＆マナーの使い分けができず、フォロワー転換率が伸びない
+・1件ずつ企業のWebサイトを訪問し、最新ニュースやIR情報を探して「アイスブレイク」を考える作業に膨大な時間がかかっている
+・定型文の営業メールでは開封率・返信率が低迷しており、パーソナライズの必要性は感じているがリソースが足りない
+・ChatGPTに1社ずつ情報をコピペして文面を作る作業自体が「手作業」になってしまい、結局リストが消化しきれない
 
-1つひとつの確認作業は15分でも、積み重なると月平均で約34時間（時給2,300円換算で【年間 約938,400円相当】）を消費します。この記事では、ChatGPT・Geminiなどで即使える専用プロンプトだけでなく、Googleスプレッドシート上で通知・記録まで自動化するGAS完成コードもそのまま無料公開します。
+1つひとつの確認作業は15分でも、積み重なると月平均で約35時間（時給2,800円換算で【年間 約1,176,000円相当】）を消費します。この記事では、ChatGPT・Geminiなどで即使える専用プロンプトだけでなく、Googleスプレッドシート上で通知・記録まで自動化するGAS完成コードもそのまま無料公開します。
 
 ■ 1. まず準備するスプレッドシート列設計（これだけで動きます）
 Googleスプレッドシートの1行目（A〜F列）に以下の見出しを用意します。
-【列構成】ターゲット属性 ｜ 動画の核となるベネフィット ｜ フックの方向性（恐怖・共感・意外性） ｜ ステータス（未処理/実行中/完了/要確認） ｜ 生成された台本（構成・テロップ案） ｜ AI判定・改善アドバイス
+【列構成】会社名 ｜ URL/企業概要 ｜ 最新ニュース・注力事業 ｜ パーソナライズ文面（自動生成） ｜ ステータス ｜ 要確認フラグ
 
-■ 2. コピペで使える！「Instagramリール・TikTok縦型ショート動画のバズ台本量産」専用・実務プロンプト
+■ 2. コピペで使える！「BtoB営業リスト抽出＆パーソナライズ文面自動化」専用・実務プロンプト
 以下をそのままコピーして、対象データを貼り付けて実行してください（[要確認]フラグで人の目チェックが必要な行だけを浮き彫りにします）。
 
 ```text
-あなたはTikTokおよびInstagramリールで累計100万再生を連発するショート動画専門の構成作家です。
-以下の【入力情報】を元に、視聴者が指を止める『バズ台本』を生成してください。
+あなたはBtoBアウトバウンド営業のトップセールスライターです。
+以下の情報を元に、相手企業の担当者が「自社のことをよく調べてくれている」と感動するパーソナライズ文面を作成してください。
 
-### 厳守ルール
-1. 構成：[0-2秒]強烈なフック、[2-10秒]結論と理由、[10-25秒]具体例・手順、[25-30秒]CTA（保存誘導）の4部構成とすること。
-2. 視覚指示：各セクションに[画面テロップ内容]と[推奨カット割り]を明記すること。
-3. 心理トリガー：指定された『フックの方向性』に基づき、視聴者の脳内報酬系を刺激する言葉選びを徹底すること。
-4. 禁止表現：抽象的な「〜が大切です」という表現を避け、「〜を今すぐ捨てろ」等の断定的・具体的な動詞を使うこと。
+【入力情報】
+- 会社名：{{会社名}}
+- 最新ニュース/事業内容：{{最新ニュース/事業内容}}
 
-### 出力形式
-以下のJSON形式のみで出力してください。
+【厳守判定基準】
+1. 文頭の挨拶は「〇〇様の貴社Webサイトを拝見し、[具体的なニュース内容]を拝見してご連絡いたしました」から始めること。
+2. ニュースの内容が「オフィス移転」「単なる人事異動」など、事業の課題解決に直結しない場合は、[要確認]フラグを立て、汎用的な事業内容への言及に留めること。
+3. 相手のメリットを「弊社のサービスを導入することで、貴社の[ニュースに関連した課題]を解決できる」という文脈で100文字以内で記述すること。
+4. 専門用語を多用せず、中学生でも理解できる平易な日本語を使うこと。
+
+【出力形式】
+以下のJSON形式で出力してください。
 {
-  "script": "台本本文",
-  "advice": "この台本を伸ばすための撮影・編集のコツ"
+  "message": "生成された文面全文",
+  "flag": "なし または [要確認]"
 }
 
-### 例外ルール
-入力情報の「核となるベネフィット」が具体的でない場合、または公序良俗に反する可能性がある場合は、script内に「[要確認] コンセプトが抽象的すぎます。ターゲットの悩みを再定義してください」と出力してください。
-
-### 入力情報
-ターゲット：{{ターゲット属性}}
-ベネフィット：{{動画の核となるベネフィット}}
-方向性：{{フックの方向性}}
+【[要確認]ルール】
+- 最新ニュースが3年以上前のものである場合
+- ニュース内容が不明瞭で、具体性に欠ける場合
+- 競合他社の名前がニュースに含まれている場合
+これらに該当する場合は必ずflagに「[要確認]」と記載してください。
 ```
 
 ■ 3. スプレッドシート自動処理＆メール通知 GAS 完成コード
@@ -54,48 +56,55 @@ Googleスプレッドシートの1行目（A〜F列）に以下の見出しを�
 function runAutoWorkflow() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   const data = sheet.getDataRange().getValues();
-  const apiKey = PropertiesService.getScriptProperties().getProperty('OPENAI_API_KEY');
-  const apiUrl = 'https://api.openai.com/v1/chat/completions';
+  const API_KEY = 'YOUR_OPENAI_API_KEY';
+  const API_URL = 'https://api.openai.com/v1/chat/completions';
 
   for (let i = 1; i < data.length; i++) {
-    const [target, benefit, hookType, status] = [data[i][0], data[i][1], data[i][2], data[i][3]];
-    if (status !== '未処理') continue;
+    const [companyName, url, news, existingMsg, status] = data[i];
+    if (status === '完了' || !news) continue;
 
     try {
-      sheet.getRange(i + 1, 4).setValue('実行中');
-      const prompt = `ターゲット：${target}\nベネフィット：${benefit}\n方向性：${hookType}`;
+      const prompt = `会社名：${companyName}\nニュース：${news}`;
       const payload = {
         model: "gpt-4o",
-        messages: [{role: "system", content: "プロンプト全文をここにペースト（または別セルから参照）"}, {role: "user", content: prompt}],
+        messages: [
+          { role: "system", content: "営業文面生成のプロンプト（ここに上記expert_promptを挿入）" },
+          { role: "user", content: prompt }
+        ],
         response_format: { type: "json_object" }
       };
 
-      const response = UrlFetchApp.fetch(apiUrl, {
-        method: 'post',
-        contentType: 'application/json',
-        headers: { Authorization: `Bearer ${apiKey}` },
+      const response = UrlFetchApp.fetch(API_URL, {
+        method: "post",
+        contentType: "application/json",
+        headers: { Authorization: `Bearer ${API_KEY}` },
         payload: JSON.stringify(payload)
       });
 
-      const resJson = JSON.parse(response.getContentText());
-      const content = JSON.parse(resJson.choices[0].message.content);
+      const result = JSON.parse(response.getContentText());
+      const content = JSON.parse(result.choices[0].message.content);
 
-      sheet.getRange(i + 1, 5).setValue(content.script);
-      sheet.getRange(i + 1, 6).setValue(content.advice);
-      sheet.getRange(i + 1, 4).setValue('完了');
+      sheet.getRange(i + 1, 4).setValue(content.message);
+      sheet.getRange(i + 1, 5).setValue('完了');
+      sheet.getRange(i + 1, 6).setValue(content.flag);
 
     } catch (e) {
-      sheet.getRange(i + 1, 4).setValue('エラー');
+      sheet.getRange(i + 1, 5).setValue('エラー');
       console.error(e.toString());
     }
   }
-  MailApp.sendEmail(Session.getActiveUser().getEmail(), "台本量産ジョブ完了", "スプレッドシートの台本生成が完了しました。確認してください。");
+
+  MailApp.sendEmail({
+    to: Session.getActiveUser().getEmail(),
+    subject: "【自動化完了】営業リスト生成通知",
+    body: "スプレッドシートのパーソナライズ文面生成が完了しました。内容を確認してください。"
+  });
 }
 ```
 
 ■ 4. 現場導入でつまずかない2つのポイント＆無料診断ツール
-・APIのタイムアウト制限：一度に100行以上処理するとGASの6分制限に抵触するため、30行程度でトリガーを分けるか、条件分岐で未処理分のみ実行する運用が必要です。
-・ハルシネーションによる誤情報：AIは最新のトレンド用語を間違えることがあるため、生成された台本の『事実関係』のみ人間が最終チェックするフローをステータス管理に組み込んでください。
+・OpenAI APIのタイムアウト制限：GASは一度の実行が6分（無料版）という制限があるため、100件を超える場合はトリガー設定で分割実行するか、バッチ処理の実装が必要です。
+・ハルシネーション（嘘の情報）：AIはもっともらしい嘘をつくことがあるため、生成された文面をそのまま送るのではなく、必ず「要確認フラグ」が立っている行や、重要な商談先については目視確認を行う運用フローを構築してください。
 
 「自分の職場だと年間いくら時間を削減できるか」の試算と追加コード生成は、登録不要の無料Webツールでも30秒で試せます👇
 https://toproad-creator.github.io/autoflow-ai-ceo/
