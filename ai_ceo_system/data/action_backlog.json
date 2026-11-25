@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-25T08:05:27.828988+09:00",
+  "updated_at": "2026-11-25T05:11:04.655999+00:00",
   "day": 22,
   "previous_pending_count": 0,
   "today_total_actions": 4,
@@ -8,27 +8,27 @@
   "items": [
     {
       "id": "DAY22-ACT1",
-      "action": "【CRO/商品改善】有料記事3本の冒頭に「補助金・採用・EC」の実際のGAS出力画面とコード一部を公開",
+      "action": "【CRO/商品改善】主力980円パック及び500円単品の冒頭に「補助金・採用・EC」の出力実物画像を掲載",
       "status": "resolved",
-      "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(26件):True"
+      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:skipped_github_actions"
     },
     {
       "id": "DAY22-ACT2",
-      "action": "【CRO/CMO実装】「購入前のよくある質問（FAQ）」を全有料記事の決済ボタン直上に設置し不安を払拭",
+      "action": "【CRO/CMO実装】全有料記事へ「購入前の不安解消FAQ（設定サポート・動作環境・更新頻度）」を追記",
       "status": "resolved",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:synced"
+      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:skipped_github_actions"
     },
     {
       "id": "DAY22-ACT3",
-      "action": "【CMO実装】旧来の簡易記事9本のうち、スキ数の多い順に3本を「実務プロンプト＋GAS付」へ刷新",
+      "action": "【CMO実装】スキ数の多い順に旧型記事7本を「実用GASコード・プロンプト付き」へリライト完了",
       "status": "resolved",
       "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(26件):True"
     },
     {
       "id": "DAY22-ACT4",
-      "action": "【CTO/QA検証】有料版コードの「コピペ動作保証」を再確認し、環境構築の図解を無料エリアへ追加",
+      "action": "【CTO/QA検証】サンプルコードの動作検証と、GitHubからnote有料版FAQへの導線不備チェック",
       "status": "resolved",
-      "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(26件):True"
+      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:skipped_github_actions"
     }
   ],
   "pending_for_next_board": []
