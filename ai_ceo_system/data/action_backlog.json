@@ -10,7 +10,7 @@
       "id": "DAY23-ACT1",
       "action": "【CRO/商品改善】「採用・補助金・SEO」の3大記事に、自作ツール導入前後の「工数・コスト比較表」を挿入",
       "status": "resolved",
-      "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(26件):True"
+      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:skipped_github_actions"
     },
     {
       "id": "DAY23-ACT2",
