@@ -1,6 +1,6 @@
 {
-  "day": 23,
-  "timestamp": "2026-11-26T08:00:06.968777+09:00",
+  "day": 24,
+  "timestamp": "2026-11-27T08:00:06.485717+09:00",
   "financials": {
     "initial_balance": 15000,
     "current_balance": 15000,
@@ -18,24 +18,24 @@
       "paid_note_url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
       "status": "published",
       "price_jpy": 980,
-      "paid_article_likes": 3,
-      "total_published_notes": 21,
-      "total_account_likes": 50,
+      "paid_article_likes": 5,
+      "total_published_notes": 22,
+      "total_account_likes": 59,
       "paywall_active": true,
       "paid_notes_count": 4,
       "paid_notes_list": [
         {
           "key": "n5d0e28a74f91",
-          "title": "【先着10部¥980】補助金申請・EC・採用をコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
+          "title": "【先着10部¥980】補助金申請・採用・ECをコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
           "price": 980,
-          "likes": 3,
+          "likes": 5,
           "url": "https://note.com/toproad_1989/n/n5d0e28a74f91"
         },
         {
           "key": "n284acdc747a4",
           "title": "【単品¥500】EC・物販の在庫切れ検知・競合価格監視＆自動通知を仕組み化する実践AI×GASキット",
           "price": 500,
-          "likes": 0,
+          "likes": 1,
           "url": "https://note.com/toproad_1989/n/n284acdc747a4"
         },
         {
@@ -53,16 +53,9 @@
           "url": "https://note.com/toproad_1989/n/n26ebbea33691"
         }
       ],
-      "total_paid_likes": 3,
-      "free_notes_count": 17,
+      "total_paid_likes": 6,
+      "free_notes_count": 18,
       "top_liked_free_notes": [
-        {
-          "key": "n45f6c425ee66",
-          "title": "【無料コピペOK】補助金申請・融資用の事業計画書ドラフト＆収支表自動作成をAIとGASで自動化して月45時間浮かす実践レシピ",
-          "price": 0,
-          "likes": 6,
-          "url": "https://note.com/toproad_1989/n/n45f6c425ee66"
-        },
         {
           "key": "n129393b66060",
           "title": "【無料コピペOK】採用・人事の職務経歴書スクリーニング＆面接質問自動生成をAIとGASで自動化して月32時間浮かす実践レシピ",
@@ -85,34 +78,34 @@
           "url": "https://note.com/toproad_1989/n/n45f6c425ee66"
         },
         {
+          "key": "n60a203f72855",
+          "title": "【無料コピペOK】Amazon・楽天の競合商品レビュー分析＆改善アイデア抽出をAIとGASで自動化して月22時間浮かす実践レシピ",
+          "price": 0,
+          "likes": 5,
+          "url": "https://note.com/toproad_1989/n/n60a203f72855"
+        },
+        {
           "key": "n70171b631e61",
           "title": "【無料コピペOK】EC・物販の在庫管理＆価格改定自動化をAIとGASで自動化して月42時間浮かす実践レシピ",
           "price": 0,
           "likes": 5,
           "url": "https://note.com/toproad_1989/n/n70171b631e61"
-        },
-        {
-          "key": "nace6344e241f",
-          "title": "【無料コピペOK】商談・社内会議の文字起こし要約＆タスク自動割り振りをAIとGASで自動化して月26時間浮かす実践レシピ",
-          "price": 0,
-          "likes": 3,
-          "url": "https://note.com/toproad_1989/n/nace6344e241f"
         }
       ],
-      "likes_delta": 4,
-      "notes_delta": 2
+      "likes_delta": 9,
+      "notes_delta": 1
     },
     "github_traffic_metrics": {
       "repo_views_14d": 185,
       "repo_uniques_14d": 89,
-      "clones_14d": 345,
-      "unique_cloners_14d": 127,
+      "clones_14d": 330,
+      "unique_cloners_14d": 123,
       "human_web_visitors_14d": 89,
       "note_automated_clones_included": true
     }
   },
   "traffic_diagnosis": {
-    "bottleneck": "実ユーザー反響はnoteに集中（公開21本・累計スキ50件・トップ需要『【無料コピペOK】採用・人事の職務経歴書スクリー』、GitHub実ページ訪問89名・自動clone除く）。無料記事の実務具体性と、テーマ特化有料SKU（¥500/¥980）への最短決済導線が鍵。",
+    "bottleneck": "実ユーザー反響はnoteに集中（公開22本・累計スキ59件・トップ需要『【無料コピペOK】採用・人事の職務経歴書スクリー』、GitHub実ページ訪問89名・自動clone除く）。無料記事の実務具体性と、テーマ特化有料SKU（¥500/¥980）への最短決済導線が鍵。",
     "countermeasure": "①無料note記事を『即コピペできるプロンプト＋GAS完成コード』へ刷新し信頼獲得、②有料商品4本（単品¥500キット＋50選¥980完全版）で即決しやすい階段を用意"
   },
   "system_health": {

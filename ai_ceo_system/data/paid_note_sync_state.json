@@ -1,17 +1,17 @@
 {
-  "synced_at": "2026-11-26T08:04:58.993466+09:00",
+  "synced_at": "2026-11-27T08:05:03.127288+09:00",
   "preview_schema_version": 2,
   "top3_slugs": [
     "subsidy-business-plan",
-    "hr-resume-screening",
-    "ec-inventory"
+    "ec-inventory",
+    "hr-resume-screening"
   ],
   "top3_titles": [
     "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
-    "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
-    "EC・物販の在庫管理＆価格改定自動化"
+    "EC・物販の在庫管理＆価格改定自動化",
+    "採用・人事の職務経歴書スクリーニング＆面接質問自動生成"
   ],
-  "title_applied": "【先着10部¥980】補助金申請・採用・ECをコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
+  "title_applied": "【先着10部¥980】補助金申請・EC・採用をコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
   "paid_area_chars_preserved": 73629,
   "status": "synced"
 }

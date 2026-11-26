@@ -1,5 +1,5 @@
 {
-  "analyzed_at": "2026-11-26T08:00:04.733226+09:00",
+  "analyzed_at": "2026-11-27T08:00:04.593058+09:00",
   "winner_model": {
     "id": "BM-01",
     "name": "AI業務自動化ROIシミュレーター＆職種別プロンプト・GAS自動生成Webスイート（Programmatic SEO型ツール＋テンプレート販売）",
@@ -80,10 +80,10 @@
       "title": "EC・物販の在庫管理＆価格改定自動化",
       "avg_hours_saved_monthly": 42,
       "hourly_wage": 2500,
-      "actual_likes": 9,
+      "actual_likes": 12,
       "matched_own_articles": 4,
       "trend_matches": 0,
-      "demand_score": 134.0,
+      "demand_score": 152.0,
       "status": "winner"
     },
     {
@@ -146,10 +146,10 @@
       "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
       "avg_hours_saved_monthly": 32,
       "hourly_wage": 3000,
-      "actual_likes": 10,
+      "actual_likes": 12,
       "matched_own_articles": 3,
       "trend_matches": 0,
-      "demand_score": 137.0,
+      "demand_score": 149.0,
       "status": "winner"
     },
     {
@@ -194,18 +194,18 @@
       "matched_own_articles": 1,
       "trend_matches": 0,
       "demand_score": 72.3,
-      "status": "growing"
+      "status": "pivot_candidate"
     },
     {
       "slug": "amazon-rakuten-review",
       "title": "Amazon・楽天の競合商品レビュー分析＆改善アイデア抽出",
       "avg_hours_saved_monthly": 22,
       "hourly_wage": 2600,
-      "actual_likes": 0,
-      "matched_own_articles": 0,
+      "actual_likes": 5,
+      "matched_own_articles": 1,
       "trend_matches": 0,
-      "demand_score": 64.1,
-      "status": "pivot_candidate"
+      "demand_score": 94.1,
+      "status": "growing"
     },
     {
       "slug": "line-step-delivery",
@@ -234,10 +234,10 @@
       "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
       "avg_hours_saved_monthly": 45,
       "hourly_wage": 3500,
-      "actual_likes": 9,
+      "actual_likes": 11,
       "matched_own_articles": 3,
       "trend_matches": 0,
-      "demand_score": 151.5,
+      "demand_score": 163.5,
       "status": "winner"
     },
     {
@@ -278,10 +278,10 @@
       "title": "Google広告・Meta広告の検索見出し15本＆説明文一括ジェネレーター",
       "avg_hours_saved_monthly": 21,
       "hourly_wage": 2900,
-      "actual_likes": 1,
+      "actual_likes": 2,
       "matched_own_articles": 1,
       "trend_matches": 0,
-      "demand_score": 71.3,
+      "demand_score": 77.3,
       "status": "growing"
     },
     {
@@ -302,21 +302,10 @@
       "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
       "avg_hours_saved_monthly": 45,
       "hourly_wage": 3500,
-      "actual_likes": 9,
+      "actual_likes": 11,
       "matched_own_articles": 3,
       "trend_matches": 0,
-      "demand_score": 151.5,
-      "status": "winner"
-    },
-    {
-      "slug": "hr-resume-screening",
-      "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
-      "avg_hours_saved_monthly": 32,
-      "hourly_wage": 3000,
-      "actual_likes": 10,
-      "matched_own_articles": 3,
-      "trend_matches": 0,
-      "demand_score": 137.0,
+      "demand_score": 163.5,
       "status": "winner"
     },
     {
@@ -324,41 +313,41 @@
       "title": "EC・物販の在庫管理＆価格改定自動化",
       "avg_hours_saved_monthly": 42,
       "hourly_wage": 2500,
-      "actual_likes": 9,
+      "actual_likes": 12,
       "matched_own_articles": 4,
       "trend_matches": 0,
-      "demand_score": 134.0,
+      "demand_score": 152.0,
+      "status": "winner"
+    },
+    {
+      "slug": "hr-resume-screening",
+      "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
+      "avg_hours_saved_monthly": 32,
+      "hourly_wage": 3000,
+      "actual_likes": 12,
+      "matched_own_articles": 3,
+      "trend_matches": 0,
+      "demand_score": 149.0,
       "status": "winner"
     }
   ],
   "live_needs_radar": {
-    "analyzed_at": "2026-11-26T08:00:04.730185+09:00",
+    "analyzed_at": "2026-11-27T08:00:04.589774+09:00",
     "api_status": {
       "own_api": "live",
       "trend_api": "live"
     },
-    "market_summary": "実測スキ反響（21記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「EC・物販の在庫管理＆価格改定自動化」。",
+    "market_summary": "実測スキ反響（22記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」。",
     "top_winner_niches": [
       {
         "slug": "subsidy-business-plan",
         "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
         "avg_hours_saved_monthly": 45,
         "hourly_wage": 3500,
-        "actual_likes": 9,
+        "actual_likes": 11,
         "matched_own_articles": 3,
         "trend_matches": 0,
-        "demand_score": 151.5,
-        "status": "winner"
-      },
-      {
-        "slug": "hr-resume-screening",
-        "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
-        "avg_hours_saved_monthly": 32,
-        "hourly_wage": 3000,
-        "actual_likes": 10,
-        "matched_own_articles": 3,
-        "trend_matches": 0,
-        "demand_score": 137.0,
+        "demand_score": 163.5,
         "status": "winner"
       },
       {
@@ -366,10 +355,21 @@
         "title": "EC・物販の在庫管理＆価格改定自動化",
         "avg_hours_saved_monthly": 42,
         "hourly_wage": 2500,
-        "actual_likes": 9,
+        "actual_likes": 12,
         "matched_own_articles": 4,
         "trend_matches": 0,
-        "demand_score": 134.0,
+        "demand_score": 152.0,
+        "status": "winner"
+      },
+      {
+        "slug": "hr-resume-screening",
+        "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
+        "avg_hours_saved_monthly": 32,
+        "hourly_wage": 3000,
+        "actual_likes": 12,
+        "matched_own_articles": 3,
+        "trend_matches": 0,
+        "demand_score": 149.0,
         "status": "winner"
       }
     ],
@@ -413,20 +413,26 @@
     "own_articles_performance": [
       {
         "key": "n5d0e28a74f91",
-        "title": "【先着10部¥980】補助金申請・EC・採用をコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
-        "likes": 3,
+        "title": "【先着10部¥980】補助金申請・採用・ECをコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
+        "likes": 5,
         "price": 980
+      },
+      {
+        "key": "n60a203f72855",
+        "title": "【無料コピペOK】Amazon・楽天の競合商品レビュー分析＆改善アイデア抽出をAIとGASで自動化して月22時間浮かす実践レシピ",
+        "likes": 5,
+        "price": 0
       },
       {
         "key": "n284acdc747a4",
         "title": "【単品¥500】EC・物販の在庫切れ検知・競合価格監視＆自動通知を仕組み化する実践AI×GASキット",
-        "likes": 0,
+        "likes": 1,
         "price": 500
       },
       {
         "key": "n33ccabb9db88",
         "title": "【無料コピペOK】Google広告・Meta広告の検索見出し15本＆説明文一括ジェネレーターをAIとGASで自動化して月21時間浮かす実践レシピ",
-        "likes": 1,
+        "likes": 2,
         "price": 0
       },
       {

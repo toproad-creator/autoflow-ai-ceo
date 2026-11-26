@@ -1,5 +1,5 @@
 {
-  "inspected_at": "2026-11-26T08:00:38.829702+09:00",
+  "inspected_at": "2026-11-27T08:00:38.743316+09:00",
   "total_urls_checked": 27,
   "urls_ok_count": 27,
   "broken_urls": [],
@@ -7,12 +7,24 @@
     {
       "key": "n5d0e28a74f91",
       "url": "https://note.com/toproad_1989/n/n5d0e28a74f91",
-      "title": "【先着10部¥980】補助金申請・EC・採用をコピペ5分で自動化！『全",
+      "title": "【先着10部¥980】補助金申請・採用・ECをコピペ5分で自動化！『全",
       "has_thumbnail": true,
       "clickable_links_count": 0,
-      "likes": 3,
+      "likes": 5,
       "price": 980,
       "is_paid": true,
+      "is_thin_boilerplate": false,
+      "healthy": true
+    },
+    {
+      "key": "n60a203f72855",
+      "url": "https://note.com/toproad_1989/n/n60a203f72855",
+      "title": "【無料コピペOK】Amazon・楽天の競合商品レビュー分析＆改善アイデ",
+      "has_thumbnail": true,
+      "clickable_links_count": 6,
+      "likes": 5,
+      "price": 0,
+      "is_paid": false,
       "is_thin_boilerplate": false,
       "healthy": true
     },
@@ -22,7 +34,7 @@
       "title": "【単品¥500】EC・物販の在庫切れ検知・競合価格監視＆自動通知を仕組",
       "has_thumbnail": true,
       "clickable_links_count": 1,
-      "likes": 0,
+      "likes": 1,
       "price": 500,
       "is_paid": true,
       "is_thin_boilerplate": false,
@@ -34,7 +46,7 @@
       "title": "【無料コピペOK】Google広告・Meta広告の検索見出し15本＆説",
       "has_thumbnail": true,
       "clickable_links_count": 6,
-      "likes": 1,
+      "likes": 2,
       "price": 0,
       "is_paid": false,
       "is_thin_boilerplate": false,
@@ -213,11 +225,11 @@
       "url": "https://note.com/toproad_1989/n/n49963f8d62b9",
       "title": "【無料コピペOK】請求書・領収書PDFのAI読取＆スプレッドシート記帳",
       "has_thumbnail": true,
-      "clickable_links_count": 3,
+      "clickable_links_count": 6,
       "likes": 2,
       "price": 0,
       "is_paid": false,
-      "is_thin_boilerplate": true,
+      "is_thin_boilerplate": false,
       "healthy": true
     },
     {
@@ -225,11 +237,11 @@
       "url": "https://note.com/toproad_1989/n/n2b36747c935d",
       "title": "【無料コピペOK】BtoB営業リスト抽出＆パーソナライズ文面自動化をA",
       "has_thumbnail": true,
-      "clickable_links_count": 3,
+      "clickable_links_count": 6,
       "likes": 2,
       "price": 0,
       "is_paid": false,
-      "is_thin_boilerplate": true,
+      "is_thin_boilerplate": false,
       "healthy": true
     },
     {
@@ -289,19 +301,19 @@
   },
   "windows_scheduler_check": {
     "registered": true,
-    "raw_summary": "\nフォルダー\\\nホスト名:                                       DESKTOP-T8LTA9P\nタスク名:                                       \\Antigravity_AI_CEO_Daily\n次回の実行時刻:                                 2026/11/27 8:00:00\n状態:                                           実行中\nログオン モード:                                対話型のみ\n前回の実行時刻:                                 2026/11/26 8:00:01\n前回の結果:                                     267009\n作成者:                                         DESKTOP-T8LTA9P\\山内　裕加里\n実行するタスク:                                 C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Deskt"
+    "raw_summary": "\nフォルダー\\\nホスト名:                                       DESKTOP-T8LTA9P\nタスク名:                                       \\Antigravity_AI_CEO_Daily\n次回の実行時刻:                                 2026/11/28 8:00:00\n状態:                                           実行中\nログオン モード:                                対話型のみ\n前回の実行時刻:                                 2026/11/27 8:00:01\n前回の結果:                                     267009\n作成者:                                         DESKTOP-T8LTA9P\\山内　裕加里\n実行するタスク:                                 C:\\Users\\yukar\\AppData\\Local\\Programs\\Python\\Python314\\python.exe C:\\Users\\yukar\\Deskt"
   },
   "github_actions_check": {
     "status": "checked",
-    "run_id": 45551693081,
+    "run_id": 45756464572,
     "latest_conclusion": "success",
-    "updated_at": "2026-11-25T05:11:20Z",
-    "html_url": "https://github.com/toproad-creator/autoflow-ai-ceo/actions/runs/45551693081",
+    "updated_at": "2026-11-26T04:39:33Z",
+    "html_url": "https://github.com/toproad-creator/autoflow-ai-ceo/actions/runs/45756464572",
     "healthy": true
   },
   "detected_issues": [
-    "【無料記事コンテンツ改善】公開note記事のうち 7 本が旧来の簡易短文構成のままです。スキ数の多い人気記事から順に、実務専用プロンプト＋GAS完成コード付きの本格解説へ差し替えることで有料版への信頼を高められます。",
-    "【最重要課題：未収益】実ユーザー反響は note 21本（累計スキ50件 / 有料4本・スキ3件）・GitHubページ訪問89名（自動clone除く）に対し売上¥0。最上位反応テーマ『【無料コピペOK】採用・人事の職務経歴書スク』からの¥500単品決済および¥980完全版への納得導線強化が必要です。"
+    "【無料記事コンテンツ改善】公開note記事のうち 5 本が旧来の簡易短文構成のままです。スキ数の多い人気記事から順に、実務専用プロンプト＋GAS完成コード付きの本格解説へ差し替えることで有料版への信頼を高められます。",
+    "【最重要課題：未収益】実ユーザー反響は note 22本（累計スキ59件 / 有料4本・スキ6件）・GitHubページ訪問89名（自動clone除く）に対し売上¥0。最上位反応テーマ『【無料コピペOK】採用・人事の職務経歴書スク』からの¥500単品決済および¥980完全版への納得導線強化が必要です。"
   ],
   "overall_healthy": true
 }
