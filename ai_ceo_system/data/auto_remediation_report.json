@@ -1,5 +1,5 @@
 {
-  "executed_at": "2026-11-26T08:05:15.621263+09:00",
+  "executed_at": "2026-11-26T04:39:14.492959+00:00",
   "day": 23,
   "all_gates_passed": true,
   "detected_issues_input_count": 2,
@@ -25,32 +25,15 @@
     },
     "paid_note_sync": {
       "task": "有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）",
-      "status": "synced",
-      "ok": true,
-      "detail": {
-        "synced_at": "2026-11-26T08:04:58.993466+09:00",
-        "preview_schema_version": 2,
-        "top3_slugs": [
-          "subsidy-business-plan",
-          "hr-resume-screening",
-          "ec-inventory"
-        ],
-        "top3_titles": [
-          "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
-          "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
-          "EC・物販の在庫管理＆価格改定自動化"
-        ],
-        "title_applied": "【先着10部¥980】補助金申請・採用・ECをコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
-        "paid_area_chars_preserved": 73629,
-        "status": "synced"
-      }
+      "status": "skipped_github_actions",
+      "ok": true
     },
     "cloud_ci_gate": {
       "task": "クラウド（GitHub Actions）互換コード・YAML設定・直近稼働検証ゲート",
       "workflow_repaired": false,
       "workflow_ok": true,
       "bare_cloud_imports": [],
-      "latest_ci_run_id": 45551693081,
+      "latest_ci_run_id": 45719786851,
       "latest_ci_conclusion": "success",
       "ok": true
     },
@@ -64,16 +47,14 @@
       "task": "消費者・ビジネス目線の実物品質監査（ツールTOP3・X自然文・ショート台本・無料記事コード・会議重複防止）＆自律修正",
       "simulator_has_top3": true,
       "short_script_valid": true,
-      "short_script_regenerated": true,
+      "short_script_regenerated": false,
       "short_script_concept": "手作業損失ビフォーアフター比較回",
       "short_script_reasons": [],
       "board_agenda_unique": true,
       "board_agenda_reason": "ok",
       "free_note_rich_code": true,
       "free_note_reason": "ok",
-      "auto_fixed": [
-        "Day23 YouTubeショート台本の不具合・重複を検出し、ユニーク台本へ即座に自動再生成完了"
-      ],
+      "auto_fixed": [],
       "ok": true
     }
   },
@@ -81,11 +62,11 @@
     {
       "category": "無料ツール×需要TOP3連動",
       "status": "auto_applied",
-      "detail": "需要1位『補助金申請・融資用の事業計画書ド』と2位『採用』を無料シミュレーターに自動統合し、体験直後に¥980完全版への導線を直結。"
+      "detail": "需要1位『EC・物販の在庫管理＆価格改定自』と2位『採用』を無料シミュレーターに自動統合し、体験直後に¥980完全版への導線を直結。"
     },
     {
       "category": "X文面品質＆YouTubeショート実物監査",
-      "status": "repaired",
+      "status": "auto_applied",
       "detail": "Day23動画は『手作業損失ビフォーアフター比較回』テーマで有料切れ端0・クリック不可誘導0・前日重複0を実物検査で合格済み（タイトル: 【Day23】Amazonレビュー分析をAIで自動化！手作業で失う月42時間を利益に変え…）。"
     },
     {
