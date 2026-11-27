@@ -5,8 +5,8 @@
   "current_balance": 15000,
   "total_revenue": 0,
   "total_expenses": 0,
-  "day": 24,
-  "last_updated": "2026-11-27T08:00:03.426073+09:00",
+  "day": 25,
+  "last_updated": "2026-11-28T08:00:03.777169+09:00",
   "rules": {
     "min_balance_allowed": 0,
     "auto_stop_on_zero": true

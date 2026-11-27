@@ -1,0 +1,119 @@
+【タイトル】
+【無料コピペOK】店舗・クリニックのGoogleマップ口コミ自動返信＆MEO対策をAIとGASで自動化して月18時間浮かす実践レシピ
+
+【ハッシュタグ】
+#AI活用 #業務効率化 #GAS #MEO対策 #Googleマップ運用
+
+【本文】
+「店舗・クリニックのGoogleマップ口コミ自動返信＆MEO対策」に毎月どれくらいの時間を使っていますか？
+
+実務の現場では、次のようなロスが起きやすい業務です。
+・日々の接客や施術に追われ、Googleマップに届く口コミへの返信が後回しになり、MEO順位（ローカル検索順位）が低下している
+・定型文の返信ばかりになり、投稿者への誠実さが伝わらず、逆に店舗のブランドイメージを損ねてしまっている
+・低評価（星1〜2）がついた際、感情的な返信をして炎上するリスクや、適切な謝罪・事実確認のフローが現場で徹底できていない
+
+1つひとつの確認作業は15分でも、積み重なると月平均で約18時間（時給2,400円換算で【年間 約518,400円相当】）を消費します。この記事では、ChatGPT・Geminiなどで即使える専用プロンプトだけでなく、Googleスプレッドシート上で通知・記録まで自動化するGAS完成コードもそのまま無料公開します。
+
+■ 1. まず準備するスプレッドシート列設計（これだけで動きます）
+Googleスプレッドシートの1行目（A〜F列）に以下の見出しを用意します。
+【列構成】投稿日 ｜ レビュアー名 ｜ 星評価 ｜ 口コミ本文 ｜ AI生成返信案 ｜ 処理ステータス
+
+■ 2. コピペで使える！「店舗・クリニックのGoogleマップ口コミ自動返信＆MEO対策」専用・実務プロンプト
+以下をそのままコピーして、対象データを貼り付けて実行してください（[要確認]フラグで人の目チェックが必要な行だけを浮き彫りにします）。
+
+```text
+あなたは地域密着型店舗のブランドマネージャー兼、MEO対策の専門家です。以下の制約条件を厳守し、Googleマップの口コミに対する「返信案」を作成してください。
+
+### 役割と目的
+・投稿者への感謝を伝え、リピート率を向上させる。
+・未訪問のユーザーに対し、店舗の魅力（清潔感、技術力、接客）をアピールする。
+・自然な形で「店舗名」と「主要サービス名」を1回ずつ含め、MEO効果を高める。
+
+### 厳守判定基準
+1. 星4以上：ポジティブな内容を強調し、再来店を促す温かい文章を作成せよ。
+2. 星3：中立的な意見として受け止め、改善への意欲を示しつつ感謝を述べよ。
+3. 星1〜2：【要確認】と冒頭に記載し、返信案は作成せず「至急、店長による事実確認と個別対応が必要です」と出力せよ。
+4. 本文なし（星のみ）：来店への感謝を簡潔に述べ、次回はぜひ感想を聞かせてほしい旨を伝えよ。
+
+### 出力形式
+・150文字〜250文字程度。親しみやすくも礼儀正しい敬語（です・ます調）。
+・[要確認]ルールに該当する場合は、その理由も短く添えること。
+
+### 入力データ例
+・店舗名：あおぞら整体院
+・主要サービス：骨盤矯正
+・投稿者：{{レビュアー名}}
+・評価：{{星評価}}
+・本文：{{口コミ本文}}
+```
+
+■ 3. スプレッドシート自動処理＆メール通知 GAS 完成コード
+スプレッドシート上部メニューの「拡張機能」＞「Apps Script」を開き、下記のコードを貼り付けて保存してください。トリガー（毎日午前8時など）を設定すれば、確認漏れ・処理完了が自動でメール通知されます。
+
+```javascript
+function runAutoWorkflow() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data = sheet.getDataRange().getValues();
+  const OPENAI_API_KEY = 'YOUR_API_KEY_HERE';
+  const NOTIFY_EMAIL = 'your-email@example.com';
+
+  for (let i = 1; i < data.length; i++) {
+    const [date, name, rating, content, currentReply, status] = data[i];
+    if (status === '完了' || status === '確認中') continue;
+
+    try {
+      const prompt = `店舗名:あおぞら整体院, サービス:骨盤矯正, 名前:${name}, 評価:${rating}, 本文:${content}`;
+      const response = callOpenAI(prompt, OPENAI_API_KEY);
+      
+      sheet.getRange(i + 1, 5).setValue(response);
+      
+      if (response.includes('[要確認]')) {
+        sheet.getRange(i + 1, 6).setValue('確認中');
+        MailApp.sendEmail(NOTIFY_EMAIL, '【要確認】低評価口コミが入りました', `行番号: ${i + 1}\n内容: ${content}`);
+      } else {
+        sheet.getRange(i + 1, 6).setValue('生成済み');
+      }
+    } catch (e) {
+      console.error('Error at row ' + (i + 1) + ': ' + e.toString());
+      sheet.getRange(i + 1, 6).setValue('エラー発生');
+    }
+  }
+}
+
+function callOpenAI(prompt, apiKey) {
+  const url = 'https://api.openai.com/v1/chat/completions';
+  const options = {
+    method: 'post',
+    contentType: 'application/json',
+    headers: { Authorization: 'Bearer ' + apiKey },
+    payload: JSON.stringify({
+      model: 'gpt-4o',
+      messages: [{ role: 'system', content: 'あなたはMEO専門家です。' }, { role: 'user', content: prompt }]
+    })
+  };
+  const res = UrlFetchApp.fetch(url, options);
+  return JSON.parse(res.getContentText()).choices[0].message.content;
+}
+```
+
+■ 4. 現場導入でつまずかない2つのポイント＆無料診断ツール
+・【罠】APIキーをスクリプト内に直書きして共有設定を「閲覧者」にすると、他人にキーを盗まれるリスクがある。→【解決策】スクリプトプロパティ（PropertiesService）に保存して呼び出す運用を徹底すること。
+・【罠】口コミ本文が空（星評価のみ）の場合、APIがエラーを吐くか、不自然な返信を生成することがある。→【解決策】GAS側で「if(!content) content='（本文なし）'」と空文字処理を加え、プロンプト側でも星のみの場合の挙動を指定しておくこと。
+
+「自分の職場だと年間いくら時間を削減できるか」の試算と追加コード生成は、登録不要の無料Webツールでも30秒で試せます👇
+https://toproad-creator.github.io/autoflow-ai-ceo/
+
+GASの貼り付けエラーを3秒で解決する無料デバッガーはこちら👇
+https://toproad-creator.github.io/autoflow-ai-ceo/gas-debugger.html
+
+■ あわせて読まれている実践ガイド（すべて無料）
+・採用・人事の職務経歴書スクリーニング自動化：https://note.com/toproad_1989/n/n129393b66060
+・補助金申請・事業計画書＆収支表自動化：https://note.com/toproad_1989/n/n45f6c425ee66
+
+■ 5. 【先着10部限定 ¥980】エラー対策＆全10業種50選をまとめて現場導入したい方へ
+「補助金計画・採用選考・EC在庫・請求書経理・営業返信」まで含め、最初からエラー通知・6分制限回避を組み込んだ50業務すべての完全版パッケージを公開しています。
+通常価格 ¥1,980 のところ、先着10部限定で【半額 ¥980（1レシピあたり約19円）】です。無料エリアに「補助金・採用・EC」の実物コードもそのまま掲載しているので、品質を確かめたうえでぜひご活用ください👇
+https://note.com/toproad_1989/n/n5d0e28a74f91
+
+まずは今回の領域だけを深く自動化したい方向けに、単品ワンコイン版（¥500）も公開しています👇
+https://note.com/toproad_1989/n/n26ebbea33691

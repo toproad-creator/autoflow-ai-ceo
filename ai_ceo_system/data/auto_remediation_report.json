@@ -1,8 +1,8 @@
 {
-  "executed_at": "2026-11-27T08:05:18.025694+09:00",
-  "day": 24,
+  "executed_at": "2026-11-28T08:04:48.638303+09:00",
+  "day": 25,
   "all_gates_passed": true,
-  "detected_issues_input_count": 2,
+  "detected_issues_input_count": 3,
   "checks": {
     "web_funnel": {
       "task": "Webツール利用後レコメンド導線・TOP3・3段階商品階段の自動実装＆検証",
@@ -28,7 +28,7 @@
       "status": "synced",
       "ok": true,
       "detail": {
-        "synced_at": "2026-11-27T08:05:03.127288+09:00",
+        "synced_at": "2026-11-28T08:04:34.929317+09:00",
         "preview_schema_version": 2,
         "top3_slugs": [
           "subsidy-business-plan",
@@ -50,7 +50,7 @@
       "workflow_repaired": false,
       "workflow_ok": true,
       "bare_cloud_imports": [],
-      "latest_ci_run_id": 45756464572,
+      "latest_ci_run_id": 45941358859,
       "latest_ci_conclusion": "success",
       "ok": true
     },
@@ -65,15 +65,14 @@
       "simulator_has_top3": true,
       "short_script_valid": true,
       "short_script_regenerated": true,
-      "short_script_concept": "時短ノウハウ実演回",
+      "short_script_concept": "リアル経営ドキュメンタリー回",
       "short_script_reasons": [],
       "board_agenda_unique": true,
       "board_agenda_reason": "ok",
       "free_note_rich_code": true,
       "free_note_reason": "ok",
       "auto_fixed": [
-        "Day24 YouTubeショート台本の不具合・重複を検出し、ユニーク台本へ即座に自動再生成完了",
-        "X投稿文の助詞途切れ(x_post_pattern3_reply)を完結表現へ自動修正"
+        "Day25 YouTubeショート台本の不具合・重複を検出し、ユニーク台本へ即座に自動再生成完了"
       ],
       "ok": true
     }
@@ -82,12 +81,12 @@
     {
       "category": "無料ツール×需要TOP3連動",
       "status": "auto_applied",
-      "detail": "需要1位『EC・物販の在庫管理＆価格改定自』と2位『採用』を無料シミュレーターに自動統合し、体験直後に¥980完全版への導線を直結。"
+      "detail": "需要1位『補助金申請・融資用の事業計画書ド』と2位『採用』を無料シミュレーターに自動統合し、体験直後に¥980完全版への導線を直結。"
     },
     {
       "category": "X文面品質＆YouTubeショート実物監査",
       "status": "repaired",
-      "detail": "Day24動画は『時短ノウハウ実演回』テーマで有料切れ端0・クリック不可誘導0・前日重複0を実物検査で合格済み（タイトル: 【Day24】店長の絶望を救う！月42時間のシフト回収を30秒で終わらせる禁断のAIレシ…）。"
+      "detail": "Day25動画は『リアル経営ドキュメンタリー回』テーマで有料切れ端0・クリック不可誘導0・前日重複0を実物検査で合格済み（タイトル: 【Day25】スキは増えても売上0円の絶望。AI役員が下した「核心コード無料化」の逆転劇…）。"
     },
     {
       "category": "会議議題マンネリ排除＆無料note実物コード監査",

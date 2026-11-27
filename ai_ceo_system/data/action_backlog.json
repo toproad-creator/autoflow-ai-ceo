@@ -1,32 +1,32 @@
 {
-  "updated_at": "2026-11-27T08:05:18.024214+09:00",
-  "day": 24,
+  "updated_at": "2026-11-28T08:04:48.636020+09:00",
+  "day": 25,
   "previous_pending_count": 0,
   "today_total_actions": 4,
   "today_resolved_count": 4,
   "today_pending_count": 0,
   "items": [
     {
-      "id": "DAY24-ACT1",
-      "action": "【CRO/商品改善】採用・人事記事の有料部分に「即導入可能なスプレッドシート雛形」を追加し500円決済を促す",
+      "id": "DAY25-ACT1",
+      "action": "【CRO/商品改善】「補助金・収支表」記事に、キャッシュフロー計算用のGASコードと推奨列設計図を追記。",
+      "status": "resolved",
+      "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(26件):True"
+    },
+    {
+      "id": "DAY25-ACT2",
+      "action": "【CRO/CMO実装】「BOOTH収支」記事に、売上データ整形用の実用コードを実装し、有料版への比較表を設置。",
       "status": "resolved",
       "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:synced"
     },
     {
-      "id": "DAY24-ACT2",
-      "action": "【CRO/CMO実装】YouTubeショート末尾に「noteでAutoFlowと検索」の指示テロップを挿入したデモ動画を投稿",
+      "id": "DAY25-ACT3",
+      "action": "【CMO実装】XおよびYouTubeショートの固定コメントを「実用コード公開記事」への直リンクに更新。",
       "status": "resolved",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:synced"
+      "verification_evidence": "X投稿整形＆括弧検証:True（自動生成準備完了・ショートはStep8連携）"
     },
     {
-      "id": "DAY24-ACT3",
-      "action": "【CMO実装】Xにて「月22時間削減のGAS」の実行画面動画を投稿し、noteの無料・有料記事へ二段構えで誘導",
-      "status": "resolved",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:synced"
-    },
-    {
-      "id": "DAY24-ACT4",
-      "action": "【CTO/QA検証】5本の旧式記事を「補助金・EC・採用」の最新プロンプト+GASコードへ差し替え、動作を最終確認",
+      "id": "DAY25-ACT4",
+      "action": "【CTO/QA検証】全24記事のリンク・サムネイル・コード動作の最終点検を行い、不備1件を完全解消。",
       "status": "resolved",
       "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(26件):True"
     }

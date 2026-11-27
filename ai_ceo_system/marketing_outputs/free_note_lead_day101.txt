@@ -1,52 +1,44 @@
 【タイトル】
-【無料コピペOK】ECショップの発送連絡・返品問い合わせAI自動一次返信をAIとGASで自動化して月29時間浮かす実践レシピ
+【無料コピペOK】BOOTHの売上・手数料・入金額、収支表には何を記録する？をAIとGASで自動化して月30時間浮かす実践レシピ
 
 【ハッシュタグ】
-#AI活用 #業務効率化 #GAS #スプレッドシート自動化 #ECカスタマーサポート
+#BOOTH #個人開発 #スプレッドシート #GAS #経理自動化
 
 【本文】
-「ECショップの発送連絡・返品問い合わせAI自動一次返信」に毎月どれくらいの時間を使っていますか？
+「BOOTHの売上・手数料・入金額、収支表には何を記録する？」に毎月どれくらいの時間を使っていますか？
 
 実務の現場では、次のようなロスが起きやすい業務です。
-・セールや繁忙期に「いつ届くか」という配送状況の確認メールが殺到し、CS担当者が1日中コピペ作業に追われる。
-・返品希望の理由（初期不良 vs 自己都合）の仕分けミスが発生し、返送送料の負担を巡って顧客とトラブルになる。
-・深夜や休日の問い合わせに対して一次返信が遅れ、ショップのレビュー評価（レスポンスの速さ）が低下する。
+・BOOTHからダウンロードしたCSVの項目が多すぎて、結局どの金額が銀行に振り込まれる正味の売上なのか判別しにくい
+・「BOOST（上乗せ応援）」が含まれる場合、手数料計算が複雑になり、手動計算だと源泉徴収や消費税の計算でミスが多発する
+・注文キャンセルや発送状況が混在しているため、月次の確定利益を算出するのに毎月数時間を費やしている
 
-1つひとつの確認作業は15分でも、積み重なると月平均で約29時間（時給2,200円換算で【年間 約765,600円相当】）を消費します。この記事では、ChatGPT・Geminiなどで即使える専用プロンプトだけでなく、Googleスプレッドシート上で通知・記録まで自動化するGAS完成コードもそのまま無料公開します。
+1つひとつの確認作業は15分でも、積み重なると月平均で約30時間（時給2,500円換算で【年間 約900,000円相当】）を消費します。この記事では、ChatGPT・Geminiなどで即使える専用プロンプトだけでなく、Googleスプレッドシート上で通知・記録まで自動化するGAS完成コードもそのまま無料公開します。
 
 ■ 1. まず準備するスプレッドシート列設計（これだけで動きます）
 Googleスプレッドシートの1行目（A〜F列）に以下の見出しを用意します。
-【列構成】受付日時 ｜ 顧客名 ｜ お問い合わせ内容 ｜ 注文・配送番号 ｜ AI生成返信案 ｜ ステータス
+【列構成】注文日 ｜ 注文番号 ｜ 商品名 ｜ 売上合計(BOOST含む) ｜ BOOTH決済手数料 ｜ 振込ステータス
 
-■ 2. コピペで使える！「ECショップの発送連絡・返品問い合わせAI自動一次返信」専用・実務プロンプト
+■ 2. コピペで使える！「BOOTHの売上・手数料・入金額、収支表には何を記録する？」専用・実務プロンプト
 以下をそのままコピーして、対象データを貼り付けて実行してください（[要確認]フラグで人の目チェックが必要な行だけを浮き彫りにします）。
 
 ```text
-### 前提役割
-あなたは国内大手ECショップのカスタマーサポート統括責任者です。丁寧かつ迅速な一次返信案を作成してください。
+あなたはBOOTHのショップ運営に特化した財務自動化コンサルタントです。以下のルールに従い、BOOTHの注文CSVデータをスプレッドシート管理用に整形してください。
 
-### 厳守判定基準
-1. 【発送連絡の場合】注文番号・配送番号が入力されているか確認し、配送状況確認URL（https://example.com/track?id=）に番号を付与して案内すること。
-2. 【返品希望の場合】理由が「初期不良・誤送」なら「着払い（店舗負担）」、「自己都合（サイズ違い・イメージ違い等）」なら「元払い（お客様負担）」と明確に区別して案内すること。
-3. 【禁止事項】返金金額の確定、謝罪クーポン発行の約束、在庫確保の確約は絶対に行わないこと。
+【厳守判定基準】
+1. 手数料計算：(商品価格 + BOOST) × 5.6% + 22円（小数点以下切り捨て）が現在の標準です。これとCSV内の手数料を照合してください。
+2. 入金額算出：売上合計 - 決済手数料 = 差引振込額として算出すること。
+3. BOOST特定：BOOST額が1円でも発生している場合、備考欄に「★BOOST: [金額]円」と明記してください。
+4. キャンセル除外：ステータスが「キャンセル」または「未払い」のものは、振込対象外として入金額を0円に設定してください。
 
-### 例外時の[要確認]ルール
-以下に該当する場合は、返信案の冒頭に「[要確認]」と記載し、スタッフへ引き継ぐ文言のみ出力してください。
-- 著しく攻撃的な言動やクレームが含まれる場合
-- 配送事故（破損）の報告がある場合
-- 過去に何度も同様の問い合わせがある場合
+【出力列構成】
+注文日, 注文番号, 商品名, 売上合計, 決済手数料, 差引振込額, 備考
 
-### 出力形式
-- 宛名：〇〇様
-- 挨拶と感謝の言葉
-- 結論（配送状況または返品手順）
-- 結びの言葉
-- 署名：ECショップサポートチーム
+【例外時の[要確認]ルール】
+- 計算された手数料とCSV記載の手数料に1円でも乖離がある場合、備考欄の先頭に[要確認:手数料不一致]を付与すること。
+- 自宅発送商品で送料が含まれている場合、送料分を差し引いた純粋な商品売上を別途計算して備考に記載すること。
 
-### 入力例
-顧客名：{{顧客名}}
-内容：{{お問い合わせ内容}}
-番号：{{注文・配送番号}}
+【入力例】
+2023/10/01, 12345678, オリジナル3Dモデル, 5500, 330, 発送済み, (BOOST 500円含む)
 ```
 
 ■ 3. スプレッドシート自動処理＆メール通知 GAS 完成コード
@@ -54,58 +46,49 @@ Googleスプレッドシートの1行目（A〜F列）に以下の見出しを�
 
 ```javascript
 function runAutoWorkflow() {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getActiveSheet();
   const data = sheet.getDataRange().getValues();
-  const OPENAI_API_KEY = 'YOUR_API_KEY'; // 実際のAPIキーを設定してください
+  const lastRow = sheet.getLastRow();
+  let processedCount = 0;
+  let totalNetProfit = 0;
 
-  for (let i = 1; i < data.length; i++) {
-    const [timestamp, customerName, inquiry, orderId, draft, status] = data[i];
+  try {
+    for (let i = 1; i < data.length; i++) {
+      let row = data[i];
+      let salesAmount = parseFloat(row[3]); // D列: 売上合計
+      let feeAmount = parseFloat(row[4]);   // E列: 手数料
+      let status = row[5];                // F列: 振込ステータス
 
-    // ステータスが「未処理」の場合のみ実行
-    if (status === '未処理') {
-      try {
-        const prompt = `以下の情報を元に返信案を作成してください。\n顧客名：${customerName}\n内容：${inquiry}\n番号：${orderId}`;
-        
-        const response = UrlFetchApp.fetch('https://api.openai.com/v1/chat/completions', {
-          method: 'post',
-          headers: {
-            'Authorization': `Bearer ${OPENAI_API_KEY}`,
-            'Content-Type': 'application/json'
-          },
-          payload: JSON.stringify({
-            model: "gpt-4o",
-            messages: [
-              {role: "system", content: "あなたはECショップのCS担当です。プロンプトの指示に従い返信案を作成してください。"},
-              {role: "user", content: prompt}
-            ]
-          })
-        });
+      // 未処理かつ数値データがある行を対象にする
+      if (status === "未処理" && !isNaN(salesAmount)) {
+        let netAmount = salesAmount - feeAmount;
+        totalNetProfit += netAmount;
 
-        const aiReply = JSON.parse(response.getContentText()).choices[0].message.content;
-        
-        // シートへの書き込み（AI返信案とステータス更新）
-        sheet.getRange(i + 1, 5).setValue(aiReply);
-        
-        if (aiReply.includes('[要確認]')) {
-          sheet.getRange(i + 1, 6).setValue('要確認');
-        } else {
-          // 自動送信（テスト時はコメントアウト推奨）
-          // MailApp.sendEmail('customer@example.com', 'お問い合わせの件につきまして', aiReply);
-          sheet.getRange(i + 1, 6).setValue('送信済');
-        }
-
-      } catch (e) {
-        console.error('Error at row ' + (i + 1) + ': ' + e.toString());
-        sheet.getRange(i + 1, 6).setValue('エラー発生');
+        // 計算結果をシートに反映（G列に入金額、H列に処理日、F列を更新）
+        sheet.getRange(i + 1, 6).setValue("処理済み");
+        sheet.getRange(i + 1, 7).setValue(netAmount);
+        sheet.getRange(i + 1, 8).setValue(new Date());
+        processedCount++;
       }
     }
+
+    if (processedCount > 0) {
+      const recipient = Session.getActiveUser().getEmail();
+      const subject = "【自動化】BOOTH売上集計完了のお知らせ";
+      const body = `本日の集計が完了しました。\n\n処理件数: ${processedCount}件\n今回の入金合計: ${totalNetProfit.toLocaleString()}円\n\nスプレッドシートを確認してください。`;
+      MailApp.sendEmail(recipient, subject, body);
+    }
+  } catch (e) {
+    console.error("エラー詳細: " + e.message);
+    MailApp.sendEmail(Session.getActiveUser().getEmail(), "【エラー】BOOTH集計スクリプト", "実行中にエラーが発生しました: " + e.message);
   }
 }
 ```
 
 ■ 4. 現場導入でつまずかない2つのポイント＆無料診断ツール
-・AIが返品ポリシーを「勝手に解釈」して全額返金を約束してしまう罠：プロンプト内で『返金金額の確定は禁止』と強く制約をかけ、さらに[要確認]フラグで人間が最終チェックするフローを構築することで回避します。
-・注文番号の入力漏れによるAPIエラー：GAS側でif (!orderId) { ... } のバリデーションを入れるか、プロンプトに『番号不明時の定型文』を組み込むことで、処理の中断を防ぎます。
+・BOOTHの決済手数料率は改定されることがあるため、GAS内に料率をハードコードせず、CSVから出力された確定手数料列を参照するのが最も安全です。
+・「振込手数料（一律200円〜300円）」は1注文ごとではなく、BOOTHからの1回の振込（月次）に対して発生するため、各行の計算に含めると合計が合わなくなります。
 
 「自分の職場だと年間いくら時間を削減できるか」の試算と追加コード生成は、登録不要の無料Webツールでも30秒で試せます👇
 https://toproad-creator.github.io/autoflow-ai-ceo/

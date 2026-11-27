@@ -1,31 +1,20 @@
 {
-  "analyzed_at": "2026-11-27T08:00:04.589774+09:00",
+  "analyzed_at": "2026-11-28T08:00:04.893426+09:00",
   "api_status": {
     "own_api": "live",
-    "trend_api": "fallback"
+    "trend_api": "live"
   },
-  "market_summary": "実測スキ反響（22記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」。",
+  "market_summary": "実測スキ反響（24記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」。",
   "top_winner_niches": [
-    {
-      "slug": "ec-inventory",
-      "title": "EC・物販の在庫管理＆価格改定自動化",
-      "avg_hours_saved_monthly": 42,
-      "hourly_wage": 2500,
-      "actual_likes": 11,
-      "matched_own_articles": 4,
-      "trend_matches": 1,
-      "demand_score": 159.1,
-      "status": "winner"
-    },
     {
       "slug": "subsidy-business-plan",
       "title": "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
       "avg_hours_saved_monthly": 45,
       "hourly_wage": 3500,
-      "actual_likes": 11,
+      "actual_likes": 12,
       "matched_own_articles": 3,
       "trend_matches": 0,
-      "demand_score": 163.5,
+      "demand_score": 169.5,
       "status": "winner"
     },
     {
@@ -54,22 +43,36 @@
   "external_trends_top5": [
     {
       "query": "GAS 自動化",
-      "title": "スプレッドシート×GASで請求書・集計作業を完全自動化する実務テンプレート",
-      "likes": 45,
-      "price": 980,
-      "is_paid": true
+      "title": "【開発裏話】「チャット通知の自動化」を自作した人が、API制限と二重送信の嵐で青ざめる理由：指数バックオフと排他制御が握る堅牢化の境界線",
+      "likes": 0,
+      "price": 0,
+      "is_paid": false
     },
     {
-      "query": "AI 業務効率化 プロンプト",
-      "title": "コピペで使えるAI構造化プロンプト＆SNS・営業メール半自動化ガイド",
-      "likes": 38,
-      "price": 980,
+      "query": "GAS 自動化",
+      "title": "【セルフ診断】あなたの週末は「領収書とクレカ明細の手打ち」で消えていないか：スマホ撮影から一瞬でスプレッドシートへ流し込む経費自動化の防衛線",
+      "likes": 0,
+      "price": 0,
+      "is_paid": false
+    },
+    {
+      "query": "GAS 自動化",
+      "title": "GWS（Google Workspace）× GASだけで中小企業のDXは8割できる。室崎敬太が既存ツールの活用を勧める理由",
+      "likes": 0,
+      "price": 0,
+      "is_paid": false
+    },
+    {
+      "query": "GAS 自動化",
+      "title": "【1件1万円の受託から】GAS・Python自動化の副業ロードマップ｜比較表・テンプレ11点つき",
+      "likes": 0,
+      "price": 2980,
       "is_paid": true
     },
     {
       "query": "GAS 自動化",
-      "title": "Googleドライブ請求書整理・LINEステップ・EC在庫通知の時短スクリプト",
-      "likes": 29,
+      "title": "全部自動化できないなら意味ないと思っていたけど、半分だけでもかなり楽だった",
+      "likes": 0,
       "price": 0,
       "is_paid": false
     }
@@ -77,9 +80,21 @@
   "own_articles_performance": [
     {
       "key": "n5d0e28a74f91",
-      "title": "【先着10部¥980】補助金申請・採用・ECをコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
+      "title": "【先着10部¥980】補助金申請・EC・採用をコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
       "likes": 5,
       "price": 980
+    },
+    {
+      "key": "n5479e7b81a01",
+      "title": "BOOTHの売上・手数料・入金額、収支表には何を記録する？",
+      "likes": 2,
+      "price": 0
+    },
+    {
+      "key": "nbbe8ff68a0a2",
+      "title": "【無料コピペOK】アルバイト・スタッフの希望シフト回収＆スプレッドシート自動編成をAIとGASで自動化して月20時間浮かす実践レシピ",
+      "likes": 5,
+      "price": 0
     },
     {
       "key": "n60a203f72855",
@@ -162,7 +177,7 @@
     {
       "key": "n45f6c425ee66",
       "title": "【無料コピペOK】補助金申請・融資用の事業計画書ドラフト＆収支表自動作成をAIとGASで自動化して月45時間浮かす実践レシピ",
-      "likes": 6,
+      "likes": 7,
       "price": 0
     },
     {
