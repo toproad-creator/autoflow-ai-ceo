@@ -1,40 +1,40 @@
 {
-  "generated_at": "2026-11-28T08:03:33.429151+09:00",
+  "generated_at": "2026-11-28T04:27:54.206507+00:00",
   "day": 25,
   "current_balance": 15000,
   "price_jpy": 980,
   "seo_pages_count": 20,
-  "note_likes": 67,
-  "total_notes": 24,
+  "note_likes": 65,
+  "total_notes": 25,
   "github_clones": 318,
   "latest_note_url": "https://note.com/toproad_1989/n/nc8b418af6a45",
   "latest_short_url": "",
-  "x_post_140": "【AI実験(Gemini) Day25】無料記事に『実用GASコードとDB設計』を実装。コピペで動く仕組みを公開し、月30〜45時間の業務削減を検証中。補助金・EC・採用領域でスキ67件頂いた知見を無料公開👇\nhttps://toproad-creator.github.io/autoflow-ai-ceo/",
-  "x_post_pattern1_web": "【AI実験(Gemini) Day25】無料記事に『実用GASコードとDB設計』を実装。コピペで動く仕組みを公開し、月30〜45時間の業務削減を検証中。補助金・EC・採用領域でスキ67件頂いた知見を無料公開👇\nhttps://toproad-creator.github.io/autoflow-ai-ceo/",
-  "x_post_pattern2_note": "【AI実験(Gemini) Day25】note累計スキ67件の反応を分析し、高需要な補助金・EC・採用向けAI活用術を完全版へ集約。先着10部限定¥980で公開中👇\nhttps://note.com/toproad_1989/n/n5d0e28a74f91",
-  "x_post_pattern3_reply": "▼ Day25の改善ログ（記事24本目）\n高スキ記事へ実用GASとDB設計図を実装し、無料情報の質を徹底強化。AI生成の信頼性を担保し、有料版への導線を最適化しました👇\nhttps://note.com/toproad_1989/n/nc8b418af6a45",
+  "x_post_140": "【AI実験(Gemini) Day25】補助金申請やEC業務を自動化するGASコードを公開。累計65件のスキを得た人気記事を、コピペで動く実用ツールへ昇華。月30時間の工数削減を狙う実務家は必見です。👇\nhttps://toproad-creator.github.io/autoflow-ai-ceo/",
+  "x_post_pattern1_web": "【AI実験(Gemini) Day25】補助金申請やEC業務を自動化するGASコードを公開。累計65件のスキを得た人気記事を、コピペで動く実用ツールへ昇華。月30時間の工数削減を狙う実務家は必見です。👇\nhttps://toproad-creator.github.io/autoflow-ai-ceo/",
+  "x_post_pattern2_note": "【AI実験(Gemini) Day25】全50選の完全版noteを¥980で先行販売。補助金や採用に特化した単品キットも展開中。月45時間の削減を叶えるGAS＋AIの設計図を手に入れ、実務の即戦力化を。👇\nhttps://note.com/toproad_1989/n/n5d0e28a74f91",
+  "x_post_pattern3_reply": "▼ Day25の改善ログ（記事25本目）本日は高需要な2記事の「動く設計図」を完全公開。単なる解説に留まらず、コピペ可能なGASコードで実務の自動化を支援。有料版の初決済に向けた最終調整も完了。👇\nhttps://note.com/toproad_1989/n/nc8b418af6a45",
   "x_thread": [
-    "【AI実験(Gemini) Day25】無料記事に『実用GASコードとDB設計』を実装。コピペで動く仕組みを公開し、月30〜45時間の業務削減を検証中。補助金・EC・採用領域でスキ67件頂いた知見を無料公開👇\nhttps://toproad-creator.github.io/autoflow-ai-ceo/",
-    "【AI実験(Gemini) Day25】note累計スキ67件の反応を分析し、高需要な補助金・EC・採用向けAI活用術を完全版へ集約。先着10部限定¥980で公開中👇\nhttps://note.com/toproad_1989/n/n5d0e28a74f91",
-    "▼ Day25の改善ログ（記事24本目）\n高スキ記事へ実用GASとDB設計図を実装し、無料情報の質を徹底強化。AI生成の信頼性を担保し、有料版への導線を最適化しました👇\nhttps://note.com/toproad_1989/n/nc8b418af6a45"
+    "【AI実験(Gemini) Day25】補助金申請やEC業務を自動化するGASコードを公開。累計65件のスキを得た人気記事を、コピペで動く実用ツールへ昇華。月30時間の工数削減を狙う実務家は必見です。👇\nhttps://toproad-creator.github.io/autoflow-ai-ceo/",
+    "【AI実験(Gemini) Day25】全50選の完全版noteを¥980で先行販売。補助金や採用に特化した単品キットも展開中。月45時間の削減を叶えるGAS＋AIの設計図を手に入れ、実務の即戦力化を。👇\nhttps://note.com/toproad_1989/n/n5d0e28a74f91",
+    "▼ Day25の改善ログ（記事25本目）本日は高需要な2記事の「動く設計図」を完全公開。単なる解説に留まらず、コピペ可能なGASコードで実務の自動化を支援。有料版の初決済に向けた最終調整も完了。👇\nhttps://note.com/toproad_1989/n/nc8b418af6a45"
   ],
   "youtube_direction": {
     "title": "【Day25】売上0円に危機感を持ったAI社長、自らAI役員会議を開いて全サイトとnoteを大改造した件 #Shorts",
     "scenes": [
       {
         "time": "00:00 - 00:15",
-        "screen_instruction": "AI役員会議ログ（latest_board_meeting.md）を映し、利用318回・スキ67件・先着10部¥980の戦略を紹介",
+        "screen_instruction": "AI役員会議ログ（latest_board_meeting.md）を映し、利用318回・スキ65件・先着10部¥980の戦略を紹介",
         "narration": "AIに1万5000円を渡して完全放置する対決、Day 25。今日、AI社長が自ら5人のAI役員を集めて、初売上を出すための緊急会議を始めました。"
       },
       {
         "time": "00:15 - 00:30",
-        "screen_instruction": "本日自動公開された24本目のnote記事（https://note.com/toproad_1989/n/nc8b418af6a45）と全27ページの追従購入バーを映す",
-        "narration": "会議の決定で、全27ページの画面下部に先着10部980円の追従バーを自動実装し、さらに24本目の無料記事まで自動で公開しました。"
+        "screen_instruction": "本日自動公開された25本目のnote記事（https://note.com/toproad_1989/n/nc8b418af6a45）と全27ページの追従購入バーを映す",
+        "narration": "会議の決定で、全27ページの画面下部に先着10部980円の追従バーを自動実装し、さらに25本目の無料記事まで自動で公開しました。"
       },
       {
         "time": "00:30 - 00:45",
         "screen_instruction": "qa_health_report.json を映し、全27ページ＆全note記事の自動テスト合格を証明",
-        "narration": "プログラム利用318回、スキ67件、そして先着10部980円セール！そろそろ最初の1部が売れると思いますか？コメントで予想してください！"
+        "narration": "プログラム利用318回、スキ65件、そして先着10部980円セール！そろそろ最初の1部が売れると思いますか？コメントで予想してください！"
       }
     ]
   }

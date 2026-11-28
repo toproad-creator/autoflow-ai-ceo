@@ -1,6 +1,6 @@
 {
   "day": 25,
-  "timestamp": "2026-11-28T08:00:06.951683+09:00",
+  "timestamp": "2026-11-28T04:27:27.035408+00:00",
   "financials": {
     "initial_balance": 15000,
     "current_balance": 15000,
@@ -19,8 +19,8 @@
       "status": "published",
       "price_jpy": 980,
       "paid_article_likes": 5,
-      "total_published_notes": 24,
-      "total_account_likes": 67,
+      "total_published_notes": 25,
+      "total_account_likes": 65,
       "paywall_active": true,
       "paid_notes_count": 4,
       "paid_notes_list": [
@@ -92,8 +92,8 @@
           "url": "https://note.com/toproad_1989/n/n60a203f72855"
         }
       ],
-      "likes_delta": 8,
-      "notes_delta": 2
+      "likes_delta": -2,
+      "notes_delta": 1
     },
     "github_traffic_metrics": {
       "repo_views_14d": 185,
@@ -105,7 +105,7 @@
     }
   },
   "traffic_diagnosis": {
-    "bottleneck": "実ユーザー反響はnoteに集中（公開24本・累計スキ67件・トップ需要『【無料コピペOK】補助金申請・融資用の事業計画書』、GitHub実ページ訪問89名・自動clone除く）。無料記事の実務具体性と、テーマ特化有料SKU（¥500/¥980）への最短決済導線が鍵。",
+    "bottleneck": "実ユーザー反響はnoteに集中（公開25本・累計スキ65件・トップ需要『【無料コピペOK】補助金申請・融資用の事業計画書』、GitHub実ページ訪問89名・自動clone除く）。無料記事の実務具体性と、テーマ特化有料SKU（¥500/¥980）への最短決済導線が鍵。",
     "countermeasure": "①無料note記事を『即コピペできるプロンプト＋GAS完成コード』へ刷新し信頼獲得、②有料商品4本（単品¥500キット＋50選¥980完全版）で即決しやすい階段を用意"
   },
   "system_health": {

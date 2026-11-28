@@ -1,8 +1,8 @@
 {
-  "executed_at": "2026-11-28T08:04:48.638303+09:00",
+  "executed_at": "2026-11-28T04:27:54.608255+00:00",
   "day": 25,
   "all_gates_passed": true,
-  "detected_issues_input_count": 3,
+  "detected_issues_input_count": 2,
   "checks": {
     "web_funnel": {
       "task": "Webツール利用後レコメンド導線・TOP3・3段階商品階段の自動実装＆検証",
@@ -25,32 +25,15 @@
     },
     "paid_note_sync": {
       "task": "有料note（¥980）タイトル・無料冒頭の需要TOP3安全同期（有料エリア保護付）",
-      "status": "synced",
-      "ok": true,
-      "detail": {
-        "synced_at": "2026-11-28T08:04:34.929317+09:00",
-        "preview_schema_version": 2,
-        "top3_slugs": [
-          "subsidy-business-plan",
-          "ec-inventory",
-          "hr-resume-screening"
-        ],
-        "top3_titles": [
-          "補助金申請・融資用の事業計画書ドラフト＆収支表自動作成",
-          "EC・物販の在庫管理＆価格改定自動化",
-          "採用・人事の職務経歴書スクリーニング＆面接質問自動生成"
-        ],
-        "title_applied": "【先着10部¥980】補助金申請・EC・採用をコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
-        "paid_area_chars_preserved": 73629,
-        "status": "synced"
-      }
+      "status": "skipped_github_actions",
+      "ok": true
     },
     "cloud_ci_gate": {
       "task": "クラウド（GitHub Actions）互換コード・YAML設定・直近稼働検証ゲート",
       "workflow_repaired": false,
       "workflow_ok": true,
       "bare_cloud_imports": [],
-      "latest_ci_run_id": 45941358859,
+      "latest_ci_run_id": 46081615565,
       "latest_ci_conclusion": "success",
       "ok": true
     },
@@ -64,16 +47,14 @@
       "task": "消費者・ビジネス目線の実物品質監査（ツールTOP3・X自然文・ショート台本・無料記事コード・会議重複防止）＆自律修正",
       "simulator_has_top3": true,
       "short_script_valid": true,
-      "short_script_regenerated": true,
+      "short_script_regenerated": false,
       "short_script_concept": "リアル経営ドキュメンタリー回",
       "short_script_reasons": [],
       "board_agenda_unique": true,
       "board_agenda_reason": "ok",
       "free_note_rich_code": true,
       "free_note_reason": "ok",
-      "auto_fixed": [
-        "Day25 YouTubeショート台本の不具合・重複を検出し、ユニーク台本へ即座に自動再生成完了"
-      ],
+      "auto_fixed": [],
       "ok": true
     }
   },
@@ -85,7 +66,7 @@
     },
     {
       "category": "X文面品質＆YouTubeショート実物監査",
-      "status": "repaired",
+      "status": "auto_applied",
       "detail": "Day25動画は『リアル経営ドキュメンタリー回』テーマで有料切れ端0・クリック不可誘導0・前日重複0を実物検査で合格済み（タイトル: 【Day25】スキは増えても売上0円の絶望。AI役員が下した「核心コード無料化」の逆転劇…）。"
     },
     {

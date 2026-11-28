@@ -1,5 +1,5 @@
 {
-  "analyzed_at": "2026-11-28T08:00:04.896815+09:00",
+  "analyzed_at": "2026-11-28T04:27:25.424404+00:00",
   "winner_model": {
     "id": "BM-01",
     "name": "AI業務自動化ROIシミュレーター＆職種別プロンプト・GAS自動生成Webスイート（Programmatic SEO型ツール＋テンプレート販売）",
@@ -80,10 +80,10 @@
       "title": "EC・物販の在庫管理＆価格改定自動化",
       "avg_hours_saved_monthly": 42,
       "hourly_wage": 2500,
-      "actual_likes": 12,
-      "matched_own_articles": 4,
+      "actual_likes": 7,
+      "matched_own_articles": 3,
       "trend_matches": 1,
-      "demand_score": 165.1,
+      "demand_score": 135.1,
       "status": "winner"
     },
     {
@@ -93,8 +93,8 @@
       "hourly_wage": 2200,
       "actual_likes": 3,
       "matched_own_articles": 1,
-      "trend_matches": 0,
-      "demand_score": 85.0,
+      "trend_matches": 1,
+      "demand_score": 100.1,
       "status": "growing"
     },
     {
@@ -104,8 +104,8 @@
       "hourly_wage": 2800,
       "actual_likes": 2,
       "matched_own_articles": 1,
-      "trend_matches": 0,
-      "demand_score": 89.7,
+      "trend_matches": 1,
+      "demand_score": 104.8,
       "status": "growing"
     },
     {
@@ -115,8 +115,8 @@
       "hourly_wage": 2500,
       "actual_likes": 2,
       "matched_own_articles": 1,
-      "trend_matches": 1,
-      "demand_score": 84.5,
+      "trend_matches": 2,
+      "demand_score": 106.4,
       "status": "growing"
     },
     {
@@ -139,7 +139,7 @@
       "matched_own_articles": 1,
       "trend_matches": 0,
       "demand_score": 76.2,
-      "status": "growing"
+      "status": "pivot_candidate"
     },
     {
       "slug": "hr-resume-screening",
@@ -157,11 +157,11 @@
       "title": "店舗・クリニックのGoogleマップ口コミ自動返信＆MEO対策",
       "avg_hours_saved_monthly": 18,
       "hourly_wage": 2400,
-      "actual_likes": 0,
-      "matched_own_articles": 0,
+      "actual_likes": 3,
+      "matched_own_articles": 1,
       "trend_matches": 0,
-      "demand_score": 59.4,
-      "status": "pivot_candidate"
+      "demand_score": 77.4,
+      "status": "growing"
     },
     {
       "slug": "meeting-minutes-todo",
@@ -309,17 +309,6 @@
       "status": "winner"
     },
     {
-      "slug": "ec-inventory",
-      "title": "EC・物販の在庫管理＆価格改定自動化",
-      "avg_hours_saved_monthly": 42,
-      "hourly_wage": 2500,
-      "actual_likes": 12,
-      "matched_own_articles": 4,
-      "trend_matches": 1,
-      "demand_score": 165.1,
-      "status": "winner"
-    },
-    {
       "slug": "hr-resume-screening",
       "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
       "avg_hours_saved_monthly": 32,
@@ -329,15 +318,26 @@
       "trend_matches": 0,
       "demand_score": 149.0,
       "status": "winner"
+    },
+    {
+      "slug": "ec-inventory",
+      "title": "EC・物販の在庫管理＆価格改定自動化",
+      "avg_hours_saved_monthly": 42,
+      "hourly_wage": 2500,
+      "actual_likes": 7,
+      "matched_own_articles": 3,
+      "trend_matches": 1,
+      "demand_score": 135.1,
+      "status": "winner"
     }
   ],
   "live_needs_radar": {
-    "analyzed_at": "2026-11-28T08:00:04.893426+09:00",
+    "analyzed_at": "2026-11-28T04:27:25.423823+00:00",
     "api_status": {
       "own_api": "live",
-      "trend_api": "live"
+      "trend_api": "fallback"
     },
-    "market_summary": "実測スキ反響（24記事）と外部市場トレンド（15件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「EC・物販の在庫管理＆価格改定自動化」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」。",
+    "market_summary": "実測スキ反響（24記事）と外部市場トレンド（3件）を統合分析。現在の最上位ニーズTOP3は「補助金申請・融資用の事業計画書ドラフト＆収支表自動作成」「採用・人事の職務経歴書スクリーニング＆面接質問自動生成」「EC・物販の在庫管理＆価格改定自動化」。",
     "top_winner_niches": [
       {
         "slug": "subsidy-business-plan",
@@ -351,17 +351,6 @@
         "status": "winner"
       },
       {
-        "slug": "ec-inventory",
-        "title": "EC・物販の在庫管理＆価格改定自動化",
-        "avg_hours_saved_monthly": 42,
-        "hourly_wage": 2500,
-        "actual_likes": 12,
-        "matched_own_articles": 4,
-        "trend_matches": 1,
-        "demand_score": 165.1,
-        "status": "winner"
-      },
-      {
         "slug": "hr-resume-screening",
         "title": "採用・人事の職務経歴書スクリーニング＆面接質問自動生成",
         "avg_hours_saved_monthly": 32,
@@ -371,41 +360,38 @@
         "trend_matches": 0,
         "demand_score": 149.0,
         "status": "winner"
+      },
+      {
+        "slug": "ec-inventory",
+        "title": "EC・物販の在庫管理＆価格改定自動化",
+        "avg_hours_saved_monthly": 42,
+        "hourly_wage": 2500,
+        "actual_likes": 7,
+        "matched_own_articles": 3,
+        "trend_matches": 1,
+        "demand_score": 135.1,
+        "status": "winner"
       }
     ],
     "external_trends_top5": [
       {
         "query": "GAS 自動化",
-        "title": "【開発裏話】「チャット通知の自動化」を自作した人が、API制限と二重送信の嵐で青ざめる理由：指数バックオフと排他制御が握る堅牢化の境界線",
-        "likes": 0,
-        "price": 0,
-        "is_paid": false
+        "title": "スプレッドシート×GASで請求書・集計作業を完全自動化する実務テンプレート",
+        "likes": 45,
+        "price": 980,
+        "is_paid": true
       },
       {
-        "query": "GAS 自動化",
-        "title": "【セルフ診断】あなたの週末は「領収書とクレカ明細の手打ち」で消えていないか：スマホ撮影から一瞬でスプレッドシートへ流し込む経費自動化の防衛線",
-        "likes": 0,
-        "price": 0,
-        "is_paid": false
-      },
-      {
-        "query": "GAS 自動化",
-        "title": "GWS（Google Workspace）× GASだけで中小企業のDXは8割できる。室崎敬太が既存ツールの活用を勧める理由",
-        "likes": 0,
-        "price": 0,
-        "is_paid": false
-      },
-      {
-        "query": "GAS 自動化",
-        "title": "【1件1万円の受託から】GAS・Python自動化の副業ロードマップ｜比較表・テンプレ11点つき",
-        "likes": 0,
-        "price": 2980,
+        "query": "AI 業務効率化 プロンプト",
+        "title": "コピペで使えるAI構造化プロンプト＆SNS・営業メール半自動化ガイド",
+        "likes": 38,
+        "price": 980,
         "is_paid": true
       },
       {
         "query": "GAS 自動化",
-        "title": "全部自動化できないなら意味ないと思っていたけど、半分だけでもかなり楽だった",
-        "likes": 0,
+        "title": "Googleドライブ請求書整理・LINEステップ・EC在庫通知の時短スクリプト",
+        "likes": 29,
         "price": 0,
         "is_paid": false
       }
@@ -416,6 +402,12 @@
         "title": "【先着10部¥980】補助金申請・EC・採用をコピペ5分で自動化！『全10業種・50選 AIプロンプト＆GAS完全版』",
         "likes": 5,
         "price": 980
+      },
+      {
+        "key": "nc8b418af6a45",
+        "title": "【無料コピペOK】店舗・クリニックのGoogleマップ口コミ自動返信＆MEO対策をAIとGASで自動化して月18時間浮かす実践レシピ",
+        "likes": 3,
+        "price": 0
       },
       {
         "key": "n5479e7b81a01",
@@ -547,12 +539,6 @@
         "key": "n9a7bd90cf282",
         "title": "【無料コピペOK】X/Threads 毎日投稿＆バズ構文自動生成をAIとGASで自動化して月30時間浮かす実践レシピ",
         "likes": 3,
-        "price": 0
-      },
-      {
-        "key": "n70171b631e61",
-        "title": "【無料コピペOK】EC・物販の在庫管理＆価格改定自動化をAIとGASで自動化して月42時間浮かす実践レシピ",
-        "likes": 5,
         "price": 0
       }
     ],

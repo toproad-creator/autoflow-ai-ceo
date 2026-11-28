@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-28T08:04:48.636020+09:00",
+  "updated_at": "2026-11-28T04:27:54.608063+00:00",
   "day": 25,
   "previous_pending_count": 0,
   "today_total_actions": 4,
@@ -8,27 +8,27 @@
   "items": [
     {
       "id": "DAY25-ACT1",
-      "action": "【CRO/商品改善】「補助金・収支表」記事に、キャッシュフロー計算用のGASコードと推奨列設計図を追記。",
+      "action": "【CRO/商品改善】『補助金申請』『EC在庫管理』の2記事に、即利用可能なGASコードと列設計図を追記",
       "status": "resolved",
       "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(26件):True"
     },
     {
       "id": "DAY25-ACT2",
-      "action": "【CRO/CMO実装】「BOOTH収支」記事に、売上データ整形用の実用コードを実装し、有料版への比較表を設置。",
+      "action": "【CRO/CMO実装】無料版コード内に有料版（AI自動化機能）へのアップグレード案内コメントを埋め込み",
       "status": "resolved",
-      "verification_evidence": "全無料ツール利用後レコメンド＆追従バー実装確認:True"
+      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:skipped_github_actions"
     },
     {
       "id": "DAY25-ACT3",
-      "action": "【CMO実装】XおよびYouTubeショートの固定コメントを「実用コード公開記事」への直リンクに更新。",
+      "action": "【CMO実装】YouTubeショートの固定コメントとXにて『実務コード完全公開』を謳ったリライト記事を拡散",
       "status": "resolved",
       "verification_evidence": "X投稿整形＆括弧検証:True（自動生成準備完了・ショートはStep8連携）"
     },
     {
       "id": "DAY25-ACT4",
-      "action": "【CTO/QA検証】全24記事のリンク・サムネイル・コード動作の最終点検を行い、不備1件を完全解消。",
+      "action": "【CTO/QA検証】全25記事のGASコード動作確認と、スプレッドシート列設計の画像/表組みによる可視化",
       "status": "resolved",
-      "verification_evidence": "Web側LP同期:True / note有料記事冒頭安全同期:skipped_github_actions"
+      "verification_evidence": "全ページE2E・禁止ワード0件(25件)・構文検証(26件):True"
     }
   ],
   "pending_for_next_board": []
